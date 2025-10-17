@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//c/Users/vitor410rodrigues/source/repos/demo-pwa-app/**)",
+      "Read(//c/Users/vitor410rodrigues/source/repos/my-mindmap/**)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
