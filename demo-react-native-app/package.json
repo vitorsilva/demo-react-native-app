@@ -58,8 +58,8 @@
   },
     "lint-staged": {
       "*.{js,jsx,ts,tsx}": [
-        "eslint --fix",
-        "prettier --write"
+      "npx eslint --fix --config demo-react-native-app/eslint.config.js",
+      "npx prettier --write --config demo-react-native-app/.prettierrc"
       ]
     },
   "private": true
