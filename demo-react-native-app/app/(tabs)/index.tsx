@@ -1,7 +1,7 @@
 import { View, Text, StyleSheet, Button, TextInput } from 'react-native';
 import { useState } from 'react';
 
-// Test comment for pre-commit hook
+// Test comment for pre-commit hook (attempt 2)
 
 export default function HomeScreen() {
   const [inputValue, setInputValue] = useState('');
