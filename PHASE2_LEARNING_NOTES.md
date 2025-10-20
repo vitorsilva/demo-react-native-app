@@ -2,7 +2,7 @@
 
 **Status:** In Progress
 **Started:** 2025-10-20
-**Current Step:** 2.1 Testing Foundation (Completed First Tests)
+**Current Step:** 2.2 Linting & Formatting (Completed Prettier Setup)
 
 ---
 
@@ -371,11 +371,166 @@ npm install --save-dev jest-expo
 
 ---
 
+## Step 2.2: Linting & Formatting ✅ COMPLETED
+
+### What is Prettier?
+
+**Prettier** is an opinionated code formatter that automatically formats code to look consistent.
+
+**Key concepts:**
+- **Linter (ESLint)** = Finds code problems (bugs, bad practices)
+- **Formatter (Prettier)** = Makes code look pretty (formatting only)
+- They work together, not in competition
+
+**Benefits:**
+- No debates about code style (semicolons, quotes, spacing)
+- Saves time - no manual formatting
+- Consistent code across entire team
+- Focus on logic, not formatting
+
+**Example transformation:**
+```typescript
+// Before
+const greeting="hello world"
+const numbers=[1,2,3,4,5]
+
+// After Prettier
+const greeting = 'hello world';
+const numbers = [1, 2, 3, 4, 5];
+```
+
+---
+
+### What We Installed
+
+```bash
+npm install --save-dev prettier eslint-config-prettier
+```
+
+**Packages:**
+- `prettier` - The formatter itself
+- `eslint-config-prettier` - Disables ESLint rules that conflict with Prettier
+
+---
+
+### Configuration Created
+
+**File:** `.prettierrc`
+
+```json
+{
+  "semi": true,
+  "trailingComma": "es5",
+  "singleQuote": true,
+  "printWidth": 100,
+  "tabWidth": 2
+}
+```
+
+**What each setting does:**
+- `semi: true` - Add semicolons at end of statements
+- `trailingComma: "es5"` - Add trailing commas in arrays/objects (ES5 compatible)
+- `singleQuote: true` - Use `'single'` instead of `"double"` quotes
+- `printWidth: 100` - Wrap lines longer than 100 characters
+- `tabWidth: 2` - Use 2 spaces for indentation
+
+**Note:** These are opinionated defaults. You can change them, but the goal of Prettier is to *stop* debating about style.
+
+---
+
+### Scripts Added to package.json
+
+```json
+"format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md}\"",
+"format:check": "prettier --check \"**/*.{js,jsx,ts,tsx,json,md}\""
+```
+
+**What they do:**
+- `npm run format` - Formats all files and saves changes
+- `npm run format:check` - Checks if files are formatted (doesn't modify)
+
+**The glob pattern `**/*.{js,jsx,ts,tsx,json,md}`:**
+- `**` = All directories (recursive)
+- `*.{...}` = All files with these extensions
+- Formats TypeScript, JavaScript, JSON, and Markdown files
+
+---
+
+### ESLint Integration
+
+Updated `eslint.config.js` to avoid conflicts:
+
+```javascript
+module.exports = defineConfig([
+  expoConfig,
+  {
+    ignores: ['dist/*'],
+  },
+  {
+    rules: {
+      'prettier/prettier': 'off',
+    },
+  },
+]);
+```
+
+**Why this matters:**
+- ESLint has some formatting rules
+- Prettier handles ALL formatting
+- We turn off Prettier-related ESLint rules to avoid conflicts
+- ESLint focuses on code quality, Prettier on formatting
+
+---
+
+### Running Prettier
+
+**First run:**
+```bash
+npm run format
+```
+
+**Result:** All existing files were formatted according to the rules:
+- Changed double quotes to single quotes
+- Added/removed semicolons as needed
+- Fixed indentation
+- Wrapped long lines
+
+**Check without changing:**
+```bash
+npm run format:check
+```
+
+This is useful in CI/CD - check if code is formatted without modifying it.
+
+---
+
+### Key Learnings
+
+**Opinionated vs Configurable:**
+- Prettier is intentionally opinionated (few options)
+- ESLint is highly configurable (many rules)
+- Philosophy: "Stop arguing about formatting, just pick one standard"
+
+**When to Format:**
+- During development (manually with `npm run format`)
+- On file save (can configure in VS Code)
+- Before commits (pre-commit hooks - next step!)
+- In CI/CD (check formatting in automated builds)
+
+**ESLint vs Prettier - When to Use Which:**
+
+| Tool | Purpose | Example |
+|------|---------|---------|
+| ESLint | Logic errors, best practices | "Unused variable", "Missing return" |
+| Prettier | Formatting, style | "Use single quotes", "Add semicolon" |
+
+---
+
 ## What's Next
 
 ### Remaining Phase 2 Steps:
 - ✅ Step 2.1: Testing Foundation (COMPLETED)
-- ⏭️ Step 2.2: Linting & Formatting (Prettier, ESLint config)
+- ✅ Step 2.2: Linting & Formatting (COMPLETED)
 - ⏭️ Step 2.3: Pre-commit Hooks (Husky, lint-staged)
 - ⏭️ Step 2.4: CI/CD Pipeline (GitHub Actions)
 - ⏭️ Step 2.5: OpenTelemetry Foundation
@@ -397,6 +552,13 @@ npm install --save-dev jest jest-expo @types/jest
 # Run tests
 npm test
 
+# Install Prettier
+npm install --save-dev prettier eslint-config-prettier
+
+# Format code
+npm run format           # Format all files
+npm run format:check     # Check if files are formatted
+
 # Upgrade React with Expo
 npx expo install react@19.2.0
 ```
@@ -408,12 +570,15 @@ npx expo install react@19.2.0
 ### Created:
 - `jest.config.js` - Jest configuration
 - `app/(tabs)/__tests__/index.test.tsx` - First tests
+- `.prettierrc` - Prettier configuration
 
 ### Modified:
-- `package.json` - Added test script, updated dependencies
+- `package.json` - Added test and format scripts, updated dependencies
+- `eslint.config.js` - Added Prettier integration
 - `package-lock.json` - Updated with new dependencies
+- All `.ts/.tsx` files - Formatted by Prettier
 
 ---
 
 **Last Updated:** 2025-10-20
-**Current Progress:** Step 2.1 completed, ready for Step 2.2 (Prettier)
+**Current Progress:** Steps 2.1 and 2.2 completed, ready for Step 2.3 (Pre-commit Hooks)
