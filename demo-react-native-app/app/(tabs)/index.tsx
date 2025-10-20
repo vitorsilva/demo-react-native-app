@@ -1,6 +1,6 @@
 import { View, Text, StyleSheet, Button, TextInput } from 'react-native';
 import { useState } from 'react';
-  
+
 export default function HomeScreen() {
   const [inputValue, setInputValue] = useState('');
   const [displayText, setDisplayText] = useState('');
@@ -21,22 +21,22 @@ export default function HomeScreen() {
   );
 }
 
-  const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      justifyContent: 'center',
-      alignItems: 'center',
-    },
-    text: {
-      fontSize: 24,
-      color: 'white',
-    },
-    input: {
-      height: 40,
-      borderColor: 'white',
-      borderWidth: 1,
-      marginBottom: 12,
-      paddingHorizontal: 8,
-      color: 'white',
-    },
-  });
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  text: {
+    fontSize: 24,
+    color: 'white',
+  },
+  input: {
+    height: 40,
+    borderColor: 'white',
+    borderWidth: 1,
+    marginBottom: 12,
+    paddingHorizontal: 8,
+    color: 'white',
+  },
+});
