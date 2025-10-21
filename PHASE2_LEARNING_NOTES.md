@@ -1008,5 +1008,741 @@ npx expo install react@19.2.0
 
 ---
 
-**Last Updated:** 2025-10-20
-**Current Progress:** Steps 2.1, 2.2, and 2.3 completed. Ready for Step 2.4 (CI/CD Pipeline with GitHub Actions)
+## Step 2.4: CI/CD Pipeline with GitHub Actions 🚧 IN PROGRESS (PAUSED)
+
+### What is CI/CD?
+
+**CI = Continuous Integration**
+- Automatically test your code every time you push changes
+- Catches bugs immediately, before they reach production
+- Runs in the "cloud" on GitHub's servers, not your computer
+- Fast feedback loop for developers
+
+**CD = Continuous Deployment**
+- Automatically builds/deploys your app when tests pass
+- In our case: automatically build APK when you push to main branch
+- Reduces manual deployment steps
+
+**Example flow:**
+```
+You push code → GitHub detects push → Runs workflow → Tests pass/fail → You see results
+```
+
+---
+
+### What is GitHub Actions?
+
+**GitHub Actions** is GitHub's built-in automation platform for CI/CD.
+
+**How it works:**
+1. You create **workflow files** (YAML format) in `.github/workflows/`
+2. You define **when** it should run (on push, pull request, schedule, etc.)
+3. You define **what** it should do (run tests, build app, deploy, etc.)
+4. GitHub runs it automatically on their servers
+
+**Key concepts learned:**
+- **Workflow** - The entire automation (e.g., "CI workflow")
+- **Job** - A set of steps that run together (e.g., "lint-and-test")
+- **Step** - Individual action or command (e.g., "Run tests")
+- **Runner** - GitHub's server that executes the workflow (e.g., ubuntu-latest)
+
+---
+
+### Question: GitHub Actions Free Tier Limits
+
+**Question Asked:** "Are there any limits to a free account on GitHub? Can I constantly build, test, deploy?"
+
+**Answer Learned:**
+
+#### For Public Repositories (no cost!)
+- ✅ **Unlimited minutes** - Build as much as you want
+- ✅ **Unlimited builds**
+- ✅ No charges ever
+- GitHub supports open source this way
+
+#### For Private Repositories
+- **2,000 minutes per month FREE**
+- **500 MB storage FREE**
+- After that, you pay ($0.008 per minute)
+
+**Realistic monthly usage for our project:**
+- 50 commits × 5 minutes (CI) = 250 minutes
+- 10 builds × 15 minutes (EAS) = 150 minutes
+- **Total: ~400 minutes/month** (well under limit)
+
+**Best practices to save minutes:**
+1. Don't build on every push - only on main branch
+2. Use caching (speeds up AND saves minutes)
+3. Cancel old runs if you push twice quickly
+4. Add `[skip ci]` to commit messages when needed
+
+**Monitoring usage:**
+- GitHub → Settings → Billing → Usage this month
+
+---
+
+### Question: Pre-commit Hooks vs GitHub Actions - Do They Collide?
+
+**Question Asked:** "We configured a pre-commit task on Husky. Is this going to collide with what we are doing now?"
+
+**Answer: They work TOGETHER, not against each other!**
+
+#### Pre-commit Hooks (Husky) - LOCAL
+- Runs on **your computer**
+- Runs **before** code reaches GitHub
+- **Fast** - only checks files you changed
+- **First line of defense**
+
+```
+You type: git commit
+↓
+Husky runs (on your machine)
+↓
+Lint + format your changes
+↓
+Commit created locally
+```
+
+#### GitHub Actions (CI) - REMOTE
+- Runs on **GitHub's servers**
+- Runs **after** you push to GitHub
+- Checks **entire project**
+- **Second line of defense**
+
+```
+You type: git push
+↓
+Code goes to GitHub
+↓
+GitHub Actions runs (on their servers)
+↓
+Full lint + test suite runs
+```
+
+**Why have BOTH?**
+1. **Bypass protection**: If someone uses `git commit --no-verify`, CI still catches it
+2. **Team consistency**: Teammates might have different local setups, CI is consistent
+3. **Different scope**: Pre-commit = fast local checks, CI = comprehensive testing
+4. **Integration testing**: CI can test things that don't make sense locally
+
+**Think of it like:**
+- Pre-commit = Spell-check while typing (immediate feedback)
+- GitHub Actions = Editor reviewing your article (thorough check)
+
+You want BOTH!
+
+---
+
+### YAML Configuration Format
+
+**What is YAML?**
+- Configuration file format (like JSON but more readable)
+- Used by GitHub Actions, Docker, Kubernetes, etc.
+- Human-friendly syntax
+
+**Key rules:**
+- **Indentation matters** (like Python) - use 2 spaces
+- **No tabs allowed** - only spaces
+- Use `:` for key-value pairs
+- Use `-` for list items
+- Use `#` for comments
+
+**Example:**
+```yaml
+name: My Workflow        # Key: value
+on: push                 # Trigger event
+jobs:                    # Start jobs section
+  test:                  # Job name (2 spaces indent)
+    runs-on: ubuntu-latest  # Job property (4 spaces)
+    steps:               # List of steps (4 spaces)
+      - name: Checkout   # List item (6 spaces)
+        uses: action@v4  # Step property (8 spaces)
+```
+
+**Common mistakes:**
+- Using tabs instead of spaces ❌
+- Inconsistent indentation ❌
+- Forgetting the `-` for list items ❌
+
+---
+
+### Understanding Action Versions
+
+**Question Asked:** "Why checkout@v4? Does this mean we have different versions of checkout?"
+
+**Answer: Yes! Actions have versions like npm packages.**
+
+#### Breaking Down `actions/checkout@v4`
+- `actions/checkout` - Name of the action (maintained by GitHub)
+- `@v4` - Version number (version 4)
+
+#### Why Versions Exist
+Just like npm packages, GitHub Actions evolve:
+- **v1** - Original (deprecated)
+- **v2** - Added features (outdated)
+- **v3** - Improved performance (still works)
+- **v4** - Latest (current, recommended)
+
+**Benefits:**
+1. **Stability** - Workflow won't break if action updates
+2. **Predictability** - You know exactly what you're getting
+3. **Control** - You choose when to upgrade
+
+#### How to Specify Versions
+
+**Option 1: Major version (recommended)**
+```yaml
+- uses: actions/checkout@v4
+# Gets: v4.1.2, v4.2.0, v4.x.x (any v4)
+# Won't get: v5.0.0 (breaking changes)
+```
+
+**Option 2: Exact version (very strict)**
+```yaml
+- uses: actions/checkout@v4.1.2
+# Gets: Only exactly v4.1.2
+# More stable, but misses bug fixes
+```
+
+**Option 3: SHA commit hash (most secure)**
+```yaml
+- uses: actions/checkout@a12b3c4d5e6f
+# Gets: Exact commit
+# Used for security-critical applications
+```
+
+**Best practice:** Use major version (`@v4`)
+- Gets bug fixes and patches automatically
+- Won't get breaking changes
+
+**Never do this:**
+```yaml
+- uses: actions/checkout  # No version - BAD!
+# Defaults to @main (latest code)
+# Could break your workflow unexpectedly
+```
+
+**How to find the right version:**
+1. Check the action's README on GitHub
+2. Look at GitHub Marketplace
+3. See what other projects use
+4. When in doubt, use latest major version
+
+---
+
+### Understanding Step Names
+
+**Question Asked:** "Could I also do something like `- name: Checkout code` before `uses:`? I suppose the name shows up in console?"
+
+**Answer: Yes! The `name` field is optional but helpful.**
+
+#### With vs Without Names
+
+**Option 1: Without name**
+```yaml
+- uses: actions/checkout@v4
+```
+**Shows in UI:** "Run actions/checkout@v4"
+
+**Option 2: With name**
+```yaml
+- name: Checkout code
+  uses: actions/checkout@v4
+```
+**Shows in UI:** "Checkout code"
+
+Both work! The name is **optional** but makes logs clearer.
+
+#### When to Use Names
+
+**Add names when:**
+- The step does something important (better documentation)
+- You have multiple similar steps (helps distinguish them)
+- You want clearer logs for debugging
+
+**Skip names when:**
+- The action name is already clear (`actions/checkout` is obvious)
+- You're being lazy (it's optional!)
+
+**Example logs with names:**
+```
+✅ Checkout code (2s)
+✅ Setup Node.js (15s)
+✅ Install dependencies (45s)
+✅ Run linter (8s)
+✅ Run tests (12s)
+```
+
+Clear and readable! ✨
+
+---
+
+### YAML Variables and Defaults
+
+**Question Asked:** "We are constantly repeating `./demo-react-native-app`. Does YAML have the concept of variables?"
+
+**Answer: Yes! Use `defaults` for working directories.**
+
+#### The Problem: Repetition
+
+```yaml
+- name: Install dependencies
+  run: npm ci
+  working-directory: ./demo-react-native-app  # Repeated
+
+- name: Run linter
+  run: npm run lint
+  working-directory: ./demo-react-native-app  # Repeated
+
+- name: Run tests
+  run: npm test
+  working-directory: ./demo-react-native-app  # Repeated
+```
+
+#### The Solution: Use `defaults`
+
+```yaml
+jobs:
+  lint-and-test:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: ./demo-react-native-app
+
+    steps:
+      - name: Install dependencies
+        run: npm ci  # Clean! No repetition
+
+      - name: Run linter
+        run: npm run lint  # Clean!
+```
+
+**What this does:**
+- `defaults:` - Set default values for steps
+- `run:` - For any step that uses `run:` command
+- `working-directory:` - All `run` commands use this directory
+
+**Important:** `defaults` ONLY applies to `run:` commands, NOT to `uses:` actions!
+
+```yaml
+# ✅ Uses default working directory
+- run: npm ci
+
+# ❌ Does NOT use default (must specify explicitly)
+- uses: actions/setup-node@v4
+  with:
+    cache-dependency-path: './demo-react-native-app/package-lock.json'
+```
+
+#### Other Variable Options
+
+**Option 2: Environment variables**
+```yaml
+env:
+  PROJECT_DIR: ./demo-react-native-app
+
+steps:
+  - run: npm ci
+    working-directory: ${{ env.PROJECT_DIR }}
+```
+
+**Option 3: Job outputs**
+(More advanced, not covered yet)
+
+**Best practice:** Use `defaults` for working-directory - cleanest solution!
+
+---
+
+### What is Codecov?
+
+**Codecov** is a cloud service that visualizes and tracks test coverage.
+
+#### What It Does
+
+**1. Visualizes Coverage**
+- Shows which lines are tested (green) vs untested (red)
+- Interactive UI to browse code
+- Much nicer than raw coverage reports
+
+**2. Tracks Coverage Over Time**
+- Graphs showing coverage trends
+- "Coverage went from 60% → 75% this month"
+- Historical data per commit
+
+**3. Pull Request Comments**
+- Automatically comments on PRs
+- "This PR decreased coverage by 5%"
+- Shows which new lines aren't tested
+
+**4. Status Badges**
+```markdown
+![Coverage](https://codecov.io/gh/username/repo/branch/main/graph/badge.svg)
+```
+Shows: `coverage: 75%` badge on README
+
+#### How It Works
+
+```
+1. Jest runs tests with --coverage
+   ↓
+2. Jest creates coverage/lcov.info file
+   ↓
+3. codecov-action uploads file to Codecov
+   ↓
+4. Codecov processes and shows graphs
+```
+
+#### Free Tier
+- ✅ **Unlimited** for public repositories
+- ✅ All features
+- ✅ No credit card needed
+
+#### Setup Process
+1. Sign up at https://codecov.io with GitHub account
+2. Enable repository in Codecov dashboard
+3. Copy the repository token
+4. Add token as GitHub Secret (`CODECOV_TOKEN`)
+5. Use token in workflow:
+```yaml
+- name: Upload coverage
+  uses: codecov/codecov-action@v3
+  with:
+    files: ./coverage/lcov.info
+    token: ${{ secrets.CODECOV_TOKEN }}
+    fail_ci_if_error: false
+```
+
+**Note:** For public repos, token is optional but recommended.
+
+---
+
+### GitHub Secrets
+
+**What are GitHub Secrets?**
+- Secure storage for sensitive information (tokens, passwords, API keys)
+- Encrypted storage on GitHub
+- Never visible in logs or public code
+- Workflows can access them, but humans cannot read them
+
+**Why use secrets?**
+- ✅ Don't put tokens in code (security risk!)
+- ✅ Forks don't get your secrets (safe)
+- ✅ Credentials stay safe even if repo is public
+
+**How to add a secret:**
+1. Go to GitHub repo → Settings tab
+2. Left sidebar → "Secrets and variables" → "Actions"
+3. Click "New repository secret"
+4. Name: `CODECOV_TOKEN` (or whatever you need)
+5. Value: Paste the secret token
+6. Click "Add secret"
+
+**Using secrets in workflows:**
+```yaml
+token: ${{ secrets.CODECOV_TOKEN }}
+```
+
+**In logs:**
+```
+token: ***  # Value is hidden for security
+```
+
+**Important:** Secret values are NEVER shown in logs, even to you!
+
+---
+
+### npm ci vs npm install
+
+**Question context:** Why does CI use `npm ci` instead of `npm install`?
+
+**npm install:**
+- Installs packages from package.json
+- Updates package-lock.json if needed
+- Flexible, good for development
+- Can install different versions than lockfile
+
+**npm ci (Clean Install):**
+- Installs EXACT versions from package-lock.json
+- **Deletes node_modules first** (clean slate)
+- **Faster** than npm install
+- **Stricter** - fails if package.json and package-lock.json don't match
+- **More reliable** for automated environments
+
+**Why `npm ci` for CI/CD:**
+1. **Consistency** - Everyone gets exact same versions
+2. **Speed** - Optimized for automation
+3. **Reliability** - Catches version mismatches
+4. **Clean** - No leftover packages
+
+**When to use which:**
+- **Development (local):** `npm install` (flexible)
+- **CI/CD (automation):** `npm ci` (reliable)
+
+---
+
+### Understanding `--` in npm Commands
+
+**Question context:** What does `npm test -- --coverage` mean?
+
+**The `--` separator:**
+- Separates npm arguments from script arguments
+- Everything after `--` goes to the script, not npm
+
+**Example:**
+```bash
+npm test -- --coverage
+         ↑
+         This -- says "pass --coverage to jest, not npm"
+```
+
+**Without `--`:**
+```bash
+npm test --coverage
+# npm tries to interpret --coverage (error!)
+```
+
+**With `--`:**
+```bash
+npm test -- --coverage
+# npm runs: jest --coverage (correct!)
+```
+
+**How it works:**
+1. `npm test` runs the "test" script in package.json
+2. Our script is: `"test": "jest"`
+3. `-- --coverage` appends `--coverage` to jest command
+4. Final command: `jest --coverage`
+
+---
+
+### CI Workflow Created
+
+**File:** `.github/workflows/ci.yml`
+
+```yaml
+name: CI
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  lint-and-test:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: ./demo-react-native-app
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+          cache-dependency-path: './demo-react-native-app/package-lock.json'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run linter
+        run: npm run lint
+
+      - name: Run tests
+        run: npm test -- --coverage
+
+      - name: Upload coverage
+        uses: codecov/codecov-action@v3
+        with:
+          files: ./coverage/lcov.info
+          token: ${{ secrets.CODECOV_TOKEN }}
+          fail_ci_if_error: false
+```
+
+**What each section does:**
+
+**1. Workflow metadata:**
+- `name: CI` - Workflow name shown in GitHub UI
+
+**2. Triggers:**
+- `on: push` - Run when code is pushed
+- `branches: [ main, develop ]` - Only these branches
+- `pull_request` - Also run on PRs to main
+
+**3. Job configuration:**
+- `lint-and-test:` - Job name (can be anything)
+- `runs-on: ubuntu-latest` - Run on Ubuntu Linux server
+
+**4. Defaults:**
+- `defaults.run.working-directory` - All `run:` commands execute here
+
+**5. Steps:**
+- **Checkout** - Download repo code
+- **Setup Node.js** - Install Node 22 with npm caching
+- **Install dependencies** - `npm ci` for clean, fast install
+- **Run linter** - ESLint checks
+- **Run tests** - Jest with coverage report
+- **Upload coverage** - Send coverage to Codecov
+
+---
+
+### Troubleshooting Journey
+
+#### Issue 1: Cache Dependency Path Not Found
+
+**Error:**
+```
+Dependencies lock file is not found in /home/runner/work/demo-react-native-app/demo-react-native-app.
+Supported file patterns: package-lock.json
+```
+
+**Root cause:**
+- `defaults.run.working-directory` only applies to `run:` commands
+- `uses: actions/setup-node@v4` does NOT use the default
+- Cache was looking in wrong directory
+
+**Solution:**
+Added explicit path to setup-node:
+```yaml
+- name: Setup Node.js
+  uses: actions/setup-node@v4
+  with:
+    node-version: '22'
+    cache: 'npm'
+    cache-dependency-path: './demo-react-native-app/package-lock.json'
+```
+
+**Lesson:** `defaults` don't apply to `uses:` actions, only `run:` commands!
+
+---
+
+#### Issue 2: Jest Test Environment Error (Expo Winter Runtime)
+
+**Error:**
+```
+ReferenceError: You are trying to `import` a file outside of the scope of the test code.
+at Runtime._execModule (node_modules/jest-runtime/build/index.js:1216:13)
+at require (node_modules/expo/src/winter/runtime.native.ts:20:43)
+```
+
+**What is happening:**
+- Expo's new "winter" runtime tries to load native-specific code
+- Jest runs in Node.js environment, not React Native environment
+- This causes import errors in certain configurations
+
+**First attempted fix:**
+Added `testEnvironment: 'node'` to `jest.config.js`:
+```javascript
+module.exports = {
+  preset: 'jest-expo',
+  testEnvironment: 'node',
+  // ... rest of config
+};
+```
+
+**Result:** Tests pass locally ✅ but still fail in CI ❌
+
+---
+
+#### Issue 3: Node Version Mismatch
+
+**Discovery:**
+- **Local environment:** Node v22.14.0 (tests pass ✅)
+- **CI environment:** Node v20 (tests fail ❌)
+
+**Hypothesis:**
+Expo's winter runtime behaves differently on Node 20 vs Node 22.
+
+**Attempted fix:**
+Changed workflow to use Node 22:
+```yaml
+with:
+  node-version: '22'  # Changed from '20'
+```
+
+**Result:** Still failing in CI ❌
+
+**Current status:** PAUSED for further investigation
+
+---
+
+### Current Status: PAUSED
+
+**What works:**
+- ✅ Workflow file created and valid
+- ✅ Codecov account set up
+- ✅ GitHub Secret configured
+- ✅ Tests pass locally with coverage
+- ✅ Linting passes in CI
+- ✅ Dependencies install in CI
+
+**What doesn't work:**
+- ❌ Tests fail in CI with Expo winter runtime error
+- Tests work locally but not in GitHub Actions
+
+**Possible causes to investigate:**
+1. Environment differences between local and CI
+2. Expo winter runtime compatibility with Jest in CI
+3. Missing environment variables or configuration in CI
+4. Jest/Expo version incompatibility
+
+**Next steps when resuming:**
+1. Research Expo winter runtime and Jest compatibility
+2. Check Expo GitHub issues for similar problems
+3. Try alternative Jest configurations
+4. Consider downgrading/upgrading Expo version
+5. Reach out to Expo community for help
+
+---
+
+### Key Learnings Summary
+
+**CI/CD Concepts:**
+1. **Pre-commit vs CI** - Local checks vs remote checks, both needed
+2. **GitHub Actions** - Workflows, jobs, steps, runners
+3. **YAML syntax** - Indentation matters, no tabs, `-` for lists
+4. **Action versions** - Use @v4 for stability, avoid unversioned
+5. **GitHub Secrets** - Secure storage for tokens and credentials
+6. **Codecov** - Visualizes test coverage, free for public repos
+
+**Technical Skills:**
+1. **npm ci** - Better than npm install for CI/CD
+2. **`--` separator** - Pass flags through npm to scripts
+3. **Working directories** - `defaults` for `run:`, explicit paths for `uses:`
+4. **Node version matching** - Keep local and CI environments aligned
+5. **YAML variables** - Use `defaults` to avoid repetition
+
+**Troubleshooting:**
+1. **Read errors carefully** - They tell you what's wrong
+2. **Check file locations** - Working directory matters
+3. **Match environments** - Local vs CI differences cause issues
+4. **Test locally first** - Reproduce CI failures on your machine
+5. **One change at a time** - Easier to identify what fixed/broke
+
+**GitHub Actions Best Practices:**
+1. **Use caching** - Speeds up builds, saves minutes
+2. **Specify versions** - Don't use unversioned actions
+3. **Use secrets** - Never hardcode tokens
+4. **Add names to steps** - Makes logs readable
+5. **Use `defaults`** - Reduce repetition
+
+---
+
+### Questions Asked This Session
+
+1. ✅ "Are there limits to GitHub Actions free tier?" → Unlimited for public repos
+2. ✅ "Does pre-commit collide with GitHub Actions?" → No, they complement each other
+3. ✅ "Why checkout@v4? Different versions?" → Yes, version pinning for stability
+4. ✅ "Can I add names to steps?" → Yes, optional but helpful for logs
+5. ✅ "Does YAML have variables?" → Yes, use `defaults` for working directories
+6. ✅ "What is Codecov?" → Coverage visualization service
+
+---
+
+**Last Updated:** 2025-10-21
+**Current Progress:** Steps 2.1, 2.2, 2.3 completed. Step 2.4 (CI/CD) in progress but PAUSED due to Jest/Expo compatibility issue in CI environment
