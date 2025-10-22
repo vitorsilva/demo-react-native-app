@@ -1671,32 +1671,140 @@ with:
 
 ---
 
-### Current Status: PAUSED
+### Resolution: Debugging by Isolation (2025-10-22)
 
-**What works:**
+**Strategy:** Remove tests from CI to isolate the problem.
+
+**What we did:**
+1. Commented out the test steps in `.github/workflows/ci.yml`
+2. Pushed changes to GitHub
+3. Verified CI passed without tests
+
+**Result:** ✅ CI passed!
+
+**What this proved:**
+- GitHub Actions setup is correct
+- Node.js, dependencies, and linting all work
+- **Problem is isolated specifically to Jest test execution in CI**
+
+---
+
+#### Issue 4: Jest 30 + Expo Incompatibility (ROOT CAUSE FOUND!)
+
+**Research conducted:**
+- Searched for "Expo winter runtime Jest CI GitHub Actions"
+- Found multiple Stack Overflow and GitHub issues
+- Discovered known incompatibility between Jest 30 and Expo SDK 53/54
+
+**Key findings from Stack Overflow (December 2024):**
+
+> "When using expo 53.0.9, downgrade jest and babel-jest from 30.0.4 to 29.7.0. This allows you to avoid downgrading Expo itself."
+
+**Why this happens:**
+- Jest 30 introduced changes to module loading
+- Expo's "winter runtime" (internal module structure) conflicts with Jest 30
+- Jest 29 is the last version fully compatible with Expo's current architecture
+- This is a known issue in the Expo community
+
+**Error signature:**
+```
+ReferenceError: You are trying to `import` a file outside of the scope of the test code
+at require (node_modules/expo/src/winter/runtime.native.ts:20:43)
+```
+
+**Common across:**
+- Expo SDK 52, 53, 54
+- Jest 30.x versions
+- Both local and CI environments (but CI fails more consistently)
+
+---
+
+#### Solution: Downgrade to Jest 29.7.0
+
+**Packages to downgrade:**
+```json
+"devDependencies": {
+  "jest": "29.7.0",           // Was: ^30.2.0
+  "babel-jest": "29.7.0",     // Was: not installed
+  "@types/jest": "^29.5.12"   // Was: ^30.0.0
+}
+```
+
+**Why all three packages:**
+1. `jest@29.7.0` - The test runner itself
+2. `babel-jest@29.7.0` - Babel transformer for Jest (required)
+3. `@types/jest@29.5.12` - TypeScript types matching Jest 29
+
+**Installation commands:**
+```bash
+npm install --save-dev jest@29.7.0 babel-jest@29.7.0
+npm install --save-dev @types/jest@29.5.12
+```
+
+**Testing locally:**
+```bash
+npm test  # Confirmed: Tests still pass with Jest 29
+```
+
+---
+
+#### Issue 5: Codecov Path Resolution
+
+**Problem after re-enabling tests:**
+```
+None of the following appear to exist as files: ./coverage/lcov.info
+```
+
+**Root cause:**
+- `defaults.run.working-directory` applies to `run:` commands
+- Codecov action (`uses:`) does NOT inherit this default
+- Looking for coverage in wrong location
+
+**Fix:**
+Updated the Codecov step in `.github/workflows/ci.yml`:
+
+**Before:**
+```yaml
+- name: Upload coverage
+  uses: codecov/codecov-action@v3
+  with:
+    files: ./coverage/lcov.info  # Wrong path
+```
+
+**After:**
+```yaml
+- name: Upload coverage
+  uses: codecov/codecov-action@v3
+  with:
+    files: ./demo-react-native-app/coverage/lcov.info  # Correct path
+```
+
+**Lesson:** `uses:` actions need explicit paths, even when `defaults` are set.
+
+---
+
+### Final Status: ✅ COMPLETED!
+
+**What works now:**
 - ✅ Workflow file created and valid
 - ✅ Codecov account set up
 - ✅ GitHub Secret configured
-- ✅ Tests pass locally with coverage
+- ✅ Tests pass locally with Jest 29
+- ✅ **Tests pass in CI with Jest 29**
 - ✅ Linting passes in CI
 - ✅ Dependencies install in CI
+- ✅ **Coverage reports upload to Codecov**
+- ✅ **Full CI/CD pipeline operational**
 
-**What doesn't work:**
-- ❌ Tests fail in CI with Expo winter runtime error
-- Tests work locally but not in GitHub Actions
+**CI Pipeline summary:**
+1. Checkout code
+2. Setup Node.js 22 with npm caching
+3. Install dependencies (`npm ci`)
+4. Run ESLint
+5. Run Jest tests with coverage
+6. Upload coverage to Codecov
 
-**Possible causes to investigate:**
-1. Environment differences between local and CI
-2. Expo winter runtime compatibility with Jest in CI
-3. Missing environment variables or configuration in CI
-4. Jest/Expo version incompatibility
-
-**Next steps when resuming:**
-1. Research Expo winter runtime and Jest compatibility
-2. Check Expo GitHub issues for similar problems
-3. Try alternative Jest configurations
-4. Consider downgrading/upgrading Expo version
-5. Reach out to Expo community for help
+**View coverage:** https://app.codecov.io/github/vitorsilva/demo-react-native-app
 
 ---
 
@@ -1716,6 +1824,7 @@ with:
 3. **Working directories** - `defaults` for `run:`, explicit paths for `uses:`
 4. **Node version matching** - Keep local and CI environments aligned
 5. **YAML variables** - Use `defaults` to avoid repetition
+6. **Version compatibility** - Jest 29 vs 30 with Expo, importance of matching versions
 
 **Troubleshooting:**
 1. **Read errors carefully** - They tell you what's wrong
@@ -1723,6 +1832,9 @@ with:
 3. **Match environments** - Local vs CI differences cause issues
 4. **Test locally first** - Reproduce CI failures on your machine
 5. **One change at a time** - Easier to identify what fixed/broke
+6. **Isolation technique** - Remove failing parts to narrow down the problem
+7. **Research online** - Community often has solutions to common issues
+8. **Version downgrading** - Sometimes newer isn't better, especially with dependencies
 
 **GitHub Actions Best Practices:**
 1. **Use caching** - Speeds up builds, saves minutes
@@ -1730,6 +1842,14 @@ with:
 3. **Use secrets** - Never hardcode tokens
 4. **Add names to steps** - Makes logs readable
 5. **Use `defaults`** - Reduce repetition
+6. **Explicit paths for `uses:`** - Actions don't inherit `defaults`
+
+**Problem-Solving Methodology:**
+1. **Isolate the problem** - Verify each component works independently
+2. **Research the error** - Use exact error messages in searches
+3. **Check community resources** - Stack Overflow, GitHub issues
+4. **Test hypothesis** - Apply fix and verify it works
+5. **Document the solution** - Help future you and others
 
 ---
 
@@ -1741,8 +1861,28 @@ with:
 4. ✅ "Can I add names to steps?" → Yes, optional but helpful for logs
 5. ✅ "Does YAML have variables?" → Yes, use `defaults` for working directories
 6. ✅ "What is Codecov?" → Coverage visualization service
+7. ✅ "Should we downgrade @types/jest too?" → Yes, match types to runtime version
 
 ---
 
-**Last Updated:** 2025-10-21
-**Current Progress:** Steps 2.1, 2.2, 2.3 completed. Step 2.4 (CI/CD) in progress but PAUSED due to Jest/Expo compatibility issue in CI environment
+### Reflection on the Troubleshooting Process
+
+**What made this challenging:**
+- Error was cryptic ("winter runtime")
+- Worked locally but failed in CI
+- Multiple possible causes (Node version, environment, configuration)
+- Required research to find root cause
+
+**What worked well:**
+- Systematic isolation (removed tests to verify CI works)
+- Online research found known issue quickly
+- Testing fix locally before re-enabling in CI
+- Small, incremental changes
+
+**Key insight:**
+When something fails in CI but works locally, don't assume it's a CI configuration problem. It could be a version incompatibility that manifests differently in different environments. Research the specific error message - someone has likely encountered it before.
+
+---
+
+**Last Updated:** 2025-10-22
+**Current Progress:** Steps 2.1, 2.2, 2.3, 2.4 ✅ COMPLETED! Ready to continue with Step 2.5 (OpenTelemetry) or evaluate next steps.
