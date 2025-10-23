@@ -1,8 +1,18 @@
 import { View, Text, StyleSheet, Button, TextInput } from 'react-native';
 import { useState } from 'react';
-import { tracer } from '../../lib/telemetry';
+import { tracer, meter } from '../../lib/telemetry';
+import { log } from '../../lib/logger';
 
-// Test comment - fifth attempt with correct config
+// Create a counter metric to track button presses
+const buttonPressCounter = meter.createCounter('button.presses', {
+  description: 'Number of times the button was pressed',
+});
+
+// Create a histogram to track distribution of input text lengths
+const inputLengthHistogram = meter.createHistogram('input.length', {
+  description: 'Distribution of input text lengths',
+  unit: 'characters',
+});
 
 export default function HomeScreen() {
   const [inputValue, setInputValue] = useState('');
@@ -15,6 +25,16 @@ export default function HomeScreen() {
     // Add metadata about what happened
     span.setAttribute('input.length', inputValue.length);
     span.setAttribute('input.value', inputValue);
+
+    // Increment the button press counter
+    buttonPressCounter.add(1);
+    inputLengthHistogram.record(inputValue.length);
+
+    // Log the button press with trace correlation
+    log.info('Button pressed', {
+      inputLength: inputValue.length,
+      inputValue: inputValue,
+    });
 
     // Do the actual work
     setDisplayText(inputValue);
