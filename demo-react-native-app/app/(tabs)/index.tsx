@@ -1,11 +1,27 @@
 import { View, Text, StyleSheet, Button, TextInput } from 'react-native';
 import { useState } from 'react';
+import { tracer } from '../../lib/telemetry';
 
 // Test comment - fifth attempt with correct config
 
 export default function HomeScreen() {
   const [inputValue, setInputValue] = useState('');
   const [displayText, setDisplayText] = useState('');
+
+  const handlePress = () => {
+    // Create a span to track this operation
+    const span = tracer.startSpan('button.press');
+
+    // Add metadata about what happened
+    span.setAttribute('input.length', inputValue.length);
+    span.setAttribute('input.value', inputValue);
+
+    // Do the actual work
+    setDisplayText(inputValue);
+
+    // End the span (marks operation as complete)
+    span.end();
+  };
 
   return (
     <View style={styles.container}>
@@ -16,7 +32,7 @@ export default function HomeScreen() {
         value={inputValue}
         onChangeText={setInputValue}
       />
-      <Button title="Press me" onPress={() => setDisplayText(inputValue)} />
+      <Button title="Press me" onPress={handlePress} />
 
       <Text style={styles.text}>{displayText}</Text>
     </View>

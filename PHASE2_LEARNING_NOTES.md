@@ -1884,5 +1884,694 @@ When something fails in CI but works locally, don't assume it's a CI configurati
 
 ---
 
-**Last Updated:** 2025-10-22
-**Current Progress:** Steps 2.1, 2.2, 2.3, 2.4 ✅ COMPLETED! Ready to continue with Step 2.5 (OpenTelemetry) or evaluate next steps.
+**Last Updated:** 2025-10-23
+**Current Progress:** Steps 2.1, 2.2, 2.3, 2.4, 2.5, 2.6, 2.7 (partial) ✅ COMPLETED! Ready to continue with Step 2.7 (Metrics & Logging).
+
+---
+
+## Step 2.5: OpenTelemetry Foundation ✅ COMPLETED
+
+### What is OpenTelemetry?
+
+**OpenTelemetry (OTel)** is an open-source observability framework for collecting telemetry data (traces, metrics, logs) from applications.
+
+**The Three Pillars of Observability:**
+
+1. **Traces** - Track the flow of operations through your app
+   - "Button clicked → handlePress runs → State updates → UI re-renders"
+   - Shows causality and timing for each step
+
+2. **Metrics** - Numerical measurements over time
+   - "Button clicked 50 times in the last hour"
+   - "Average response time: 150ms"
+   - Good for dashboards and alerts
+
+3. **Logs** - Individual event records
+   - "User clicked save button at 2:30pm"
+   - Traditional logging, but correlated with traces
+
+### Key Decision: Is OpenTelemetry Worth It for a Learning Project?
+
+**Question Asked:** "Should we use OpenTelemetry for this simple app, or skip to Phase 3?"
+
+**Discussion Points:**
+
+**Pros:**
+- Learn industry-standard observability tool
+- Vendor-neutral (not locked to one service)
+- Future-proof skill
+- Professional development practice
+
+**Cons:**
+- Complex setup
+- React Native support less mature than web
+- Might be overkill for simple app
+- Takes time away from building features
+
+**Alternatives considered:**
+- Sentry (easier, but vendor lock-in)
+- React Native Debugger (built-in, but limited)
+- Skip for now (focus on features first)
+
+**Decision:** Continue with OpenTelemetry because:
+1. User committed to learning professional tools
+2. Already invested time in Phase 2 automation
+3. Previous phase laid groundwork
+4. Keep implementation simple (don't overdo it)
+
+---
+
+### React Native OpenTelemetry Compatibility Research
+
+**Question:** "What versions work with React Native + Expo SDK 54?"
+
+**Research findings:**
+- OpenTelemetry JS packages work with React Native but aren't officially supported
+- May break with minor version updates
+- Callstack's `react-native-open-telemetry` exists but is "highly experimental"
+- React Native support is "an area of active development"
+
+**Warning signs:**
+- Official docs say: "not explicitly supported for React Native"
+- Community solutions are experimental
+- Similar risk to Jest 30 compatibility issues
+
+**Decision:** Proceed carefully with standard JS packages, using known compatible versions.
+
+---
+
+### Package Versions and Compatibility
+
+**Packages already installed (from previous work):**
+```json
+"@opentelemetry/api": "^1.9.0",
+"@opentelemetry/exporter-trace-otlp-http": "^0.53.0",  // Outdated!
+"@opentelemetry/sdk-trace-base": "^1.26.0",
+"@opentelemetry/sdk-trace-web": "^1.26.0"
+```
+
+**Version mismatch identified:**
+- API: 1.9.0
+- SDK packages: 1.26.0
+- Exporter: 0.53.0 (very outdated!)
+
+**Packages installed/upgraded:**
+```bash
+npm install @opentelemetry/exporter-trace-otlp-http@^0.54.0 \
+  @opentelemetry/instrumentation@^0.54.0 \
+  @opentelemetry/resources@^1.28.0 \
+  @opentelemetry/semantic-conventions@^1.28.0
+```
+
+**Why these versions:**
+- Exporter 0.54.x - Latest stable for exporters
+- Instrumentation 0.54.x - Matches exporter version
+- Resources 1.28.x - Matches SDK versions
+- Semantic conventions 1.28.x - Matches SDK versions
+
+---
+
+### Key Concepts Learned
+
+#### 1. Resources
+
+**What is a Resource?**
+Think of it like a name tag for your app.
+
+**Analogy:**
+```
+Conference name tag:
+┌─────────────────┐
+│ Name: John      │
+│ Company: Acme   │
+│ Role: Developer │
+└─────────────────┘
+
+Resource for your app:
+┌──────────────────────────────┐
+│ Service: demo-react-native-app │
+│ Version: 1.0.0                │
+│ Environment: development       │
+└──────────────────────────────┘
+```
+
+**Why needed:**
+- Identifies which app sent the traces
+- Helps distinguish between multiple apps/versions
+- Provides context for observability backends
+
+**Implementation:**
+```typescript
+const resource = new Resource({
+  [ATTR_SERVICE_NAME]: 'demo-react-native-app',
+  [ATTR_SERVICE_VERSION]: '1.0.0',
+});
+```
+
+---
+
+#### 2. Semantic Conventions
+
+**What are Semantic Conventions?**
+Agreed-upon standard names for attributes so all tools understand each other.
+
+**The problem they solve:**
+```
+Without standards:
+Developer A: app_name, app-name, application_name, serviceName
+Developer B: service, service_name, name
+→ Chaos! No consistency!
+
+With standards:
+Everyone: ATTR_SERVICE_NAME (which equals 'service.name')
+→ Consistency! All tools understand!
+```
+
+**Why use constants instead of strings:**
+
+**Bad (hardcoded strings):**
+```typescript
+const resource = new Resource({
+  "service.name": "my-app",    // Typo risk!
+  "service.version": "1.0.0",  // Is it "version" or "app_version"?
+});
+```
+
+**Good (constants):**
+```typescript
+const resource = new Resource({
+  [ATTR_SERVICE_NAME]: "my-app",      // TypeScript catches typos!
+  [ATTR_SERVICE_VERSION]: "1.0.0",    // Standard names guaranteed!
+});
+```
+
+---
+
+#### 3. Side-Effect Imports
+
+**Question:** "Why does just importing the telemetry file work? We're not using anything from it!"
+
+**Answer:** Side-effect import - just run the code, don't import values.
+
+**Normal import (using exported values):**
+```typescript
+import { tracer } from '../lib/telemetry';  // Import to use tracer
+tracer.startSpan('my-span');  // Use it
+```
+
+**Side-effect import (just run the code):**
+```typescript
+import '../lib/telemetry';  // Just run the file
+// The code inside telemetry.ts executes immediately
+// provider.register() runs and sets up OpenTelemetry globally
+```
+
+**What happens at app startup:**
+1. React Native loads `app/_layout.tsx`
+2. Sees `import '../lib/telemetry'`
+3. Runs all code in `telemetry.ts`
+4. `provider.register()` makes OpenTelemetry available globally
+5. Any file can now use `tracer.startSpan()`
+
+---
+
+### Telemetry Configuration Created
+
+**File:** `lib/telemetry.ts`
+
+**Step-by-step build (following learning methodology):**
+
+**Step 1: Add imports**
+```typescript
+import { Resource } from '@opentelemetry/resources';
+import { ATTR_SERVICE_NAME, ATTR_SERVICE_VERSION } from '@opentelemetry/semantic-conventions';
+```
+
+**Step 2: Create resource object**
+```typescript
+const resource = new Resource({
+  [ATTR_SERVICE_NAME]: 'demo-react-native-app',
+  [ATTR_SERVICE_VERSION]: '1.0.0',
+});
+```
+
+**Step 3: Connect resource to provider**
+```typescript
+const provider = new WebTracerProvider({
+  resource,  // JavaScript shorthand for { resource: resource }
+});
+```
+
+**Final telemetry.ts structure:**
+1. Imports (tracer, exporter, resource, conventions)
+2. Resource definition (app metadata)
+3. Provider creation (with resource)
+4. Exporter configuration (where to send traces)
+5. Span processor (batches traces for efficiency)
+6. Provider registration (makes it global)
+7. Tracer export (for other files to use)
+
+---
+
+### Testing OpenTelemetry Initialization
+
+**Command:** `npm start`
+
+**Success indicators:**
+- ✅ App starts normally (no crash)
+- ✅ No errors about OpenTelemetry in console
+- ⚠️ Warning about "Failed to connect to localhost:4318" is okay (backend not set up yet)
+
+**Unrelated warning encountered:**
+```
+WARN props.pointerEvents is deprecated. Use style.pointerEvents
+```
+- From react-native-web
+- Not related to OpenTelemetry
+- Noted to fix at end of Phase 2
+
+---
+
+## Step 2.6: Observability Backend Setup (Jaeger) ✅ COMPLETED
+
+### Backend Options Discussion
+
+**Two main options:**
+
+**Option A: Jaeger (Local, Docker)**
+- Runs on your computer
+- Free forever
+- No account needed
+- Good for learning
+- Need Docker installed
+- Data lost when stopped
+
+**Option B: Honeycomb (Cloud, Free Tier)**
+- Cloud-based
+- Data persists
+- Professional tool
+- Free: 20M events/month
+- Need account
+- Internet required
+
+**Decision:** Jaeger (local) - Quick setup, perfect for learning.
+
+---
+
+### Docker Installation Check
+
+**Commands to verify Docker:**
+```bash
+docker --version
+# Docker version 28.3.2, build 578ccf6
+
+docker ps
+# Shows running containers
+```
+
+**User already had Docker installed and running.** ✅
+
+---
+
+### Jaeger Container Setup
+
+#### Understanding the Docker Command
+
+```bash
+docker run -d --name jaeger \
+  -p 16686:16686 \
+  -p 4318:4318 \
+  jaegertracing/all-in-one:latest
+```
+
+**Breaking it down:**
+- `docker run` - Start a new container
+- `-d` - Detached mode (runs in background)
+- `--name jaeger` - Friendly name "jaeger"
+- `-p 16686:16686` - Jaeger UI (web interface)
+- `-p 4318:4318` - OTLP HTTP receiver (where app sends traces)
+- `jaegertracing/all-in-one:latest` - Jaeger all-in-one image
+
+**Why these ports:**
+- **16686** - Open `http://localhost:16686` to view traces
+- **4318** - App sends traces here (matches telemetry.ts URL)
+
+**First run:**
+- Downloads Jaeger image (~1 minute)
+- Starts container
+- Returns container ID
+
+---
+
+### CORS Issues and Resolution
+
+#### Issue 1: CORS Not Enabled
+
+**Error:**
+```
+Access to resource at 'http://localhost:4318/v1/traces' from origin 'http://localhost:8081'
+has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present.
+```
+
+**What is CORS?**
+CORS = Cross-Origin Resource Sharing
+
+**The problem:**
+```
+Your app (localhost:8081) → Trying to send data → Jaeger (localhost:4318)
+Browser: "Different origins! Need permission!"
+Jaeger: [no CORS headers]
+Browser: "BLOCKED for security!"
+```
+
+**First attempted fix:**
+Restart Jaeger with CORS headers:
+```bash
+docker run -d --name jaeger \
+  -e COLLECTOR_OTLP_HTTP_CORS_ALLOWED_ORIGINS=* \
+  -e COLLECTOR_OTLP_HTTP_CORS_ALLOWED_HEADERS=* \
+  -p 16686:16686 -p 4318:4318 \
+  jaegertracing/all-in-one:latest
+```
+
+- `-e` sets environment variables
+- `COLLECTOR_OTLP_HTTP_CORS_ALLOWED_ORIGINS=*` - Allow any origin
+- `*` means "allow everything" (wildcard)
+
+---
+
+#### Issue 2: Wildcard Not Allowed with Credentials
+
+**New error after wildcard fix:**
+```
+The value of the 'Access-Control-Allow-Origin' header must not be the wildcard '*'
+when the request's credentials mode is 'include'.
+```
+
+**What this means:**
+- ✅ CORS is now working (Jaeger sending headers)
+- ❌ But exporter sends requests with `credentials: 'include'`
+- ❌ Browser security: "Can't use wildcard with credentials!"
+
+**The fix:**
+Use **specific origin** instead of wildcard:
+
+```bash
+docker run -d --name jaeger \
+  -e COLLECTOR_OTLP_HTTP_CORS_ALLOWED_ORIGINS=http://localhost:8081 \
+  -e COLLECTOR_OTLP_HTTP_CORS_ALLOWED_HEADERS=* \
+  -p 16686:16686 -p 4318:4318 \
+  jaegertracing/all-in-one:latest
+```
+
+**What changed:**
+- Before: `COLLECTOR_OTLP_HTTP_CORS_ALLOWED_ORIGINS=*` (wildcard)
+- After: `COLLECTOR_OTLP_HTTP_CORS_ALLOWED_ORIGINS=http://localhost:8081` (exact match)
+
+**Success!** ✅ CORS now working with credentials.
+
+---
+
+#### Understanding Environment Variables vs Headers
+
+**Question:** "Is COLLECTOR_OTLP_HTTP_CORS_ALLOWED_ORIGINS some kind of header we must send?"
+
+**Answer:** No! It's an **environment variable** that configures Jaeger.
+
+**How it works:**
+1. You set environment variable when starting Jaeger
+2. Jaeger reads this config
+3. When Jaeger receives requests, it sends CORS headers in its **response**
+4. You don't send it - Jaeger sends it
+
+**Think of it like:**
+```
+You: Tell Jaeger "allow localhost:8081" (via -e flag)
+Jaeger: Remembers this setting
+Your app: Sends trace request
+Jaeger: Responds with "Access-Control-Allow-Origin: http://localhost:8081"
+Browser: "Perfect! I'll allow this."
+```
+
+---
+
+## Step 2.7: Tracing Implementation (Basic) ✅ COMPLETED
+
+### Adding First Trace to App
+
+**Target:** Add tracing to button press in HomeScreen.
+
+**Learning methodology followed:**
+- Small steps
+- User writes all code
+- Explain before each addition
+- Confirm completion at each step
+
+---
+
+#### Step 1: Import the Tracer
+
+**File:** `app/(tabs)/index.tsx`
+
+**Added:**
+```typescript
+import { tracer } from '../../lib/telemetry';
+```
+
+**Question answered:** "Why `../../lib/telemetry`?"
+- `..` = up one folder (from `(tabs)` to `app`)
+- `..` = up another folder (from `app` to project root)
+- `/lib/telemetry` = the telemetry file
+
+---
+
+#### Step 2: Create Button Handler Function
+
+**Before (inline function):**
+```typescript
+<Button title="Press me" onPress={() => setDisplayText(inputValue)} />
+```
+
+**After (named function):**
+```typescript
+const handlePress = () => {
+  setDisplayText(inputValue);
+};
+```
+
+**Why:**
+- Need a function body to add tracing code
+- Cleaner and more maintainable
+- Can add multiple operations
+
+---
+
+#### Step 3: Update Button to Use Handler
+
+**Changed:**
+```typescript
+<Button title="Press me" onPress={handlePress} />
+```
+
+**Why this works:**
+- `handlePress` is already a function
+- Pass function reference (not calling it)
+- React calls it when button pressed
+
+---
+
+#### Step 4: Add Tracing Code
+
+**Final handlePress function:**
+```typescript
+const handlePress = () => {
+  // Create a span to track this operation
+  const span = tracer.startSpan('button.press');
+
+  // Add metadata about what happened
+  span.setAttribute('input.length', inputValue.length);
+  span.setAttribute('input.value', inputValue);
+
+  // Do the actual work
+  setDisplayText(inputValue);
+
+  // End the span (marks operation as complete)
+  span.end();
+};
+```
+
+**Explanation of each part:**
+
+1. **`tracer.startSpan('button.press')`**
+   - Creates new span (trace event)
+   - `'button.press'` is the operation name
+   - Shows up in Jaeger UI
+
+2. **`span.setAttribute(...)`**
+   - Adds metadata to span
+   - `'input.length'` - character count
+   - `'input.value'` - actual text typed
+   - Helps understand what happened
+
+3. **`span.end()`**
+   - Marks span as finished
+   - Records timing (duration)
+   - Sends trace to Jaeger
+
+---
+
+### Testing and Verification
+
+**Steps:**
+1. App running (hot-reloaded automatically)
+2. Type text in input field
+3. Press "Press me" button multiple times
+4. Open Jaeger UI: http://localhost:16686
+5. Select service: "demo-react-native-app"
+6. Click "Find Traces"
+
+**What appeared in Jaeger:**
+- ✅ Service "demo-react-native-app" in dropdown
+- ✅ List of traces with "button.press" operations
+- ✅ Timing information for each trace
+- ✅ Trace details showing attributes:
+  - `service.name: demo-react-native-app`
+  - `service.version: 1.0.0`
+  - `input.length: X`
+  - `input.value: "typed text"`
+
+**Example trace ID:** `b07f4b84816c74b6e2b1e9855fbaaf12`
+
+**Success!** 🎉 First OpenTelemetry trace working end-to-end!
+
+---
+
+### Understanding the Jaeger UI
+
+**Trace overview shows:**
+- **Trace ID** - Unique identifier
+- **Service** - Which app sent it
+- **Operation** - What happened
+- **Duration** - How long it took
+- **Timestamp** - When it occurred
+
+**Clicking on a trace shows:**
+1. Span timeline (visual representation)
+2. Tags/Attributes (metadata)
+3. Process information (service details)
+4. Duration breakdown
+
+**Value of this data:**
+- See when users interact with app
+- Understand what data they enter
+- Measure operation performance
+- Identify patterns and trends
+- Debug issues with full context
+
+---
+
+## Key Learnings Summary
+
+### Technical Concepts
+
+1. **OpenTelemetry Architecture**
+   - Resources (app metadata)
+   - Semantic Conventions (standard names)
+   - Providers (trace collection)
+   - Exporters (sending data)
+   - Spans (individual operations)
+
+2. **CORS (Cross-Origin Resource Sharing)**
+   - Browser security feature
+   - Blocks cross-origin requests by default
+   - Need specific headers to allow
+   - Wildcard not allowed with credentials
+   - Environment variables configure server responses
+
+3. **Side-Effect Imports**
+   - Import just to run code
+   - Don't import values
+   - Runs at module load time
+   - Good for initialization
+
+4. **Docker for Development**
+   - Run services locally
+   - Environment variables for config
+   - Port mapping for access
+   - Persistent containers vs ephemeral
+
+### Development Practices
+
+1. **Version Compatibility Matters**
+   - Check versions before installing
+   - Match related packages
+   - Research known issues
+   - Similar to Jest 30 problem
+
+2. **Learning Methodology**
+   - Small steps work better
+   - User writes all code
+   - Explain concepts before coding
+   - Confirm understanding at each step
+   - Document all learnings
+
+3. **Troubleshooting Process**
+   - Read error messages carefully
+   - Understand what changed
+   - Research specific errors
+   - Try solutions incrementally
+   - Verify each fix
+
+### OpenTelemetry Concepts
+
+1. **Three Pillars**
+   - Traces (causality)
+   - Metrics (measurements)
+   - Logs (events)
+
+2. **Vendor Neutrality**
+   - One standard, many backends
+   - Switch backends without code changes
+   - Industry-wide adoption
+
+3. **Observability Value**
+   - Understand app behavior
+   - Debug production issues
+   - Measure performance
+   - Track user interactions
+
+---
+
+## Questions Asked This Session
+
+1. ✅ "Should we use OpenTelemetry or skip to Phase 3?" → Continue with OTel (user committed)
+2. ✅ "What versions are compatible with React Native?" → Research showed experimental support
+3. ✅ "What is a Resource?" → Metadata container identifying your app
+4. ✅ "What are Semantic Conventions?" → Standard attribute names
+5. ✅ "Why does side-effect import work?" → Code runs at module load
+6. ✅ "Which backend: Jaeger or Honeycomb?" → Jaeger (local, simpler)
+7. ✅ "What is CORS?" → Browser security for cross-origin requests
+8. ✅ "Is COLLECTOR_OTLP_HTTP_CORS_ALLOWED_ORIGINS a header we send?" → No, it's an environment variable that configures Jaeger
+
+---
+
+## What's Next
+
+**Completed:**
+- ✅ Step 2.5: OpenTelemetry Foundation
+- ✅ Step 2.6: Observability Backend Setup (Jaeger)
+- ✅ Step 2.7: Basic Tracing Implementation
+
+**Remaining in Phase 2:**
+- ⏭️ Step 2.7 continued: Metrics & Logging
+- ⏭️ Step 2.8: Error Tracking Strategy
+- ⏭️ Step 2.9: Analytics Strategy
+- ⏭️ Step 2.10: Development Automation
+
+**To fix:**
+- ⚠️ `pointerEvents` deprecation warning (noted for end of Phase 2)
+
+---
+
+**Last Updated:** 2025-10-23 (after OpenTelemetry setup)
+**Current Session:** Step 2.7 - Ready to add Metrics and Logging examples
