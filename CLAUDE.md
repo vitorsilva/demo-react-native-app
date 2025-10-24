@@ -158,6 +158,20 @@ This project is designed for incremental learning:
 - Don't add complexity beyond the current phase unless requested
 - Focus on teaching fundamentals before advanced patterns
 
+**When the user asks "what's next" or similar questions:**
+- ALWAYS check LEARNING_PLAN.md to identify the next phase or task
+- Review the current phase status and what's been completed
+- Provide clear guidance on the next steps in the learning journey
+- Don't assume or guess - refer to the documented learning plan
+
+**When the user signals session end (e.g., "that's a wrap", "let's call it a day", "let's pause", or similar):**
+- Record the current state and progress in LEARNING_PLAN.md
+- Update what was completed in this session
+- Document what's currently in progress (if anything)
+- Note what should be tackled next
+- Update any relevant PHASE*_LEARNING_NOTES.md files with key learnings or decisions
+- Provide a brief summary of what was accomplished
+
 ## Platform-Specific Notes
 
 ### Android
