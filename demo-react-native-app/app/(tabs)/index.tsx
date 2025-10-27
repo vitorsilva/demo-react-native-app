@@ -17,6 +17,7 @@ const inputLengthHistogram = meter.createHistogram('input.length', {
 export default function HomeScreen() {
   const [inputValue, setInputValue] = useState('');
   const [displayText, setDisplayText] = useState('');
+  const [showCrash, setShowCrash] = useState(false);
 
   const handlePress = () => {
     // Create a span to track this operation
@@ -53,7 +54,6 @@ export default function HomeScreen() {
         onChangeText={setInputValue}
       />
       <Button title="Press me" onPress={handlePress} />
-
       <Text style={styles.text}>{displayText}</Text>
     </View>
   );

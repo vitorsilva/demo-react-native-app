@@ -1,3 +1,4 @@
+import * as Sentry from 'sentry-expo';
 import React, { Component, ReactNode } from 'react';
 import { View, Text, Button, StyleSheet } from 'react-native';
 import { log } from '../lib/logger';
@@ -25,6 +26,28 @@ class ErrorBoundary extends Component<Props, State> {
     log.error('React error boundary caught error', error, {
       componentStack: errorInfo.componentStack,
     });
+
+    // Send to Sentry cloud
+    // Send to Sentry cloud (works in both web and native)
+    if (Sentry.Native) {
+      // Native environment (phone/mobile)
+      Sentry.Native.captureException(error, {
+        contexts: {
+          react: {
+            componentStack: errorInfo.componentStack,
+          },
+        },
+      });
+    } else if (Sentry.Browser) {
+      // Web environment (browser)
+      Sentry.Browser.captureException(error, {
+        contexts: {
+          react: {
+            componentStack: errorInfo.componentStack,
+          },
+        },
+      });
+    }
   }
 
   handleReset = () => {
