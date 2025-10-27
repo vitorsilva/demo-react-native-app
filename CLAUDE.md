@@ -244,6 +244,15 @@ This project is designed for incremental learning:
 - Each concept is explained and tested before moving on
 - Learning notes are documented in `PHASE*_LEARNING_NOTES.md` files
 
+**When starting a new session/day:**
+- ALWAYS read PHASE*_LEARNING_NOTES.md files (especially the most recent one) to understand what has already been completed
+- Review the learning notes to understand context from previous sessions, including:
+  - What concepts were learned
+  - What issues were encountered and resolved
+  - What decisions were made
+  - Current state of the project
+- This helps maintain continuity and avoid re-explaining concepts or redoing work
+
 **When assisting:**
 - Break down tasks into small, manageable steps
 - Explain concepts clearly (this is a learning project)
