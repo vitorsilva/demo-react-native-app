@@ -29,7 +29,7 @@ provider.addSpanProcessor(new BatchSpanProcessor(exporter));
 // === METRICS SETUP ===
 // Configure where to send metrics (same server, different endpoint)
 const metricExporter = new OTLPMetricExporter({
-  url: 'http://localhost:4318/v1/metrics',
+  url: 'http://localhost:4319/v1/metrics',
 });
 
 // Create the meter provider (uses same resource as traces!)
