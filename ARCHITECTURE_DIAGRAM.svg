@@ -1,0 +1,360 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 3000" style="background-color: #ffffff;">
+  <defs>
+    <style>
+      .title { font: bold 24px sans-serif; fill: #2c3e50; }
+      .section-title { font: bold 18px sans-serif; fill: #34495e; }
+      .label { font: 14px sans-serif; fill: #2c3e50; }
+      .small-label { font: 12px sans-serif; fill: #7f8c8d; }
+      .box { fill: #ecf0f1; stroke: #34495e; stroke-width: 2; }
+      .component { fill: #3498db; stroke: #2980b9; stroke-width: 2; }
+      .container { fill: #e74c3c; stroke: #c0392b; stroke-width: 2; }
+      .service { fill: #2ecc71; stroke: #27ae60; stroke-width: 2; }
+      .arrow { stroke: #34495e; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+      .section-box { fill: none; stroke: #95a5a6; stroke-width: 2; stroke-dasharray: 5,5; }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <polygon points="0 0, 10 3, 0 6" fill="#34495e" />
+    </marker>
+  </defs>
+
+  <!-- Title -->
+  <text x="700" y="40" text-anchor="middle" class="title">DEMO REACT NATIVE APP - ARCHITECTURE</text>
+  <text x="700" y="65" text-anchor="middle" class="small-label">(Phase 1 &amp; 2 Complete)</text>
+
+  <!-- DEVELOPMENT ENVIRONMENT -->
+  <rect x="50" y="100" width="1300" height="200" class="section-box"/>
+  <text x="700" y="130" text-anchor="middle" class="section-title">DEVELOPMENT ENVIRONMENT</text>
+
+  <!-- Dev tools -->
+  <rect x="100" y="150" width="120" height="60" class="component" rx="5"/>
+  <text x="160" y="175" text-anchor="middle" class="label" fill="white">VS Code</text>
+  <text x="160" y="195" text-anchor="middle" class="small-label" fill="white">(Editor)</text>
+
+  <rect x="270" y="150" width="120" height="60" class="component" rx="5"/>
+  <text x="330" y="175" text-anchor="middle" class="label" fill="white">TypeScript</text>
+  <text x="330" y="195" text-anchor="middle" class="small-label" fill="white">(Language)</text>
+
+  <rect x="440" y="150" width="120" height="60" class="component" rx="5"/>
+  <text x="500" y="175" text-anchor="middle" class="label" fill="white">ESLint</text>
+  <text x="500" y="195" text-anchor="middle" class="small-label" fill="white">(Linting)</text>
+
+  <rect x="610" y="150" width="120" height="60" class="component" rx="5"/>
+  <text x="670" y="175" text-anchor="middle" class="label" fill="white">Prettier</text>
+  <text x="670" y="195" text-anchor="middle" class="small-label" fill="white">(Formatter)</text>
+
+  <!-- Arrows -->
+  <path d="M 220 180 L 270 180" class="arrow"/>
+  <path d="M 390 180 L 440 180" class="arrow"/>
+  <path d="M 560 180 L 610 180" class="arrow"/>
+
+  <!-- Git Workflow -->
+  <rect x="100" y="230" width="900" height="60" class="box" rx="5"/>
+  <text x="550" y="250" text-anchor="middle" class="small-label">Git Workflow: Husky → lint-staged → Pre-commit Hook → Git Commit</text>
+
+  <!-- REACT NATIVE APPLICATION -->
+  <rect x="50" y="350" width="1300" height="450" class="section-box"/>
+  <text x="700" y="380" text-anchor="middle" class="section-title">REACT NATIVE APPLICATION</text>
+
+  <!-- Framework -->
+  <rect x="400" y="400" width="600" height="50" class="component" rx="5"/>
+  <text x="700" y="425" text-anchor="middle" class="label" fill="white">Expo SDK 54 (React Native 0.81.4) + React 19.2.0</text>
+  <text x="700" y="440" text-anchor="middle" class="small-label" fill="white">New Architecture Enabled</text>
+
+  <!-- Navigation -->
+  <rect x="200" y="470" width="200" height="50" class="service" rx="5"/>
+  <text x="300" y="490" text-anchor="middle" class="label" fill="white">Expo Router 6.0</text>
+  <text x="300" y="505" text-anchor="middle" class="small-label" fill="white">File-based routing</text>
+
+  <rect x="800" y="470" width="200" height="50" class="service" rx="5"/>
+  <text x="900" y="490" text-anchor="middle" class="label" fill="white">React Navigation 7</text>
+  <text x="900" y="505" text-anchor="middle" class="small-label" fill="white">Bottom Tabs</text>
+
+  <path d="M 400 495 L 800 495" class="arrow"/>
+
+  <!-- App Structure -->
+  <rect x="100" y="550" width="300" height="220" class="box" rx="5"/>
+  <text x="250" y="575" text-anchor="middle" class="label">App Structure</text>
+  <text x="120" y="600" class="small-label">app/_layout.tsx</text>
+  <text x="140" y="625" class="small-label">├─ (tabs)/_layout.tsx</text>
+  <text x="160" y="650" class="small-label">├─ index.tsx (Home)</text>
+  <text x="180" y="675" class="small-label">│  ├─ TextInput</text>
+  <text x="180" y="695" class="small-label">│  ├─ Button</text>
+  <text x="180" y="715" class="small-label">│  └─ Text Display</text>
+  <text x="160" y="735" class="small-label">└─ explore.tsx</text>
+
+  <!-- Custom Libraries -->
+  <rect x="450" y="550" width="300" height="220" class="box" rx="5"/>
+  <text x="600" y="575" text-anchor="middle" class="label">Custom Libraries</text>
+  <text x="470" y="600" class="small-label">lib/telemetry.ts</text>
+  <text x="490" y="620" class="small-label">├─ tracer (traces)</text>
+  <text x="490" y="640" class="small-label">└─ meter (metrics)</text>
+  <text x="470" y="665" class="small-label">lib/analytics.ts</text>
+  <text x="490" y="685" class="small-label">├─ screenViewCounter</text>
+  <text x="490" y="705" class="small-label">└─ userActionCounter</text>
+  <text x="470" y="730" class="small-label">lib/logger.ts (Pino)</text>
+
+  <!-- Error Boundary -->
+  <rect x="800" y="550" width="250" height="100" class="box" rx="5"/>
+  <text x="925" y="575" text-anchor="middle" class="label">ErrorBoundary</text>
+  <text x="820" y="600" class="small-label">Catches React errors</text>
+  <text x="820" y="620" class="small-label">└─ Sends to Sentry</text>
+  <text x="820" y="640" class="small-label">└─ Logs with Pino</text>
+
+  <!-- OBSERVABILITY STACK -->
+  <rect x="50" y="850" width="1300" height="650" class="section-box"/>
+  <text x="700" y="880" text-anchor="middle" class="section-title">OBSERVABILITY STACK (Docker Compose)</text>
+
+  <!-- React Native App source -->
+  <rect x="550" y="900" width="300" height="50" class="component" rx="5"/>
+  <text x="700" y="930" text-anchor="middle" class="label" fill="white">React Native App (localhost:8081)</text>
+
+  <!-- Data flow arrows -->
+  <path d="M 600 950 L 250 1000" class="arrow"/>
+  <path d="M 700 950 L 700 1000" class="arrow"/>
+  <path d="M 800 950 L 1150 1000" class="arrow"/>
+
+  <!-- Traces label -->
+  <text x="400" y="980" text-anchor="middle" class="small-label">TRACES (OTLP)</text>
+  <text x="400" y="995" text-anchor="middle" class="small-label">Port: 4318</text>
+
+  <!-- Metrics label -->
+  <text x="700" y="980" text-anchor="middle" class="small-label">METRICS (OTLP)</text>
+  <text x="700" y="995" text-anchor="middle" class="small-label">Port: 4319</text>
+
+  <!-- Errors label -->
+  <text x="1000" y="980" text-anchor="middle" class="small-label">ERRORS (HTTP)</text>
+  <text x="1000" y="995" text-anchor="middle" class="small-label">Sentry Cloud</text>
+
+  <!-- Jaeger Container -->
+  <rect x="100" y="1010" width="300" height="180" class="container" rx="5"/>
+  <text x="250" y="1035" text-anchor="middle" class="label" fill="white">Container: Jaeger</text>
+  <rect x="120" y="1050" width="260" height="120" class="box" rx="3"/>
+  <text x="250" y="1070" text-anchor="middle" class="small-label">Jaeger All-in-One</text>
+  <text x="140" y="1090" class="small-label">• Receives OTLP traces</text>
+  <text x="140" y="1110" class="small-label">• Stores traces</text>
+  <text x="140" y="1130" class="small-label">• Web UI</text>
+  <text x="140" y="1150" class="small-label">Port 16686 (UI)</text>
+  <text x="140" y="1165" class="small-label">Port 4318 (OTLP)</text>
+
+  <!-- OTel Collector Container -->
+  <rect x="550" y="1010" width="300" height="250" class="container" rx="5"/>
+  <text x="700" y="1035" text-anchor="middle" class="label" fill="white">Container: OTel Collector</text>
+  <rect x="570" y="1050" width="260" height="80" class="box" rx="3"/>
+  <text x="700" y="1070" text-anchor="middle" class="small-label">Receivers</text>
+  <text x="590" y="1090" class="small-label">• OTLP</text>
+  <text x="590" y="1110" class="small-label">• CORS enabled</text>
+
+  <path d="M 700 1130 L 700 1150" class="arrow"/>
+
+  <rect x="570" y="1150" width="260" height="80" class="box" rx="3"/>
+  <text x="700" y="1170" text-anchor="middle" class="small-label">Exporters</text>
+  <text x="590" y="1190" class="small-label">• Prometheus (port 8889)</text>
+  <text x="590" y="1210" class="small-label">• Debug</text>
+
+  <!-- Sentry Cloud -->
+  <rect x="1000" y="1010" width="300" height="180" class="service" rx="5"/>
+  <text x="1150" y="1035" text-anchor="middle" class="label" fill="white">Sentry.io (Cloud SaaS)</text>
+  <text x="1020" y="1070" class="small-label" fill="white">• Stack traces</text>
+  <text x="1020" y="1090" class="small-label" fill="white">• Error context</text>
+  <text x="1020" y="1110" class="small-label" fill="white">• User sessions</text>
+  <text x="1020" y="1130" class="small-label" fill="white">• Breadcrumbs</text>
+  <text x="1020" y="1160" class="small-label" fill="white">Dashboard: sentry.io</text>
+
+  <!-- Prometheus Container -->
+  <rect x="550" y="1280" width="300" height="180" class="container" rx="5"/>
+  <text x="700" y="1305" text-anchor="middle" class="label" fill="white">Container: Prometheus</text>
+  <rect x="570" y="1320" width="260" height="120" class="box" rx="3"/>
+  <text x="700" y="1340" text-anchor="middle" class="small-label">Prometheus Server</text>
+  <text x="590" y="1360" class="small-label">• Scrapes every 15s</text>
+  <text x="590" y="1380" class="small-label">• Time-series DB</text>
+  <text x="590" y="1400" class="small-label">• PromQL queries</text>
+  <text x="590" y="1420" class="small-label">Port 9090 (UI)</text>
+
+  <!-- Arrow from OTel to Prometheus -->
+  <path d="M 700 1260 L 700 1280" class="arrow"/>
+  <text x="720" y="1275" class="small-label">(scrapes)</text>
+
+  <!-- Docker Network note -->
+  <rect x="100" y="1480" width="1200" height="40" class="box" rx="5"/>
+  <text x="700" y="1505" text-anchor="middle" class="small-label">Docker Network: "monitoring" - All containers communicate via container names</text>
+
+  <!-- CI/CD PIPELINE -->
+  <rect x="50" y="1550" width="1300" height="300" class="section-box"/>
+  <text x="700" y="1580" text-anchor="middle" class="section-title">CI/CD PIPELINE (GitHub Actions)</text>
+
+  <!-- Developer -->
+  <rect x="100" y="1600" width="150" height="50" class="component" rx="5"/>
+  <text x="175" y="1630" text-anchor="middle" class="label" fill="white">Developer Push</text>
+
+  <!-- GitHub -->
+  <rect x="300" y="1600" width="150" height="50" class="component" rx="5"/>
+  <text x="375" y="1620" text-anchor="middle" class="label" fill="white">GitHub</text>
+  <text x="375" y="1640" text-anchor="middle" class="small-label" fill="white">Repository</text>
+
+  <path d="M 250 1625 L 300 1625" class="arrow"/>
+
+  <!-- GitHub Actions Runner -->
+  <rect x="500" y="1600" width="200" height="50" class="service" rx="5"/>
+  <text x="600" y="1620" text-anchor="middle" class="label" fill="white">Actions Runner</text>
+  <text x="600" y="1640" text-anchor="middle" class="small-label" fill="white">Ubuntu Latest</text>
+
+  <path d="M 450 1625 L 500 1625" class="arrow"/>
+
+  <!-- Pipeline steps -->
+  <rect x="150" y="1700" width="140" height="60" class="box" rx="5"/>
+  <text x="220" y="1720" text-anchor="middle" class="small-label">Checkout Code</text>
+  <text x="220" y="1740" text-anchor="middle" class="small-label">Setup Node 22</text>
+
+  <rect x="320" y="1700" width="140" height="60" class="box" rx="5"/>
+  <text x="390" y="1720" text-anchor="middle" class="small-label">Install Deps</text>
+  <text x="390" y="1740" text-anchor="middle" class="small-label">(npm ci)</text>
+
+  <rect x="490" y="1700" width="140" height="60" class="box" rx="5"/>
+  <text x="560" y="1720" text-anchor="middle" class="small-label">ESLint</text>
+  <text x="560" y="1740" text-anchor="middle" class="small-label">(Lint)</text>
+
+  <rect x="660" y="1700" width="140" height="60" class="box" rx="5"/>
+  <text x="730" y="1720" text-anchor="middle" class="small-label">Jest 29.7.0</text>
+  <text x="730" y="1740" text-anchor="middle" class="small-label">(Test + Coverage)</text>
+
+  <rect x="830" y="1700" width="140" height="60" class="box" rx="5"/>
+  <text x="900" y="1720" text-anchor="middle" class="small-label">Codecov</text>
+  <text x="900" y="1740" text-anchor="middle" class="small-label">(Upload)</text>
+
+  <!-- Arrows -->
+  <path d="M 600 1650 L 220 1700" class="arrow"/>
+  <path d="M 600 1650 L 390 1700" class="arrow"/>
+  <path d="M 600 1650 L 560 1700" class="arrow"/>
+  <path d="M 600 1650 L 730 1700" class="arrow"/>
+  <path d="M 600 1650 L 900 1700" class="arrow"/>
+
+  <!-- Status -->
+  <rect x="500" y="1790" width="200" height="40" class="service" rx="5"/>
+  <text x="600" y="1815" text-anchor="middle" class="label" fill="white">Status Badge (Pass/Fail)</text>
+
+  <!-- TESTING INFRASTRUCTURE -->
+  <rect x="50" y="1880" width="650" height="220" class="section-box"/>
+  <text x="375" y="1910" text-anchor="middle" class="section-title">TESTING INFRASTRUCTURE</text>
+
+  <!-- Jest -->
+  <rect x="250" y="1930" width="250" height="50" class="component" rx="5"/>
+  <text x="375" y="1955" text-anchor="middle" class="label" fill="white">Jest 29.7.0 (jest-expo preset)</text>
+
+  <!-- Testing libraries -->
+  <rect x="100" y="2010" width="180" height="60" class="box" rx="5"/>
+  <text x="190" y="2030" text-anchor="middle" class="small-label">@testing-library/</text>
+  <text x="190" y="2050" text-anchor="middle" class="small-label">react-native</text>
+
+  <rect x="310" y="2010" width="130" height="60" class="box" rx="5"/>
+  <text x="375" y="2030" text-anchor="middle" class="small-label">jest-native</text>
+  <text x="375" y="2050" text-anchor="middle" class="small-label">(matchers)</text>
+
+  <rect x="470" y="2010" width="130" height="60" class="box" rx="5"/>
+  <text x="535" y="2030" text-anchor="middle" class="small-label">babel-jest</text>
+  <text x="535" y="2050" text-anchor="middle" class="small-label">(transpiler)</text>
+
+  <path d="M 375 1980 L 190 2010" class="arrow"/>
+  <path d="M 375 1980 L 375 2010" class="arrow"/>
+  <path d="M 375 1980 L 535 2010" class="arrow"/>
+
+  <!-- BUILD & DEPLOYMENT -->
+  <rect x="750" y="1880" width="600" height="220" class="section-box"/>
+  <text x="1050" y="1910" text-anchor="middle" class="section-title">BUILD &amp; DEPLOYMENT (EAS)</text>
+
+  <rect x="900" y="1930" width="300" height="50" class="component" rx="5"/>
+  <text x="1050" y="1960" text-anchor="middle" class="label" fill="white">eas build --platform android</text>
+
+  <rect x="900" y="2000" width="300" height="80" class="service" rx="5"/>
+  <text x="1050" y="2025" text-anchor="middle" class="label" fill="white">EAS Build (Cloud)</text>
+  <text x="920" y="2045" class="small-label" fill="white">• Builds APK/AAB</text>
+  <text x="920" y="2065" class="small-label" fill="white">• Auto-increment version</text>
+
+  <path d="M 1050 1980 L 1050 2000" class="arrow"/>
+
+  <!-- KEY TECHNOLOGIES -->
+  <rect x="50" y="2140" width="1300" height="300" class="section-box"/>
+  <text x="700" y="2170" text-anchor="middle" class="section-title">KEY TECHNOLOGIES SUMMARY</text>
+
+  <text x="100" y="2210" class="label">Frontend Framework:</text>
+  <text x="350" y="2210" class="small-label">React Native 0.81.4 (New Architecture) + React 19.2.0</text>
+
+  <text x="100" y="2235" class="label">Development Platform:</text>
+  <text x="350" y="2235" class="small-label">Expo SDK 54</text>
+
+  <text x="100" y="2260" class="label">Language:</text>
+  <text x="350" y="2260" class="small-label">TypeScript</text>
+
+  <text x="100" y="2285" class="label">Navigation:</text>
+  <text x="350" y="2285" class="small-label">Expo Router 6.0 + React Navigation 7</text>
+
+  <text x="100" y="2320" class="label">Code Quality:</text>
+  <text x="350" y="2320" class="small-label">ESLint + Prettier + Husky + lint-staged</text>
+
+  <text x="100" y="2345" class="label">Testing:</text>
+  <text x="350" y="2345" class="small-label">Jest 29.7.0 + React Native Testing Library</text>
+
+  <text x="100" y="2370" class="label">CI/CD:</text>
+  <text x="350" y="2370" class="small-label">GitHub Actions + Codecov</text>
+
+  <text x="100" y="2395" class="label">Build:</text>
+  <text x="350" y="2395" class="small-label">EAS Build</text>
+
+  <text x="750" y="2235" class="label">Observability:</text>
+  <text x="900" y="2260" class="small-label">• Traces: OpenTelemetry → Jaeger</text>
+  <text x="900" y="2285" class="small-label">• Metrics: OpenTelemetry → OTel Collector → Prometheus</text>
+  <text x="900" y="2310" class="small-label">• Logs: Pino (structured JSON)</text>
+  <text x="900" y="2335" class="small-label">• Errors: Sentry</text>
+  <text x="900" y="2360" class="small-label">• Analytics: Custom (OpenTelemetry counters)</text>
+
+  <text x="750" y="2395" class="label">Container Orchestration:</text>
+  <text x="1000" y="2395" class="small-label">Docker Compose</text>
+
+  <!-- ACCESS URLS -->
+  <rect x="50" y="2480" width="650" height="200" class="section-box"/>
+  <text x="375" y="2510" text-anchor="middle" class="section-title">ACCESS URLS</text>
+
+  <text x="100" y="2545" class="small-label">React Native App: http://localhost:8081 (Metro Bundler)</text>
+  <text x="100" y="2570" class="small-label">Jaeger UI (Traces): http://localhost:16686</text>
+  <text x="100" y="2595" class="small-label">Prometheus UI (Metrics): http://localhost:9090</text>
+  <text x="100" y="2620" class="small-label">Sentry Dashboard: https://sentry.io</text>
+  <text x="100" y="2645" class="small-label">GitHub Actions: https://github.com/[user]/demo-react-native-app/actions</text>
+
+  <!-- DATA FLOW EXAMPLE -->
+  <rect x="750" y="2480" width="600" height="450" class="section-box"/>
+  <text x="1050" y="2510" text-anchor="middle" class="section-title">DATA FLOW: BUTTON PRESS</text>
+
+  <rect x="900" y="2530" width="300" height="40" class="component" rx="5"/>
+  <text x="1050" y="2555" text-anchor="middle" class="label" fill="white">User Presses Button</text>
+
+  <rect x="900" y="2590" width="300" height="40" class="service" rx="5"/>
+  <text x="1050" y="2615" text-anchor="middle" class="label" fill="white">handlePress() executes</text>
+
+  <path d="M 1050 2570 L 1050 2590" class="arrow"/>
+
+  <!-- Flow boxes -->
+  <rect x="820" y="2650" width="200" height="50" class="box" rx="3"/>
+  <text x="920" y="2670" text-anchor="middle" class="small-label">tracer.startSpan()</text>
+  <text x="920" y="2685" text-anchor="middle" class="small-label">→ Jaeger (Trace)</text>
+
+  <rect x="820" y="2710" width="200" height="50" class="box" rx="3"/>
+  <text x="920" y="2730" text-anchor="middle" class="small-label">analytics.userAction()</text>
+  <text x="920" y="2745" text-anchor="middle" class="small-label">→ Prometheus (Counter)</text>
+
+  <rect x="820" y="2770" width="200" height="50" class="box" rx="3"/>
+  <text x="920" y="2790" text-anchor="middle" class="small-label">log.info()</text>
+  <text x="920" y="2805" text-anchor="middle" class="small-label">→ Console (Pino)</text>
+
+  <rect x="820" y="2830" width="200" height="50" class="box" rx="3"/>
+  <text x="920" y="2850" text-anchor="middle" class="small-label">setDisplayText()</text>
+  <text x="920" y="2865" text-anchor="middle" class="small-label">→ UI Updates</text>
+
+  <!-- Arrows from handlePress -->
+  <path d="M 1050 2630 L 920 2650" class="arrow"/>
+  <path d="M 1050 2630 L 920 2710" class="arrow"/>
+  <path d="M 1050 2630 L 920 2770" class="arrow"/>
+  <path d="M 1050 2630 L 920 2830" class="arrow"/>
+
+  <text x="1070" y="2910" class="small-label">If error occurs:</text>
+  <text x="1070" y="2930" class="small-label">→ ErrorBoundary → Sentry + Pino</text>
+
+</svg>
