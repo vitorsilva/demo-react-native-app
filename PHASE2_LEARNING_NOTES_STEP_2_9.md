@@ -587,3 +587,104 @@ npm start
 - Jaeger: http://localhost:16686
 - Prometheus: http://localhost:9090
 - Sentry: https://sentry.io
+
+---
+
+## Follow-up Session: Test Mocking Fix (2025-10-28)
+
+### Issue Encountered
+
+**Error:**
+```
+Error: Couldn't find a navigation object. Is your component inside NavigationContainer?
+Jest
+```
+
+**Location:** `app/(tabs)/__tests__/index.test.tsx` line 7
+
+**Root Cause:**
+- HomeScreen uses `useFocusEffect` hook from `@react-navigation/native`
+- Tests render the component in isolation without a NavigationContainer
+- Navigation hooks require navigation context to function
+
+### Solution: Mocking the Navigation Hook
+
+**Added to test file:**
+```tsx
+// Mock the navigation hook that HomeScreen uses
+jest.mock('@react-navigation/native', () => ({
+  useFocusEffect: jest.fn(),
+}));
+```
+
+**What this does:**
+- Tells Jest to replace `useFocusEffect` with a fake function (`jest.fn()`)
+- Fake function does nothing, preventing the error
+- Component can render without navigation context
+- Test focuses on input/display logic, not navigation
+
+### Key Concepts Learned
+
+**Q1: What does `jest.mock()` do?**
+- Creates a fake version of a module
+- Intercepts imports and provides mock implementations
+- Prevents real module code from running in tests
+- Allows isolation of component logic
+
+**Why needed here:**
+- `HomeScreen` imports and uses `useFocusEffect`
+- Real hook expects `NavigationContainer`
+- Test doesn't provide container (and shouldn't need to)
+- Mock lets component render without navigation setup
+
+**Q2: Should we test the analytics call?**
+- In more advanced testing: **yes, verify behavior**
+- Could mock `analytics` module
+- Use `jest.fn()` to track if `screenView` was called
+- Assert it was called with correct argument: `'home'`
+
+**Example advanced test:**
+```tsx
+jest.mock('../../lib/analytics');
+
+it('tracks screen view on focus', () => {
+  render(<HomeScreen />);
+  expect(analytics.screenView).toHaveBeenCalledWith('home');
+});
+```
+
+**For this learning project:**
+- Current tests verify core input/display functionality ✅
+- Testing analytics would be a nice-to-have
+- Focus on learning fundamentals first
+- Can add analytics tests later
+
+### Testing Philosophy Reinforced
+
+**What to mock:**
+- External dependencies (navigation, analytics, storage)
+- Network requests
+- Timers and dates
+- Anything outside component's control
+
+**What NOT to mock:**
+- The component you're testing
+- React itself
+- Component's internal logic
+- Simple utility functions
+
+**Rule of thumb:**
+- Mock the boundaries
+- Test the behavior
+- Verify user-facing functionality
+
+### Result
+
+✅ Tests now pass successfully
+✅ Both test cases working:
+  - "renders correctly"
+  - "updates display text when button is pressed"
+
+---
+
+**Session completed: 2025-10-28**
