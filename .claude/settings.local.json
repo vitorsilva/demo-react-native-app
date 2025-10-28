@@ -3,7 +3,11 @@
     "allow": [
       "Read(//c/Users/vitor410rodrigues/source/repos/demo-pwa-app/**)",
       "Read(//c/Users/vitor410rodrigues/source/repos/my-mindmap/**)",
-      "WebSearch"
+      "WebSearch",
+      "Bash(mkdir:*)",
+      "Bash(git mv:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)"
     ],
     "deny": [],
     "ask": []
