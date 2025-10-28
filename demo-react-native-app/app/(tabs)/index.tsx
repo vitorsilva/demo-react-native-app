@@ -2,6 +2,8 @@ import { View, Text, StyleSheet, Button, TextInput } from 'react-native';
 import { useState } from 'react';
 import { tracer, meter } from '../../lib/telemetry';
 import { log } from '../../lib/logger';
+import { useFocusEffect } from '@react-navigation/native';
+import { analytics } from '../../lib/analytics';
 
 // Create a counter metric to track button presses
 const buttonPressCounter = meter.createCounter('button.presses', {
@@ -17,7 +19,12 @@ const inputLengthHistogram = meter.createHistogram('input.length', {
 export default function HomeScreen() {
   const [inputValue, setInputValue] = useState('');
   const [displayText, setDisplayText] = useState('');
-  const [showCrash, setShowCrash] = useState(false);
+  //const [showCrash, setShowCrash] = useState(false);
+
+  // Track screen view every time this screen is focused
+  useFocusEffect(() => {
+    analytics.screenView('home');
+  });
 
   const handlePress = () => {
     // Create a span to track this operation
@@ -28,8 +35,12 @@ export default function HomeScreen() {
     span.setAttribute('input.value', inputValue);
 
     // Increment the button press counter
-    buttonPressCounter.add(1);
+    //buttonPressCounter.add(1); // not needed anymore - using analytics.userAction below
+
     inputLengthHistogram.record(inputValue.length);
+    analytics.userAction('button_press', {
+      inputLength: String(inputValue.length),
+    });
 
     // Log the button press with trace correlation
     log.info('Button pressed', {
