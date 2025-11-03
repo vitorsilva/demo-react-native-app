@@ -102,7 +102,7 @@ Claude: "Let's install Playwright"
 ### Exception: Documentation
 
 The ONLY time Claude should write files is:
-- Updating learning notes (docs/PHASE*_LEARNING_NOTES.md)
+- Updating learning notes (docs/epic01_infrastructure/PHASE*_LEARNING_NOTES.md)
 - When user explicitly says "you write the learning notes" or similar
 
 Even then, ask for confirmation first.
@@ -130,9 +130,10 @@ demo-react-native-app/
 ├── hooks/               # Custom React hooks
 │   ├── use-color-scheme.ts
 │   └── use-theme-color.ts
-├── docs/               # Learning documentation
-│   ├── LEARNING_PLAN.md            # Overall learning plan and phase tracker
-│   └── PHASE*_LEARNING_NOTES.md    # Phase-specific learning notes
+├── docs/                           # Learning documentation
+│   └── epic01_infrastructure/      # Epic 1: Infrastructure & Foundation
+│       ├── LEARNING_PLAN.md        # Overall learning plan and phase tracker
+│       └── PHASE*_LEARNING_NOTES.md # Phase-specific learning notes
 ├── assets/             # Images, icons, splash screens
 ├── app.json           # Expo configuration (app metadata, icons, splash)
 ├── eas.json          # EAS Build configuration
@@ -183,7 +184,7 @@ The HomeScreen (`app/(tabs)/index.tsx`) currently implements:
 - No persistence (data lost on app restart)
 
 ### Planned Features (Not Yet Implemented)
-According to docs/LEARNING_PLAN.md:
+According to docs/epic01_infrastructure/LEARNING_PLAN.md:
 - **Phase 2:** Testing, CI/CD, OpenTelemetry observability (planned but not started)
 - **Phase 3:** AsyncStorage for data persistence
 - **Phase 4:** UI polish, custom icons/splash screens
@@ -245,10 +246,10 @@ This project is designed for incremental learning:
 - The learner writes all code (no copy-paste)
 - Changes are made in small steps
 - Each concept is explained and tested before moving on
-- Learning notes are documented in `docs/PHASE*_LEARNING_NOTES.md` files
+- Learning notes are documented in `docs/epic01_infrastructure/PHASE*_LEARNING_NOTES.md` files
 
 **When starting a new session/day:**
-- ALWAYS read docs/PHASE*_LEARNING_NOTES.md files (especially the most recent one) to understand what has already been completed
+- ALWAYS read docs/epic01_infrastructure/PHASE*_LEARNING_NOTES.md files (especially the most recent one) to understand what has already been completed
 - Review the learning notes to understand context from previous sessions, including:
   - What concepts were learned
   - What issues were encountered and resolved
@@ -259,22 +260,22 @@ This project is designed for incremental learning:
 **When assisting:**
 - Break down tasks into small, manageable steps
 - Explain concepts clearly (this is a learning project)
-- Reference the docs/LEARNING_PLAN.md for context on what's been completed
+- Reference the docs/epic01_infrastructure/LEARNING_PLAN.md for context on what's been completed
 - Don't add complexity beyond the current phase unless requested
 - Focus on teaching fundamentals before advanced patterns
 
 **When the user asks "what's next" or similar questions:**
-- ALWAYS check docs/LEARNING_PLAN.md to identify the next phase or task
+- ALWAYS check docs/epic01_infrastructure/LEARNING_PLAN.md to identify the next phase or task
 - Review the current phase status and what's been completed
 - Provide clear guidance on the next steps in the learning journey
 - Don't assume or guess - refer to the documented learning plan
 
 **When the user signals session end (e.g., "that's a wrap", "let's call it a day", "let's pause", or similar):**
-- Record the current state and progress in docs/LEARNING_PLAN.md
+- Record the current state and progress in docs/epic01_infrastructure/LEARNING_PLAN.md
 - Update what was completed in this session
 - Document what's currently in progress (if anything)
 - Note what should be tackled next
-- Update any relevant docs/PHASE*_LEARNING_NOTES.md files with key learnings or decisions
+- Update any relevant docs/epic01_infrastructure/PHASE*_LEARNING_NOTES.md files with key learnings or decisions
 - Provide a brief summary of what was accomplished
 
 ## Platform-Specific Notes
@@ -315,7 +316,7 @@ npx expo start -c  # Clear cache
 **Current Status:** No testing infrastructure implemented yet.
 - Phase 2 plans to add Jest with React Native Testing Library
 - No test files exist in the project yet
-- When implementing tests, follow docs/LEARNING_PLAN.md Phase 2 guidance
+- When implementing tests, follow docs/epic01_infrastructure/LEARNING_PLAN.md Phase 2 guidance
 
 ## Git Workflow
 
