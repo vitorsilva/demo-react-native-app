@@ -8,7 +8,17 @@ module.exports = {
   collectCoverageFrom: [
     'app/**/*.{js,jsx,ts,tsx}',
     'components/**/*.{js,jsx,ts,tsx}',
+    'lib/**/*.{js,jsx,ts,tsx}', // Add lib directory
     '!**/*.d.ts',
     '!**/node_modules/**',
+    '!**/__tests__/**', // Exclude test files from coverage
+    '!**/__mocks__/**', // Exclude mocks from coverage
   ],
+  testMatch: [
+    '**/__tests__/**/*.test.{js,jsx,ts,tsx}', // Files in __tests__ ending in .test.ts
+    '**/?(*.)+(spec|test).{js,jsx,ts,tsx}', // Files ending in .spec.ts or .test.ts
+  ],
+  moduleNameMapper: {
+    '^expo-sqlite$': '<rootDir>/lib/database/__tests__/__mocks__/expo-sqlite.ts',
+  },
 };

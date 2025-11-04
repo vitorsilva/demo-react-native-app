@@ -24,7 +24,6 @@ export async function initDatabase(): Promise<SQLite.SQLiteDatabase> {
     String(DEFAULT_PREFERENCES.suggestionsCount),
   ]);
 
-  console.log('✅ Database initialized');
   return database;
 }
 
@@ -33,4 +32,8 @@ export function getDatabase(): SQLite.SQLiteDatabase {
     throw new Error('Database not initialized. Call initDatabase() first.');
   }
   return database;
+}
+
+export function resetDatabase(): void {
+  database = null;
 }
