@@ -40,7 +40,8 @@
           }
         }
       ],
-      "sentry-expo"
+      "sentry-expo",
+      "expo-sqlite"
     ],
     "experiments": {
       "typedRoutes": true,
