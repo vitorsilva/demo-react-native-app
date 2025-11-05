@@ -4,8 +4,6 @@ import { tracer, meter } from '../../lib/telemetry';
 import { log } from '../../lib/logger';
 import { useFocusEffect } from '@react-navigation/native';
 import { analytics } from '../../lib/analytics';
-import { getAllIngredients } from '../../lib/database/ingredients';
-import { logMeal, getRecentMealLogs } from '../../lib/database/mealLogs';
 
 // Create a counter metric to track button presses
 const buttonPressCounter = meter.createCounter('button.presses', {
@@ -21,8 +19,6 @@ const inputLengthHistogram = meter.createHistogram('input.length', {
 export default function HomeScreen() {
   const [inputValue, setInputValue] = useState('');
   const [displayText, setDisplayText] = useState('');
-  const [dbStatus, setDbStatus] = useState('');
-  //const [showCrash, setShowCrash] = useState(false);
 
   // Track screen view every time this screen is focused
   useFocusEffect(() => {
@@ -58,41 +54,6 @@ export default function HomeScreen() {
     span.end();
   };
 
-  const testDatabase = async () => {
-    try {
-      // Get all ingredients
-      const ingredients = await getAllIngredients();
-      console.log('📦 All ingredients:', ingredients);
-
-      // Log a test meal (first 3 breakfast ingredients)
-      const breakfastIngredients = ingredients
-        .filter((ing) => ing.mealTypes.includes('breakfast'))
-        .slice(0, 3);
-
-      if (breakfastIngredients.length > 0) {
-        const mealId = await logMeal({
-          date: new Date().toISOString(),
-          mealType: 'breakfast',
-          ingredients: breakfastIngredients.map((ing) => ing.id),
-        });
-        console.log('✅ Logged meal:', mealId);
-      }
-
-      // Get recent meals
-      const recentMeals = await getRecentMealLogs(7);
-      console.log('📜 Recent meals:', recentMeals);
-
-      setDbStatus(
-        `✅ DB Working!\n` +
-          `Ingredients: ${ingredients.length}\n` +
-          `Recent meals: ${recentMeals.length}`
-      );
-    } catch (error) {
-      console.error('❌ Database test failed:', error);
-      setDbStatus(`❌ Error: ${error}`);
-    }
-  };
-
   return (
     <View style={styles.container}>
       <Text style={styles.text}>Hello World! </Text>
@@ -104,10 +65,7 @@ export default function HomeScreen() {
       />
       <Button title="Press me" onPress={handlePress} />
       <Text style={styles.text}>{displayText}</Text>
-
-      <View style={styles.separator} />
-      <Button title="Test Database" onPress={testDatabase} />
-      <Text style={styles.text}>{dbStatus}</Text>
+      yes
     </View>
   );
 }
@@ -129,8 +87,5 @@ const styles = StyleSheet.create({
     marginBottom: 12,
     paddingHorizontal: 8,
     color: 'white',
-  },
-  separator: {
-    height: 40,
   },
 });

@@ -40,7 +40,13 @@
           }
         }
       ],
+    [
       "@sentry/react-native/expo",
+      {
+        "organization": "vitorsilva",
+        "project": "react-native"
+      }
+    ],
       "expo-sqlite"
     ],
     "experiments": {
