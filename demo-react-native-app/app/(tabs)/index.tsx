@@ -65,7 +65,6 @@ export default function HomeScreen() {
       />
       <Button title="Press me" onPress={handlePress} />
       <Text style={styles.text}>{displayText}</Text>
-      yes
     </View>
   );
 }
