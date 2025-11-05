@@ -5,12 +5,12 @@ import {
   getIngredientsByMealType,
   deleteIngredient,
 } from '../ingredients';
-import { resetMockDatabase } from './__mocks__/expo-sqlite';
+import { resetTestDatabase } from './testDb';
 
 describe('Ingredient Operations', () => {
   beforeEach(async () => {
     // Reset the mock database completely
-    resetMockDatabase();
+    resetTestDatabase();
     resetDatabase();
 
     // Initialize a fresh database
