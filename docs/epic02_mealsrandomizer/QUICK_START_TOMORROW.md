@@ -1,199 +1,263 @@
-# Quick Start Guide - Resume Here Tomorrow
+# Quick Start Guide - Phase 2 Ready!
 
-**Date:** 2025-01-04
-**Session:** Phase 1 (Data Foundation) - 95% Complete
-
----
-
-## 🚀 TL;DR - Start Here
-
-**To resume work:**
-
-1. Read [SESSION_STATUS.md](./SESSION_STATUS.md) for full details
-2. Run the 4 commands below to complete Phase 1
-3. Move to Phase 2!
+**Date:** 2025-01-05
+**Session:** Phase 1 COMPLETE ✅ - Starting Phase 2
 
 ---
 
-## ✅ What's Done
+## 🎉 Phase 1: COMPLETE!
 
-- ✅ Database layer (6 files written)
-- ✅ Unit tests (14 tests, all passing)
-- ✅ Test infrastructure (better-sqlite3)
-- ✅ Database initializes on app start
-- ✅ Test UI ready for manual verification
-
----
-
-## 🎯 What's Left (10 minutes)
-
-### Step 1: Fix React Versions (~2 min)
-
-```bash
-cd demo-react-native-app
-npx expo install react@19.1.0 react-dom@19.1.0
-```
-
-**Why?** React 19.2.0 is incompatible with your Expo SDK.
+**What you built:**
+- ✅ Full SQLite database layer with TypeScript
+- ✅ 14/14 comprehensive unit tests passing
+- ✅ Professional testing setup (better-sqlite3 + mocks)
+- ✅ 22 Portuguese breakfast/snack ingredients seeded
+- ✅ Production-ready error tracking (Sentry migration complete)
+- ✅ All dependency conflicts resolved
 
 ---
 
-### Step 2: Start the App (~2 min)
+## 🚀 Next: Phase 2 - State Management & Core Logic
 
-```bash
-npm start
-```
+**Estimated Time:** 4-5 hours
 
-Then press:
-- `a` for Android emulator
-- Or scan QR code with Expo Go on phone
-
----
-
-### Step 3: Manual Test (~3 min)
-
-1. Open the app (home screen)
-2. Press **"Test Database"** button
-3. Should see: `✅ DB Working! Ingredients: 22, Recent meals: 1`
-
-**What it does:**
-- Fetches all 22 ingredients from database
-- Logs a test breakfast meal
-- Retrieves recent meals
-
----
-
-### Step 4: Clean Up Test UI (~3 min)
-
-Remove test code from `app/(tabs)/index.tsx`:
-
-1. Remove imports:
-   ```typescript
-   import { getAllIngredients } from '../../lib/database/ingredients';
-   import { logMeal, getRecentMealLogs } from '../../lib/database/mealLogs';
-   ```
-
-2. Remove state:
-   ```typescript
-   const [dbStatus, setDbStatus] = useState('');
-   ```
-
-3. Remove `testDatabase` function (entire function)
-
-4. Remove UI elements:
-   ```typescript
-   <View style={styles.separator} />
-   <Button title="Test Database" onPress={testDatabase} />
-   <Text style={styles.text}>{dbStatus}</Text>
-   ```
-
-5. Remove style:
-   ```typescript
-   separator: { height: 40 },
-   ```
-
----
-
-## ✅ Phase 1 Complete!
-
-Once the above is done, Phase 1 is 100% complete.
-
----
-
-## 🎯 Next: Phase 2 (4-5 hours)
-
-**Phase 2: State Management & Core Logic**
-
-You'll build:
-1. **Zustand store** - Global state management
+**What you'll build:**
+1. **Zustand store** - Lightweight global state management
 2. **Combination generator** - Algorithm to create meal combinations
-3. **Variety engine** - Enforce cooldown to prevent repetition
-4. **Business logic layer** - Core app intelligence
+3. **Variety engine** - Cooldown tracking to prevent ingredient repetition
+4. **Business logic layer** - Core randomizer intelligence
+
+---
+
+## 📚 Before Starting Phase 2
+
+### Review Phase 1 Learnings
+
+Read [SESSION_STATUS.md](./SESSION_STATUS.md) to review:
+- Dependency management (version pinning, peer dependencies)
+- Package migration (sentry-expo → @sentry/react-native)
+- Platform differences (React Native vs Node.js APIs)
+- Testing patterns (environment-specific mocks)
+- Observability setup (Sentry error tracking)
+
+These concepts will be useful as we add more complexity!
+
+---
+
+## 🎯 Phase 2 Overview
+
+### What You'll Learn
+
+**1. Zustand (State Management)**
+- Why global state? (Props drilling problem)
+- Zustand vs Redux vs Context API
+- Store creation and actions
+- React hooks integration (`useStore`)
+
+**2. Algorithm Design**
+- Combination generation (n-choose-k problem)
+- Filtering by meal type
+- Random selection with constraints
+
+**3. Business Logic Separation**
+- Layer architecture (UI → Store → Business Logic → Database)
+- Pure functions for testability
+- Domain-driven design principles
+
+**4. Cooldown System**
+- Tracking recent ingredient usage
+- Filtering out recently used items
+- Balancing variety vs availability
+
+---
+
+## 🗺️ Phase 2 Roadmap
+
+### Part 1: Zustand Setup (1 hour)
+- Install Zustand
+- Create initial store structure
+- Add ingredients state
+- Connect to UI (read-only first)
+
+### Part 2: Core Algorithms (1.5 hours)
+- Combination generator function
+- Meal type filtering
+- Random selection with shuffling
+- Unit tests for algorithms
+
+### Part 3: Variety Engine (1.5 hours)
+- Cooldown tracking logic
+- Filter recent ingredients
+- Preferences integration
+- Business logic tests
+
+### Part 4: Integration (1 hour)
+- Connect store actions to database
+- Add meal logging with cooldown update
+- E2E testing
+- Manual testing in app
+
+---
+
+## 📖 Phase 2 Guide
 
 **Start here:** [PHASE2_STATE_MANAGEMENT.md](./PHASE2_STATE_MANAGEMENT.md)
 
+The guide will walk you through:
+- Conceptual explanations (what and why)
+- Step-by-step implementation
+- Code examples to type
+- Questions to reinforce learning
+- Testing at each stage
+
+**Teaching approach:**
+- Claude explains concepts
+- Claude provides code snippets
+- **You write all the code yourself**
+- Claude asks questions to check understanding
+- Test as you go (TDD approach)
+
 ---
 
-## 📚 Quick References
+## 🛠️ Tools You'll Use
 
-| Document | Purpose |
-|----------|---------|
-| [SESSION_STATUS.md](./SESSION_STATUS.md) | Full session details, learnings, problems solved |
-| [OVERVIEW.md](./OVERVIEW.md) | Epic 2 overview and navigation |
-| [PHASE1_DATA_FOUNDATION.md](./PHASE1_DATA_FOUNDATION.md) | Phase 1 guide (what we just completed) |
-| [PHASE2_STATE_MANAGEMENT.md](./PHASE2_STATE_MANAGEMENT.md) | Phase 2 guide (next steps) |
+**New packages:**
+- `zustand` - State management library
+
+**Existing tools:**
+- TypeScript (with inference and union types)
+- Jest (for unit testing algorithms)
+- SQLite database (already built!)
 
 ---
 
-## 💡 Key Takeaways
+## 💡 Tips for Phase 2
 
-**What you built today:**
-- Full SQLite database layer with TypeScript
-- Comprehensive test suite (better-sqlite3)
-- Professional testing setup (adapter pattern)
-- Seed data with 22 Portuguese ingredients
+### Start Fresh
+```bash
+cd demo-react-native-app
+npm start
+```
 
-**What you learned:**
-- SQLite in React Native (expo-sqlite)
-- Testing SQLite with Jest (better-sqlite3 + adapter)
-- TypeScript type safety (union types, `as const`)
-- Database design (UUIDs, JSON, ISO dates)
-- Test isolation and module state management
+Make sure everything still works from Phase 1 before starting!
+
+### Work in Small Steps
+- Implement one function at a time
+- Test after each change
+- Commit frequently (optional but recommended)
+
+### Ask Questions
+- If a concept is unclear, ask for clarification
+- Connect new concepts to what you learned in Phase 1
+- Think about "why" not just "how"
+
+### Take Breaks
+Phase 2 is more algorithmically complex than Phase 1. If you get stuck:
+- Take a 10-minute break
+- Re-read the explanation
+- Ask Claude to explain differently
 
 ---
 
 ## 🐛 If Something Breaks
 
-### Issue: React version errors
-**Solution:** Run `npx expo install react@19.1.0 react-dom@19.1.0`
-
-### Issue: App won't start
-**Solution:**
+### App won't start
 ```bash
 npx expo start -c  # Clear cache
 ```
 
-### Issue: Tests fail
-**Solution:**
+### Tests fail
 ```bash
-npm test -- lib/database/__tests__/ingredients.test.ts
-npm test -- lib/database/__tests__/mealLogs.test.ts
+npm test  # Should show 14/14 passing
 ```
 
-Should show: **14/14 tests passing** ✅
+If tests fail, something changed in Phase 1 files. Check git status.
 
-### Issue: Database not initialized
-**Check:** Console should show `✅ Database initialized` on app start
-
----
-
-## 📁 Files You Created Today
-
+### Database not working
+Check console logs for:
 ```
-types/database.ts              # TypeScript interfaces
-lib/database/index.ts          # Database init
-lib/database/schema.ts         # SQL schema
-lib/database/ingredients.ts    # Ingredient CRUD
-lib/database/mealLogs.ts       # Meal log CRUD
-lib/database/seed.ts           # Seed data
-lib/database/__tests__/ingredients.test.ts
-lib/database/__tests__/mealLogs.test.ts
-lib/database/__tests__/testDb.ts
-lib/database/__tests__/__mocks__/expo-sqlite.ts
-```
-
-**Modified:**
-```
-app/_layout.tsx                # Added DB init
-app/(tabs)/index.tsx           # Added test UI (remove tomorrow)
-jest.config.js                 # Added moduleNameMapper
-package.json                   # Added better-sqlite3
+✅ Database ready
+✅ Seeded XX ingredients
 ```
 
 ---
 
-## 🎉 You're Ready for Tomorrow!
+## 📁 Files You'll Create in Phase 2
 
-Everything is documented. Just follow the 4 steps above and you're done with Phase 1!
+```
+lib/
+├── store/
+│   ├── index.ts                    # Zustand store
+│   └── __tests__/
+│       └── store.test.ts           # Store tests
+├── business-logic/
+│   ├── combinationGenerator.ts     # Algorithm
+│   ├── varietyEngine.ts            # Cooldown logic
+│   └── __tests__/
+│       ├── combinationGenerator.test.ts
+│       └── varietyEngine.test.ts
+```
 
-**See you tomorrow!** 🚀
+**Files you'll modify:**
+- `app/(tabs)/index.tsx` - Connect to Zustand store (later)
+- `package.json` - Add zustand dependency
+
+---
+
+## 🎓 Key Concepts Preview
+
+### State Management
+**Problem:** How do multiple screens share data without prop drilling?
+**Solution:** Global store that any component can access
+
+### Combination Generation
+**Problem:** Given 6 proteins, 7 carbs, 3 sweets - generate valid breakfast combos
+**Solution:** Cartesian product with filtering
+
+### Variety Enforcement
+**Problem:** Don't want same ingredient every day
+**Solution:** Track last N days, filter out recent items before generating combos
+
+---
+
+## 📊 Progress Tracker
+
+```
+Epic 2: Meals Randomizer
+
+Phase 1: Data Foundation       ✅ 100% ████████████████████
+Phase 2: State Management      ⏳ 0%   ░░░░░░░░░░░░░░░░░░░░
+Phase 3: Building UI           ⏳ 0%   ░░░░░░░░░░░░░░░░░░░░
+Phase 4: Navigation            ⏳ 0%   ░░░░░░░░░░░░░░░░░░░░
+Phase 5: Polish & Testing      ⏳ 0%   ░░░░░░░░░░░░░░░░░░░░
+
+Overall: ~20% complete (1 of 5 phases)
+```
+
+---
+
+## 🎯 Your Goal for Phase 2
+
+**By the end of Phase 2, you'll have:**
+- Working Zustand store with ingredients data
+- Algorithm that generates meal combinations
+- Variety engine that prevents repetitive meals
+- Comprehensive unit tests for business logic
+- Foundation ready for UI in Phase 3
+
+**No UI yet!** Phase 2 is pure logic - we'll build the UI in Phase 3.
+
+---
+
+## 🚀 Ready to Start?
+
+1. **Make sure app runs:** `npm start`
+2. **Verify tests pass:** `npm test` (14/14)
+3. **Open the guide:** [PHASE2_STATE_MANAGEMENT.md](./PHASE2_STATE_MANAGEMENT.md)
+4. **Let's build!** 🎉
+
+---
+
+**Remember:** Claude guides, you code! This is a learning project - take your time and understand each concept.
+
+**Good luck!** 🚀

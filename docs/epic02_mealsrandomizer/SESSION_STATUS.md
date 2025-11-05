@@ -1,178 +1,226 @@
 # Epic 2: Current Session Status
 
-**Last Updated:** 2025-01-04 (Today's date)
+**Last Updated:** 2025-01-05
 
 ---
 
-## ✅ Completed This Session (2025-01-04)
+## ✅ Phase 1: Data Foundation & SQLite - 100% COMPLETE
 
-### Phase 1: Data Foundation & SQLite (~95% Complete)
+**Status:** ✅ COMPLETED (2025-01-05)
+
+---
+
+## 📅 Session History
+
+### Session 2: 2025-01-05 (Today) - Phase 1 Completion
+
+**Major Accomplishments:**
+- ✅ Fixed React version conflicts (react-test-renderer 19.2.0 → 19.1.0)
+- ✅ Migrated Sentry from deprecated `sentry-expo` to official `@sentry/react-native`
+- ✅ Fixed crypto API (Node.js → expo-crypto)
+- ✅ Removed deprecated testing packages
+- ✅ All 14 tests passing
+- ✅ Manual testing verified
+- ✅ Sentry error tracking confirmed working
+- ✅ Phase 1 marked complete!
+
+**Details:**
+
+#### 1. React Version Conflicts Resolution
+**Problem:** `react-test-renderer@19.2.0` required `react@^19.2.0`, but Expo SDK 54 requires exactly `react@19.1.0`
+
+**Root Cause:**
+- `@testing-library/react-native` has peer dependency on `react-test-renderer@>=18.2.0`
+- npm was selecting latest (19.2.0) which conflicts with React 19.1.0
+
+**Solution:**
+```bash
+# Added explicit version pin in package.json
+"react-test-renderer": "19.1.0"  # No ^ prefix = exact version
+```
+
+**Learning:** `react-test-renderer` MUST exactly match React version. Use exact version (no `^`) to prevent mismatches.
+
+---
+
+#### 2. Deprecated Package Removal
+**Removed:**
+- `@testing-library/jest-native@5.4.3` - Deprecated, matchers now built into `@testing-library/react-native` since v12.4+
+
+**Updated:**
+- Removed `setupFilesAfterEnv` from jest.config.js
+- Matchers like `toBeOnTheScreen()`, `toHaveTextContent()` automatically available
+
+**Learning:** Always check deprecation warnings - newer packages often consolidate features.
+
+---
+
+#### 3. Sentry Migration (Major Upgrade)
+
+**Old Setup (deprecated):**
+- Package: `sentry-expo@~7.0.0`
+- Last maintained: Expo SDK 49 (2023)
+- API: `Sentry.Native.captureException()` / `Sentry.Browser.captureException()`
+
+**New Setup (official):**
+- Package: `@sentry/react-native` (latest)
+- Maintained by: Getsentry team (actively maintained)
+- Supports: Expo SDK 50+ (including SDK 54)
+- API: Unified `Sentry.captureException()` works everywhere
+
+**Migration Steps Performed:**
+1. Uninstalled `sentry-expo`
+2. Installed `@sentry/react-native` via `npx expo install`
+3. Updated `app.json` plugin: `"sentry-expo"` → `"@sentry/react-native/expo"`
+4. Updated imports in `app/_layout.tsx` and `components/ErrorBoundary.tsx`
+5. Simplified ErrorBoundary - removed platform checks
+6. Updated Sentry.init() configuration:
+   - Removed: `enableInExpoDevelopment: true` (doesn't exist in new SDK)
+   - Added: `tracesSampleRate: 1.0` (performance monitoring)
+
+**Verification:**
+- ✅ Test error captured in Sentry dashboard (2 min response time)
+- ✅ Full stack traces with file locations
+- ✅ Device info and breadcrumbs captured
+- ✅ Performance transactions tracked
+
+**Learning:** Modern `@sentry/react-native` has unified API - no more platform-specific code needed.
+
+---
+
+#### 4. Crypto API Fix
+
+**Problem:** `crypto.randomUUID()` used in database code doesn't exist in React Native (Node.js/Web API only)
+
+**Error:**
+```
+ReferenceError: Property 'crypto' doesn't exist
+```
+
+**Solution:**
+1. Installed `expo-crypto` (cross-platform crypto for React Native)
+2. Updated `lib/database/ingredients.ts` and `lib/database/mealLogs.ts`:
+   ```typescript
+   import * as Crypto from 'expo-crypto';
+   const id = Crypto.randomUUID(); // Works on iOS, Android, Web
+   ```
+3. Created mock for tests (`lib/database/__tests__/__mocks__/expo-crypto.ts`):
+   ```typescript
+   export const randomUUID = (): string => {
+     return crypto.randomUUID(); // Node.js crypto in tests
+   };
+   ```
+4. Added to jest.config.js moduleNameMapper
+
+**Learning:** React Native ≠ Node.js. Platform-specific APIs require Expo modules or native bridges.
+
+---
+
+#### 5. Clean Dependency Reinstall
+
+**Process:**
+```bash
+del package-lock.json
+rmdir /s /q node_modules
+npm install
+```
+
+**Why:** package-lock.json had cached incorrect versions. Clean reinstall forces npm to recalculate all dependencies.
+
+**Result:** All peer dependencies resolved correctly, 0 vulnerabilities.
+
+---
+
+### Session 1: 2025-01-04 - Phase 1 Implementation
 
 **Database Layer Implementation:**
 - ✅ Installed `expo-sqlite` package
 - ✅ Created TypeScript types (`types/database.ts`)
-  - Ingredient, MealLog, Preferences interfaces
-  - Union types for type safety ('protein' | 'carb' | 'sweet' | 'fruit')
 - ✅ Created database schema (`lib/database/schema.ts`)
-  - ingredients, meal_logs, preferences tables
-  - Default preferences (cooldownDays: 3, suggestionsCount: 4)
 - ✅ Implemented database initialization (`lib/database/index.ts`)
-  - Singleton pattern for database instance
-  - Auto-creates tables on first run
-  - Initializes default preferences
 - ✅ Built ingredient CRUD operations (`lib/database/ingredients.ts`)
-  - addIngredient, getAllIngredients, getIngredientsByMealType, deleteIngredient
-  - Used explicit column selection (not SELECT *)
-  - Parameterized queries to prevent SQL injection
-  - JSON serialization for arrays
 - ✅ Built meal log CRUD operations (`lib/database/mealLogs.ts`)
-  - logMeal, getRecentMealLogs, getMealLogsByDateRange, deleteMealLog
-  - Date arithmetic for querying recent meals
-  - ISO 8601 date format for sortable strings
-- ✅ Created seed data (`lib/database/seed.ts`)
-  - 22 Portuguese breakfast/snack ingredients
-  - Idempotent seeding (only seeds if empty)
-  - Categories: proteins (6), carbs (7), sweets (3), fruits (3)
-- ✅ Integrated database initialization into app layout (`app/_layout.tsx`)
-  - useEffect with async wrapper pattern
-  - Runs once on app mount
-  - Try-catch for error handling
+- ✅ Created seed data (`lib/database/seed.ts`) - 22 ingredients
+- ✅ Integrated database initialization into app layout
 
 **Testing Infrastructure:**
-- ✅ Set up better-sqlite3 for testing (industry standard 2025 approach)
-  - Installed better-sqlite3 and @types/better-sqlite3
-  - Created test database helper (`lib/database/__tests__/testDb.ts`)
-  - Built adapter to bridge expo-sqlite API and better-sqlite3
-- ✅ Created mock for expo-sqlite (`lib/database/__tests__/__mocks__/expo-sqlite.ts`)
-  - Module mapper configured in jest.config.js
-  - Ensures tests always use fresh database instance
-- ✅ Wrote comprehensive unit tests:
-  - **Ingredient tests** (`ingredients.test.ts`): 7 tests, all passing ✅
-    - Add, retrieve, filter by meal type, delete, structure validation
-  - **Meal log tests** (`mealLogs.test.ts`): 7 tests, all passing ✅
-    - Log meals, retrieve recent, date range filtering, delete
-  - Total: **14/14 tests passing** ✅
-- ✅ Configured Jest:
-  - Added testMatch to only run .test.ts files
-  - Excluded helper files (testDb.ts) and mocks from test execution
-  - Added lib/ directory to coverage collection
+- ✅ Set up better-sqlite3 for testing
+- ✅ Created test database helper with adapter pattern
+- ✅ Created mock for expo-sqlite
+- ✅ Wrote 14 comprehensive unit tests (all passing)
+- ✅ Configured Jest with proper test patterns
 
-**Test UI (for manual verification):**
-- ✅ Added test button to home screen (`app/(tabs)/index.tsx`)
-  - Tests getAllIngredients, logMeal, getRecentMealLogs
-  - Displays results on screen
-  - Ready for manual testing after React version fix
+**Test UI:**
+- ✅ Added temporary test buttons to home screen
+- ✅ Manual testing verified
+- ✅ Test code removed (2025-01-05)
 
 ---
 
-## 📍 Current Status
+## 📊 Phase 1 Final Statistics
 
-**Epic:** Epic 2 - Meals Randomizer
-**Phase:** Phase 1 (Data Foundation) - 95% complete
+**Files Created:** 13
+- 6 database implementation files
+- 4 test files
+- 2 mock files
+- 1 types file
+
 **Tests:** 14/14 passing ✅
-**Blocked:** React version mismatch prevents app from running
+- 7 ingredient operation tests
+- 7 meal log operation tests
+- 100% coverage of CRUD operations
+
+**Seed Data:** 22 Portuguese breakfast/snack ingredients
+- 6 proteins (milk, yogurt, cheese, eggs, etc.)
+- 7 carbs (breads, cereals, etc.)
+- 3 sweets (jam, cookies, marmalade)
+- 3 fruits (apple, banana, pear)
+
+**Lines of Code:** ~500+ lines (excluding tests)
 
 ---
 
-## ⚠️ Known Issues
+## 🎓 Key Learnings - Phase 1
 
-### 1. React Version Mismatch
-**Problem:**
-```
-react: 19.2.0 (installed)
-react-native-renderer: 19.1.0 (incompatible!)
-```
+### 1. Dependency Management
+- **Exact version matching:** `react-test-renderer` must exactly match React version
+- **Peer dependencies:** npm selects latest version unless explicitly pinned
+- **Version prefix meanings:**
+  - `^19.1.0` = any 19.x.x version (>=19.1.0, <20.0.0)
+  - `19.1.0` = exactly this version
+  - `~19.1.0` = any 19.1.x version (patch updates only)
+- **Expo-safe installs:** Use `npx expo install` for compatibility
 
-**Solution:** Run this command:
-```bash
-cd demo-react-native-app
-npx expo install react@19.1.0 react-dom@19.1.0
-```
+### 2. Package Migration
+- **Check deprecation warnings** - they're not just noise
+- **Read migration guides** - API changes can be significant
+- **Test after migration** - verify all features still work
+- **Clean reinstall technique** - delete lock file + node_modules when stuck
 
-### 2. Web Platform Not Supported
-expo-sqlite doesn't work on web (requires WASM configuration). Tests and production target native platforms (iOS/Android) only.
+### 3. Platform Differences
+- **React Native ≠ Node.js ≠ Browser** - Different JavaScript runtimes
+- **Global APIs differ:**
+  - Node.js: `crypto`, `fs`, `path`, etc.
+  - Browser: `window`, `document`, `localStorage`, etc.
+  - React Native: Native bridges, limited globals
+- **Use Expo modules** for cross-platform functionality
+- **Mock differently per environment** (expo-crypto → Node crypto in tests)
 
----
+### 4. Testing Patterns
+- **better-sqlite3 for SQLite testing** - Industry standard 2025
+- **Adapter pattern** - Bridge incompatible APIs
+- **Environment-specific mocks** - Different implementations per runtime
+- **Module state management** - Reset singletons between tests
 
-## 🎯 What's Next (When You Resume)
-
-### Immediate Tasks (5-10 minutes)
-
-1. **Fix React versions:**
-   ```bash
-   npx expo install react@19.1.0 react-dom@19.1.0
-   ```
-
-2. **Manual test the database:**
-   - Start app: `npm start`
-   - Open on Android emulator or Expo Go
-   - Press "Test Database" button
-   - Verify: "✅ DB Working! Ingredients: 22, Recent meals: 1"
-
-3. **Clean up test UI:**
-   - Remove test code from `app/(tabs)/index.tsx`
-   - Revert to Epic 1 state (just input field and button)
-
-4. **Complete Phase 1:**
-   - Mark Phase 1 as complete
-   - Create Phase 1 learning notes
-   - Move to Phase 2!
+### 5. Observability & Debugging
+- **Modern error tracking** - Sentry provides real-time insights
+- **Unified APIs** - Simpler than platform-specific code
+- **Test in production-like conditions** - Always verify in real environment
+- **Performance monitoring** - `tracesSampleRate` captures app performance
 
 ---
 
-## 📚 Key Learnings from This Session
-
-### Concepts Learned
-
-1. **SQLite in React Native:**
-   - expo-sqlite for production (native iOS/Android)
-   - better-sqlite3 for testing (Node.js/Jest)
-   - Adapter pattern bridges the two
-
-2. **TypeScript Type Safety:**
-   - Union types for restricted values: `'breakfast' | 'snack'`
-   - `as const` to preserve literal types
-   - `Omit<T, K>` utility type to exclude properties
-
-3. **Database Design:**
-   - UUIDs for client-side ID generation
-   - JSON serialization for arrays in SQLite
-   - ISO 8601 dates for sortable timestamps
-   - Parameterized queries prevent SQL injection
-   - Snake_case (DB) vs camelCase (TypeScript) conversion
-
-4. **Testing Patterns:**
-   - In-memory SQLite (`:memory:`) for fast tests
-   - Test isolation with beforeEach cleanup
-   - Module state reset for singleton patterns
-   - Mock configuration with moduleNameMapper
-
-5. **React Patterns:**
-   - useEffect with async wrapper function
-   - Empty dependency array `[]` for one-time setup
-   - Try-catch for error handling in setup
-
-### Problems Encountered & Solutions
-
-| Problem | Solution |
-|---------|----------|
-| expo-sqlite doesn't work in Jest | Use better-sqlite3 with adapter pattern |
-| Database connection closed between tests | Always get fresh reference in adapter methods |
-| "No such table" after reset | Reset both test DB and module variable |
-| Jest running helper files as tests | Add testMatch pattern to jest.config.js |
-| React version mismatch | Downgrade to match Expo SDK version |
-
-### Design Decisions
-
-1. **Explicit SELECT columns** vs SELECT * - More maintainable, production-ready
-2. **Client-side UUIDs** - No server dependency, works offline
-3. **JSON arrays in TEXT** - Simpler than junction tables for small arrays
-4. **JavaScript filtering** over SQL - Easier for JSON array queries
-5. **Default parameter values** - More flexible API (e.g., `days = 7`)
-
----
-
-## 📁 File Structure Created
+## 📁 Final File Structure
 
 ```
 demo-react-native-app/
@@ -185,54 +233,76 @@ demo-react-native-app/
 │   ├── mealLogs.ts                          # Meal log CRUD
 │   ├── seed.ts                              # Seed data
 │   └── __tests__/
-│       ├── ingredients.test.ts              # Ingredient tests
-│       ├── mealLogs.test.ts                 # Meal log tests
+│       ├── ingredients.test.ts              # 7 tests ✅
+│       ├── mealLogs.test.ts                 # 7 tests ✅
 │       ├── testDb.ts                        # better-sqlite3 adapter
 │       └── __mocks__/
-│           └── expo-sqlite.ts               # Mock for expo-sqlite
+│           ├── expo-sqlite.ts               # SQLite mock
+│           └── expo-crypto.ts               # Crypto mock (NEW)
+├── components/
+│   └── ErrorBoundary.tsx                     # Updated with new Sentry API
 ├── app/
-│   ├── _layout.tsx                          # Added DB initialization
+│   ├── _layout.tsx                          # DB init + new Sentry SDK
 │   └── (tabs)/
-│       └── index.tsx                        # Added test UI (temporary)
-├── jest.config.js                           # Updated with moduleNameMapper
-└── package.json                             # Added better-sqlite3
+│       └── index.tsx                        # Cleaned up (Epic 1 state)
+├── app.json                                  # Updated Sentry plugin
+├── jest.config.js                           # Updated mocks + removed jest-native
+├── package.json                             # Updated dependencies
+└── package-lock.json                        # Regenerated
+```
+
+---
+
+## ⚡ Problems Encountered & Solutions
+
+| Problem | Root Cause | Solution | Lesson |
+|---------|-----------|----------|--------|
+| React version mismatch | npm selecting latest react-test-renderer | Pin exact version in package.json | Peer deps need exact matches for renderers |
+| Sentry errors on startup | Using deprecated sentry-expo | Migrate to @sentry/react-native | Check package maintenance status |
+| crypto.randomUUID() not found | Node.js API in React Native | Use expo-crypto with mocks | Platform-specific APIs need bridges |
+| jest-native deprecated warning | Package no longer maintained | Remove - matchers built into RN testing lib | Consolidation reduces dependencies |
+| npm install fails after changes | Cached versions in lock file | Clean reinstall (delete lock + node_modules) | Lock files can block updates |
+
+---
+
+## 🎯 Phase 2 Preview
+
+**Phase 2: State Management & Core Logic** (Starting Next Session)
+
+You'll learn:
+1. **Zustand** - Lightweight global state management
+2. **Algorithm design** - Combination generator for meals
+3. **Business logic patterns** - Separation of concerns
+4. **Variety enforcement** - Cooldown tracking to prevent repetition
+
+**Estimated time:** 4-5 hours
+
+**Start here:** [PHASE2_STATE_MANAGEMENT.md](./PHASE2_STATE_MANAGEMENT.md)
+
+---
+
+## 📈 Overall Epic 2 Progress
+
+```
+Phase 1: Data Foundation       - 100% ████████████████████ ✅ COMPLETE
+Phase 2: State Management      - 0%   ░░░░░░░░░░░░░░░░░░░░
+Phase 3: Building UI           - 0%   ░░░░░░░░░░░░░░░░░░░░
+Phase 4: Navigation            - 0%   ░░░░░░░░░░░░░░░░░░░░
+Phase 5: Polish & Testing      - 0%   ░░░░░░░░░░░░░░░░░░░░
+
+Estimated completion: ~20% (1 of 5 phases complete)
 ```
 
 ---
 
 ## 💡 Remember for Next Session
 
-- **Phase 1 is essentially complete** - Just needs manual verification
-- **All tests pass** - Database layer is solid
-- **Next phase is State Management** - Zustand + randomizer algorithms
-- **Teaching methodology** - I guide, you write code
-- **Test-driven** - We wrote tests before manual testing
+- **Phase 1 is bulletproof** - All tests passing, production-ready observability
+- **Database layer is complete** - Ready to build business logic on top
+- **Sentry is live** - Real-time error tracking in production
+- **Teaching methodology** - Claude guides, you write code
+- **Next: Zustand + Algorithms** - More complex concepts ahead!
 
 ---
 
-## 🚀 Phase 2 Preview
-
-Once Phase 1 is complete, Phase 2 will cover:
-- **Zustand** for global state management
-- **Combination generator** algorithm
-- **Variety enforcement** engine with cooldown logic
-- **Business logic layer** separate from UI
-
-**Estimated time:** 4-5 hours
-
----
-
-## 📊 Overall Progress
-
-**Epic 2: Meals Randomizer**
-- Phase 1: Data Foundation - 95% ████████████████████░
-- Phase 2: State Management - 0% ░░░░░░░░░░░░░░░░░░░░
-- Phase 3: Building UI - 0% ░░░░░░░░░░░░░░░░░░░░
-- Phase 4: Navigation - 0% ░░░░░░░░░░░░░░░░░░░░
-- Phase 5: Polish & Testing - 0% ░░░░░░░░░░░░░░░░░░░░
-
-**Estimated completion:** ~15% (Phase 1 of 6)
-
----
-
-*Session paused - excellent progress today! 🎉*
+*Session completed - excellent debugging and migration work! 🎉*
