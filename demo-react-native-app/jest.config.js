@@ -19,5 +19,6 @@ module.exports = {
   ],
   moduleNameMapper: {
     '^expo-sqlite$': '<rootDir>/lib/database/__tests__/__mocks__/expo-sqlite.ts',
+    '^expo-crypto$': '<rootDir>/lib/database/__tests__/__mocks__/expo-crypto.ts',
   },
 };
