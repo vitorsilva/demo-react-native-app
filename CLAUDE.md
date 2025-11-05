@@ -4,7 +4,14 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-This is a learning-focused React Native mobile application built with Expo. The project follows a structured, incremental learning approach where the developer is guided through React Native fundamentals step-by-step. The app is currently in early stages (Phase 1 completed) with a simple text input/display functionality.
+This is a learning-focused React Native mobile application built with Expo. The project follows a structured, incremental learning approach organized into epics, where the developer is guided through concepts step-by-step.
+
+**Current Status:**
+- ✅ **Epic 1: Infrastructure & Foundation** - COMPLETED (2025-10-28)
+  - Professional dev workflow, testing, CI/CD, observability stack
+- 🔄 **Epic 2: Meals Randomizer** - IN PROGRESS (Started 2025-01-04)
+  - Building a real app with SQLite, Zustand, and complex UI
+  - Phase 1 (Data Foundation): 95% complete
 
 **Key Characteristics:**
 - Learning project (not production)
@@ -13,6 +20,24 @@ This is a learning-focused React Native mobile application built with Expo. The 
 - File-based routing with Expo Router
 - Tab navigation structure already in place
 - EAS Build configured for Android APK generation
+- Full observability stack (OpenTelemetry, Jaeger, Prometheus, Sentry)
+
+## Finding Current Session Information (CRITICAL)
+
+**ALWAYS check these files at the start of a session to understand current progress:**
+
+1. **docs/epic02_mealsrandomizer/SESSION_STATUS.md** - Most recent session status and progress
+2. **docs/epic02_mealsrandomizer/QUICK_START_TOMORROW.md** - Quick resume guide
+3. **README.md** (root) - Overall project status and epic progress
+
+**When user asks "what's next":**
+- Read SESSION_STATUS.md to see what was completed in last session
+- Read QUICK_START_TOMORROW.md for immediate next steps
+- Don't assume or guess - always check documentation first
+
+**For Epic 1 reference (completed work):**
+- docs/epic01_infrastructure/LEARNING_PLAN.md - Completed epic
+- docs/epic01_infrastructure/PHASE*_LEARNING_NOTES.md - Detailed notes
 
 ## Claude's Teaching Methodology (CRITICAL)
 
@@ -102,8 +127,10 @@ Claude: "Let's install Playwright"
 ### Exception: Documentation
 
 The ONLY time Claude should write files is:
-- Updating learning notes (docs/epic01_infrastructure/PHASE*_LEARNING_NOTES.md)
+- Updating learning notes (docs/epic02_mealsrandomizer/SESSION_STATUS.md or similar)
+- Updating session status files
 - When user explicitly says "you write the learning notes" or similar
+- Updating root README.md or docs/README.md for progress tracking
 
 Even then, ask for confirmation first.
 
@@ -130,10 +157,29 @@ demo-react-native-app/
 ├── hooks/               # Custom React hooks
 │   ├── use-color-scheme.ts
 │   └── use-theme-color.ts
+├── lib/                            # Business logic and utilities
+│   ├── database/                   # SQLite database layer (Epic 2)
+│   │   ├── index.ts               # Database initialization
+│   │   ├── schema.ts              # Table schemas
+│   │   ├── ingredients.ts         # Ingredient CRUD
+│   │   ├── mealLogs.ts           # Meal log CRUD
+│   │   ├── seed.ts               # Seed data
+│   │   └── __tests__/            # Database tests (14 tests passing)
+│   ├── telemetry.ts              # OpenTelemetry setup (Epic 1)
+│   ├── logger.ts                 # Structured logging (Epic 1)
+│   └── analytics.ts              # Analytics tracking (Epic 1)
+├── types/                          # TypeScript type definitions
+│   └── database.ts                # Database types (Epic 2)
 ├── docs/                           # Learning documentation
-│   └── epic01_infrastructure/      # Epic 1: Infrastructure & Foundation
-│       ├── LEARNING_PLAN.md        # Overall learning plan and phase tracker
-│       └── PHASE*_LEARNING_NOTES.md # Phase-specific learning notes
+│   ├── README.md                  # Documentation index
+│   ├── epic01_infrastructure/     # Epic 1: COMPLETED
+│   │   ├── LEARNING_PLAN.md       # Epic 1 plan (completed)
+│   │   └── PHASE*_LEARNING_NOTES.md # Epic 1 notes
+│   └── epic02_mealsrandomizer/    # Epic 2: IN PROGRESS
+│       ├── SESSION_STATUS.md      # Latest session status ⭐
+│       ├── QUICK_START_TOMORROW.md # Quick resume guide ⭐
+│       ├── OVERVIEW.md            # Epic 2 overview
+│       └── PHASE*_*.md            # Phase guides
 ├── assets/             # Images, icons, splash screens
 ├── app.json           # Expo configuration (app metadata, icons, splash)
 ├── eas.json          # EAS Build configuration
