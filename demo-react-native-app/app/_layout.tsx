@@ -1,4 +1,4 @@
-import * as Sentry from 'sentry-expo';
+import * as Sentry from '@sentry/react-native';
 
 import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
 import { Stack } from 'expo-router';
@@ -13,8 +13,8 @@ import { seedDatabase } from '../lib/database/seed';
 
 Sentry.init({
   dsn: 'https://35bafc36022024afa7ddd747a1491ca5@o4510262174220288.ingest.de.sentry.io/4510262178021456',
-  enableInExpoDevelopment: true,
   debug: true,
+  tracesSampleRate: 1.0, // Capture 100% of transactions for performance monitoring
 });
 
 export const unstable_settings = {

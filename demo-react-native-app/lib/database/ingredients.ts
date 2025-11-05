@@ -1,11 +1,12 @@
 import { getDatabase } from './index';
 import { Ingredient } from '../../types/database';
+import * as Crypto from 'expo-crypto';
 
 export async function addIngredient(
   ingredient: Omit<Ingredient, 'id' | 'createdAt'>
 ): Promise<string> {
   const db = getDatabase();
-  const id = crypto.randomUUID();
+  const id = await Crypto.randomUUID();
   const createdAt = new Date().toISOString();
 
   await db.runAsync(

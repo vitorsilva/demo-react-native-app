@@ -1,9 +1,10 @@
 import { getDatabase } from './index';
 import { MealLog } from '../../types/database';
+import * as Crypto from 'expo-crypto';
 
 export async function logMeal(mealLog: Omit<MealLog, 'id' | 'createdAt'>): Promise<string> {
   const db = getDatabase();
-  const id = crypto.randomUUID();
+  const id = Crypto.randomUUID();
   const createdAt = new Date().toISOString();
 
   await db.runAsync(

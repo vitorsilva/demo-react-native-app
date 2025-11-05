@@ -10,7 +10,10 @@
       "Bash(git commit:*)",
       "mcp__context7__resolve-library-id",
       "Bash(dir:*)",
-      "Bash(nul)"
+      "Bash(nul)",
+      "WebFetch(domain:docs.sentry.io)",
+      "mcp__context7__get-library-docs",
+      "WebFetch(domain:docs.expo.dev)"
     ],
     "deny": [],
     "ask": []

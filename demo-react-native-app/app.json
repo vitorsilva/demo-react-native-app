@@ -40,7 +40,7 @@
           }
         }
       ],
-      "sentry-expo",
+      "@sentry/react-native/expo",
       "expo-sqlite"
     ],
     "experiments": {
