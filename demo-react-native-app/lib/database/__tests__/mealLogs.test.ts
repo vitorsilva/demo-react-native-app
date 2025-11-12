@@ -35,7 +35,7 @@ describe('Meal Log Operations', () => {
       mealTypes: ['breakfast'],
     });
 
-    ingredientIds = [milkId, breadId, jamId];
+    ingredientIds = [milkId.id, breadId.id, jamId.id];
   });
 
   test('logMeal creates meal log with generatedID', async () => {
@@ -46,8 +46,13 @@ describe('Meal Log Operations', () => {
     });
 
     expect(mealId).toBeDefined();
-    expect(typeof mealId).toBe('string');
-    expect(mealId.length).toBeGreaterThan(0);
+    expect(typeof mealId).toBe('object');
+    expect(mealId.id).toBeDefined();
+    expect(typeof mealId.id).toBe('string');
+    expect(mealId.id.length).toBeGreaterThan(0);
+    expect(mealId.mealType).toBe('breakfast');
+    expect(mealId.ingredients).toEqual(ingredientIds);
+    expect(mealId.createdAt).toBeDefined();
   });
 
   test('getRecentMealLogs returns empty array when no meals', async () => {
@@ -167,7 +172,7 @@ describe('Meal Log Operations', () => {
     let meals = await getRecentMealLogs(7);
     expect(meals).toHaveLength(1);
 
-    await deleteMealLog(mealId);
+    await deleteMealLog(meals[0].id);
 
     meals = await getRecentMealLogs(7);
     expect(meals).toHaveLength(0);

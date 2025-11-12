@@ -2,7 +2,7 @@ import { getDatabase } from './index';
 import { MealLog } from '../../types/database';
 import * as Crypto from 'expo-crypto';
 
-export async function logMeal(mealLog: Omit<MealLog, 'id' | 'createdAt'>): Promise<string> {
+export async function logMeal(mealLog: Omit<MealLog, 'id' | 'createdAt'>): Promise<MealLog> {
   const db = getDatabase();
   const id = Crypto.randomUUID();
   const createdAt = new Date().toISOString();
@@ -13,7 +13,13 @@ export async function logMeal(mealLog: Omit<MealLog, 'id' | 'createdAt'>): Promi
     [id, mealLog.date, mealLog.mealType, JSON.stringify(mealLog.ingredients), createdAt]
   );
 
-  return id;
+  return {
+    id,
+    date: mealLog.date,
+    mealType: mealLog.mealType,
+    ingredients: mealLog.ingredients,
+    createdAt,
+  };
 }
 
 export async function getRecentMealLogs(days: number = 7): Promise<MealLog[]> {
