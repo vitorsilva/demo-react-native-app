@@ -8,6 +8,14 @@ module.exports = defineConfig([
     ignores: ['dist/*'],
   },
   {
+    settings: {
+      'import/resolver': {
+        typescript: {
+          alwaysTryTypes: true,
+          project: './demo-react-native-app/tsconfig.json',
+        },
+      },
+    },
     rules: {
       // Prettier handles formatting
       'prettier/prettier': 'off',
