@@ -4,7 +4,7 @@ import * as Crypto from 'expo-crypto';
 
 export async function addIngredient(
   ingredient: Omit<Ingredient, 'id' | 'createdAt'>
-): Promise<string> {
+): Promise<Ingredient> {
   const db = getDatabase();
   const id = await Crypto.randomUUID();
   const createdAt = new Date().toISOString();
@@ -15,7 +15,13 @@ export async function addIngredient(
     [id, ingredient.name, ingredient.category, JSON.stringify(ingredient.mealTypes), createdAt]
   );
 
-  return id;
+  return {
+    id,
+    name: ingredient.name,
+    category: ingredient.category,
+    mealTypes: ingredient.mealTypes,
+    createdAt,
+  };
 }
 
 export async function getAllIngredients(): Promise<Ingredient[]> {

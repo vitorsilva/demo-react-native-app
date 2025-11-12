@@ -25,8 +25,13 @@ describe('Ingredient Operations', () => {
     });
     expect(ingredient).toBeDefined();
     // maybe add that id is set?
-    expect(typeof ingredient).toBe('string'); // dont understand why
-    expect(ingredient.length).toBeGreaterThan(0);
+    expect(typeof ingredient).toBe('object');
+    expect(ingredient.id).toBeDefined();
+    expect(typeof ingredient.id).toBe('string');
+    expect(ingredient.id.length).toBeGreaterThan(0);
+    expect(ingredient.name).toBe('Greek Yogurt');
+    expect(ingredient.category).toBe('protein');
+    expect(ingredient.createdAt).toBeDefined();
   });
 
   test('getAllIngredients returns empty array when no ingredients', async () => {
@@ -107,7 +112,7 @@ describe('Ingredient Operations', () => {
     let ingredients = await getAllIngredients();
     expect(ingredients).toHaveLength(1);
 
-    await deleteIngredient(id);
+    await deleteIngredient(ingredients[0].id);
 
     ingredients = await getAllIngredients();
     expect(ingredients).toHaveLength(0);
