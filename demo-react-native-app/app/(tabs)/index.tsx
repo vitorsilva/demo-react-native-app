@@ -1,9 +1,10 @@
 import { View, Text, StyleSheet, Button, TextInput } from 'react-native';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { tracer, meter } from '../../lib/telemetry';
 import { log } from '../../lib/logger';
 import { useFocusEffect } from '@react-navigation/native';
 import { analytics } from '../../lib/analytics';
+import { useStore } from '../../lib/store';
 
 // Create a counter metric to track button presses
 const buttonPressCounter = meter.createCounter('button.presses', {
@@ -19,6 +20,20 @@ const inputLengthHistogram = meter.createHistogram('input.length', {
 export default function HomeScreen() {
   const [inputValue, setInputValue] = useState('');
   const [displayText, setDisplayText] = useState('');
+
+  // Zustand store selectors
+  const ingredients = useStore((state) => state.ingredients);
+  const isLoading = useStore((state) => state.isLoading);
+  const error = useStore((state) => state.error);
+  const isDatabaseReady = useStore((state) => state.isDatabaseReady); // ← ADD THIS
+  const loadIngredients = useStore((state) => state.loadIngredients);
+
+  // Load ingredients when component mounts
+  useEffect(() => {
+    if (isDatabaseReady) {
+      loadIngredients();
+    }
+  }, [isDatabaseReady, loadIngredients]);
 
   // Track screen view every time this screen is focused
   useFocusEffect(() => {
@@ -56,20 +71,31 @@ export default function HomeScreen() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>Hello World! </Text>
-      <TextInput
-        style={styles.input}
-        placeholder="Type here..."
-        value={inputValue}
-        onChangeText={setInputValue}
-      />
-      <Button title="Press me" onPress={handlePress} />
-      <Text style={styles.text}>{displayText}</Text>
+      <Text style={styles.text}>Meals Randomizer</Text>
+
+      {/* Database not ready */}
+      {!isDatabaseReady && <Text style={styles.text}>Initializing database...</Text>}
+
+      {/* Loading state */}
+      {isDatabaseReady && isLoading && <Text style={styles.text}>Loading ingredients...</Text>}
+
+      {/* Error state */}
+      {error && <Text style={styles.errorText}>Error: {error}</Text>}
+
+      {/* Ingredient count */}
+      {isDatabaseReady && !isLoading && !error && (
+        <Text style={styles.text}>{ingredients.length} ingredients loaded</Text>
+      )}
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  errorText: {
+    fontSize: 16,
+    color: 'red',
+    marginBottom: 12,
+  },
   container: {
     flex: 1,
     justifyContent: 'center',

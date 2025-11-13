@@ -9,12 +9,14 @@ interface StoreState {
   mealLogs: MealLog[];
   isLoading: boolean;
   error: string | null;
+  isDatabaseReady: boolean;
 
   // Actions: Functions that modify state
   loadIngredients: () => Promise<void>;
   loadMealLogs: () => Promise<void>;
   addIngredient: (ingredient: Omit<Ingredient, 'id'>) => Promise<void>;
   logMeal: (mealLog: Omit<MealLog, 'id' | 'createdAt'>) => Promise<void>;
+  setDatabaseReady: () => void;
 }
 
 export const useStore = create<StoreState>((set) => ({
@@ -23,6 +25,7 @@ export const useStore = create<StoreState>((set) => ({
   mealLogs: [],
   isLoading: false,
   error: null,
+  isDatabaseReady: false,
 
   // Action: Load all ingredients from database
   loadIngredients: async () => {
@@ -85,4 +88,7 @@ export const useStore = create<StoreState>((set) => ({
       });
     }
   },
+
+  // Action: Mark database as ready
+  setDatabaseReady: () => set({ isDatabaseReady: true }),
 }));

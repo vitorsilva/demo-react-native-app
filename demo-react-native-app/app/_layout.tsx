@@ -10,6 +10,7 @@ import { useColorScheme } from '../hooks/use-color-scheme';
 import { useEffect } from 'react';
 import { initDatabase } from '../lib/database';
 import { seedDatabase } from '../lib/database/seed';
+import { useStore } from '../lib/store';
 
 Sentry.init({
   dsn: 'https://35bafc36022024afa7ddd747a1491ca5@o4510262174220288.ingest.de.sentry.io/4510262178021456',
@@ -23,6 +24,7 @@ export const unstable_settings = {
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
+  const setDatabaseReady = useStore((state) => state.setDatabaseReady);
 
   useEffect(() => {
     async function setup() {
@@ -30,6 +32,7 @@ export default function RootLayout() {
         await initDatabase();
         await seedDatabase();
         console.log('✅ Database ready');
+        setDatabaseReady();
       } catch (error) {
         console.error('❌ Database initialization failed:', error);
       }

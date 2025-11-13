@@ -1,6 +1,6 @@
 # Epic 2: Current Session Status
 
-**Last Updated:** 2025-01-05
+**Last Updated:** 2025-01-13
 
 ---
 
@@ -10,9 +10,156 @@
 
 ---
 
+## 🔄 Phase 2: State Management & Core Logic - 50% COMPLETE
+
+**Status:** 🔄 IN PROGRESS (Started 2025-01-13)
+
+**Completed:**
+- ✅ Step 2.1: Understanding State Management (conceptual)
+- ✅ Step 2.2: Installing and Setting Up Zustand
+- ✅ Step 2.3: Using Zustand Store in Components
+
+**Next:**
+- ⏳ Step 2.4: Implementing Combination Generator Algorithm
+- ⏳ Step 2.5: Implementing Variety Scoring Engine
+- ⏳ Step 2.6: Adding OpenTelemetry Metrics
+
+---
+
 ## 📅 Session History
 
-### Session 2: 2025-01-05 (Today) - Phase 1 Completion
+### Session 3: 2025-01-13 - Phase 2 Start (Steps 2.1-2.3)
+
+**Major Accomplishments:**
+- ✅ Connected Zustand store to UI components
+- ✅ Implemented database initialization tracking
+- ✅ Fixed race condition between database init and data loading
+- ✅ Added loading/error states to home screen
+- ✅ Deep understanding of `useEffect` and dependency arrays
+
+**What You Built:**
+- Enhanced Zustand store with `isDatabaseReady` flag
+- Connected home screen to display ingredient count from store
+- Proper async initialization flow
+
+**Details:**
+
+#### 1. Zustand Store Enhancement
+
+**Added to `lib/store/index.ts`:**
+- `isDatabaseReady: boolean` - tracks database initialization state
+- `setDatabaseReady()` - action to mark database as ready
+
+**Why:** Prevents race condition where components try to load data before database is initialized.
+
+#### 2. Database Initialization Flow
+
+**Updated `app/_layout.tsx`:**
+```typescript
+const setDatabaseReady = useStore((state) => state.setDatabaseReady);
+
+useEffect(() => {
+  async function setup() {
+    await initDatabase();
+    await seedDatabase();
+    setDatabaseReady();  // Signal that database is ready
+  }
+  setup();
+}, []);
+```
+
+**Flow:**
+1. App starts → database initializes
+2. When complete → `setDatabaseReady()` called
+3. Store updates `isDatabaseReady: true`
+4. Components waiting for database can now proceed
+
+#### 3. Home Screen Integration
+
+**Updated `app/(tabs)/index.tsx`:**
+
+**Zustand Selectors (Performance Optimized):**
+```typescript
+const ingredients = useStore((state) => state.ingredients);
+const isLoading = useStore((state) => state.isLoading);
+const error = useStore((state) => state.error);
+const isDatabaseReady = useStore((state) => state.isDatabaseReady);
+const loadIngredients = useStore((state) => state.loadIngredients);
+```
+
+**Why multiple selectors?** Each subscribes to specific state - component only re-renders when that specific data changes.
+
+**Data Loading Effect:**
+```typescript
+useEffect(() => {
+  if (isDatabaseReady) {
+    loadIngredients();
+  }
+}, [isDatabaseReady, loadIngredients]);
+```
+
+**Why this works:**
+- Effect watches `isDatabaseReady`
+- When it changes from `false` → `true`, effect re-runs
+- Then loads ingredients from database
+
+**UI States:**
+- Database not ready: "Initializing database..."
+- Loading: "Loading ingredients..."
+- Error: Shows error message
+- Success: "22 ingredients loaded"
+
+#### 4. Key Learning: Understanding useEffect
+
+**Deep dive on `useEffect` syntax:**
+
+```typescript
+useEffect(effectFunction, dependencyArray)
+```
+
+**Effect Function:**
+- Can be inline arrow function: `() => { /* code */ }`
+- Or named function reference
+- Runs your "side effect" (data loading, subscriptions, etc.)
+
+**Dependency Array:**
+- **NOT** the data itself - it's a list of **values to watch**
+- React compares old vs new values on each render
+- If any value changes → re-run effect
+- Can contain: numbers, strings, functions, objects, arrays
+
+**Examples:**
+- `[]` - Run once on mount, never again
+- `[count]` - Re-run when `count` changes
+- `[userId, filterType]` - Re-run when either changes
+- No array - Re-runs on every render (usually bad!)
+
+**Common Misconception Corrected:**
+- Student thought `[loadIngredients]` was "the ingredients array loaded by Zustand"
+- **Actually:** It's the function reference itself that React watches
+- Effect re-runs if the function reference changes (doesn't in Zustand)
+
+#### 5. Selector Pattern for Performance
+
+**❌ Bad (re-renders on ANY state change):**
+```typescript
+const state = useStore();
+const count = state.ingredients.length;
+```
+
+**✅ Good (re-renders only when ingredients change):**
+```typescript
+const ingredients = useStore((state) => state.ingredients);
+const count = ingredients.length;
+```
+
+**Why:** Zustand uses the selector function to determine what data the component needs. Only subscribes to changes in that specific slice of state.
+
+**Mental model:** "Tell Zustand: wake me up ONLY when THIS specific data changes"
+
+---
+
+### Session 2: 2025-01-05 - Phase 1 Completion
 
 **Major Accomplishments:**
 - ✅ Fixed React version conflicts (react-test-renderer 19.2.0 → 19.1.0)
