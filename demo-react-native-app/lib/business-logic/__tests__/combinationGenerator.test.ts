@@ -63,17 +63,4 @@ describe('generateCombinations', () => {
       expect(uniqueIds.size).toBe(ids.length); // No duplicates
     });
   });
-
-  it('manual verification - see what output looks like', () => {
-    const result = generateCombinations(mockIngredients, 3, []);
-
-    console.log('\n--- Generated Combinations ---');
-    result.forEach((combo, index) => {
-      const names = combo.map((ing) => ing.name).join(', ');
-      console.log(`Combo ${index + 1}: [${names}]`);
-    });
-    console.log('------------------------------\n');
-
-    expect(result).toHaveLength(3);
-  });
 });
