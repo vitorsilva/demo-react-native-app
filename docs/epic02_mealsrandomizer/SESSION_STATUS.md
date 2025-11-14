@@ -1,6 +1,6 @@
 # Epic 2: Current Session Status
 
-**Last Updated:** 2025-01-13
+**Last Updated:** 2025-01-14
 
 ---
 
@@ -10,7 +10,7 @@
 
 ---
 
-## 🔄 Phase 2: State Management & Core Logic - 50% COMPLETE
+## 🔄 Phase 2: State Management & Core Logic - 65% COMPLETE
 
 **Status:** 🔄 IN PROGRESS (Started 2025-01-13)
 
@@ -18,15 +18,191 @@
 - ✅ Step 2.1: Understanding State Management (conceptual)
 - ✅ Step 2.2: Installing and Setting Up Zustand
 - ✅ Step 2.3: Using Zustand Store in Components
+- ✅ Step 2.4: Implementing Combination Generator Algorithm
 
 **Next:**
-- ⏳ Step 2.4: Implementing Combination Generator Algorithm
 - ⏳ Step 2.5: Implementing Variety Scoring Engine
 - ⏳ Step 2.6: Adding OpenTelemetry Metrics
 
 ---
 
 ## 📅 Session History
+
+### Session 4: 2025-01-14 - Combination Generator Algorithm (Step 2.4)
+
+**Major Accomplishments:**
+- ✅ Built combination generator algorithm using Test-Driven Development (TDD)
+- ✅ Learned Red-Green-Refactor cycle in practice
+- ✅ Implemented Fisher-Yates shuffle algorithm
+- ✅ Created pure, testable business logic functions
+- ✅ 18/18 tests passing (14 database + 4 algorithm)
+- ✅ Removed obsolete UI tests from Epic 1
+
+**What You Built:**
+- `lib/business-logic/combinationGenerator.ts` - Core algorithm (~60 lines)
+- `lib/business-logic/__tests__/combinationGenerator.test.ts` - 4 comprehensive tests
+- Algorithm generates random meal combinations with intelligent filtering
+
+**Details:**
+
+#### 1. Test-Driven Development (TDD) - Red-Green-Refactor
+
+**The Process:**
+1. 🔴 **Red:** Write tests first → watch them fail
+2. 🟢 **Green:** Write minimal code to pass tests
+3. 🔧 **Refactor:** Improve code quality
+
+**What happened:**
+- Wrote 4 tests before any implementation
+- Created stub function that returns `[]`
+- Ran tests → 4 failures (expected!)
+- Implemented real algorithm
+- Ran tests → 18/18 passing! 🎉
+
+**Key insight:** Tests that never fail are useless. We verified our tests work by watching them fail first.
+
+#### 2. Test Quality Discovery
+
+**Problem encountered:** Initially only 1 test failed when returning empty array.
+
+**Root cause:** Tests 2-4 used `forEach` on empty array:
+```typescript
+[].forEach((item) => {
+  expect(item)...  // Never runs! forEach on [] = 0 iterations
+});
+```
+
+**Solution:** Added length assertions before forEach:
+```typescript
+expect(result).toHaveLength(5);  // Verify array has items FIRST
+result.forEach((combo) => {
+  // Then check contents
+});
+```
+
+**Learning:** Always validate test prerequisites. A passing test must mean "feature works", not "test didn't run".
+
+#### 3. Algorithm Implementation
+
+**Function signature:**
+```typescript
+function generateCombinations(
+  ingredients: Ingredient[],
+  count: number,
+  recentlyUsedIds: string[]
+): Ingredient[][]
+```
+
+**Algorithm steps:**
+1. **Filter:** Remove recently used ingredients
+2. **Loop:** Generate N combinations
+3. **Random size:** Pick 1-3 ingredients per combo
+4. **Shuffle:** Randomize available ingredients
+5. **Slice:** Take first X items (guarantees no duplicates within combo)
+6. **Return:** Array of unique combinations
+
+**Key design decisions:**
+- Ingredients CAN repeat **across** combos (user-friendly when few ingredients)
+- Ingredients CANNOT repeat **within** a combo (realistic meals)
+- Pure function (no database calls, no mutations, easy to test)
+
+#### 4. Fisher-Yates Shuffle Algorithm
+
+**Purpose:** Unbiased random shuffling of arrays
+
+**Implementation:**
+```typescript
+function shuffleArray<T>(array: T[]): T[] {
+  const shuffled = [...array]; // Copy to avoid mutation
+
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]; // Swap
+  }
+
+  return shuffled;
+}
+```
+
+**Why Fisher-Yates?**
+- Proven unbiased algorithm (each permutation equally likely)
+- O(n) time complexity (efficient)
+- Industry standard for shuffling
+
+#### 5. Key Programming Concepts Learned
+
+**Spread Operator (`...`):**
+```typescript
+const copy = [...originalArray]; // Shallow copy
+```
+- Creates new array with same elements
+- Prevents mutations to original data
+- Essential for pure functions
+
+**Array Destructuring for Swapping:**
+```typescript
+// Old way (3 lines):
+const temp = a;
+a = b;
+b = temp;
+
+// Modern way (1 line):
+[a, b] = [b, a];
+```
+- More concise and readable
+- No temporary variable needed
+- ES6+ feature
+
+**Math.min() for Edge Cases:**
+```typescript
+const size = Math.min(comboSize, availableIngredients.length);
+```
+- Prevents trying to take more items than exist
+- Gracefully handles low-ingredient scenarios
+- "Take up to N items, but no more than we have"
+
+**Generic Functions:**
+```typescript
+function shuffleArray<T>(array: T[]): T[] {
+  // Works with any array type!
+}
+```
+- `<T>` means "type parameter" (like a variable for types)
+- Makes function reusable for different data types
+- TypeScript ensures type safety
+
+#### 6. Testing Philosophy
+
+**The 4 tests cover:**
+1. **Happy path:** Generates requested number of combinations
+2. **Constraints:** Each combination has 1-3 ingredients
+3. **Filtering:** Recently used ingredients excluded
+4. **Uniqueness:** No duplicates within combinations
+
+**Example output (manual verification):**
+```
+Combo 1: [Bread, Jam]              ← 2 ingredients
+Combo 2: [Milk, Bread, Apple]      ← 3 ingredients
+Combo 3: [Milk, Bread, Cheese]     ← 3 ingredients
+```
+
+**Real meals generated:**
+- Toast with jam 🍞🍓
+- Milk with bread and apple 🥛🍞🍎
+- Milk with bread and cheese 🥛🍞🧀
+
+#### 7. Test Cleanup
+
+**Removed:** `app/(tabs)/__tests__/index.test.tsx`
+
+**Why:**
+- Tests checked for "Hello World" UI from Epic 1
+- UI was replaced in Phase 2 with Meals Randomizer interface
+- Failing tests with no bugs = test noise
+
+**Lesson learned:** Failing tests must indicate real problems. Delete obsolete tests immediately to maintain trust in test suite.
+
+---
 
 ### Session 3: 2025-01-13 - Phase 2 Start (Steps 2.1-2.3)
 
@@ -432,12 +608,18 @@ You'll learn:
 
 ```
 Phase 1: Data Foundation       - 100% ████████████████████ ✅ COMPLETE
-Phase 2: State Management      - 0%   ░░░░░░░░░░░░░░░░░░░░
+Phase 2: State Management      - 65%  █████████████░░░░░░░ 🔄 IN PROGRESS
+  Step 2.1: Concepts          - 100% ████████████████████ ✅
+  Step 2.2: Zustand Setup     - 100% ████████████████████ ✅
+  Step 2.3: UI Integration    - 100% ████████████████████ ✅
+  Step 2.4: Algorithm         - 100% ████████████████████ ✅
+  Step 2.5: Variety Engine    - 0%   ░░░░░░░░░░░░░░░░░░░░ ⏳ NEXT
+  Step 2.6: Metrics           - 0%   ░░░░░░░░░░░░░░░░░░░░
 Phase 3: Building UI           - 0%   ░░░░░░░░░░░░░░░░░░░░
 Phase 4: Navigation            - 0%   ░░░░░░░░░░░░░░░░░░░░
 Phase 5: Polish & Testing      - 0%   ░░░░░░░░░░░░░░░░░░░░
 
-Estimated completion: ~20% (1 of 5 phases complete)
+Overall Epic 2: ~33% complete
 ```
 
 ---
@@ -445,10 +627,11 @@ Estimated completion: ~20% (1 of 5 phases complete)
 ## 💡 Remember for Next Session
 
 - **Phase 1 is bulletproof** - All tests passing, production-ready observability
-- **Database layer is complete** - Ready to build business logic on top
-- **Sentry is live** - Real-time error tracking in production
-- **Teaching methodology** - Claude guides, you write code
-- **Next: Zustand + Algorithms** - More complex concepts ahead!
+- **Database layer is complete** - 22 ingredients seeded and ready
+- **Combination generator working** - Pure algorithm with 4 passing tests
+- **18 tests passing** - 14 database + 4 algorithm
+- **TDD methodology learned** - Red-Green-Refactor cycle
+- **Next: Variety Engine** - Track recent meals to prevent repetition!
 
 ---
 
