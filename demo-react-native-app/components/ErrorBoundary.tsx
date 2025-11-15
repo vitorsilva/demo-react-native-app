@@ -1,7 +1,7 @@
 import * as Sentry from '@sentry/react-native';
 import React, { Component, ReactNode } from 'react';
 import { View, Text, Button, StyleSheet } from 'react-native';
-import { log } from '../lib/logger';
+import { log } from '../lib/telemetry/logger';
 
 interface Props {
   children: ReactNode;

@@ -1,9 +1,9 @@
 import { View, Text, StyleSheet, Button, TextInput } from 'react-native';
 import { useState, useEffect } from 'react';
-import { tracer, meter } from '../../lib/telemetry';
-import { log } from '../../lib/logger';
+import { tracer, meter } from '../../lib/telemetry/telemetry';
+import { log } from '../../lib/telemetry/logger';
 import { useFocusEffect } from '@react-navigation/native';
-import { analytics } from '../../lib/analytics';
+import { analytics } from '../../lib/telemetry/analytics';
 import { useStore } from '../../lib/store';
 
 // Create a counter metric to track button presses
