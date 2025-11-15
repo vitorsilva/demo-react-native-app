@@ -127,6 +127,7 @@ export const useStore = create<StoreState>((set, get) => ({
       mealGenerationDuration.record(duration);
 
       set({ suggestedCombinations: combinations, isLoading: false });
+      console.log('Metrics recorded:', { duration, suggestionsCount: combinations.length });
     } catch (error) {
       // Still record duration even on failure
       const duration = Date.now() - startTime;

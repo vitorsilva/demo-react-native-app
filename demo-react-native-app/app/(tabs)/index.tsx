@@ -27,6 +27,8 @@ export default function HomeScreen() {
   const error = useStore((state) => state.error);
   const isDatabaseReady = useStore((state) => state.isDatabaseReady); // ← ADD THIS
   const loadIngredients = useStore((state) => state.loadIngredients);
+  const suggestedCombinations = useStore((state) => state.suggestedCombinations);
+  const generateMealSuggestions = useStore((state) => state.generateMealSuggestions);
 
   // Load ingredients when component mounts
   useEffect(() => {
@@ -69,6 +71,10 @@ export default function HomeScreen() {
     span.end();
   };
 
+  const handleGenerateSuggestions = () => {
+    generateMealSuggestions(3, 3); // Generate 3 suggestions, 3-day cooldown
+  };
+
   return (
     <View style={styles.container}>
       <Text style={styles.text}>Meals Randomizer</Text>
@@ -85,6 +91,23 @@ export default function HomeScreen() {
       {/* Ingredient count */}
       {isDatabaseReady && !isLoading && !error && (
         <Text style={styles.text}>{ingredients.length} ingredients loaded</Text>
+      )}
+
+      {/* Generate button */}
+      {isDatabaseReady && !isLoading && (
+        <Button title="Generate Suggestions" onPress={handleGenerateSuggestions} />
+      )}
+
+      {/* Display suggestions */}
+      {suggestedCombinations.length > 0 && (
+        <View style={styles.suggestionsContainer}>
+          <Text style={styles.text}>Suggestions:</Text>
+          {suggestedCombinations.map((combo, index) => (
+            <Text key={index} style={styles.suggestionText}>
+              {index + 1}. {combo.map((ing) => ing.name).join(', ')}
+            </Text>
+          ))}
+        </View>
       )}
     </View>
   );
@@ -112,5 +135,14 @@ const styles = StyleSheet.create({
     marginBottom: 12,
     paddingHorizontal: 8,
     color: 'white',
+  },
+  suggestionsContainer: {
+    marginTop: 20,
+    padding: 10,
+  },
+  suggestionText: {
+    fontSize: 16,
+    color: 'white',
+    marginVertical: 4,
   },
 });
