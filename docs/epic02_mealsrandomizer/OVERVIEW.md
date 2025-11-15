@@ -69,9 +69,9 @@ Implement Zustand for global state management and build the core algorithms: com
 ---
 
 ### Phase 3: Building the UI (5-6 hours)
-Build the user interface screens and components based on the mockups, focusing on clean, performant, and accessible mobile UI.
+Build the user interface screens and components based on the mockups, focusing on clean, performant, and accessible mobile UI. Includes fixing web mode SQLite compatibility for easier development.
 
-**You'll learn:** Component composition, FlatList, styling patterns, screen layouts
+**You'll learn:** Component composition, FlatList, styling patterns, screen layouts, web platform compatibility
 
 **[Start Phase 3 →](./PHASE3_BUILDING_UI.md)**
 
@@ -96,7 +96,9 @@ Add final polish, write comprehensive tests, ensure observability coverage, and 
 ---
 
 ### Phase 6: Future Enhancements (Optional)
-Ideas for V2 and beyond: AI suggestions, favorites, photos, nutrition tracking, cloud sync, and more.
+Ideas for V2 and beyond: AI suggestions, favorites, photos, nutrition tracking, cloud sync, Android Studio emulator setup, and more.
+
+**You'll learn:** Advanced features, cloud integration, development environment improvements
 
 **[View Enhancement Ideas →](./PHASE6_FUTURE_ENHANCEMENTS.md)**
 

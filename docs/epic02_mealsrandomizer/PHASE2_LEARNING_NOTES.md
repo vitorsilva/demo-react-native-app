@@ -3,8 +3,8 @@
 ## Overview
 This document captures all the concepts, questions, and explanations from Phase 2 of Epic 2 - building intelligent meal suggestion algorithms with state management.
 
-**Phase Duration:** 2 sessions (2025-01-13 to 2025-01-14)
-**Status:** 🔄 IN PROGRESS (65% complete)
+**Phase Duration:** 3 sessions (2025-01-13 to 2025-01-15)
+**Status:** ✅ COMPLETE
 
 ---
 
@@ -17,6 +17,7 @@ This document captures all the concepts, questions, and explanations from Phase 
 6. [TypeScript Advanced Concepts](#typescript-advanced-concepts)
 7. [Date Math & Time Calculations](#date-math--time-calculations)
 8. [Architecture Patterns](#architecture-patterns)
+9. [OpenTelemetry Metrics](#opentelemetry-metrics-step-26)
 
 ---
 
@@ -2055,6 +2056,451 @@ generateMealSuggestions: async (count, cooldownDays) => {
 
 ---
 
+## OpenTelemetry Metrics (Step 2.6)
+
+### Understanding Metrics in Observability
+
+**Q: What are metrics and how do they differ from logs and traces?**
+
+**A: Numerical Measurements Over Time**
+
+**The Three Pillars of Observability:**
+```
+1. LOGS: Events that happened (text-based)
+   "User clicked button at 15:30:45"
+
+2. TRACES: Request flow through system (distributed)
+   Request → Service A → Service B → Database → Response
+
+3. METRICS: Numerical measurements (aggregated)
+   - Request count: 1,234 total
+   - Duration: p50=45ms, p95=120ms
+   - Error rate: 0.5%
+```
+
+**Why Metrics Matter:**
+```
+✅ Track trends over time
+✅ Set up alerts (e.g., "notify if p95 > 200ms")
+✅ Monitor system health
+✅ Identify performance regressions
+✅ Capacity planning (based on historical data)
+```
+
+---
+
+### Metric Types
+
+**Q: What's the difference between Counter, Histogram, and Gauge?**
+
+**A: Different Purposes for Different Data**
+
+**Counter (Only Goes Up):**
+```typescript
+// Track totals that accumulate
+const requestCounter = meter.createCounter('http_requests_total');
+
+// Usage: Increment on each event
+requestCounter.add(1);  // Now: 1
+requestCounter.add(1);  // Now: 2
+requestCounter.add(1);  // Now: 3
+
+// Examples:
+// - Total requests
+// - Number of errors
+// - Meals generated
+// - Button presses
+```
+
+**Histogram (Distribution of Values):**
+```typescript
+// Track distribution of measurements
+const durationHistogram = meter.createHistogram('request_duration_ms');
+
+// Usage: Record each measurement
+durationHistogram.record(45);   // Request took 45ms
+durationHistogram.record(120);  // Request took 120ms
+durationHistogram.record(30);   // Request took 30ms
+
+// Provides:
+// - Minimum: 30ms
+// - Maximum: 120ms
+// - Average: 65ms
+// - Percentiles: p50=45ms, p95=120ms, p99=120ms
+
+// Examples:
+// - Request duration
+// - Response size
+// - Queue length
+// - Processing time
+```
+
+**Gauge (Current Value):**
+```typescript
+// Track current state (can go up or down)
+const activeConnections = meter.createGauge('active_connections');
+
+// Usage: Set current value
+activeConnections.record(10);  // 10 connections
+activeConnections.record(15);  // 15 connections
+activeConnections.record(8);   // 8 connections
+
+// Examples:
+// - Current memory usage
+// - Active connections
+// - Queue size
+// - Temperature
+```
+
+**Our Metrics:**
+```typescript
+// lib/telemetry/mealGenerationMetrics.ts
+
+// Counter: How many times
+export const mealGenerationCounter = meter.createCounter('meal_generation_total');
+
+// Histogram: How long
+export const mealGenerationDuration = meter.createHistogram('meal_generation_duration_ms');
+
+// Counter: How many results
+export const suggestionsGeneratedCounter = meter.createCounter('suggestions_generated_total');
+```
+
+---
+
+### Instrumenting Code
+
+**Q: How do we add metrics to our application?**
+
+**A: Record Measurements at Key Points**
+
+**Basic Pattern:**
+```typescript
+async function doSomething() {
+  const startTime = Date.now();  // Start timer
+
+  try {
+    counter.add(1);  // Track: operation started
+
+    // Do work
+    const result = await expensiveOperation();
+
+    // Record metrics on success
+    const duration = Date.now() - startTime;
+    durationHistogram.record(duration);
+    resultCounter.add(result.length);
+
+    return result;
+  } catch (error) {
+    // Record metrics even on failure
+    const duration = Date.now() - startTime;
+    durationHistogram.record(duration);
+
+    throw error;
+  }
+}
+```
+
+**Why Record on Failure Too?**
+```
+✅ See complete performance picture
+✅ Failures might be slow (timeout) or fast (validation error)
+✅ Identify patterns in failures
+✅ Without it, metrics are misleading (only success times)
+```
+
+**Our Implementation:**
+```typescript
+// lib/store/index.ts
+generateMealSuggestions: async (count, cooldownDays) => {
+  const startTime = Date.now();  // Track timing
+
+  set({ isLoading: true, error: null });
+  try {
+    // Track: generation started
+    mealGenerationCounter.add(1);
+
+    const { ingredients } = get();
+    const recentMealLogs = await mealLogsDb.getRecentMealLogs(cooldownDays);
+    const blockedIds = getRecentlyUsedIngredients(recentMealLogs);
+    const combinations = generateCombinations(ingredients, count, blockedIds);
+
+    // Track: how many suggestions generated
+    suggestionsGeneratedCounter.add(combinations.length);
+
+    // Track: how long it took
+    const duration = Date.now() - startTime;
+    mealGenerationDuration.record(duration);
+
+    set({ suggestedCombinations: combinations, isLoading: false });
+  } catch (error) {
+    // Still record duration on failure
+    const duration = Date.now() - startTime;
+    mealGenerationDuration.record(duration);
+
+    set({
+      error: error instanceof Error ? error.message : 'Failed to generate suggestions',
+      isLoading: false,
+    });
+  }
+},
+```
+
+---
+
+### Metrics Module Organization
+
+**Q: Where should we define our metrics?**
+
+**A: Dedicated Metrics Module (Separation of Concerns)**
+
+**Pattern:**
+```
+lib/telemetry/
+├── telemetry.ts              # Core setup (provider, meter)
+├── logger.ts                 # Structured logging
+├── analytics.ts              # User analytics
+└── mealGenerationMetrics.ts  # Feature-specific metrics (NEW)
+```
+
+**Why Separate Module?**
+```
+✅ Separation of concerns (metrics definitions separate from business logic)
+✅ Reusability (same metrics used from multiple places)
+✅ Single source of truth (all metric definitions in one place)
+✅ Clean imports (only import what you need)
+```
+
+**Module Structure:**
+```typescript
+// lib/telemetry/mealGenerationMetrics.ts
+import { meter } from './telemetry';
+
+// Define all metrics for meal generation feature
+export const mealGenerationCounter = meter.createCounter('meal_generation_total', {
+  description: 'Total number of meal suggestion generations',
+});
+
+export const mealGenerationDuration = meter.createHistogram('meal_generation_duration_ms', {
+  description: 'Time taken to generate meal suggestions',
+  unit: 'ms',
+});
+
+export const suggestionsGeneratedCounter = meter.createCounter('suggestions_generated_total', {
+  description: 'Total number of meal suggestions generated',
+});
+```
+
+**Usage:**
+```typescript
+// Import where needed
+import {
+  mealGenerationCounter,
+  mealGenerationDuration,
+  suggestionsGeneratedCounter,
+} from '@/lib/telemetry/mealGenerationMetrics';
+
+// Use in store actions
+mealGenerationCounter.add(1);
+mealGenerationDuration.record(duration);
+suggestionsGeneratedCounter.add(combinations.length);
+```
+
+---
+
+### Refactoring Telemetry Structure
+
+**Q: Why did we refactor lib/telemetry.ts into lib/telemetry/ folder?**
+
+**A: Organization and Scalability**
+
+**Before:**
+```
+lib/
+├── telemetry.ts    # OpenTelemetry setup
+├── logger.ts       # Logging
+└── analytics.ts    # Analytics
+```
+
+**After:**
+```
+lib/
+└── telemetry/
+    ├── telemetry.ts              # OpenTelemetry setup
+    ├── logger.ts                 # Logging
+    ├── analytics.ts              # Analytics
+    └── mealGenerationMetrics.ts  # Feature metrics
+```
+
+**Benefits:**
+```
+✅ Groups related observability code
+✅ Follows pattern established with database/
+✅ Clear separation of concerns
+✅ Easy to add more metrics modules
+✅ Professional project structure
+```
+
+**Refactoring Process:**
+```
+1. Create new folder structure
+2. Move files to new locations
+3. Update ALL imports throughout codebase
+4. Run TypeScript compiler to verify (npx tsc --noEmit)
+5. Run tests to ensure nothing broke (npm test)
+```
+
+**Lesson Learned:**
+> Refactoring requires updating imports everywhere. TypeScript compiler helps find all the places to update.
+
+---
+
+### OpenTelemetry Architecture
+
+**Q: How does the metrics pipeline work?**
+
+**A: App → Collector → Backend**
+
+**Data Flow:**
+```
+React Native App
+    ↓ (OTLP Protocol)
+OpenTelemetry Collector (port 4319)
+    ↓ (Prometheus Scrape)
+Prometheus (port 9090)
+    ↓ (Query)
+Prometheus UI (http://localhost:9090)
+```
+
+**Docker Compose Stack:**
+```yaml
+services:
+  otel-collector:
+    image: otel/opentelemetry-collector:latest
+    ports:
+      - "4319:4318"   # OTLP receiver
+      - "8889:8889"   # Prometheus exporter
+
+  prometheus:
+    image: prom/prometheus:latest
+    ports:
+      - "9090:9090"   # Web UI
+```
+
+**App Configuration:**
+```typescript
+// lib/telemetry/telemetry.ts
+const metricExporter = new OTLPMetricExporter({
+  url: 'http://localhost:4319/v1/metrics',  // Send to collector
+});
+
+meterProvider.addMetricReader(
+  new PeriodicExportingMetricReader({
+    exporter: metricExporter,
+    exportIntervalMillis: 60000,  // Export every 60 seconds
+  })
+);
+```
+
+**Important: localhost Limitation**
+```
+❌ Physical devices cannot access localhost (refers to device, not computer)
+✅ Emulator can access localhost (maps to host machine)
+✅ Web browser can access localhost (same machine)
+
+Solution for physical device:
+- Use computer's actual IP address (e.g., 192.168.1.XXX)
+- Or use Android Studio emulator where localhost works
+```
+
+---
+
+### Metrics Best Practices
+
+**Q: What are the best practices for metrics?**
+
+**A: Meaningful Names, Appropriate Types, Always Record**
+
+**Naming Conventions:**
+```typescript
+// Good: Descriptive, includes unit
+'meal_generation_duration_ms'
+'http_request_total'
+'database_connection_pool_size'
+
+// Bad: Vague, no unit
+'duration'
+'requests'
+'connections'
+```
+
+**Choosing Metric Type:**
+```
+Counter: "How many times did X happen?"
+  - meal_generation_total
+  - button_presses_total
+  - errors_total
+
+Histogram: "How long did X take?" or "What was the size of X?"
+  - request_duration_ms
+  - response_size_bytes
+  - batch_processing_time_ms
+
+Gauge: "What is the current value of X?"
+  - active_connections
+  - memory_usage_bytes
+  - queue_depth
+```
+
+**Include Descriptions:**
+```typescript
+meter.createCounter('meal_generation_total', {
+  description: 'Total number of meal suggestion generations',
+});
+
+meter.createHistogram('meal_generation_duration_ms', {
+  description: 'Time taken to generate meal suggestions',
+  unit: 'ms',
+});
+```
+
+**Always Record (Success AND Failure):**
+```typescript
+const startTime = Date.now();
+try {
+  // ... operation
+  mealGenerationDuration.record(Date.now() - startTime);
+} catch (error) {
+  mealGenerationDuration.record(Date.now() - startTime);  // Don't skip!
+  throw error;
+}
+```
+
+---
+
+### Future Improvements Noted
+
+**Issues Discovered:**
+
+1. **Web Mode SQLite Compatibility**
+   - Current SQLite doesn't work in web browser
+   - Need sql.js or similar for web support
+   - Blocks web-based testing
+
+2. **Physical Device localhost Access**
+   - Physical phones can't reach `localhost`
+   - Need actual IP or emulator for testing
+   - Consider Android Studio emulator setup
+
+**Next Steps:**
+```
+⏳ Install Android Studio for emulator testing
+⏳ Implement sql.js for web mode compatibility
+⏳ Configure environment variables for different endpoints
+```
+
+---
+
 ## Summary: Key Takeaways
 
 ### State Management
@@ -2099,21 +2545,47 @@ generateMealSuggestions: async (count, cooldownDays) => {
 - ✅ Pure business logic is testable and reusable
 - ✅ Store orchestrates and manages state
 
+### OpenTelemetry Metrics
+- ✅ Counter for tracking occurrences (how many times)
+- ✅ Histogram for distributions (timing, sizes)
+- ✅ Record on both success and failure
+- ✅ Meaningful naming with units (e.g., `_ms`, `_total`)
+- ✅ Separate metrics module for organization
+- ✅ Refactoring skills (move files, update imports)
+
 ---
 
-## Next: Phase 3
+## Phase 2 COMPLETE! 🎉
 
-**Phase 3: Building the UI**
+**All 6 steps completed:**
+- ✅ Step 2.1: Understanding State Management
+- ✅ Step 2.2: Installing and Setting Up Zustand
+- ✅ Step 2.3: Using Zustand Store in Components
+- ✅ Step 2.4: Implementing Combination Generator Algorithm
+- ✅ Step 2.5: Implementing Variety Scoring Engine
+- ✅ Step 2.6: Adding OpenTelemetry Metrics
+
+**Key Achievements:**
+- 22 tests passing (14 database + 4 algorithm + 4 variety)
+- Complete business logic layer with pure functions
+- Full observability with metrics instrumentation
+- Clean architecture with separation of concerns
+- Professional code organization
+
+---
+
+## Next: Phase 3 - Building the UI
 
 You'll learn:
-- Creating beautiful React Native UI
-- Connecting store to UI components
-- Handling user interactions
+- Creating beautiful React Native UI components
+- FlatList for performant list rendering
+- TouchableOpacity and Pressable for interactions
+- Styling with StyleSheet
 - Displaying generated meal suggestions
-- List rendering and performance
+- UI state management patterns
 
 **Estimated time:** 4-5 hours
 
 ---
 
-*Phase 2 in progress - excellent algorithm design! 🎉*
+*Phase 2 complete - excellent algorithm design and observability! 🎉*
