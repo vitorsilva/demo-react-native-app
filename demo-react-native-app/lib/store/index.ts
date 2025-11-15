@@ -4,7 +4,11 @@ import * as ingredientsDb from '@/lib/database/ingredients';
 import * as mealLogsDb from '@/lib/database/mealLogs';
 import { getRecentlyUsedIngredients } from '../business-logic/varietyEngine';
 import { generateCombinations } from '@/lib/business-logic/combinationGenerator';
-
+import {
+  mealGenerationCounter,
+  mealGenerationDuration,
+  suggestionsGeneratedCounter,
+} from '@/lib/telemetry/mealGenerationMetrics';
 interface StoreState {
   // State: Data
   ingredients: Ingredient[];
@@ -96,8 +100,13 @@ export const useStore = create<StoreState>((set, get) => ({
 
   // Action: Generate variety-enforced meal suggestions
   generateMealSuggestions: async (count, cooldownDays) => {
+    const startTime = Date.now(); // Track when we started
+
     set({ isLoading: true, error: null });
     try {
+      // Increment counter - generation started
+      mealGenerationCounter.add(1);
+
       // Step 1: Get current ingredients from store
       const { ingredients } = get();
 
@@ -110,8 +119,19 @@ export const useStore = create<StoreState>((set, get) => ({
       // Step 4: Generate combinations with variety enforcement
       const combinations = generateCombinations(ingredients, count, blockedIds);
 
+      // Record how many suggestions were generated
+      suggestionsGeneratedCounter.add(combinations.length);
+
+      // Record how long it took
+      const duration = Date.now() - startTime;
+      mealGenerationDuration.record(duration);
+
       set({ suggestedCombinations: combinations, isLoading: false });
     } catch (error) {
+      // Still record duration even on failure
+      const duration = Date.now() - startTime;
+      mealGenerationDuration.record(duration);
+
       set({
         error: error instanceof Error ? error.message : 'Failed to generate suggestions',
         isLoading: false,
