@@ -11,7 +11,10 @@ This is a learning-focused React Native mobile application built with Expo. The 
   - Professional dev workflow, testing, CI/CD, observability stack
 - 🔄 **Epic 2: Meals Randomizer** - IN PROGRESS (Started 2025-01-04)
   - Building a real app with SQLite, Zustand, and complex UI
-  - Phase 1 (Data Foundation): 95% complete
+  - ✅ Phase 1: Data Foundation - COMPLETE
+  - ✅ Phase 2: State Management - COMPLETE
+  - ✅ Phase 3: Building UI - COMPLETE (including E2E tests)
+  - 🔄 Phase 4: Navigation & User Flow - NEXT
 
 **Key Characteristics:**
 - Learning project (not production)
@@ -21,19 +24,26 @@ This is a learning-focused React Native mobile application built with Expo. The 
 - Tab navigation structure already in place
 - EAS Build configured for Android APK generation
 - Full observability stack (OpenTelemetry, Jaeger, Prometheus, Sentry)
+- Zustand for global state management
+- SQLite for local data persistence (with cross-platform adapters)
+- Playwright E2E testing infrastructure
 
 ## Finding Current Session Information (CRITICAL)
 
 **ALWAYS check these files at the start of a session to understand current progress:**
 
-1. **docs/epic02_mealsrandomizer/SESSION_STATUS.md** - Most recent session status and progress
-2. **docs/epic02_mealsrandomizer/QUICK_START_TOMORROW.md** - Quick resume guide
-3. **README.md** (root) - Overall project status and epic progress
+1. **docs/epic02_mealsrandomizer/PHASE*_SESSION_NOTES.md** - Most recent session notes (check latest by date)
+2. **docs/epic02_mealsrandomizer/OVERVIEW.md** - Epic 2 overview and phase structure
+3. **docs/epic02_mealsrandomizer/SESSION_STATUS.md** - Overall epic progress (may be outdated)
+4. **docs/epic02_mealsrandomizer/QUICK_START_TOMORROW.md** - Quick resume guide (may be outdated)
 
 **When user asks "what's next":**
-- Read SESSION_STATUS.md to see what was completed in last session
-- Read QUICK_START_TOMORROW.md for immediate next steps
-- Don't assume or guess - always check documentation first
+1. First check OVERVIEW.md to understand phase structure
+2. Look for the most recent PHASE*_SESSION_NOTES.md file
+3. Check the corresponding PHASE*_*.md file for the next phase to see what needs to be done
+4. Don't assume or guess - always check documentation first
+
+**IMPORTANT:** The SESSION_STATUS.md and QUICK_START_TOMORROW.md files may be outdated. Always verify by checking what's actually implemented in the codebase (app/, lib/, components/ folders).
 
 **For Epic 1 reference (completed work):**
 - docs/epic01_infrastructure/LEARNING_PLAN.md - Completed epic
@@ -127,63 +137,89 @@ Claude: "Let's install Playwright"
 ### Exception: Documentation
 
 The ONLY time Claude should write files is:
-- Updating learning notes (docs/epic02_mealsrandomizer/SESSION_STATUS.md or similar)
+- Updating learning notes (docs/epic02_mealsrandomizer/*SESSION_NOTES.md or similar)
 - Updating session status files
 - When user explicitly says "you write the learning notes" or similar
 - Updating root README.md or docs/README.md for progress tracking
+- Updating CLAUDE.md itself when instructions are outdated
 
-Even then, ask for confirmation first.
+Even then, ask for confirmation first (unless user explicitly requests it).
 
 ## Project Structure
 
-The actual React Native app is located in the `demo-react-native-app/` subdirectory:
+The actual React Native app is located in the `demo-react-native-app/` subdirectory.
+**Note:** The docs folder is at the ROOT level, NOT inside demo-react-native-app/.
 
 ```
-demo-react-native-app/
-├── app/                    # Expo Router app directory (file-based routing)
-│   ├── (tabs)/            # Tab navigation group
-│   │   ├── index.tsx      # Home screen - main functionality (text input/display)
-│   │   ├── explore.tsx    # Explore tab
-│   │   └── _layout.tsx    # Tab layout configuration
-│   ├── _layout.tsx        # Root layout with theme provider
-│   └── modal.tsx          # Modal screen example
-├── components/            # Reusable UI components
-│   ├── ui/               # UI components (IconSymbol, Collapsible)
-│   ├── themed-*.tsx      # Theme-aware components (ThemedText, ThemedView)
-│   ├── parallax-scroll-view.tsx
-│   └── external-link.tsx
-├── constants/            # App constants
-│   └── theme.ts         # Theme colors and values
-├── hooks/               # Custom React hooks
-│   ├── use-color-scheme.ts
-│   └── use-theme-color.ts
-├── lib/                            # Business logic and utilities
-│   ├── database/                   # SQLite database layer (Epic 2)
-│   │   ├── index.ts               # Database initialization
-│   │   ├── schema.ts              # Table schemas
-│   │   ├── ingredients.ts         # Ingredient CRUD
-│   │   ├── mealLogs.ts           # Meal log CRUD
-│   │   ├── seed.ts               # Seed data
-│   │   └── __tests__/            # Database tests (14 tests passing)
-│   ├── telemetry.ts              # OpenTelemetry setup (Epic 1)
-│   ├── logger.ts                 # Structured logging (Epic 1)
-│   └── analytics.ts              # Analytics tracking (Epic 1)
-├── types/                          # TypeScript type definitions
-│   └── database.ts                # Database types (Epic 2)
-├── docs/                           # Learning documentation
-│   ├── README.md                  # Documentation index
-│   ├── epic01_infrastructure/     # Epic 1: COMPLETED
-│   │   ├── LEARNING_PLAN.md       # Epic 1 plan (completed)
-│   │   └── PHASE*_LEARNING_NOTES.md # Epic 1 notes
-│   └── epic02_mealsrandomizer/    # Epic 2: IN PROGRESS
-│       ├── SESSION_STATUS.md      # Latest session status ⭐
-│       ├── QUICK_START_TOMORROW.md # Quick resume guide ⭐
-│       ├── OVERVIEW.md            # Epic 2 overview
-│       └── PHASE*_*.md            # Phase guides
-├── assets/             # Images, icons, splash screens
-├── app.json           # Expo configuration (app metadata, icons, splash)
-├── eas.json          # EAS Build configuration
-└── package.json      # Dependencies and scripts
+demo-react-native-app/           # Main React Native app
+├── app/                          # Expo Router app directory (file-based routing)
+│   ├── (tabs)/                   # Tab navigation group
+│   │   ├── index.tsx             # Home screen - meal type buttons + recent meals
+│   │   ├── explore.tsx           # Explore tab (default Expo template)
+│   │   └── _layout.tsx           # Tab layout configuration
+│   ├── suggestions/              # Dynamic route folder
+│   │   └── [mealType].tsx        # Suggestions screen (breakfast/snack)
+│   ├── _layout.tsx               # Root layout with database init + Sentry
+│   └── modal.tsx                 # Modal screen example
+├── components/                   # Reusable UI components
+│   ├── modals/
+│   │   └── ConfirmationModal.tsx # Meal confirmation modal
+│   ├── ui/                       # UI components (IconSymbol, Collapsible)
+│   ├── ErrorBoundary.tsx         # Sentry error boundary
+│   ├── themed-*.tsx              # Theme-aware components
+│   └── ...                       # Other components
+├── lib/                          # Business logic and utilities
+│   ├── database/                 # SQLite database layer
+│   │   ├── adapters/             # Platform-specific adapters
+│   │   │   ├── types.ts          # DatabaseAdapter interface
+│   │   │   ├── native.ts         # expo-sqlite wrapper
+│   │   │   ├── inMemory.ts       # sql.js wrapper for web
+│   │   │   └── __tests__/        # Adapter tests
+│   │   ├── index.ts              # Database init with platform detection
+│   │   ├── schema.ts             # Table schemas
+│   │   ├── ingredients.ts        # Ingredient CRUD operations
+│   │   ├── mealLogs.ts           # Meal log CRUD operations
+│   │   ├── seed.ts               # Seed data (19-22 Portuguese ingredients)
+│   │   ├── __tests__/            # Database tests (14 tests)
+│   │   └── __mocks__/            # Jest mocks
+│   ├── business-logic/           # Core algorithms
+│   │   ├── combinationGenerator.ts  # Meal combination algorithm
+│   │   ├── varietyEngine.ts         # Cooldown tracking
+│   │   └── __tests__/               # Algorithm tests (8 tests)
+│   ├── store/                    # Zustand state management
+│   │   └── index.ts              # Global store with actions
+│   └── telemetry/                # Observability (refactored folder)
+│       ├── telemetry.ts          # OpenTelemetry setup
+│       ├── logger.ts             # Structured logging
+│       ├── analytics.ts          # User analytics
+│       └── mealGenerationMetrics.ts  # Feature-specific metrics
+├── e2e/                          # Playwright E2E tests
+│   ├── meal-logging.spec.ts      # 7 E2E tests for meal flow
+│   └── screenshots/              # Test screenshots
+├── types/                        # TypeScript type definitions
+│   └── database.ts               # Database entity types
+├── playwright.config.ts          # Playwright configuration
+├── metro.config.js               # Metro bundler config (platform exclusions)
+├── app.json                      # Expo configuration
+├── eas.json                      # EAS Build configuration
+└── package.json                  # Dependencies and scripts
+
+docs/                             # Learning documentation (at ROOT level)
+├── README.md                     # Documentation index
+├── epic01_infrastructure/        # Epic 1: COMPLETED
+│   ├── LEARNING_PLAN.md          # Epic 1 plan (completed)
+│   └── PHASE*_LEARNING_NOTES.md  # Epic 1 notes
+└── epic02_mealsrandomizer/       # Epic 2: IN PROGRESS
+    ├── OVERVIEW.md               # Epic 2 overview and phase structure
+    ├── SESSION_STATUS.md         # Overall progress tracking
+    ├── QUICK_START_TOMORROW.md   # Quick resume guide
+    ├── PHASE1_*.md               # Phase 1 guides and notes
+    ├── PHASE2_*.md               # Phase 2 guides and notes
+    ├── PHASE3_*.md               # Phase 3 guides and notes
+    ├── PHASE3_SESSION_NOTES.md   # Latest session notes (most recent!)
+    ├── PHASE4_NAVIGATION.md      # Phase 4 guide (NEXT)
+    ├── PHASE5_POLISH_TESTING.md  # Phase 5 guide
+    └── PHASE6_FUTURE_ENHANCEMENTS.md  # Future ideas
 ```
 
 ## Development Commands
@@ -197,11 +233,17 @@ cd demo-react-native-app
 npm start              # Start Expo development server
 npm run android        # Start on Android device/emulator
 npm run ios            # Start on iOS simulator
-npm run web            # Start web version
+npm run web            # Start web version (uses sql.js for SQLite)
+
+# Testing
+npm test               # Run Jest unit tests (30+ tests)
+npm run test:e2e       # Run Playwright E2E tests (7 tests)
+npm run test:e2e:headed # Run E2E with visible browser
+npm run test:e2e:ui    # Run E2E with interactive UI
 
 # Code Quality
 npm run lint           # Run ESLint
-npm run reset-project  # Reset to blank starter template
+npx tsc --noEmit       # TypeScript type checking
 
 # Building
 eas build --platform android --profile preview     # Build APK for testing
@@ -214,38 +256,103 @@ eas build --platform android --profile production  # Build AAB for Play Store
 - Routes are defined by file structure in `app/` directory
 - `(tabs)/` is a layout group for tab navigation
 - `_layout.tsx` files define layout/navigation structure
+- `[param].tsx` files create dynamic routes (e.g., `/suggestions/breakfast`)
 - `index.tsx` is the default route for a directory
 
 ### Theme System
 - App uses `@react-navigation/native` for theming (DarkTheme/DefaultTheme)
 - Theme-aware components in `components/themed-*.tsx`
 - Color scheme detection with `useColorScheme()` hook
-- Theme constants defined in `constants/theme.ts`
+- Dark theme with colors: `#111418` (background), `#FFFFFF` (text), `#3e96ef` (primary)
 
-### Current App State (Phase 1 Complete)
-The HomeScreen (`app/(tabs)/index.tsx`) currently implements:
-- Text input field with controlled state (`useState`)
-- Button that displays the input text
-- Basic styling with StyleSheet
-- No persistence (data lost on app restart)
+### Current App State (Phase 3 Complete)
 
-### Planned Features (Not Yet Implemented)
-According to docs/epic01_infrastructure/LEARNING_PLAN.md:
-- **Phase 2:** Testing, CI/CD, OpenTelemetry observability (planned but not started)
-- **Phase 3:** AsyncStorage for data persistence
-- **Phase 4:** UI polish, custom icons/splash screens
-- **Phase 5:** Advanced features (multiple items, search, etc.)
+**Home Screen (`app/(tabs)/index.tsx`):**
+- "Breakfast Ideas" and "Snack Ideas" navigation buttons
+- FlatList showing recent meals (last 10)
+- Date formatting (Today, Yesterday, X days ago)
+- Empty state when no meals logged
+- Analytics screen tracking with `useFocusEffect`
+
+**Suggestions Screen (`app/suggestions/[mealType].tsx`):**
+- Dynamic route accepting breakfast or snack
+- Image cards with gradient overlays (LinearGradient on native, fallback on web)
+- Loading and error states with ActivityIndicator
+- "Generate New Ideas" button
+- Platform-specific conditional imports
+- Database timing fix with useRef pattern
+
+**ConfirmationModal (`components/modals/ConfirmationModal.tsx`):**
+- Modal for confirming meal selection
+- Logs meals to database via Zustand store
+
+### Database Architecture (Cross-Platform)
+
+```
+Platform Detection (lib/database/index.ts)
+├── Web → In-Memory Adapter (sql.js)
+├── iOS → Native Adapter (expo-sqlite)
+├── Android → Native Adapter (expo-sqlite)
+└── Jest → Test Adapter (better-sqlite3)
+```
+
+**Key concepts:**
+- Adapter Pattern (like C# IDbConnection)
+- Dynamic imports to avoid bundling issues
+- Metro bundler configuration excludes expo-sqlite from web bundle
+- Structural typing for adapter compatibility
+
+### State Management (Zustand)
+
+Global store in `lib/store/index.ts`:
+- `ingredients` - List of available ingredients
+- `mealLogs` - Recent meal history
+- `suggestedCombinations` - Generated suggestions
+- `isDatabaseReady` - Database initialization flag
+- `isLoading` / `error` - UI state
+
+Actions:
+- `loadIngredients()` - Fetch from database
+- `loadMealLogs(days)` - Fetch recent meals
+- `generateMealSuggestions(count, cooldownDays)` - Core algorithm
+- `logMeal(meal)` - Save to database
+- `setDatabaseReady(ready)` - Track initialization
+
+### Business Logic
+
+**Combination Generator** (`lib/business-logic/combinationGenerator.ts`):
+- Fisher-Yates shuffle algorithm
+- Generates varied meal combinations
+- Pure functions for testability
+
+**Variety Engine** (`lib/business-logic/varietyEngine.ts`):
+- Tracks cooldown periods
+- Prevents repetition within configured days
+- Set data structure for uniqueness
 
 ## Important Development Notes
 
 ### Working Directory
-**CRITICAL:** Always `cd demo-react-native-app` before running any npm/expo commands. The repository root is not the React Native project.
+**CRITICAL:** Always `cd demo-react-native-app` before running any npm/expo commands. The repository root is not the React Native project. However, documentation is at the ROOT level in `docs/`.
 
 ### New Architecture Enabled
 This project uses React Native's new architecture (`"newArchEnabled": true` in app.json):
 - Uses React 19.1.0
 - Enables React Compiler (`"reactCompiler": true`)
 - May have different behavior than legacy RN apps
+
+### Platform-Specific Code
+```typescript
+import { Platform } from 'react-native';
+
+if (Platform.OS === 'web') {
+  // Web-only code (e.g., skip Sentry init)
+}
+
+if (Platform.OS !== 'web') {
+  // Native-only code (e.g., LinearGradient)
+}
+```
 
 ### EAS Build Configuration
 Build profiles in `eas.json`:
@@ -262,29 +369,31 @@ Build profiles in `eas.json`:
 Uses Expo's ESLint config (`eslint-config-expo/flat`) with flat config format:
 - Ignores `dist/*`
 - Run `npm run lint` before committing
+- Common issues: unescaped quotes in JSX (use `&quot;`), missing useEffect dependencies
 
-## Common Development Patterns
+## Testing Infrastructure
 
-### Adding a New Screen
-1. Create file in `app/` directory (e.g., `app/settings.tsx`)
-2. Export default React component
-3. File path becomes the route
+### Unit Tests (Jest)
+- **30+ tests passing** across database, business logic, and adapters
+- Database tests use better-sqlite3 for Node.js environment
+- Jest mocks at `__mocks__` folders
+- Run with `npm test`
 
-### Creating Theme-Aware Components
-```tsx
-import { useThemeColor } from '@/hooks/use-theme-color';
+### E2E Tests (Playwright)
+- **7 tests covering complete meal logging flow**
+- Tests run in web mode (sql.js)
+- Uses `testID` props for stable selectors
+- Screenshots captured at each step
+- Run with `npm run test:e2e`
 
-export function MyComponent() {
-  const color = useThemeColor({}, 'text');
-  // Use color for styling
-}
-```
-
-### State Management
-Currently uses basic React hooks:
-- `useState` for local component state
-- No global state management library yet
-- Future phases may add Context API or state library
+**E2E Test Coverage:**
+1. Empty state display
+2. Navigate to breakfast suggestions
+3. Log breakfast meal
+4. Log snack meal
+5. Generate new suggestions
+6. Show multiple meals
+7. Navigate back
 
 ## Learning Context
 
@@ -292,36 +401,37 @@ This project is designed for incremental learning:
 - The learner writes all code (no copy-paste)
 - Changes are made in small steps
 - Each concept is explained and tested before moving on
-- Learning notes are documented in `docs/epic01_infrastructure/PHASE*_LEARNING_NOTES.md` files
+- Learning notes are documented in `docs/epic02_mealsrandomizer/PHASE*_LEARNING_NOTES.md` files
 
 **When starting a new session/day:**
-- ALWAYS read docs/epic01_infrastructure/PHASE*_LEARNING_NOTES.md files (especially the most recent one) to understand what has already been completed
-- Review the learning notes to understand context from previous sessions, including:
-  - What concepts were learned
-  - What issues were encountered and resolved
-  - What decisions were made
-  - Current state of the project
-- This helps maintain continuity and avoid re-explaining concepts or redoing work
+1. Check docs/epic02_mealsrandomizer/OVERVIEW.md for phase structure
+2. Find the most recent PHASE*_SESSION_NOTES.md file
+3. Review what was completed and what's next
+4. Verify by checking actual code implementation
+5. This helps maintain continuity and avoid re-explaining concepts
 
 **When assisting:**
 - Break down tasks into small, manageable steps
 - Explain concepts clearly (this is a learning project)
-- Reference the docs/epic01_infrastructure/LEARNING_PLAN.md for context on what's been completed
+- Reference the OVERVIEW.md for phase context
+- Connect new concepts to previous learning (e.g., "This is like the adapter pattern we used in Phase 3")
 - Don't add complexity beyond the current phase unless requested
 - Focus on teaching fundamentals before advanced patterns
 
 **When the user asks "what's next" or similar questions:**
-- ALWAYS check docs/epic01_infrastructure/LEARNING_PLAN.md to identify the next phase or task
-- Review the current phase status and what's been completed
-- Provide clear guidance on the next steps in the learning journey
-- Don't assume or guess - refer to the documented learning plan
+1. Check docs/epic02_mealsrandomizer/OVERVIEW.md for phase structure
+2. Find the most recent PHASE*_SESSION_NOTES.md to see what was completed
+3. Read the next PHASE*_*.md file for upcoming tasks
+4. Verify what's already implemented in the codebase
+5. Provide clear guidance on the next steps in the learning journey
+6. Don't assume or guess - refer to the documented learning plan
 
 **When the user signals session end (e.g., "that's a wrap", "let's call it a day", "let's pause", or similar):**
-- Record the current state and progress in docs/epic01_infrastructure/LEARNING_PLAN.md
-- Update what was completed in this session
+- Create or update PHASE*_SESSION_NOTES.md with session details
+- Document what was completed in this session
 - Document what's currently in progress (if anything)
 - Note what should be tackled next
-- Update any relevant docs/epic01_infrastructure/PHASE*_LEARNING_NOTES.md files with key learnings or decisions
+- Update SESSION_STATUS.md and QUICK_START_TOMORROW.md if needed
 - Provide a brief summary of what was accomplished
 
 ## Platform-Specific Notes
@@ -332,9 +442,17 @@ This project is designed for incremental learning:
 - Edge-to-edge enabled
 - Predictive back gesture disabled
 
+### Web Mode
+- Uses sql.js (SQLite compiled to WebAssembly)
+- In-memory database (data lost on refresh)
+- Sentry SDK disabled (not web-compatible)
+- LinearGradient uses CSS fallback
+- Great for fast UI iteration with browser DevTools
+
 ### Development Server
 - Metro bundler runs on port 8081
 - Expo DevTools on port 8082
+- Web runs on port 8081
 - Ensure firewall allows these ports
 - QR code scanning for device connection
 
@@ -357,19 +475,37 @@ npx expo start -c  # Clear cache
 - Check EAS Build logs for specific errors
 - Ensure EAS CLI is logged in: `eas whoami`
 
-## Testing
+### Database Not Working
+Check console logs for:
+```
+✅ Database ready
+✅ Seeded XX ingredients
+```
 
-**Current Status:** No testing infrastructure implemented yet.
-- Phase 2 plans to add Jest with React Native Testing Library
-- No test files exist in the project yet
-- When implementing tests, follow docs/epic01_infrastructure/LEARNING_PLAN.md Phase 2 guidance
+### Sentry Crashes on Web
+Already fixed - Sentry init is wrapped in Platform check:
+```typescript
+if (Platform.OS !== 'web') {
+  Sentry.init({ /* config */ });
+}
+```
+
+### Playwright Strict Mode Violations
+Use specific `testID` selectors instead of text-based:
+```typescript
+// BAD
+await page.getByText('Snack Ideas').click();
+
+// GOOD
+await page.getByTestId('snack-ideas-button').click();
+```
 
 ## Git Workflow
 
 - Main branch: `main`
 - Repository is clean (no uncommitted changes at conversation start)
-- No pre-commit hooks configured yet
-- Conventional commit format planned for Phase 2
+- Pre-commit hooks may run ESLint
+- Commits should include emoji prefix: feat:, fix:, docs:, etc.
 
 ## Dependencies of Note
 
@@ -378,15 +514,43 @@ npx expo start -c  # Clear cache
 - `react: 19.1.0` - React (latest version)
 - `react-native: 0.81.4` - React Native
 - `expo-router: ~6.0.11` - File-based routing
+- `expo-sqlite: ~15.2.1` - Native SQLite
+- `zustand: ^5.0.3` - State management
+- `@sentry/react-native: 6.14.1` - Error tracking
 - `@react-navigation/native: ^7.1.8` - Navigation primitives
+- `expo-linear-gradient: ~14.1.4` - Gradient overlays
+- `sql.js: ^1.12.0` - SQLite for web (WebAssembly)
 
-**No Testing Libraries Yet** - Will be added in Phase 2
+**Testing Dependencies:**
+- `jest` - Unit testing
+- `better-sqlite3` - SQLite for Jest tests
+- `@playwright/test` - E2E testing
+
+## Current Phase Status
+
+**Phase 3: Building UI - COMPLETE**
+- Home screen with meal type buttons
+- Suggestions screen with image cards
+- Confirmation modal
+- Loading/error states
+- Platform-specific code (LinearGradient, Sentry)
+- E2E tests with Playwright (7 tests passing)
+- Critical bug fixes (database timing, Sentry web compatibility)
+
+**Next: Phase 4 - Navigation & User Flow**
+According to PHASE4_NAVIGATION.md:
+- History screen (SectionList for grouped meals)
+- Settings screen (sliders for preferences)
+- Tab navigation structure completion
+- User flow testing
 
 ## Future-Proofing Notes
 
 When adding new features, consider:
-- The project will eventually add AsyncStorage (Phase 3)
-- Testing infrastructure is planned (Phase 2)
-- OpenTelemetry instrumentation is in the learning plan
+- The project has SQLite with cross-platform adapters
+- Testing infrastructure is comprehensive (unit + E2E)
+- OpenTelemetry metrics are instrumented
+- Zustand handles global state
 - Keep implementations simple and educational
 - Prioritize teaching value over production-readiness
+- Add testID props for E2E testability
