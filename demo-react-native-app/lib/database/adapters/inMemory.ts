@@ -1,5 +1,11 @@
-import initSqlJs, { Database as SqlJsDatabase } from 'sql.js';
 import { DatabaseAdapter, RunResult } from './types';
+
+// Types only - no runtime import
+type SqlJsDatabase = {
+  run(sql: string, params?: Record<string, unknown>): void;
+  exec(sql: string, params?: Record<string, unknown>): { columns: string[]; values: unknown[][] }[];
+  close(): void;
+};
 
 /**
  * Convert ? placeholders to $1, $2, etc. and create bind object
@@ -93,13 +99,13 @@ export class InMemoryDatabaseAdapter implements DatabaseAdapter {
  * Factory function to create web adapter
  */
 export async function createInMemoryAdapter(): Promise<DatabaseAdapter> {
-  // Initialize sql.js with WebAssembly
+  // Dynamic import - only loads sql.js when this function is called (web only)
+  const initSqlJs = (await import('sql.js')).default;
+
   const SQL = await initSqlJs({
-    // Load sql.js WebAssembly from CDN
     locateFile: (file: string) => `https://sql.js.org/dist/${file}`,
   });
 
-  // Create in-memory database
   const db = new SQL.Database();
   return new InMemoryDatabaseAdapter(db);
 }
