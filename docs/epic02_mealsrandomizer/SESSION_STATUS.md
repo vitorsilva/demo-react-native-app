@@ -38,6 +38,8 @@
 **In Progress:**
 - ⏳ Step 3.1: Building UI Components (not started yet)
 
+**See:** [PHASE3_LEARNING_NOTES.md](./PHASE3_LEARNING_NOTES.md) for detailed concepts and learnings.
+
 ---
 
 ## 📅 Session History
