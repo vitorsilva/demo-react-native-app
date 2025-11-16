@@ -1,4 +1,5 @@
 import Database from 'better-sqlite3';
+import { DatabaseAdapter, RunResult } from '../adapters/types';
 
 let db: Database.Database | null = null;
 
@@ -16,25 +17,37 @@ export function resetTestDatabase(): void {
   db = null;
 }
 
-// Adapter: Makes better-sqlite3 compatible with expo-sqlite API
-export function createExpoSQLiteAdapter() {
+/**
+ * Test adapter using better-sqlite3
+ * Implements DatabaseAdapter interface for Jest tests
+ */
+export function createTestAdapter(): DatabaseAdapter {
   return {
-    async execAsync(sql: string): Promise<void> {
-      const database = getTestDatabase(); // ← Get fresh reference each time
-      database.exec(sql);
+    async runAsync(sql: string, args: unknown[] = []): Promise<RunResult> {
+      const database = getTestDatabase();
+      const stmt = database.prepare(sql);
+      const result = stmt.run(...(args as unknown[]));
+      return {
+        lastInsertRowId: Number(result.lastInsertRowid), // lowercase 'i'
+        changes: result.changes,
+      };
     },
 
-    async runAsync(sql: string, params: any[] = []): Promise<any> {
-      const database = getTestDatabase(); // ← Get fresh reference each time
+    async getAllAsync<T>(sql: string, args: unknown[] = []): Promise<T[]> {
+      const database = getTestDatabase();
       const stmt = database.prepare(sql);
-      const result = stmt.run(...params);
-      return { changes: result.changes };
+      return stmt.all(...(args as unknown[])) as T[];
     },
 
-    async getAllAsync<T>(sql: string, params: any[] = []): Promise<T[]> {
-      const database = getTestDatabase(); // ← Get fresh reference each time
+    async getFirstAsync<T>(sql: string, args: unknown[] = []): Promise<T | null> {
+      const database = getTestDatabase();
       const stmt = database.prepare(sql);
-      return stmt.all(...params) as T[];
+      const result = stmt.get(...(args as unknown[]));
+      return (result as T) || null;
+    },
+
+    async closeAsync(): Promise<void> {
+      // No-op for tests
     },
   };
 }

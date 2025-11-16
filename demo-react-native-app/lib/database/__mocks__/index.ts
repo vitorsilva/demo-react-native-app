@@ -1,6 +1,6 @@
-import { Platform } from 'react-native';
-import { DatabaseAdapter } from './adapters/types';
-import { SCHEMA_SQL, DEFAULT_PREFERENCES } from './schema';
+import { DatabaseAdapter } from '../adapters/types';
+import { createTestAdapter, resetTestDatabase } from '../__tests__/testDb';
+import { SCHEMA_SQL, DEFAULT_PREFERENCES } from '../schema';
 
 let database: DatabaseAdapter | null = null;
 
@@ -9,16 +9,8 @@ export async function initDatabase(): Promise<DatabaseAdapter> {
     return database;
   }
 
-  // Platform detection - dynamically import the appropriate adapter
-  if (Platform.OS === 'web') {
-    console.log('🌐 Web platform detected - using in-memory database');
-    const { createInMemoryAdapter } = await import('./adapters/inMemory');
-    database = await createInMemoryAdapter();
-  } else {
-    console.log(`📱 ${Platform.OS} platform detected - using native SQLite`);
-    const { createNativeAdapter } = await import('./adapters/native');
-    database = await createNativeAdapter('meals.db');
-  }
+  console.log('🧪 Test environment - using better-sqlite3 in-memory database');
+  database = createTestAdapter();
 
   // Create tables
   const statements = SCHEMA_SQL.split(';').filter((s) => s.trim());
@@ -51,5 +43,6 @@ export function getDatabase(): DatabaseAdapter {
 }
 
 export function resetDatabase(): void {
+  resetTestDatabase();
   database = null;
 }

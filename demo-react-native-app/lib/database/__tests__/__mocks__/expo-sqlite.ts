@@ -1,7 +1,7 @@
-import { createExpoSQLiteAdapter } from '../testDb';
+import { createTestAdapter } from '../testDb';
 
 export async function openDatabaseAsync(name: string) {
-  return createExpoSQLiteAdapter(); // ← No parameter needed now
+  return createTestAdapter(); // ← No parameter needed now
 }
 
 export default {

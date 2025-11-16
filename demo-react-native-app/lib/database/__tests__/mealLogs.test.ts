@@ -3,6 +3,8 @@ import { logMeal, getRecentMealLogs, getMealLogsByDateRange, deleteMealLog } fro
 import { addIngredient, getAllIngredients, deleteIngredient } from '../ingredients';
 import { resetTestDatabase } from './testDb';
 
+jest.mock('../index');
+
 describe('Meal Log Operations', () => {
   let ingredientIds: string[] = [];
 

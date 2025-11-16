@@ -7,6 +7,8 @@ import {
 } from '../ingredients';
 import { resetTestDatabase } from './testDb';
 
+jest.mock('../index');
+
 describe('Ingredient Operations', () => {
   beforeEach(async () => {
     // Reset the mock database completely
