@@ -40,7 +40,7 @@ export function ConfirmationModal({
           <Text style={styles.enjoyMessage}>Enjoy your meal!</Text>
 
           {/* Done button */}
-          <TouchableOpacity style={styles.doneButton} onPress={onDone}>
+          <TouchableOpacity style={styles.doneButton} onPress={onDone} testID="done-button">
             <Text style={styles.doneButtonText}>Done</Text>
           </TouchableOpacity>
         </View>

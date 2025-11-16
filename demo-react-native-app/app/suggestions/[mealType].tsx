@@ -9,7 +9,7 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { analytics } from '../../lib/telemetry/analytics';
 import { ConfirmationModal } from '../../components/modals/ConfirmationModal';
 import { useStore } from '../../lib/store';
@@ -44,17 +44,49 @@ export default function SuggestionsScreen() {
   const error = useStore((state) => state.error);
   const generateMealSuggestions = useStore((state) => state.generateMealSuggestions);
   const logMeal = useStore((state) => state.logMeal);
+  const ingredients = useStore((state) => state.ingredients);
+  const loadIngredients = useStore((state) => state.loadIngredients);
+  const isDatabaseReady = useStore((state) => state.isDatabaseReady);
 
   // Modal state
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedIngredients, setSelectedIngredients] = useState<string[]>([]);
+  const hasGeneratedRef = useRef(false);
 
   // Track screen view and generate suggestions on mount
   useEffect(() => {
     analytics.screenView('suggestions');
-    // Generate 3 suggestions with 7-day cooldown
-    generateMealSuggestions(3, 7);
-  }, [mealType, generateMealSuggestions]);
+
+    // Ensure ingredients are loaded before generating suggestions
+    const generateSuggestions = async () => {
+      // Prevent multiple generation calls
+      if (hasGeneratedRef.current) {
+        return;
+      }
+
+      // Wait for database to be ready
+      if (!isDatabaseReady) {
+        console.log('Waiting for database to be ready...');
+        return;
+      }
+
+      // Load ingredients if not already loaded
+      if (ingredients.length === 0) {
+        console.log('Loading ingredients before generating suggestions...');
+        await loadIngredients();
+        // Don't generate yet - useEffect will re-run when ingredients load
+        return;
+      }
+
+      // Mark as generated to prevent re-runs
+      hasGeneratedRef.current = true;
+
+      // Generate 3 suggestions with 7-day cooldown
+      generateMealSuggestions(3, 7);
+    };
+
+    generateSuggestions();
+  }, [mealType, generateMealSuggestions, isDatabaseReady, ingredients.length, loadIngredients]);
 
   // Format title for display
   const screenTitle = mealType === 'breakfast' ? 'Breakfast Ideas' : 'Snack Ideas';
@@ -108,7 +140,7 @@ export default function SuggestionsScreen() {
     <View style={styles.container}>
       {/* Header with back button */}
       <View style={styles.header}>
-        <TouchableOpacity style={styles.backButton} onPress={handleBackPress}>
+        <TouchableOpacity style={styles.backButton} onPress={handleBackPress} testID="back-button">
           <Text style={styles.backButtonText}>←</Text>
         </TouchableOpacity>
         <Text style={styles.headerTitle}>{screenTitle}</Text>
@@ -142,7 +174,11 @@ export default function SuggestionsScreen() {
         {!isLoading &&
           !error &&
           suggestions.map((suggestion) => (
-            <View key={suggestion.id} style={styles.suggestionCard}>
+            <View
+              key={suggestion.id}
+              style={styles.suggestionCard}
+              testID={`suggestion-${suggestion.id}`}
+            >
               {/* Image with gradient overlay */}
               <ImageBackground
                 source={{ uri: suggestion.imageUrl }}
@@ -161,6 +197,7 @@ export default function SuggestionsScreen() {
                       <TouchableOpacity
                         style={styles.selectButton}
                         onPress={() => handleSelectSuggestion(suggestion.id)}
+                        testID={`select-button-${suggestion.id}`}
                       >
                         <Text style={styles.selectButtonText}>Select</Text>
                       </TouchableOpacity>
@@ -176,6 +213,7 @@ export default function SuggestionsScreen() {
                       <TouchableOpacity
                         style={styles.selectButton}
                         onPress={() => handleSelectSuggestion(suggestion.id)}
+                        testID={`select-button-${suggestion.id}`}
                       >
                         <Text style={styles.selectButtonText}>Select</Text>
                       </TouchableOpacity>
@@ -188,7 +226,11 @@ export default function SuggestionsScreen() {
 
         {/* Generate New Ideas button */}
         {!isLoading && (
-          <TouchableOpacity style={styles.generateButton} onPress={handleGenerateNew}>
+          <TouchableOpacity
+            style={styles.generateButton}
+            onPress={handleGenerateNew}
+            testID="generate-new-ideas-button"
+          >
             <Text style={styles.generateButtonText}>Generate New Ideas</Text>
           </TouchableOpacity>
         )}

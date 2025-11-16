@@ -97,10 +97,18 @@ export default function HomeScreen() {
 
       {/* Meal Type Buttons */}
       <View style={styles.buttonsContainer}>
-        <TouchableOpacity style={styles.mealTypeButton} onPress={handleBreakfastPress}>
+        <TouchableOpacity
+          style={styles.mealTypeButton}
+          onPress={handleBreakfastPress}
+          testID="breakfast-ideas-button"
+        >
           <Text style={styles.mealTypeButtonText}>Breakfast Ideas</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.mealTypeButton} onPress={handleSnackPress}>
+        <TouchableOpacity
+          style={styles.mealTypeButton}
+          onPress={handleSnackPress}
+          testID="snack-ideas-button"
+        >
           <Text style={styles.mealTypeButtonText}>Snack Ideas</Text>
         </TouchableOpacity>
       </View>
@@ -109,7 +117,7 @@ export default function HomeScreen() {
       <Text style={styles.sectionTitle}>Recent Meals</Text>
 
       {recentMeals.length === 0 ? (
-        <View style={styles.emptyState}>
+        <View style={styles.emptyState} testID="empty-state">
           <Text style={styles.emptyStateText}>No meals logged yet</Text>
           <Text style={styles.emptyStateSubtext}>
             Tap &quot;Breakfast Ideas&quot; or &quot;Snack Ideas&quot; to get started!
@@ -119,14 +127,15 @@ export default function HomeScreen() {
         <FlatList
           data={recentMeals}
           keyExtractor={(item) => item.id}
+          testID="recent-meals-list"
           renderItem={({ item }) => (
-            <View style={styles.mealItem}>
+            <View style={styles.mealItem} testID={`meal-item-${item.id}`}>
               <View style={styles.checkIcon}>
                 <Text style={styles.checkIconText}>✓</Text>
               </View>
               <View style={styles.mealItemContent}>
                 <Text style={styles.mealItemTitle}>{item.ingredients}</Text>
-                <Text style={styles.mealItemSubtitle}>
+                <Text style={styles.mealItemSubtitle} testID={`meal-subtitle-${item.id}`}>
                   {item.date}, {item.mealType}
                 </Text>
               </View>
