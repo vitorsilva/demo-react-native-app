@@ -1,148 +1,245 @@
-import { View, Text, StyleSheet, Button, TextInput } from 'react-native';
-import { useState, useEffect } from 'react';
-import { tracer, meter } from '../../lib/telemetry/telemetry';
-import { log } from '../../lib/telemetry/logger';
+import { View, Text, StyleSheet, TouchableOpacity, FlatList } from 'react-native';
+import { useEffect, useCallback } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
+import { useRouter } from 'expo-router';
 import { analytics } from '../../lib/telemetry/analytics';
 import { useStore } from '../../lib/store';
 
-// Create a counter metric to track button presses
-const buttonPressCounter = meter.createCounter('button.presses', {
-  description: 'Number of times the button was pressed',
-});
-
-// Create a histogram to track distribution of input text lengths
-const inputLengthHistogram = meter.createHistogram('input.length', {
-  description: 'Distribution of input text lengths',
-  unit: 'characters',
-});
-
 export default function HomeScreen() {
-  const [inputValue, setInputValue] = useState('');
-  const [displayText, setDisplayText] = useState('');
+  const router = useRouter();
 
   // Zustand store selectors
-  const ingredients = useStore((state) => state.ingredients);
-  const isLoading = useStore((state) => state.isLoading);
-  const error = useStore((state) => state.error);
-  const isDatabaseReady = useStore((state) => state.isDatabaseReady); // ← ADD THIS
+  const isDatabaseReady = useStore((state) => state.isDatabaseReady);
   const loadIngredients = useStore((state) => state.loadIngredients);
-  const suggestedCombinations = useStore((state) => state.suggestedCombinations);
-  const generateMealSuggestions = useStore((state) => state.generateMealSuggestions);
+  const mealLogs = useStore((state) => state.mealLogs);
+  const loadMealLogs = useStore((state) => state.loadMealLogs);
+  const ingredients = useStore((state) => state.ingredients);
 
-  // Load ingredients when component mounts
+  // Load ingredients and meal logs when database is ready
   useEffect(() => {
     if (isDatabaseReady) {
       loadIngredients();
+      loadMealLogs(30); // Load last 30 days of meals
     }
-  }, [isDatabaseReady, loadIngredients]);
+  }, [isDatabaseReady, loadIngredients, loadMealLogs]);
 
-  // Track screen view every time this screen is focused
-  useFocusEffect(() => {
-    analytics.screenView('home');
-  });
+  // Reload meal logs when screen comes into focus (after logging a new meal)
+  useFocusEffect(
+    useCallback(() => {
+      analytics.screenView('home');
+      if (isDatabaseReady) {
+        loadMealLogs(30);
+      }
+    }, [isDatabaseReady, loadMealLogs])
+  );
 
-  const handlePress = () => {
-    // Create a span to track this operation
-    const span = tracer.startSpan('button.press');
+  // Helper function to format date
+  const formatDate = (dateString: string): string => {
+    const mealDate = new Date(dateString);
+    const today = new Date();
+    const yesterday = new Date(today);
+    yesterday.setDate(yesterday.getDate() - 1);
 
-    // Add metadata about what happened
-    span.setAttribute('input.length', inputValue.length);
-    span.setAttribute('input.value', inputValue);
+    // Reset time for comparison
+    today.setHours(0, 0, 0, 0);
+    yesterday.setHours(0, 0, 0, 0);
+    const mealDateOnly = new Date(mealDate);
+    mealDateOnly.setHours(0, 0, 0, 0);
 
-    // Increment the button press counter
-    //buttonPressCounter.add(1); // not needed anymore - using analytics.userAction below
-
-    inputLengthHistogram.record(inputValue.length);
-    analytics.userAction('button_press', {
-      inputLength: String(inputValue.length),
-    });
-
-    // Log the button press with trace correlation
-    log.info('Button pressed', {
-      inputLength: inputValue.length,
-      inputValue: inputValue,
-    });
-
-    // Do the actual work
-    setDisplayText(inputValue);
-
-    // End the span (marks operation as complete)
-    span.end();
+    if (mealDateOnly.getTime() === today.getTime()) {
+      return 'Today';
+    } else if (mealDateOnly.getTime() === yesterday.getTime()) {
+      return 'Yesterday';
+    } else {
+      const daysAgo = Math.floor(
+        (today.getTime() - mealDateOnly.getTime()) / (1000 * 60 * 60 * 24)
+      );
+      return `${daysAgo} days ago`;
+    }
   };
 
-  const handleGenerateSuggestions = () => {
-    generateMealSuggestions(3, 3); // Generate 3 suggestions, 3-day cooldown
+  // Helper function to get ingredient names from IDs
+  const getIngredientNames = (ingredientIds: string[]): string => {
+    const names = ingredientIds.map((id) => {
+      const ingredient = ingredients.find((i) => i.id === id);
+      return ingredient ? ingredient.name : id;
+    });
+    return names.join(' + ');
+  };
+
+  // Transform meal logs to UI format
+  const recentMeals = mealLogs
+    .slice(0, 10) // Show last 10 meals
+    .map((log) => ({
+      id: log.id,
+      ingredients: getIngredientNames(log.ingredients),
+      date: formatDate(log.date),
+      mealType: log.mealType,
+    }));
+
+  const handleBreakfastPress = () => {
+    router.push('/suggestions/breakfast');
+  };
+
+  const handleSnackPress = () => {
+    router.push('/suggestions/snack');
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>Meals Randomizer</Text>
-
-      {/* Database not ready */}
-      {!isDatabaseReady && <Text style={styles.text}>Initializing database...</Text>}
-
-      {/* Loading state */}
-      {isDatabaseReady && isLoading && <Text style={styles.text}>Loading ingredients...</Text>}
-
-      {/* Error state */}
-      {error && <Text style={styles.errorText}>Error: {error}</Text>}
-
-      {/* Ingredient count */}
-      {isDatabaseReady && !isLoading && !error && (
-        <Text style={styles.text}>{ingredients.length} ingredients loaded</Text>
-      )}
-
-      {/* Generate button */}
-      {isDatabaseReady && !isLoading && (
-        <Button title="Generate Suggestions" onPress={handleGenerateSuggestions} />
-      )}
-
-      {/* Display suggestions */}
-      {suggestedCombinations.length > 0 && (
-        <View style={styles.suggestionsContainer}>
-          <Text style={styles.text}>Suggestions:</Text>
-          {suggestedCombinations.map((combo, index) => (
-            <Text key={index} style={styles.suggestionText}>
-              {index + 1}. {combo.map((ing) => ing.name).join(', ')}
-            </Text>
-          ))}
+      {/* Header */}
+      <View style={styles.header}>
+        <View style={styles.menuIcon}>
+          <Text style={styles.menuIconText}>☰</Text>
         </View>
+        <Text style={styles.headerTitle}>Meals Randomizer</Text>
+      </View>
+
+      {/* Meal Type Buttons */}
+      <View style={styles.buttonsContainer}>
+        <TouchableOpacity style={styles.mealTypeButton} onPress={handleBreakfastPress}>
+          <Text style={styles.mealTypeButtonText}>Breakfast Ideas</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.mealTypeButton} onPress={handleSnackPress}>
+          <Text style={styles.mealTypeButtonText}>Snack Ideas</Text>
+        </TouchableOpacity>
+      </View>
+
+      {/* Recent Meals Section */}
+      <Text style={styles.sectionTitle}>Recent Meals</Text>
+
+      {recentMeals.length === 0 ? (
+        <View style={styles.emptyState}>
+          <Text style={styles.emptyStateText}>No meals logged yet</Text>
+          <Text style={styles.emptyStateSubtext}>
+            Tap &quot;Breakfast Ideas&quot; or &quot;Snack Ideas&quot; to get started!
+          </Text>
+        </View>
+      ) : (
+        <FlatList
+          data={recentMeals}
+          keyExtractor={(item) => item.id}
+          renderItem={({ item }) => (
+            <View style={styles.mealItem}>
+              <View style={styles.checkIcon}>
+                <Text style={styles.checkIconText}>✓</Text>
+              </View>
+              <View style={styles.mealItemContent}>
+                <Text style={styles.mealItemTitle}>{item.ingredients}</Text>
+                <Text style={styles.mealItemSubtitle}>
+                  {item.date}, {item.mealType}
+                </Text>
+              </View>
+            </View>
+          )}
+        />
       )}
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  errorText: {
-    fontSize: 16,
-    color: 'red',
-    marginBottom: 12,
-  },
   container: {
     flex: 1,
+    backgroundColor: '#111418',
+  },
+  // Header styles
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 16,
+    paddingBottom: 8,
+  },
+  menuIcon: {
+    width: 48,
+    height: 48,
     justifyContent: 'center',
     alignItems: 'center',
   },
-  text: {
+  menuIconText: {
+    color: '#FFFFFF',
     fontSize: 24,
-    color: 'white',
   },
-  input: {
-    height: 40,
-    borderColor: 'white',
-    borderWidth: 1,
-    marginBottom: 12,
-    paddingHorizontal: 8,
-    color: 'white',
+  headerTitle: {
+    color: '#FFFFFF',
+    fontSize: 18,
+    fontWeight: 'bold',
+    flex: 1,
   },
-  suggestionsContainer: {
-    marginTop: 20,
-    padding: 10,
+  // Button styles
+  buttonsContainer: {
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    gap: 12,
   },
-  suggestionText: {
+  mealTypeButton: {
+    backgroundColor: '#3e96ef',
+    borderRadius: 8,
+    height: 48,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  mealTypeButtonText: {
+    color: '#FFFFFF',
     fontSize: 16,
-    color: 'white',
-    marginVertical: 4,
+    fontWeight: 'bold',
+  },
+  // Section title
+  sectionTitle: {
+    color: '#FFFFFF',
+    fontSize: 22,
+    fontWeight: 'bold',
+    paddingHorizontal: 16,
+    paddingBottom: 12,
+    paddingTop: 20,
+  },
+  // Meal item styles
+  mealItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    minHeight: 72,
+    gap: 16,
+  },
+  checkIcon: {
+    width: 48,
+    height: 48,
+    borderRadius: 8,
+    backgroundColor: '#283039',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  checkIconText: {
+    color: '#FFFFFF',
+    fontSize: 24,
+  },
+  mealItemContent: {
+    flex: 1,
+  },
+  mealItemTitle: {
+    color: '#FFFFFF',
+    fontSize: 16,
+    fontWeight: '500',
+  },
+  mealItemSubtitle: {
+    color: '#9dabb9',
+    fontSize: 14,
+  },
+  // Empty state
+  emptyState: {
+    padding: 32,
+    alignItems: 'center',
+  },
+  emptyStateText: {
+    color: '#FFFFFF',
+    fontSize: 18,
+    fontWeight: '500',
+    marginBottom: 8,
+  },
+  emptyStateSubtext: {
+    color: '#9dabb9',
+    fontSize: 14,
+    textAlign: 'center',
   },
 });

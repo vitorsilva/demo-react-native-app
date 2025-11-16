@@ -20,7 +20,7 @@ interface StoreState {
 
   // Actions: Functions that modify state
   loadIngredients: () => Promise<void>;
-  loadMealLogs: () => Promise<void>;
+  loadMealLogs: (days?: number) => Promise<void>;
   addIngredient: (ingredient: Omit<Ingredient, 'id'>) => Promise<void>;
   logMeal: (mealLog: Omit<MealLog, 'id' | 'createdAt'>) => Promise<void>;
   setDatabaseReady: () => void;

@@ -13,7 +13,18 @@
       "Bash(nul)",
       "WebFetch(domain:docs.sentry.io)",
       "mcp__context7__get-library-docs",
-      "WebFetch(domain:docs.expo.dev)"
+      "WebFetch(domain:docs.expo.dev)",
+      "Bash(npx tsc:*)",
+      "Bash(npm run web:*)",
+      "Bash(ping:*)",
+      "Bash(netstat:*)",
+      "Bash(findstr:*)",
+      "Bash(cmd //c \"taskkill /PID 6024 /F\")",
+      "mcp__playwright__browser_navigate",
+      "mcp__playwright__browser_snapshot",
+      "mcp__playwright__browser_click",
+      "mcp__playwright__browser_take_screenshot",
+      "mcp__playwright__browser_console_messages"
     ],
     "deny": [],
     "ask": []
