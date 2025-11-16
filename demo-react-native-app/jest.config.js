@@ -17,6 +17,10 @@ module.exports = {
     '**/__tests__/**/*.test.{js,jsx,ts,tsx}', // Files in __tests__ ending in .test.ts
     '**/?(*.)+(spec|test).{js,jsx,ts,tsx}', // Files ending in .spec.ts or .test.ts
   ],
+  testPathIgnorePatterns: [
+    '/node_modules/',
+    '/e2e/', // Exclude Playwright E2E tests from Jest
+  ],
   moduleNameMapper: {
     '^expo-sqlite$': '<rootDir>/lib/database/__tests__/__mocks__/expo-sqlite.ts',
     '^expo-crypto$': '<rootDir>/lib/database/__tests__/__mocks__/expo-crypto.ts',
