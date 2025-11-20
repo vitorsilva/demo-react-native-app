@@ -110,7 +110,7 @@ export default function HistoryScreen() {
   if (mealLogs.length === 0) {
     return (
       <View style={styles.container}>
-        <View style={styles.emptyState}>
+        <View style={styles.emptyState} testID="history-empty-state">
           <Text style={styles.emptyText}>No meals logged yet</Text>
           <Text style={styles.emptySubtext}>Log your first meal from the Home screen</Text>
         </View>
