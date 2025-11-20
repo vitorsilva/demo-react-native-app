@@ -30,7 +30,7 @@ interface StoreState {
   addIngredient: (ingredient: Omit<Ingredient, 'id'>) => Promise<void>;
   logMeal: (mealLog: Omit<MealLog, 'id' | 'createdAt'>) => Promise<void>;
   setDatabaseReady: () => void;
-  generateMealSuggestions: (count: number, cooldownDays: number) => Promise<void>;
+  generateMealSuggestions: () => Promise<void>;
 }
 
 export const useStore = create<StoreState>((set, get) => ({
@@ -136,25 +136,31 @@ export const useStore = create<StoreState>((set, get) => ({
   },
 
   // Action: Generate variety-enforced meal suggestions
-  generateMealSuggestions: async (count, cooldownDays) => {
-    const startTime = Date.now(); // Track when we started
+  generateMealSuggestions: async () => {
+    const startTime = Date.now();
 
     set({ isLoading: true, error: null });
     try {
+      const db = getDatabase();
+
       // Increment counter - generation started
       mealGenerationCounter.add(1);
 
-      // Step 1: Get current ingredients from store
+      // Step 1: Load fresh preferences from database
+      const preferences = await preferencesDb.getPreferences(db);
+      const count = preferences.suggestionsCount;
+      const cooldownDays = preferences.cooldownDays;
+
+      // Step 2: Get current ingredients from store
       const { ingredients } = get();
 
-      // Step 2: Get recent meal logs from database
-      const db = getDatabase();
+      // Step 3: Get recent meal logs from database
       const recentMealLogs = await mealLogsDb.getRecentMealLogs(db, cooldownDays);
 
-      // Step 3: Extract blocked ingredient IDs
+      // Step 4: Extract blocked ingredient IDs
       const blockedIds = getRecentlyUsedIngredients(recentMealLogs);
 
-      // Step 4: Generate combinations with variety enforcement
+      // Step 5: Generate combinations with variety enforcement
       const combinations = generateCombinations(ingredients, count, blockedIds);
 
       // Record how many suggestions were generated

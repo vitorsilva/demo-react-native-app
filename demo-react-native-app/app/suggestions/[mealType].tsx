@@ -82,7 +82,7 @@ export default function SuggestionsScreen() {
       hasGeneratedRef.current = true;
 
       // Generate 3 suggestions with 7-day cooldown
-      generateMealSuggestions(3, 7);
+      generateMealSuggestions();
     };
 
     generateSuggestions();
@@ -132,7 +132,7 @@ export default function SuggestionsScreen() {
 
   const handleGenerateNew = () => {
     // Generate new suggestions
-    generateMealSuggestions(3, 7);
+    generateMealSuggestions();
     console.log('Generating new meal ideas...');
   };
 
