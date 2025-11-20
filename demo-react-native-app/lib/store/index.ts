@@ -2,6 +2,8 @@ import { create } from 'zustand';
 import type { Ingredient, MealLog } from '@/types/database';
 import * as ingredientsDb from '@/lib/database/ingredients';
 import * as mealLogsDb from '@/lib/database/mealLogs';
+import * as preferencesDb from '@/lib/database/preferences';
+import { getDatabase } from '@/lib/database';
 import { getRecentlyUsedIngredients } from '../business-logic/varietyEngine';
 import { generateCombinations } from '@/lib/business-logic/combinationGenerator';
 import {
@@ -9,6 +11,7 @@ import {
   mealGenerationDuration,
   suggestionsGeneratedCounter,
 } from '@/lib/telemetry/mealGenerationMetrics';
+import { setPreferences, UserPreferences } from '@/lib/database/preferences';
 interface StoreState {
   // State: Data
   ingredients: Ingredient[];
@@ -17,10 +20,13 @@ interface StoreState {
   isLoading: boolean;
   error: string | null;
   isDatabaseReady: boolean;
+  preferences: preferencesDb.UserPreferences;
 
   // Actions: Functions that modify state
   loadIngredients: () => Promise<void>;
   loadMealLogs: (days?: number) => Promise<void>;
+  loadPreferences: () => Promise<void>;
+  updatePreferences: (preferences: preferencesDb.UserPreferences) => Promise<void>;
   addIngredient: (ingredient: Omit<Ingredient, 'id'>) => Promise<void>;
   logMeal: (mealLog: Omit<MealLog, 'id' | 'createdAt'>) => Promise<void>;
   setDatabaseReady: () => void;
@@ -35,12 +41,40 @@ export const useStore = create<StoreState>((set, get) => ({
   isLoading: false,
   error: null,
   isDatabaseReady: false,
+  preferences: {
+    cooldownDays: 3,
+    suggestionsCount: 4,
+  },
+
+  // Load preferences from database
+  loadPreferences: async () => {
+    try {
+      const db = getDatabase();
+      const prefs = await preferencesDb.getPreferences(db);
+      set({ preferences: prefs });
+    } catch (error) {
+      console.error('Failed to load preferences:', error);
+    }
+  },
+
+  // Update preferences in database and state
+  updatePreferences: async (newPreferences: UserPreferences) => {
+    try {
+      const db = getDatabase();
+      await setPreferences(db, newPreferences);
+      set({ preferences: newPreferences });
+    } catch (error) {
+      console.error('Failed to update preferences:', error);
+      set({ error: 'Failed to update preferences' });
+    }
+  },
 
   // Action: Load all ingredients from database
   loadIngredients: async () => {
     set({ isLoading: true, error: null });
     try {
-      const ingredients = await ingredientsDb.getAllIngredients();
+      const db = getDatabase();
+      const ingredients = await ingredientsDb.getAllIngredients(db);
       set({ ingredients, isLoading: false });
     } catch (error) {
       set({
@@ -54,7 +88,8 @@ export const useStore = create<StoreState>((set, get) => ({
   loadMealLogs: async (days = 30) => {
     set({ isLoading: true, error: null });
     try {
-      const mealLogs = await mealLogsDb.getRecentMealLogs(days);
+      const db = getDatabase();
+      const mealLogs = await mealLogsDb.getRecentMealLogs(db, days);
       set({ mealLogs, isLoading: false });
     } catch (error) {
       set({
@@ -68,7 +103,8 @@ export const useStore = create<StoreState>((set, get) => ({
   addIngredient: async (ingredient) => {
     set({ isLoading: true, error: null });
     try {
-      const newIngredient = await ingredientsDb.addIngredient(ingredient);
+      const db = getDatabase();
+      const newIngredient = await ingredientsDb.addIngredient(db, ingredient);
       set((state) => ({
         ingredients: [...state.ingredients, newIngredient],
         isLoading: false,
@@ -85,7 +121,8 @@ export const useStore = create<StoreState>((set, get) => ({
   logMeal: async (mealLog) => {
     set({ isLoading: true, error: null });
     try {
-      const newLog = await mealLogsDb.logMeal(mealLog);
+      const db = getDatabase();
+      const newLog = await mealLogsDb.logMeal(db, mealLog);
       set((state) => ({
         mealLogs: [...state.mealLogs, newLog],
         isLoading: false,
@@ -111,7 +148,8 @@ export const useStore = create<StoreState>((set, get) => ({
       const { ingredients } = get();
 
       // Step 2: Get recent meal logs from database
-      const recentMealLogs = await mealLogsDb.getRecentMealLogs(cooldownDays);
+      const db = getDatabase();
+      const recentMealLogs = await mealLogsDb.getRecentMealLogs(db, cooldownDays);
 
       // Step 3: Extract blocked ingredient IDs
       const blockedIds = getRecentlyUsedIngredients(recentMealLogs);

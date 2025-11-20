@@ -4,6 +4,7 @@
         "cooldown",
         "jaegertracing",
         "Millis",
+        "prefs",
         "worklets"
     ]
 }
