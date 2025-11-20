@@ -1,11 +1,11 @@
-import { getDatabase } from './index';
+import type { DatabaseAdapter } from './adapters/types';
 import { Ingredient } from '../../types/database';
 import * as Crypto from 'expo-crypto';
 
 export async function addIngredient(
+  db: DatabaseAdapter,
   ingredient: Omit<Ingredient, 'id' | 'createdAt'>
 ): Promise<Ingredient> {
-  const db = getDatabase();
   const id = await Crypto.randomUUID();
   const createdAt = new Date().toISOString();
 
@@ -24,9 +24,7 @@ export async function addIngredient(
   };
 }
 
-export async function getAllIngredients(): Promise<Ingredient[]> {
-  const db = getDatabase();
-
+export async function getAllIngredients(db: DatabaseAdapter): Promise<Ingredient[]> {
   const rows = await db.getAllAsync<{
     id: string;
     name: string;
@@ -45,13 +43,13 @@ export async function getAllIngredients(): Promise<Ingredient[]> {
 }
 
 export async function getIngredientsByMealType(
+  db: DatabaseAdapter,
   mealType: 'breakfast' | 'snack'
 ): Promise<Ingredient[]> {
-  const allIngredients = await getAllIngredients();
+  const allIngredients = await getAllIngredients(db);
   return allIngredients.filter((ing) => ing.mealTypes.includes(mealType));
 }
 
-export async function deleteIngredient(id: string): Promise<void> {
-  const db = getDatabase();
+export async function deleteIngredient(db: DatabaseAdapter, id: string): Promise<void> {
   await db.runAsync('DELETE FROM ingredients WHERE id = ?', [id]);
 }

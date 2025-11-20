@@ -1,9 +1,11 @@
-import { getDatabase } from './index';
+import type { DatabaseAdapter } from './adapters/types';
 import { MealLog } from '../../types/database';
 import * as Crypto from 'expo-crypto';
 
-export async function logMeal(mealLog: Omit<MealLog, 'id' | 'createdAt'>): Promise<MealLog> {
-  const db = getDatabase();
+export async function logMeal(
+  db: DatabaseAdapter,
+  mealLog: Omit<MealLog, 'id' | 'createdAt'>
+): Promise<MealLog> {
   const id = Crypto.randomUUID();
   const createdAt = new Date().toISOString();
 
@@ -22,8 +24,7 @@ export async function logMeal(mealLog: Omit<MealLog, 'id' | 'createdAt'>): Promi
   };
 }
 
-export async function getRecentMealLogs(days: number = 7): Promise<MealLog[]> {
-  const db = getDatabase();
+export async function getRecentMealLogs(db: DatabaseAdapter, days: number = 7): Promise<MealLog[]> {
   const startDate = new Date();
   startDate.setDate(startDate.getDate() - days);
 
@@ -51,11 +52,10 @@ export async function getRecentMealLogs(days: number = 7): Promise<MealLog[]> {
 }
 
 export async function getMealLogsByDateRange(
+  db: DatabaseAdapter,
   startDate: string,
   endDate: string
 ): Promise<MealLog[]> {
-  const db = getDatabase();
-
   if (startDate > endDate) {
     throw new Error('Start date must be before or equal to end date');
   }
@@ -83,7 +83,6 @@ export async function getMealLogsByDateRange(
   }));
 }
 
-export async function deleteMealLog(id: string): Promise<void> {
-  const db = getDatabase();
+export async function deleteMealLog(db: DatabaseAdapter, id: string): Promise<void> {
   await db.runAsync('DELETE FROM meal_logs WHERE id = ?', [id]);
 }

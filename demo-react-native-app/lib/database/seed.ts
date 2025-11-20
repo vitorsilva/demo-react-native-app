@@ -1,3 +1,4 @@
+import { getDatabase } from './index';
 import { addIngredient, getAllIngredients } from './ingredients';
 
 export const DEFAULT_INGREDIENTS = {
@@ -83,7 +84,8 @@ export async function seedDatabase(): Promise<void> {
   ];
 
   // Check if already seeded
-  const existing = await getAllIngredients();
+  const db = getDatabase();
+  const existing = await getAllIngredients(db);
   if (existing.length > 0) {
     console.log('✅ Database already seeded');
     return;
@@ -91,7 +93,7 @@ export async function seedDatabase(): Promise<void> {
 
   // Add all ingredients
   for (const ingredient of allIngredients) {
-    await addIngredient(ingredient);
+    await addIngredient(db, ingredient);
   }
 
   console.log(`✅ Seeded ${allIngredients.length} ingredients`);

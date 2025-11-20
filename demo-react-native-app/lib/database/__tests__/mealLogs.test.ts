@@ -1,4 +1,4 @@
-import { resetDatabase, initDatabase } from '../index';
+import { resetDatabase, initDatabase, getDatabase } from '../index';
 import { logMeal, getRecentMealLogs, getMealLogsByDateRange, deleteMealLog } from '../mealLogs';
 import { addIngredient, getAllIngredients, deleteIngredient } from '../ingredients';
 import { resetTestDatabase } from './testDb';
@@ -15,23 +15,24 @@ describe('Meal Log Operations', () => {
     await initDatabase();
 
     // Clear all ingredients and meal logs
-    const allIngredients = await getAllIngredients();
+    const db = getDatabase();
+    const allIngredients = await getAllIngredients(db);
     for (const ingredient of allIngredients) {
-      await deleteIngredient(ingredient.id);
+      await deleteIngredient(db, ingredient.id);
     }
 
     // Create test ingredients
-    const milkId = await addIngredient({
+    const milkId = await addIngredient(db, {
       name: 'Milk',
       category: 'protein',
       mealTypes: ['breakfast'],
     });
-    const breadId = await addIngredient({
+    const breadId = await addIngredient(db, {
       name: 'Bread',
       category: 'carb',
       mealTypes: ['breakfast'],
     });
-    const jamId = await addIngredient({
+    const jamId = await addIngredient(db, {
       name: 'Jam',
       category: 'sweet',
       mealTypes: ['breakfast'],
@@ -41,7 +42,8 @@ describe('Meal Log Operations', () => {
   });
 
   test('logMeal creates meal log with generatedID', async () => {
-    const mealId = await logMeal({
+    const db = getDatabase();
+    const mealId = await logMeal(db, {
       date: new Date().toISOString(),
       mealType: 'breakfast',
       ingredients: ingredientIds,
@@ -58,7 +60,8 @@ describe('Meal Log Operations', () => {
   });
 
   test('getRecentMealLogs returns empty array when no meals', async () => {
-    const meals = await getRecentMealLogs(7);
+    const db = getDatabase();
+    const meals = await getRecentMealLogs(db, 7);
     expect(meals).toEqual([]);
   });
 
@@ -70,32 +73,33 @@ describe('Meal Log Operations', () => {
     lastWeek.setDate(lastWeek.getDate() - 8);
 
     // Log meal today
-    await logMeal({
+    const db = getDatabase();
+    await logMeal(db, {
       date: today.toISOString(),
       mealType: 'breakfast',
       ingredients: ingredientIds.slice(0, 2),
     });
 
     // Log meal yesterday
-    await logMeal({
+    await logMeal(db, {
       date: yesterday.toISOString(),
       mealType: 'snack',
       ingredients: ingredientIds.slice(1, 3),
     });
 
     // Log meal last week (8 days ago)
-    await logMeal({
+    await logMeal(db, {
       date: lastWeek.toISOString(),
       mealType: 'breakfast',
       ingredients: ingredientIds,
     });
 
     // Get recent 7 days - should exclude last week's meal
-    const recent = await getRecentMealLogs(7);
+    const recent = await getRecentMealLogs(db, 7);
     expect(recent).toHaveLength(2);
 
     // Get recent 10 days - should include all
-    const all = await getRecentMealLogs(10);
+    const all = await getRecentMealLogs(db, 10);
     expect(all).toHaveLength(3);
   });
 
@@ -104,19 +108,20 @@ describe('Meal Log Operations', () => {
     const yesterday = new Date(today);
     yesterday.setDate(yesterday.getDate() - 1);
 
-    await logMeal({
+    const db = getDatabase();
+    await logMeal(db, {
       date: yesterday.toISOString(),
       mealType: 'breakfast',
       ingredients: ingredientIds,
     });
 
-    await logMeal({
+    await logMeal(db, {
       date: today.toISOString(),
       mealType: 'snack',
       ingredients: ingredientIds,
     });
 
-    const meals = await getRecentMealLogs(7);
+    const meals = await getRecentMealLogs(db, 7);
     expect(meals).toHaveLength(2);
     // Most recent first
     expect(new Date(meals[0].date).getTime()).toBeGreaterThan(new Date(meals[1].date).getTime());
@@ -127,12 +132,14 @@ describe('Meal Log Operations', () => {
     const date2 = '2025-01-05T10:00:00.000Z';
     const date3 = '2025-01-10T10:00:00.000Z';
 
-    await logMeal({ date: date1, mealType: 'breakfast', ingredients: ingredientIds });
-    await logMeal({ date: date2, mealType: 'snack', ingredients: ingredientIds });
-    await logMeal({ date: date3, mealType: 'breakfast', ingredients: ingredientIds });
+    const db = getDatabase();
+    await logMeal(db, { date: date1, mealType: 'breakfast', ingredients: ingredientIds });
+    await logMeal(db, { date: date2, mealType: 'snack', ingredients: ingredientIds });
+    await logMeal(db, { date: date3, mealType: 'breakfast', ingredients: ingredientIds });
 
     // Query range 2025-01-04 to 2025-01-09 (should only get date2)
     const meals = await getMealLogsByDateRange(
+      db,
       '2025-01-04T00:00:00.000Z',
       '2025-01-09T23:59:59.999Z'
     );
@@ -142,13 +149,14 @@ describe('Meal Log Operations', () => {
   });
 
   test('meal log has correct structure after retrieval', async () => {
-    await logMeal({
+    const db = getDatabase();
+    await logMeal(db, {
       date: new Date().toISOString(),
       mealType: 'breakfast',
       ingredients: ingredientIds,
     });
 
-    const meals = await getRecentMealLogs(7);
+    const meals = await getRecentMealLogs(db, 7);
     const meal = meals[0];
 
     expect(meal).toHaveProperty('id');
@@ -165,18 +173,19 @@ describe('Meal Log Operations', () => {
   });
 
   test('deleteMealLog removes meal from database', async () => {
-    const mealId = await logMeal({
+    const db = getDatabase();
+    const mealId = await logMeal(db, {
       date: new Date().toISOString(),
       mealType: 'breakfast',
       ingredients: ingredientIds,
     });
 
-    let meals = await getRecentMealLogs(7);
+    let meals = await getRecentMealLogs(db, 7);
     expect(meals).toHaveLength(1);
 
-    await deleteMealLog(meals[0].id);
+    await deleteMealLog(db, meals[0].id);
 
-    meals = await getRecentMealLogs(7);
+    meals = await getRecentMealLogs(db, 7);
     expect(meals).toHaveLength(0);
   });
 });

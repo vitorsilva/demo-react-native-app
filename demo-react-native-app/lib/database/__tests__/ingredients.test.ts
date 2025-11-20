@@ -1,4 +1,4 @@
-import { initDatabase, resetDatabase } from '../index';
+import { initDatabase, resetDatabase, getDatabase } from '../index';
 import {
   addIngredient,
   getAllIngredients,
@@ -20,7 +20,8 @@ describe('Ingredient Operations', () => {
   });
 
   test('addIngredient creates ingredient with generated ID', async () => {
-    const ingredient = await addIngredient({
+    const db = getDatabase();
+    const ingredient = await addIngredient(db, {
       name: 'Greek Yogurt',
       category: 'protein',
       mealTypes: ['breakfast'],
@@ -37,23 +38,25 @@ describe('Ingredient Operations', () => {
   });
 
   test('getAllIngredients returns empty array when no ingredients', async () => {
-    const ingredients = await getAllIngredients();
+    const db = getDatabase();
+    const ingredients = await getAllIngredients(db);
     expect(ingredients).toEqual([]);
   });
 
   test('getAllIngredients returns all added ingredients', async () => {
-    await addIngredient({
+    const db = getDatabase();
+    await addIngredient(db, {
       name: 'Milk',
       category: 'protein',
       mealTypes: ['breakfast'],
     });
-    await addIngredient({
+    await addIngredient(db, {
       name: 'Bread',
       category: 'carb',
       mealTypes: ['breakfast', 'snack'],
     });
 
-    const ingredients = await getAllIngredients();
+    const ingredients = await getAllIngredients(db);
     expect(ingredients).toHaveLength(2);
     // why alphabetical order?
     expect(ingredients[0].name).toBe('Bread'); // Alphabetical order
@@ -61,73 +64,77 @@ describe('Ingredient Operations', () => {
   });
 
   test('getIngredientsByMealType filters breakfast ingredients', async () => {
-    await addIngredient({
+    const db = getDatabase();
+    await addIngredient(db, {
       name: 'Milk',
       category: 'protein',
       mealTypes: ['breakfast'],
     });
-    await addIngredient({
+    await addIngredient(db, {
       name: 'Apple',
       category: 'fruit',
       mealTypes: ['snack'],
     });
-    await addIngredient({
+    await addIngredient(db, {
       name: 'Bread',
       category: 'carb',
       mealTypes: ['breakfast', 'snack'],
     });
 
-    const breakfastIngredients = await getIngredientsByMealType('breakfast');
+    const breakfastIngredients = await getIngredientsByMealType(db, 'breakfast');
     expect(breakfastIngredients).toHaveLength(2);
     expect(breakfastIngredients.map((i) => i.name).sort()).toEqual(['Bread', 'Milk']);
   });
 
   test('getIngredientsByMealType filters snack ingredients', async () => {
-    await addIngredient({
+    const db = getDatabase();
+    await addIngredient(db, {
       name: 'Milk',
       category: 'protein',
       mealTypes: ['breakfast'],
     });
-    await addIngredient({
+    await addIngredient(db, {
       name: 'Apple',
       category: 'fruit',
       mealTypes: ['snack'],
     });
-    await addIngredient({
+    await addIngredient(db, {
       name: 'Bread',
       category: 'carb',
       mealTypes: ['breakfast', 'snack'],
     });
 
-    const snackIngredients = await getIngredientsByMealType('snack');
+    const snackIngredients = await getIngredientsByMealType(db, 'snack');
     expect(snackIngredients).toHaveLength(2);
     expect(snackIngredients.map((i) => i.name).sort()).toEqual(['Apple', 'Bread']);
   });
 
   test('deleteIngredient removes ingredient from database', async () => {
-    const id = await addIngredient({
+    const db = getDatabase();
+    const id = await addIngredient(db, {
       name: 'Milk',
       category: 'protein',
       mealTypes: ['breakfast'],
     });
 
-    let ingredients = await getAllIngredients();
+    let ingredients = await getAllIngredients(db);
     expect(ingredients).toHaveLength(1);
 
-    await deleteIngredient(ingredients[0].id);
+    await deleteIngredient(db, ingredients[0].id);
 
-    ingredients = await getAllIngredients();
+    ingredients = await getAllIngredients(db);
     expect(ingredients).toHaveLength(0);
   });
 
   test('ingredient has correct structure after retrieval', async () => {
-    await addIngredient({
+    const db = getDatabase();
+    await addIngredient(db, {
       name: 'Greek Yogurt',
       category: 'protein',
       mealTypes: ['breakfast'],
     });
 
-    const ingredients = await getAllIngredients();
+    const ingredients = await getAllIngredients(db);
     const ingredient = ingredients[0];
 
     expect(ingredient).toHaveProperty('id');
