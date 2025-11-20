@@ -28,7 +28,8 @@
       "Bash(npm install:*)",
       "Bash(npm run lint)",
       "Bash(npx playwright test:*)",
-      "Bash(timeout 120 sh:*)"
+      "Bash(timeout 120 sh:*)",
+      "Bash(ls:*)"
     ],
     "deny": [],
     "ask": []
