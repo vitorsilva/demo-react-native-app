@@ -29,7 +29,9 @@
       "Bash(npm run lint)",
       "Bash(npx playwright test:*)",
       "Bash(timeout 120 sh:*)",
-      "Bash(ls:*)"
+      "Bash(ls:*)",
+      "Bash(find:*)",
+      "Bash(cat:*)"
     ],
     "deny": [],
     "ask": []
