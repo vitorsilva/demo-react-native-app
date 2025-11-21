@@ -101,6 +101,10 @@ export default function HomeScreen() {
           style={styles.mealTypeButton}
           onPress={handleBreakfastPress}
           testID="breakfast-ideas-button"
+          accessible={true}
+          accessibilityLabel="Navigate to breakfast suggestions"
+          accessibilityHint="Opens a screen with breakfast meal combinations"
+          accessibilityRole="button"
         >
           <Text style={styles.mealTypeButtonText}>Breakfast Ideas</Text>
         </TouchableOpacity>
@@ -108,6 +112,10 @@ export default function HomeScreen() {
           style={styles.mealTypeButton}
           onPress={handleSnackPress}
           testID="snack-ideas-button"
+          accessible={true}
+          accessibilityLabel="Navigate to snack suggestions"
+          accessibilityHint="Opens a screen with snack meal combinations"
+          accessibilityRole="button"
         >
           <Text style={styles.mealTypeButtonText}>Snack Ideas</Text>
         </TouchableOpacity>

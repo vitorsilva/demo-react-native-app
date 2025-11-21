@@ -13,6 +13,7 @@ import { useEffect, useState, useRef } from 'react';
 import { analytics } from '../../lib/telemetry/analytics';
 import { ConfirmationModal } from '../../components/modals/ConfirmationModal';
 import { useStore } from '../../lib/store';
+import * as Haptics from 'expo-haptics';
 
 // Conditionally import LinearGradient only for native platforms
 let LinearGradient: React.ComponentType<{
@@ -103,6 +104,7 @@ export default function SuggestionsScreen() {
   };
 
   const handleSelectSuggestion = (suggestionId: string) => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     const suggestion = suggestions.find((s) => s.id === suggestionId);
     if (suggestion) {
       setSelectedIngredients(suggestion.ingredients.map((i) => i.name));
@@ -131,6 +133,7 @@ export default function SuggestionsScreen() {
   };
 
   const handleGenerateNew = () => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
     // Generate new suggestions
     generateMealSuggestions();
     console.log('Generating new meal ideas...');

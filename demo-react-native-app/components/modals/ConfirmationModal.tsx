@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, TouchableOpacity, Modal } from 'react-native';
-
+import * as Haptics from 'expo-haptics';
 interface ConfirmationModalProps {
   visible: boolean;
   mealType: 'breakfast' | 'snack';
@@ -15,8 +15,13 @@ export function ConfirmationModal({
 }: ConfirmationModalProps) {
   const title = mealType === 'breakfast' ? 'Breakfast Logged' : 'Snack Logged';
 
+  const handleDone = () => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+    onDone();
+  };
+
   return (
-    <Modal visible={visible} transparent={true} animationType="slide" onRequestClose={onDone}>
+    <Modal visible={visible} transparent={true} animationType="slide" onRequestClose={handleDone}>
       {/* Semi-transparent overlay */}
       <View style={styles.overlay}>
         {/* Bottom sheet container */}
@@ -40,7 +45,7 @@ export function ConfirmationModal({
           <Text style={styles.enjoyMessage}>Enjoy your meal!</Text>
 
           {/* Done button */}
-          <TouchableOpacity style={styles.doneButton} onPress={onDone} testID="done-button">
+          <TouchableOpacity style={styles.doneButton} onPress={handleDone} testID="done-button">
             <Text style={styles.doneButtonText}>Done</Text>
           </TouchableOpacity>
         </View>
