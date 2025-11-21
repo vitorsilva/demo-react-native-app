@@ -131,6 +131,31 @@ Choose one from:
 
 ---
 
+### Phase 5: Telemetry Expansion (4-6 hours)
+**Goal:** Expand observability coverage to database and business logic
+
+**⚠️ Includes:** Database tracing, algorithm instrumentation, enhanced metrics, end-to-end validation
+
+Add comprehensive telemetry:
+- Trace database operations (SELECT, INSERT, UPDATE, DELETE)
+- Trace business logic (combination generator, variety engine)
+- Track user actions (button clicks, form submissions)
+- Add production metrics
+- Test observability stack end-to-end
+- Environment configuration
+
+**Why this matters:** Currently, database and business logic are "black boxes." This phase gives you complete visibility for debugging production issues and performance optimization.
+
+**You'll learn:**
+- Distributed tracing implementation
+- Performance monitoring
+- Production debugging
+- Observability best practices
+
+**[Start Phase 5 →](./PHASE5_TELEMETRY_EXPANSION.md)**
+
+---
+
 ## 📦 Final Project Structure (After Epic 3)
 
 ```
@@ -221,7 +246,11 @@ meals-randomizer/                    # Renamed from demo-react-native-app
 - [ ] New features have tests
 - [ ] No TypeScript errors
 - [ ] ESLint passes
-- [ ] Observability still functional
+- [ ] Observability fully functional and expanded
+- [ ] Database operations traced
+- [ ] Business logic traced
+- [ ] Metrics appear in Prometheus
+- [ ] Traces appear in Jaeger
 
 **User Experience:**
 - [ ] Customization is intuitive (no confusion)
@@ -239,12 +268,13 @@ meals-randomizer/                    # Renamed from demo-react-native-app
 
 ## ⏱️ Timeline & Effort
 
-### Total Estimated Time: 15-21 hours (including comprehensive testing & deployment)
+### Total Estimated Time: 19-27 hours (including comprehensive testing & deployment)
 
 - **Phase 1:** User Customization (6-8 hours) - includes unit tests, E2E tests, APK deployment
 - **Phase 2:** Branding & Identity (5-7 hours) - includes testing, landing page deployment, branded APK
 - **Phase 3:** Project Structure & Documentation (4-6 hours) - includes documentation validation, final testing, v1.0.0 release
 - **Phase 4:** Polish Feature (2-4 hours, optional) - feature-dependent
+- **Phase 5:** Telemetry Expansion (4-6 hours) - database tracing, metrics, end-to-end validation
 
 **Note:** Each phase now includes:
 - ✅ Comprehensive unit testing
@@ -260,15 +290,20 @@ meals-randomizer/                    # Renamed from demo-react-native-app
 - Days 1-3: Phase 1 (User Customization)
 - Test with real usage
 
-**Week 2: Brand & Polish**
+**Week 2: Brand & Documentation**
 - Days 4-5: Phase 2 (Branding)
 - Days 6-7: Phase 3 (Project Structure)
-- Day 8: Phase 4 (Optional feature)
 
-**Week 3: Real-World Testing**
+**Week 3: Polish & Observability**
+- Days 8-9: Phase 4 (Optional feature)
+- Days 10-11: Phase 5 (Telemetry Expansion)
+- Day 12: Final testing and validation
+
+**Week 4: Real-World Testing**
 - Use the app daily
 - Share with friends/family
 - Gather feedback
+- Monitor telemetry data
 - Make final adjustments
 
 ---

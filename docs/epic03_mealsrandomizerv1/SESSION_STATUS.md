@@ -15,8 +15,9 @@
 - ⏸️ **Phase 2:** Branding & Identity - Not started
 - ⏸️ **Phase 3:** Project Structure & Documentation - Not started
 - ⏸️ **Phase 4:** Polish Feature (Optional) - Not started
+- ⏸️ **Phase 5:** Telemetry Expansion - Not started
 
-**Estimated Total Time:** 12-18 hours
+**Estimated Total Time:** 19-27 hours
 
 ---
 
@@ -86,6 +87,22 @@
 
 **Decision:** To be made after using app with Phase 1-3 features
 
+### Phase 5: Telemetry Expansion (4-6 hours)
+**Status:** Not Started
+
+**Goal:** Expand observability coverage to database and business logic
+
+**Key Deliverables:**
+- [ ] Database operation tracing (all CRUD operations)
+- [ ] Business logic tracing (combination generator, variety engine)
+- [ ] Enhanced user action tracking (buttons, forms)
+- [ ] Production metrics (query duration, algorithm performance)
+- [ ] Telemetry tests (unit + E2E)
+- [ ] Environment configuration
+- [ ] End-to-end validation (Jaeger + Prometheus)
+- [ ] Performance impact assessment
+- [ ] Telemetry documentation
+
 ---
 
 ## 🎯 Next Session Plan
@@ -136,5 +153,5 @@
 
 ---
 
-**Last Updated:** 2025-01-21
+**Last Updated:** 2025-01-21 (Added Phase 5: Telemetry Expansion)
 **Next Review:** When starting Phase 1
