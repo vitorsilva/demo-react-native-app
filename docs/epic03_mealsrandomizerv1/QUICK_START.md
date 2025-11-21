@@ -199,6 +199,24 @@ As you work through Epic 3, update:
 3. **User docs ≠ developer docs** - Separate audiences
 4. **Archive learning notes** - Don't delete, just organize
 
+### Phase 4 Tips
+1. **Pick features users actually want** - Not what's cool to build
+2. **Keep it simple** - 2-4 hours max
+3. **Test with real data** - Edge cases matter
+
+### Phase 5 Tips
+1. **Telemetry should be invisible** - No performance impact
+2. **Trace what matters** - Database and business logic
+3. **Test end-to-end** - Verify data flows to Jaeger/Prometheus
+4. **Use helper functions** - Consistent instrumentation patterns
+
+### Phase 6 Tips
+1. **Start with small group** - 5-10 testers is enough
+2. **Telemetry > opinions** - Data reveals truth
+3. **Iterate quickly** - Weekly releases are fine
+4. **Accept criticism gracefully** - Feedback is gold
+5. **Know when to stop** - V1.2.0 is "good enough"
+
 ---
 
 ## ❓ Quick Reference
@@ -216,6 +234,8 @@ As you work through Epic 3, update:
 - Phase 2: `PHASE2_BRANDING_IDENTITY.md`
 - Phase 3: `PHASE3_PROJECT_STRUCTURE.md`
 - Phase 4: `PHASE4_POLISH_FEATURE.md`
+- Phase 5: `PHASE5_TELEMETRY_EXPANSION.md`
+- Phase 6: `PHASE6_VALIDATION.md`
 
 **Main Docs Index:**
 - `docs/README.md`

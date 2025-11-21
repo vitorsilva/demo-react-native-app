@@ -156,6 +156,35 @@ Add comprehensive telemetry:
 
 ---
 
+### Phase 6: Validation & Iteration (3-4 weeks, ongoing)
+**Goal:** Deploy to real users and iterate based on feedback
+
+**⚠️ Includes:** Beta testing, telemetry monitoring, multiple release cycles, user validation
+
+Tasks:
+- Distribute APK to 5-10 beta testers
+- Monitor usage via telemetry (Jaeger, Prometheus, Sentry)
+- Collect user feedback
+- Fix bugs based on real usage
+- Iterate through multiple versions (V1.0.0 → V1.1.0 → V1.2.0)
+- Reflect on entire learning journey
+
+**Why this matters:** Real user validation transforms the app from "technically complete" to "user-validated product." Telemetry provides quantitative data, feedback provides qualitative insights.
+
+**You'll learn:**
+- Beta testing for mobile apps
+- APK distribution
+- User feedback collection
+- Telemetry analysis with real data
+- Iterative development
+- Data-driven decision making
+- Production monitoring
+- Product thinking
+
+**[Start Phase 6 →](./PHASE6_VALIDATION.md)**
+
+---
+
 ## 📦 Final Project Structure (After Epic 3)
 
 ```
@@ -268,13 +297,14 @@ meals-randomizer/                    # Renamed from demo-react-native-app
 
 ## ⏱️ Timeline & Effort
 
-### Total Estimated Time: 19-27 hours (including comprehensive testing & deployment)
+### Total Estimated Time: 19-27 hours (development) + 3-4 weeks (validation)
 
 - **Phase 1:** User Customization (6-8 hours) - includes unit tests, E2E tests, APK deployment
 - **Phase 2:** Branding & Identity (5-7 hours) - includes testing, landing page deployment, branded APK
 - **Phase 3:** Project Structure & Documentation (4-6 hours) - includes documentation validation, final testing, v1.0.0 release
 - **Phase 4:** Polish Feature (2-4 hours, optional) - feature-dependent
 - **Phase 5:** Telemetry Expansion (4-6 hours) - database tracing, metrics, end-to-end validation
+- **Phase 6:** Validation & Iteration (3-4 weeks, ongoing) - beta testing, monitoring, iterative releases
 
 **Note:** Each phase now includes:
 - ✅ Comprehensive unit testing
@@ -286,25 +316,21 @@ meals-randomizer/                    # Renamed from demo-react-native-app
 
 ### Recommended Schedule
 
-**Week 1: Customization Foundation**
+**Week 1-2: Development (Phases 1-3)**
 - Days 1-3: Phase 1 (User Customization)
-- Test with real usage
-
-**Week 2: Brand & Documentation**
 - Days 4-5: Phase 2 (Branding)
 - Days 6-7: Phase 3 (Project Structure)
 
-**Week 3: Polish & Observability**
+**Week 3: Polish & Observability (Phases 4-5)**
 - Days 8-9: Phase 4 (Optional feature)
 - Days 10-11: Phase 5 (Telemetry Expansion)
-- Day 12: Final testing and validation
+- Day 12: Final testing and V1.0.0 release
 
-**Week 4: Real-World Testing**
-- Use the app daily
-- Share with friends/family
-- Gather feedback
-- Monitor telemetry data
-- Make final adjustments
+**Week 4-7: Validation & Iteration (Phase 6)**
+- Week 4: Beta testing cycle 1 (V1.0.0 → V1.1.0)
+- Week 5: Beta testing cycle 2 (V1.1.0 → V1.2.0)
+- Week 6-7: Refinement and learning reflection
+- Ongoing: Monitor usage, collect feedback, iterate
 
 ---
 
