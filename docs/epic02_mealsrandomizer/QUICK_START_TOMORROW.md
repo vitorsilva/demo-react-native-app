@@ -1,304 +1,267 @@
-# Quick Start Guide - Phase 3 UI Building
+# Quick Start for Tomorrow's Session
 
-**Date:** 2025-01-16
-**Session:** Step 3.0 COMPLETE - Web Mode Working!
-
----
-
-## 🎉 What You've Completed
-
-### Phase 1: COMPLETE ✅
-- ✅ Full SQLite database layer with TypeScript
-- ✅ Professional testing setup (better-sqlite3 + mocks)
-- ✅ 19-22 Portuguese breakfast/snack ingredients seeded
-- ✅ Production-ready error tracking (Sentry)
-
-### Phase 2: COMPLETE ✅
-- ✅ Zustand state management
-- ✅ Combination generator algorithm (TDD)
-- ✅ Variety scoring engine
-- ✅ OpenTelemetry metrics instrumentation
-
-### Phase 3: IN PROGRESS 🔄
-- ✅ Step 3.0: Platform-Specific SQLite Implementation
-  - DatabaseAdapter interface (like C# IDbConnection)
-  - Native adapter (expo-sqlite for iOS/Android)
-  - In-memory adapter (sql.js for web)
-  - Platform detection with dynamic imports
-  - Metro bundler configuration
-  - Test infrastructure with mock adapters
-
-**Current State:**
-- **30 tests passing** (14 database + 8 business logic + 8 adapter) ✅
-- **Web mode working** with sql.js in-memory database ✅
-- **Native mode working** with expo-sqlite ✅
-- Home screen shows ingredients loaded on BOTH platforms ✅
-- "Generate Suggestions" button works on BOTH platforms ✅
-- Professional cross-platform database abstraction ✅
+**Last Updated:** 2025-11-20
 
 ---
 
-## 🚀 Next: Step 3.1 - Building UI Components
+## ✅ What's Complete
 
-**Estimated Time:** 3-4 hours
+### Phases 1-4: 100% Complete!
 
-**What you'll build:**
-1. **Beautiful meal suggestion cards** - Visual display of combinations
-2. **FlatList rendering** - Performant list component
-3. **Interactive buttons** - Refresh, accept, reject suggestions
-4. **Meal logging UI** - Record what you ate
-5. **Category filtering** - Filter by protein/carb/sweet
+- ✅ **Phase 1**: SQLite database with 22 ingredients
+- ✅ **Phase 2**: Zustand state management + meal generation algorithms
+- ✅ **Phase 3**: Home, Suggestions, Confirmation Modal UI + 7 E2E tests
+- ✅ **Phase 4**: History, Settings screens + User preferences + 12 E2E tests
 
-**Why web mode is now your friend:**
-- `npm run web` - Instant refresh in browser
-- Browser DevTools (F12) - Better debugging
-- Localhost accessible - See Prometheus metrics
-- Faster UI iteration cycle
+**You now have a fully functional meal randomizer app!**
 
 ---
 
-## 📚 Where You Left Off (Session 6)
+## 🎯 Current Status
 
-**What you learned:**
-- **Adapter Pattern** - Interface-based abstraction (like C# DI)
-- **Dynamic Imports** - `await import()` for runtime loading
-- **Metro Bundler** - Static analysis, custom resolvers
-- **Platform.OS** - Detect 'web', 'ios', 'android'
-- **sql.js** - SQLite compiled to WebAssembly
-- **Jest Mocking** - `__mocks__` folders, `jest.mock()`
-- **Defensive Programming** - Fail fast, validate inputs
-- **Structural Typing** - Shape compatibility in TypeScript
+**Phase 4: Navigation & User Flow - COMPLETE ✅**
 
-**Architecture Created:**
-```
-Platform Detection (lib/database/index.ts)
-├── Web → In-Memory Adapter (sql.js)
-├── iOS → Native Adapter (expo-sqlite)
-├── Android → Native Adapter (expo-sqlite)
-└── Jest → Test Adapter (better-sqlite3)
-```
+### What Works Right Now:
 
-**Files created in Session 6:**
-- `lib/database/adapters/types.ts` - DatabaseAdapter interface
-- `lib/database/adapters/native.ts` - expo-sqlite wrapper
-- `lib/database/adapters/inMemory.ts` - sql.js wrapper
-- `lib/database/adapters/sql-js.d.ts` - TypeScript declarations
-- `lib/database/adapters/__tests__/convertPlaceholders.test.ts` - 8 tests
-- `lib/database/__mocks__/index.ts` - Jest mock
-- `metro.config.js` - Metro bundler configuration
+1. **Home Screen** - Navigate to breakfast/snack suggestions, view recent meals
+2. **Suggestions Screen** - Generate meals, view combinations, select and log
+3. **History Screen** - View past meals grouped by date (Today, Yesterday, etc.)
+4. **Settings Screen** - Adjust cooldown days (1-7) and suggestions count (2-6)
+5. **Preferences System** - Settings persist to database and apply immediately
+6. **Tab Navigation** - Seamless navigation between Home, History, Settings
 
-**Key technical solutions:**
-- Dynamic imports to avoid bundling issues
-- Metro resolver excludes expo-sqlite from web bundle
-- Mock database module for Jest (bypasses dynamic imports)
-- Named "inMemory" not "web" (future-proof for IndexedDB)
+### Test Coverage:
+
+- **37+ unit tests** passing (database, logic, adapters, preferences)
+- **12 E2E tests** passing (complete user flows)
 
 ---
 
-## 🎯 Phase 3 Preview: Building Beautiful UI
+## 🚀 Quick Commands
 
-**What you'll create:**
-
-```
-┌─────────────────────────────┐
-│   🍳 Meals Randomizer       │
-├─────────────────────────────┤
-│ [Generate Suggestions]      │
-│                             │
-│ ┌─────────────────────┐    │
-│ │ Suggestion 1        │    │
-│ │ • Milk              │    │
-│ │ • Bread             │    │
-│ │ • Cheese            │    │
-│ │ [✓ Use] [✗ Skip]    │    │
-│ └─────────────────────┘    │
-│                             │
-│ ┌─────────────────────┐    │
-│ │ Suggestion 2        │    │
-│ │ • Apple             │    │
-│ │ • Yogurt            │    │
-│ │ [✓ Use] [✗ Skip]    │    │
-│ └─────────────────────┘    │
-└─────────────────────────────┘
-```
-
-**New concepts:**
-- FlatList for performant rendering
-- TouchableOpacity/Pressable for interactions
-- StyleSheet best practices
-- Component composition
-- React Native styling patterns
-
----
-
-## 🛠️ Quick Verification Before Starting
-
-**Make sure everything still works:**
+### Development
 
 ```bash
 cd demo-react-native-app
+
+# Start web version (fastest for development)
+npm run web
+
+# Run on Android
+npm run android
+
+# Run on iOS
+npm run ios
+```
+
+### Testing
+
+```bash
+# Unit tests
 npm test
-```
 
-**Expected:** 22 tests pass (14 database + 8 business logic)
+# E2E tests
+npm run test:e2e
 
-```bash
-npm start
-# Open app on device
-```
+# E2E with visible browser
+npm run test:e2e:headed
 
-**Expected:**
-- Home screen shows "19 ingredients loaded"
-- "Generate Suggestions" button appears
-- Clicking button shows meal suggestions
+# Type check
+npx tsc --noEmit
 
-If both work, you're ready for Phase 3! 🚀
-
----
-
-## 💡 Tips for Phase 3
-
-### UI Development Approach
-1. **Start with structure** - Layout before styling
-2. **Component composition** - Break UI into small pieces
-3. **State-driven rendering** - UI reflects store state
-4. **Incremental styling** - Get it working, then make it pretty
-
-### Key React Native Components
-- **FlatList** - Efficient list rendering (not ScrollView!)
-- **TouchableOpacity** - Pressable with opacity feedback
-- **Pressable** - More customizable press handling
-- **View** - Container component
-- **Text** - Text display
-- **StyleSheet** - Optimized styling
-
-### This Builds on Everything!
-- Database (Phase 1) → Stores meals you use
-- Business Logic (Phase 2) → Generates suggestions
-- Store (Phase 2) → Manages UI state
-- Metrics (Phase 2) → Tracks usage patterns
-- UI (Phase 3) → Makes it all visual!
-
-### Web Mode Priority
-Starting with web mode SQLite fix will:
-- Allow `npm run web` to work
-- Enable faster development iteration
-- Let you see Prometheus metrics (localhost accessible)
-- Make UI debugging easier with browser DevTools
-
----
-
-## 🐛 If Something Breaks
-
-### App won't start
-```bash
-npx expo start -c  # Clear cache
-```
-
-### Tests fail
-```bash
-npm test  # Should show 22/22 passing
-```
-
-If tests fail, check git status for unexpected changes.
-
-### Database not working
-Check console logs for:
-```
-✅ Database ready
-✅ Seeded XX ingredients
-```
-
-### Metrics not visible in Prometheus
-- Physical devices can't access localhost
-- Need Android Studio emulator or actual IP address
-- Metrics ARE recording (visible in console logs)
-
----
-
-## 📁 Current Project Structure
-
-```
-lib/
-├── database/                   # Phase 1: Data layer
-│   ├── index.ts
-│   ├── schema.ts
-│   ├── ingredients.ts
-│   ├── mealLogs.ts
-│   ├── seed.ts
-│   └── __tests__/             # 14 tests
-├── business-logic/            # Phase 2: Core algorithms
-│   ├── combinationGenerator.ts
-│   ├── varietyEngine.ts
-│   └── __tests__/             # 8 tests
-├── store/                     # Phase 2: State management
-│   └── index.ts               # Zustand store with metrics
-└── telemetry/                 # Observability (refactored!)
-    ├── telemetry.ts           # OpenTelemetry setup
-    ├── logger.ts              # Structured logging
-    ├── analytics.ts           # User analytics
-    └── mealGenerationMetrics.ts  # Feature metrics
-
-app/(tabs)/
-└── index.tsx                  # Home screen with button
-```
-
-**Step 3.1 will add:**
-```
-components/
-├── MealSuggestionCard.tsx     # Individual suggestion display
-├── SuggestionsList.tsx        # FlatList wrapper
-└── ActionButtons.tsx          # Use/Skip buttons
+# Lint
+npm run lint
 ```
 
 ---
 
-## 📊 Progress Tracker
+## 📍 Where You Left Off
+
+### Phase 4 Session Summary (2025-11-20):
+
+**Completed:**
+1. ✅ Built History screen with SectionList for grouped meals
+2. ✅ Built Settings screen with sliders for preferences
+3. ✅ Implemented preferences system (database-backed)
+4. ✅ Refactored entire database layer to adapter pattern
+5. ✅ Completed tab navigation (Home, History, Settings)
+6. ✅ Created 5 new E2E tests (12 total passing)
+
+**Key Achievement:** Database refactoring - all modules now use adapter pattern consistently!
+
+---
+
+## ⏭️ What's Next: Phase 5
+
+### Phase 5: Polish & Production Readiness
+
+**Focus Areas:**
+
+1. **APK Build & Distribution**
+   - Build production APK with EAS Build
+   - Test on real Android device
+   - (Optional) Prepare for Play Store
+
+2. **Performance Optimization**
+   - Measure render performance
+   - Optimize image loading
+   - Add loading states where missing
+
+3. **Accessibility**
+   - Add accessibility labels
+   - Test with screen readers
+   - Ensure proper contrast ratios
+
+4. **Production Readiness**
+   - Validate error boundaries
+   - Confirm Sentry crash reporting
+   - Verify analytics tracking
+   - User feedback collection plan
+
+**Estimated Time:** 3-4 hours
+
+**Reference:** See `docs/epic02_mealsrandomizer/PHASE5_POLISH_TESTING.md`
+
+---
+
+## 🗺️ Project Structure
+
+```
+demo-react-native-app/
+├── app/
+│   ├── (tabs)/
+│   │   ├── index.tsx           # Home screen
+│   │   ├── history.tsx         # History screen ← NEW (Phase 4)
+│   │   ├── settings.tsx        # Settings screen ← NEW (Phase 4)
+│   │   └── _layout.tsx         # Tab navigation
+│   ├── suggestions/
+│   │   └── [mealType].tsx      # Suggestions screen
+│   └── _layout.tsx             # Root layout
+│
+├── lib/
+│   ├── database/               # Refactored with adapter pattern
+│   │   ├── adapters/           # Platform-specific adapters
+│   │   ├── ingredients.ts      # Uses DatabaseAdapter
+│   │   ├── mealLogs.ts         # Uses DatabaseAdapter
+│   │   ├── preferences.ts      # Uses DatabaseAdapter ← NEW (Phase 4)
+│   │   └── __tests__/          # 37+ tests passing
+│   ├── business-logic/
+│   │   ├── combinationGenerator.ts
+│   │   └── varietyEngine.ts
+│   ├── store/
+│   │   └── index.ts            # Zustand with preferences
+│   └── telemetry/
+│
+├── e2e/
+│   └── meal-logging.spec.ts    # 12 E2E tests
+│
+└── components/
+    └── modals/
+        └── ConfirmationModal.tsx
+```
+
+---
+
+## 🔑 Key Architecture Decisions
+
+### Database Adapter Pattern (Phase 4 Refactoring)
+
+**All database functions now follow this pattern:**
+
+```typescript
+// Function signature includes db parameter
+export async function getAllIngredients(db: DatabaseAdapter): Promise<Ingredient[]> {
+  const rows = await db.getAllAsync(...);
+  return rows.map(...);
+}
+
+// Store calls getDatabase() and passes to functions
+loadIngredients: async () => {
+  const db = getDatabase();
+  const ingredients = await ingredientsDb.getAllIngredients(db);
+  set({ ingredients });
+}
+```
+
+**Benefits:**
+- Consistency across all modules
+- Better testability (inject mock adapters)
+- Separation of concerns
+
+### Fresh Preference Reads
+
+**Critical pattern for preferences:**
+
+```typescript
+generateMealSuggestions: async () => {
+  const db = getDatabase();
+
+  // Always load fresh from database
+  const preferences = await preferencesDb.getPreferences(db);
+
+  // Don't use cached state for critical operations
+  const count = preferences.suggestionsCount;
+  const cooldownDays = preferences.cooldownDays;
+}
+```
+
+---
+
+## 🐛 Known Issues
+
+None! All tests passing, app is stable.
+
+---
+
+## 📚 Recent Learnings (Phase 4)
+
+1. **SectionList** - Better than FlatList for grouped data
+2. **onSlidingComplete vs onValueChange** - Avoid hundreds of DB writes
+3. **Fresh DB reads** - Critical operations should read from source of truth
+4. **E2E strict mode** - Use `.first()` or specific testIDs for duplicate text
+5. **TypeScript interfaces** - Must declare all methods in interface
+
+---
+
+## 🎓 Progress Overview
 
 ```
 Epic 2: Meals Randomizer
+├── Phase 1: Data Foundation        ✅ 100% (2025-01-05)
+├── Phase 2: State & Logic          ✅ 100% (2025-01-15)
+├── Phase 3: Building UI            ✅ 100% (2025-11-16)
+├── Phase 4: Navigation & Flow      ✅ 100% (2025-11-20) ← Just completed!
+├── Phase 5: Polish & Production    ⏳ 0%   ← NEXT
+└── Phase 6: Future Enhancements    ⏳ 0%
 
-Phase 1: Data Foundation       ✅ 100% ████████████████████
-Phase 2: State Management      ✅ 100% ████████████████████
-Phase 3: Building UI           🔄 10%  ██░░░░░░░░░░░░░░░░░░ ← IN PROGRESS
-  Step 3.0: Web Mode Support  ✅ 100% ████████████████████
-  Step 3.1: UI Components     ⏳ 0%   ░░░░░░░░░░░░░░░░░░░░ ← NEXT
-Phase 4: Navigation            ⏳ 0%   ░░░░░░░░░░░░░░░░░░░░
-Phase 5: Polish & Testing      ⏳ 0%   ░░░░░░░░░░░░░░░░░░░░
-
-Overall: ~42% complete
+Overall: 80% complete
 ```
 
 ---
 
-## 🚀 Ready to Continue?
+## 💡 Tips for Next Session
 
-**When you come back:**
-
-1. **Verify tests pass:** `npm test` → See 30 tests pass ✅
-2. **Verify web mode:** `npm run web` → Browser shows app ✅
-3. **Verify native:** `npm start` → Device shows app ✅
-4. **Continue Phase 3:** Tell Claude "let's build UI components"
-5. **Build beautiful cards!** 🎨
+1. **Start fresh** - Run `npm run web` to verify everything still works
+2. **Review Phase 5 guide** - Read `PHASE5_POLISH_TESTING.md` before starting
+3. **Check EAS Build config** - Ensure `eas.json` is ready for APK build
+4. **Test on device** - Phase 5 focuses on real device testing
 
 ---
 
-**Remember:** You now have:
-- Complete data layer (SQLite) ✅
-- Complete business logic (algorithms) ✅
-- Complete state management (Zustand) ✅
-- Complete observability (metrics) ✅
-- **Cross-platform database abstraction** ✅
-- **Web mode for fast UI development** ✅
+## 📞 Quick Reference
 
-**All that's left is making it beautiful!** Phase 3.1 is where users see and interact with your work.
+**Documentation:**
+- Overview: `docs/epic02_mealsrandomizer/OVERVIEW.md`
+- Phase 4 Notes: `docs/epic02_mealsrandomizer/PHASE4_LEARNING_NOTES.md`
+- Phase 5 Guide: `docs/epic02_mealsrandomizer/PHASE5_POLISH_TESTING.md`
 
-**Web mode is your new best friend** - Use `npm run web` for faster UI iteration!
+**Key Files:**
+- Store: `lib/store/index.ts`
+- Database: `lib/database/*.ts`
+- History: `app/(tabs)/history.tsx`
+- Settings: `app/(tabs)/settings.tsx`
+- Preferences: `lib/database/preferences.ts`
 
-**Future enhancements:**
-- IndexedDB adapter for persistent web storage
-- Android Studio emulator for better native testing
+---
 
-**Outstanding work!** 🎉 You've built a professional cross-platform database abstraction with proper testing, clean architecture, and full observability. That's senior-level engineering!
-
-**See you next session!** 🚀
+**Ready to start Phase 5? You've got this! 🚀**
