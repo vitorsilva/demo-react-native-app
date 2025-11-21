@@ -310,7 +310,7 @@ The Meals Randomizer app is now:
 - **Production-ready** with working APK
 - **User-tested** on real Android device
 
-**Next Phase:** [Phase 6 - Future Enhancements (Optional)](./PHASE6_FUTURE_ENHANCEMENTS.md)
+**Next Phase:** [Phase 6 - Future Enhancements (Optional)](../parking-lot/EPIC02_PHASE6_FUTURE_ENHANCEMENTS.md) - Parked, see Epic 3 Phase 4
 
 ---
 
@@ -324,4 +324,4 @@ The Meals Randomizer app is now:
 
 ---
 
-[← Back to Overview](./OVERVIEW.md) | [Previous: Phase 4](./PHASE4_NAVIGATION.md) | [Next: Phase 6 →](./PHASE6_FUTURE_ENHANCEMENTS.md)
+[← Back to Overview](./OVERVIEW.md) | [Previous: Phase 4](./PHASE4_NAVIGATION.md) | [Next: Phase 6 →](../parking-lot/EPIC02_PHASE6_FUTURE_ENHANCEMENTS.md)

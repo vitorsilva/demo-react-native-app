@@ -1,6 +1,6 @@
 # Phase 5: Polish & Testing (3-4 hours)
 
-[← Back to Overview](./OVERVIEW.md) | [Previous: Phase 4](./PHASE4_NAVIGATION.md) | [Next: Phase 6 →](./PHASE6_FUTURE_ENHANCEMENTS.md)
+[← Back to Overview](./OVERVIEW.md) | [Previous: Phase 4](./PHASE4_NAVIGATION.md) | [Next: Phase 6 →](../parking-lot/EPIC02_PHASE6_FUTURE_ENHANCEMENTS.md)
 
 ---
 

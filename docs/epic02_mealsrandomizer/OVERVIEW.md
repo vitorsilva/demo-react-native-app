@@ -95,12 +95,14 @@ Add final polish, write comprehensive tests, ensure observability coverage, and 
 
 ---
 
-### Phase 6: Future Enhancements (Optional)
+### Phase 6: Future Enhancements (Optional) - PARKED
 Ideas for V2 and beyond: AI suggestions, favorites, photos, nutrition tracking, cloud sync, Android Studio emulator setup, and more.
+
+**Status:** Not implemented - moved to Epic 3 Phase 4
 
 **You'll learn:** Advanced features, cloud integration, development environment improvements
 
-**[View Enhancement Ideas →](./PHASE6_FUTURE_ENHANCEMENTS.md)**
+**[View Enhancement Ideas →](../parking-lot/EPIC02_PHASE6_FUTURE_ENHANCEMENTS.md)** (Parked)
 
 ---
 
