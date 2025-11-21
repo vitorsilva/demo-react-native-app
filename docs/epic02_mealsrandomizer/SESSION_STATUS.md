@@ -72,7 +72,7 @@
 - ✅ Step 5.4: Production APK Build
 - ✅ Step 5.5: Real Device Testing
 
-**See:** [PHASE5_SESSION_NOTES.md](./PHASE5_SESSION_NOTES.md) for detailed concepts and learnings.
+**See:** [PHASE5_LEARNING_NOTES.md](./PHASE5_LEARNING_NOTES.md) for detailed concepts and learnings.
 
 ---
 
