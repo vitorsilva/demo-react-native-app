@@ -12,6 +12,10 @@ Transform the repository from a learning-focused project to a professional, prod
 
 **After Phase 3:** Clear separation between learning materials and product documentation. Professional README and contribution guidelines. Codebase ready for open source.
 
+**⚠️ IMPORTANT:** This phase includes verifying all documentation is accurate, links work, and the codebase is professionally organized. Final APK validation included.
+
+**Estimated Time:** 4-6 hours (including documentation review, testing, and final deployment)
+
 ---
 
 ## 📋 What You'll Build
@@ -749,6 +753,188 @@ function shuffle<T>(array: T[]): T[] {
 
 ---
 
+### Step 3.11: Documentation Validation (1 hour)
+
+**What you'll learn:** Ensuring documentation quality and accuracy
+
+**Documentation Review Checklist:**
+
+1. **Link Validation:**
+   ```bash
+   # Check for broken internal links
+   # Manually click through all navigation links in:
+   # - docs/README.md
+   # - All epic OVERVIEW.md files
+   # - All phase files
+   # - Main README.md
+   # - CONTRIBUTING.md
+   ```
+   - [ ] All internal links work
+   - [ ] No 404 links
+   - [ ] All cross-references correct
+
+2. **Content Accuracy:**
+   - [ ] README.md reflects current state
+   - [ ] CONTRIBUTING.md has correct setup steps
+   - [ ] User guide matches actual features
+   - [ ] API docs match code
+   - [ ] Screenshots are current
+   - [ ] Version numbers correct
+
+3. **Completeness:**
+   - [ ] All required docs exist (README, CONTRIBUTING, LICENSE, etc.)
+   - [ ] User guide covers all features
+   - [ ] FAQ answers common questions
+   - [ ] Troubleshooting covers known issues
+   - [ ] API docs cover all public functions
+
+4. **Consistency:**
+   - [ ] Terminology is consistent
+   - [ ] Code examples use same style
+   - [ ] File paths are correct
+   - [ ] Commands work as documented
+
+---
+
+### Step 3.12: Final Testing & Deployment (1.5-2 hours)
+
+**What you'll learn:** Complete end-to-end validation
+
+**1. Complete Test Suite:**
+```bash
+# Run all tests
+npm test -- --coverage
+
+# Run E2E tests
+npm run test:e2e
+
+# TypeScript
+npx tsc --noEmit
+
+# Linting
+npm run lint
+```
+
+**Test Results Expected:**
+- [ ] All unit tests pass (40+ tests)
+- [ ] All E2E tests pass (8+ tests)
+- [ ] Coverage >70%
+- [ ] No TypeScript errors
+- [ ] No linting errors
+
+**2. Cross-Platform Validation:**
+```bash
+# Test web mode
+npm run web
+# Manually test all features
+
+# Test on Android/iOS device
+npm start
+# Test on device via Expo Go or dev client
+```
+
+**Feature Validation:**
+- [ ] Add/edit/delete ingredients
+- [ ] Add/edit/delete categories
+- [ ] Add/edit/delete meal types
+- [ ] Generate suggestions (all meal types)
+- [ ] Log meals
+- [ ] View history
+- [ ] All UI elements render correctly
+- [ ] No console errors
+
+**3. Build Production APK:**
+```bash
+# Build production APK with all changes
+eas build --platform android --profile preview
+
+# Wait for build
+# Download APK
+```
+
+**Production APK Testing:**
+- [ ] APK downloads successfully
+- [ ] Installs on device
+- [ ] Icon is correct (new branding)
+- [ ] Splash screen is correct
+- [ ] App name is correct
+- [ ] All features work
+- [ ] Database migrations work on fresh install
+- [ ] Custom data persists
+- [ ] No crashes
+- [ ] Performance is good
+- [ ] Observability works (traces/metrics)
+
+**4. Documentation Site Update:**
+
+If landing page has documentation section:
+```bash
+# Update landing page with:
+# - Link to docs/user-guide/
+# - Link to CONTRIBUTING.md
+# - Updated screenshots showing new structure
+
+# Redeploy
+vercel  # or netlify deploy --prod
+```
+
+**5. Repository Validation:**
+
+**GitHub Check:**
+- [ ] README.md looks professional on GitHub
+- [ ] CONTRIBUTING.md is clear
+- [ ] Issue templates work
+- [ ] PR template works
+- [ ] CODE_OF_CONDUCT.md is visible
+- [ ] LICENSE is clear
+- [ ] .gitignore is complete
+
+**Open Source Readiness:**
+- [ ] No sensitive data in repo
+- [ ] No API keys or secrets
+- [ ] .env.example file exists (if needed)
+- [ ] Dependencies are up to date
+- [ ] No security vulnerabilities (`npm audit`)
+
+**6. Final Git Commit:**
+```bash
+git add .
+
+git commit -m "docs: restructure for production (Epic 3 Phase 3)
+
+- Reorganize documentation (learning vs product)
+- Create professional README and CONTRIBUTING
+- Add CODE_OF_CONDUCT and LICENSE
+- Create user guide and API docs
+- Add GitHub templates
+- Clean up code comments
+- Update all documentation links
+
+Repository is now production-ready ✅
+All tests passing ✅
+
+🤖 Generated with [Claude Code](https://claude.com/claude-code)
+
+Co-Authored-By: Claude <noreply@anthropic.com>"
+
+git push origin main
+```
+
+**7. Release Tag (Optional but Recommended):**
+```bash
+# Tag as v1.0.0
+git tag -a v1.0.0 -m "Version 1.0.0 - Production Ready
+
+- User customization complete
+- Professional branding
+- Production-ready documentation
+- All tests passing"
+
+git push origin v1.0.0
+```
+
+---
+
 ## ✅ Success Criteria
 
 ### Documentation
@@ -772,12 +958,33 @@ function shuffle<T>(array: T[]): T[] {
 - [ ] JSDoc comments added
 - [ ] Code is self-documenting
 - [ ] Test descriptions are professional
+- [ ] No TypeScript errors
+- [ ] Linter passes
+- [ ] No security vulnerabilities
+
+### Testing
+- [ ] All unit tests pass (40+ tests)
+- [ ] All E2E tests pass (8+ tests)
+- [ ] Coverage >70%
+- [ ] Tests updated for documentation changes
+- [ ] No broken tests
+
+### Deployment
+- [ ] Production APK builds successfully
+- [ ] APK tested on device
+- [ ] All features work in production
+- [ ] Landing page updated (if applicable)
+- [ ] Documentation deployed/accessible
+- [ ] Git tag created (v1.0.0)
 
 ### User Experience
 - [ ] Documentation is easy to navigate
 - [ ] New users can get started quickly
 - [ ] New developers can contribute easily
 - [ ] Project looks professional
+- [ ] All links work
+- [ ] Screenshots are current
+- [ ] Repository is open-source ready
 
 ---
 

@@ -12,6 +12,10 @@ Transform "demo-react-native-app" into a professional product with a memorable n
 
 **After Phase 2:** App has a unique name, professional icon, splash screen, and landing page that explains its value.
 
+**⚠️ IMPORTANT:** This phase includes testing that branding changes don't break functionality, and deploying a newly branded APK.
+
+**Estimated Time:** 5-7 hours (including testing, landing page deployment, and APK build)
+
 ---
 
 ## 📋 What You'll Build
@@ -544,12 +548,191 @@ MIT - See [LICENSE](./LICENSE)
 
 ---
 
+### Step 2.11: Testing & Validation (1-1.5 hours)
+
+**What you'll learn:** Ensuring branding changes don't break functionality
+
+**Regression Testing:**
+```bash
+# 1. Run all unit tests
+npm test
+
+# 2. Run E2E tests
+npm run test:e2e
+
+# 3. TypeScript check
+npx tsc --noEmit
+
+# 4. Linting
+npm run lint
+```
+
+**Manual Testing:**
+1. **Verify all features still work:**
+   - [ ] Add ingredient
+   - [ ] Add category
+   - [ ] Add meal type
+   - [ ] Generate suggestions
+   - [ ] Log meal
+   - [ ] View history
+
+2. **Verify branding appears correctly:**
+   - [ ] App icon on device home screen
+   - [ ] Splash screen on launch
+   - [ ] App name in settings
+   - [ ] Theme colors throughout app
+   - [ ] No "demo" text anywhere
+
+3. **Cross-platform check:**
+   - [ ] Web mode works
+   - [ ] Android device works
+   - [ ] iOS device works (if available)
+
+**Landing Page Testing:**
+1. **Functionality:**
+   - [ ] Page loads on all browsers (Chrome, Firefox, Safari)
+   - [ ] Responsive on mobile
+   - [ ] Responsive on tablet
+   - [ ] Responsive on desktop
+   - [ ] Images load correctly
+   - [ ] Links work
+
+2. **Content:**
+   - [ ] No typos
+   - [ ] Screenshots are current
+   - [ ] Value proposition is clear
+   - [ ] Contact info is correct
+
+---
+
+### Step 2.12: Deployment (1-2 hours)
+
+**What you'll learn:** Deploying branded app and landing page
+
+**1. Deploy Landing Page:**
+
+**Option A: Vercel (Recommended)**
+```bash
+# Install Vercel CLI
+npm install -g vercel
+
+# Navigate to website folder
+cd website
+
+# Deploy
+vercel
+
+# Follow prompts
+# Set project name
+# Deploy to production
+
+# Get URL: https://your-app-name.vercel.app
+```
+
+**Option B: Netlify**
+```bash
+# Install Netlify CLI
+npm install -g netlify-cli
+
+# Navigate to website folder
+cd website
+
+# Deploy
+netlify deploy
+
+# Deploy to production
+netlify deploy --prod
+
+# Get URL: https://your-app-name.netlify.app
+```
+
+**Option C: GitHub Pages**
+```bash
+# 1. Create gh-pages branch
+git checkout -b gh-pages
+
+# 2. Copy website files to root
+cp -r website/* .
+
+# 3. Commit and push
+git add .
+git commit -m "docs: deploy landing page"
+git push origin gh-pages
+
+# 4. Enable GitHub Pages in repo settings
+# Settings → Pages → Source: gh-pages branch
+
+# Get URL: https://your-username.github.io/repo-name
+```
+
+**Landing Page Checklist:**
+- [ ] Page is live and accessible
+- [ ] Custom domain configured (optional)
+- [ ] HTTPS enabled
+- [ ] Screenshots are latest version
+- [ ] Download links updated (when APK ready)
+
+**2. Build Branded APK:**
+```bash
+# Return to app directory
+cd demo-react-native-app  # or new name
+
+# Build preview APK with new branding
+eas build --platform android --profile preview
+
+# Wait for build (10-20 minutes)
+# Download APK when complete
+```
+
+**APK Testing:**
+- [ ] Install on device
+- [ ] Verify new icon appears
+- [ ] Verify new splash screen
+- [ ] Verify app name in launcher
+- [ ] Verify app name in settings
+- [ ] Test all features work
+- [ ] No crashes
+- [ ] Performance is good
+
+**3. Update Documentation:**
+- [ ] Update README.md with new name
+- [ ] Update landing page URL
+- [ ] Add screenshot showing new branding
+- [ ] Document brand guidelines
+
+**Git Commit:**
+```bash
+git add .
+
+git commit -m "feat: rebrand to [YourAppName] (Epic 3 Phase 2)
+
+- Finalize app name and branding
+- Design professional icon and splash screen
+- Update theme colors
+- Remove all 'demo' references
+- Create and deploy landing page
+- Build branded APK
+
+Landing page: https://your-app.vercel.app
+All tests passing ✅
+
+🤖 Generated with [Claude Code](https://claude.com/claude-code)
+
+Co-Authored-By: Claude <noreply@anthropic.com>"
+
+git push origin main
+```
+
+---
+
 ## ✅ Success Criteria
 
 ### Brand Identity
 - [ ] App has a unique, memorable name
 - [ ] Brand colors defined and documented
 - [ ] Tagline communicates value clearly
+- [ ] Name is not trademarked
+- [ ] Domain available (optional)
 
 ### Visual Assets
 - [ ] Professional app icon (1024x1024)
@@ -557,6 +740,7 @@ MIT - See [LICENSE](./LICENSE)
 - [ ] Splash screen designed
 - [ ] Favicon created
 - [ ] All assets optimized and crisp
+- [ ] Assets look good at all sizes
 
 ### Code Updates
 - [ ] All "demo" references removed
@@ -564,18 +748,38 @@ MIT - See [LICENSE](./LICENSE)
 - [ ] Bundle identifiers updated
 - [ ] Theme colors updated
 - [ ] No broken references
+- [ ] All imports still work
 
 ### Web Presence
 - [ ] Landing page created
-- [ ] Screenshots captured
-- [ ] Landing page deployed
+- [ ] Screenshots captured (6+ screenshots)
+- [ ] Landing page deployed and live
 - [ ] URL is accessible
 - [ ] Mobile-responsive design
+- [ ] Fast loading (<3 seconds)
+
+### Testing
+- [ ] All unit tests pass
+- [ ] All E2E tests pass
+- [ ] No TypeScript errors
+- [ ] Linter passes
+- [ ] Manual testing complete
+
+### Deployment
+- [ ] Landing page deployed successfully
+- [ ] Branded APK built successfully
+- [ ] APK tested on device
+- [ ] App installs correctly
+- [ ] New icon appears on device
+- [ ] New splash screen shows
+- [ ] All features work in branded build
 
 ### Documentation
-- [ ] README.md updated
+- [ ] README.md updated with new name
 - [ ] Brand guidelines documented
 - [ ] Assets have source files
+- [ ] Session status updated
+- [ ] Git commit pushed
 
 ---
 

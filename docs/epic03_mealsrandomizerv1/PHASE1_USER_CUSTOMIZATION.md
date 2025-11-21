@@ -12,6 +12,10 @@ Give users complete control over their meal options by allowing them to add cust
 
 **After Phase 1:** Users can add their own ingredients, create categories (e.g., "Protein", "Fruit", "Dairy"), and define custom meal types (e.g., "Lunch", "Dessert").
 
+**⚠️ IMPORTANT:** This phase includes comprehensive testing and deployment validation. Everything must work (unit tests, E2E tests, and production build) before moving to Phase 2.
+
+**Estimated Time:** 6-8 hours (including testing and deployment validation)
+
 ---
 
 ## 📋 What You'll Build
@@ -294,22 +298,196 @@ ALTER TABLE meal_logs ADD COLUMN meal_type_id INTEGER REFERENCES meal_types(id);
 
 ---
 
-### Step 1.12: Testing (1 hour)
+### Step 1.12: Comprehensive Testing (1.5-2 hours)
 
-**What you'll learn:** Testing CRUD operations and UI
+**What you'll learn:** Testing CRUD operations, UI, and full flows
 
-**Tasks:**
-1. Unit tests for database operations
-2. Tests for validation logic
-3. Tests for migration system
-4. Component tests for forms
-5. E2E test for full customization flow:
-   - Add category
-   - Add ingredient to category
-   - Add meal type
-   - Generate suggestions with custom data
-   - Log meal
-   - Verify history
+**Unit Tests:**
+1. **Database Operations** (`lib/database/__tests__/`)
+   - Test migration system (up/down migrations)
+   - Test category CRUD operations
+   - Test meal type CRUD operations
+   - Test enhanced ingredient operations
+   - Test validation functions
+   - Test data integrity constraints
+
+2. **Business Logic** (`lib/business-logic/__tests__/`)
+   - Test combination generator with inactive ingredients
+   - Test variety engine with meal type cooldowns
+   - Test algorithm respects active/inactive status
+
+3. **Store** (`lib/store/__tests__/`)
+   - Test new actions (loadCategories, addCategory, etc.)
+   - Test state updates correctly
+
+**Component Tests:**
+1. Manage Ingredients screen renders correctly
+2. Manage Categories screen renders correctly
+3. Meal Type configuration renders correctly
+4. Forms validate input
+5. Forms show error states
+6. Lists handle empty states
+
+**E2E Tests:**
+1. **Full Customization Flow** (New E2E test)
+   - Navigate to Manage Categories
+   - Add new category "Protein"
+   - Navigate to Manage Ingredients
+   - Add new ingredient "Chicken" to "Protein" category
+   - Navigate to Settings
+   - Add new meal type "Lunch"
+   - Configure lunch settings (min: 3, max: 5, cooldown: 2)
+   - Navigate to home
+   - Verify "Lunch Ideas" button appears
+   - Click "Lunch Ideas"
+   - Verify 4 suggestions appear
+   - Verify "Chicken" appears in at least one suggestion
+   - Select a meal
+   - Confirm logging
+   - Navigate to history
+   - Verify lunch meal logged
+
+2. **Update Existing E2E Tests**
+   - Ensure breakfast/snack tests still pass
+   - Update tests if meal type routing changed
+
+**Test Commands:**
+```bash
+# Run all unit tests
+npm test
+
+# Run with coverage
+npm test -- --coverage
+
+# Run E2E tests
+npm run test:e2e
+
+# Run E2E with UI (for debugging)
+npm run test:e2e:ui
+```
+
+**Success Criteria:**
+- [ ] All existing tests still pass
+- [ ] New unit tests cover >80% of new code
+- [ ] E2E test covers full customization flow
+- [ ] No test failures
+- [ ] Coverage doesn't drop below 70%
+
+---
+
+### Step 1.13: End-of-Phase Validation (30 min - 1 hour)
+
+**What you'll learn:** Complete system validation before moving forward
+
+**Pre-Deployment Checklist:**
+
+1. **Code Quality**
+   ```bash
+   # TypeScript - must pass
+   npx tsc --noEmit
+
+   # Linting - must pass
+   npm run lint
+
+   # Tests - must pass
+   npm test
+   npm run test:e2e
+   ```
+
+2. **Database Integrity**
+   - [ ] Run migration on fresh database (web mode)
+   - [ ] Run migration on fresh database (native mode - Android/iOS)
+   - [ ] Verify all tables created
+   - [ ] Verify foreign keys work
+   - [ ] Verify seed data loads correctly
+   - [ ] Test rollback migration (if implemented)
+
+3. **Functionality Testing (Manual)**
+   - [ ] Add category successfully
+   - [ ] Add ingredient to category
+   - [ ] Create custom meal type
+   - [ ] Configure meal type settings
+   - [ ] Generate suggestions with custom meal type
+   - [ ] Log meal with custom ingredients
+   - [ ] View history with custom meals
+   - [ ] Edit ingredient
+   - [ ] Disable ingredient (verify excluded from suggestions)
+   - [ ] Delete ingredient with safety checks
+   - [ ] Delete category with safety checks
+
+4. **Cross-Platform Testing**
+   ```bash
+   # Test on web
+   npm run web
+   # Manually test all features
+
+   # Test on device (Android or iOS)
+   npm start
+   # Scan QR code and test on device
+   ```
+
+5. **Observability Check**
+   ```bash
+   # Start observability stack
+   docker-compose up -d
+
+   # Use the app and check:
+   # - Jaeger: http://localhost:16686 (traces appear)
+   # - Prometheus: http://localhost:9090 (metrics appear)
+   # - Console logs (no errors)
+   ```
+
+6. **Build & Deploy (APK)**
+   ```bash
+   # Build preview APK
+   eas build --platform android --profile preview
+
+   # Wait for build to complete
+   # Download APK
+   # Install on device
+   # Test all customization features on installed APK
+   ```
+
+**Deployment Validation:**
+- [ ] APK builds successfully
+- [ ] APK installs on device
+- [ ] Database migrations run on first launch
+- [ ] All features work in production build
+- [ ] No crashes
+- [ ] Performance is acceptable
+
+**Git Commit:**
+```bash
+# Stage all changes
+git add .
+
+# Commit with descriptive message
+git commit -m "feat: add user customization (Epic 3 Phase 1)
+
+- Implement database migrations system
+- Add category management (CRUD)
+- Add meal type management (CRUD)
+- Enhance ingredient operations
+- Create management screens
+- Add data validation
+- Update algorithms for custom data
+- Add comprehensive tests
+
+Tests: 30+ unit tests, 1 new E2E test
+All tests passing ✅
+
+🤖 Generated with [Claude Code](https://claude.com/claude-code)
+
+Co-Authored-By: Claude <noreply@anthropic.com>"
+
+# Push to remote
+git push origin main
+```
+
+**Documentation:**
+- [ ] Update `docs/epic03_mealsrandomizerv1/SESSION_STATUS.md`
+- [ ] Update `docs/README.md` with progress
+- [ ] Create session notes if needed
 
 ---
 
@@ -378,13 +556,16 @@ export interface MealTypeParams {
 - [ ] Validation prevents duplicate names
 
 ### Quality
-- [ ] All existing tests pass
-- [ ] New features have tests
+- [ ] All existing tests pass (30+ unit tests, 7 E2E tests)
+- [ ] New unit tests added (10+ new tests)
+- [ ] New E2E test for customization flow (1 test)
+- [ ] Test coverage >70% overall
 - [ ] Database migrations work correctly
 - [ ] No data loss during migration
 - [ ] Forms validate user input
 - [ ] Error messages are helpful
 - [ ] No TypeScript errors
+- [ ] Linter passes
 
 ### UX
 - [ ] Forms are intuitive
@@ -392,6 +573,21 @@ export interface MealTypeParams {
 - [ ] Confirmation prompts prevent accidents
 - [ ] Loading states provide feedback
 - [ ] Empty states guide users
+
+### Deployment
+- [ ] APK builds successfully
+- [ ] App installs on device
+- [ ] All features work in production build
+- [ ] Database migrations run correctly on first install
+- [ ] No crashes on device
+- [ ] Observability traces appear (Jaeger)
+- [ ] Metrics appear (Prometheus)
+- [ ] Cross-platform testing complete (web + native)
+
+### Documentation
+- [ ] Session status updated
+- [ ] Changes documented
+- [ ] Git commit pushed
 
 ---
 

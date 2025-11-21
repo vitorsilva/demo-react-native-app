@@ -37,8 +37,10 @@ This epic shifts the focus from "learning how to build" to "building a product p
 
 ## 🗺️ Phase Overview
 
-### Phase 1: User Customization (5-7 hours)
+### Phase 1: User Customization (6-8 hours)
 **Goal:** Give users control over their meal options
+
+**⚠️ Includes:** Comprehensive testing (unit + E2E) and APK deployment validation
 
 Add the ability for users to:
 - Add custom ingredients
@@ -59,8 +61,10 @@ Add the ability for users to:
 
 ---
 
-### Phase 2: Branding & Identity (4-6 hours)
+### Phase 2: Branding & Identity (5-7 hours)
 **Goal:** Create a professional brand for your app
+
+**⚠️ Includes:** Testing, landing page deployment, and branded APK build
 
 Tasks:
 - Brainstorm and finalize app name (currently "Meals Randomizer")
@@ -82,8 +86,10 @@ Tasks:
 
 ---
 
-### Phase 3: Project Structure & Documentation (3-5 hours)
+### Phase 3: Project Structure & Documentation (4-6 hours)
 **Goal:** Transform repository from learning project to professional codebase
+
+**⚠️ Includes:** Documentation validation, final testing, and v1.0.0 release tag
 
 Reorganize:
 - Move learning documentation to `/docs/learning/`
@@ -233,12 +239,20 @@ meals-randomizer/                    # Renamed from demo-react-native-app
 
 ## ⏱️ Timeline & Effort
 
-### Total Estimated Time: 12-18 hours
+### Total Estimated Time: 15-21 hours (including comprehensive testing & deployment)
 
-- **Phase 1:** User Customization (5-7 hours)
-- **Phase 2:** Branding & Identity (4-6 hours)
-- **Phase 3:** Project Structure & Documentation (3-5 hours)
-- **Phase 4:** Polish Feature (2-4 hours, optional)
+- **Phase 1:** User Customization (6-8 hours) - includes unit tests, E2E tests, APK deployment
+- **Phase 2:** Branding & Identity (5-7 hours) - includes testing, landing page deployment, branded APK
+- **Phase 3:** Project Structure & Documentation (4-6 hours) - includes documentation validation, final testing, v1.0.0 release
+- **Phase 4:** Polish Feature (2-4 hours, optional) - feature-dependent
+
+**Note:** Each phase now includes:
+- ✅ Comprehensive unit testing
+- ✅ E2E testing updates
+- ✅ Cross-platform validation (web + native)
+- ✅ Production APK build and testing
+- ✅ Observability verification
+- ✅ Git commit and push
 
 ### Recommended Schedule
 
