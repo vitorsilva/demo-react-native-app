@@ -1,6 +1,7 @@
 import { Platform } from 'react-native';
 import { DatabaseAdapter } from './adapters/types';
 import { SCHEMA_SQL, DEFAULT_PREFERENCES } from './schema';
+import { runMigrations } from './migrations';
 
 let database: DatabaseAdapter | null = null;
 
@@ -27,6 +28,9 @@ export async function initDatabase(): Promise<DatabaseAdapter> {
       await database.runAsync(statement);
     }
   }
+
+  // Run migrations for schema updates
+  await runMigrations(database);  
 
   // Initialize default preferences
   await database.runAsync(
