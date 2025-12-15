@@ -34,7 +34,13 @@
       "Bash(cat:*)",
       "Bash(npm run test:e2e:*)",
       "Bash(npm test:*)",
-      "Bash(test:*)"
+      "Bash(test:*)",
+      "Bash(curl:*)",
+      "mcp__playwright__browser_type",
+      "mcp__playwright__browser_handle_dialog",
+      "mcp__playwright__browser_wait_for",
+      "mcp__playwright__browser_evaluate",
+      "mcp__playwright__browser_close"
     ],
     "deny": [],
     "ask": []
