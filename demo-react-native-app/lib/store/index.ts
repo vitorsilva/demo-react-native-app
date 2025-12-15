@@ -239,6 +239,8 @@ export const useStore = create<StoreState>((set, get) => ({
           ingredients: state.ingredients.map((ing) => (ing.id === id ? updated : ing)),
           isLoading: false,
         }));
+      } else {
+        set({ isLoading: false, error: 'Ingredient not found' });
       }
     } catch (error) {
       set({
@@ -259,6 +261,8 @@ export const useStore = create<StoreState>((set, get) => ({
           ingredients: state.ingredients.map((ing) => (ing.id === id ? updated : ing)),
           isLoading: false,
         }));
+      } else {
+        set({ isLoading: false, error: 'Ingredient not found' });
       }
     } catch (error) {
       set({
@@ -330,6 +334,8 @@ export const useStore = create<StoreState>((set, get) => ({
           categories: state.categories.map((cat) => (cat.id === id ? updated : cat)),
           isLoading: false,
         }));
+      } else {
+        set({ isLoading: false, error: 'Category not found' });
       }
     } catch (error) {
       set({
@@ -405,6 +411,8 @@ export const useStore = create<StoreState>((set, get) => ({
           mealTypes: state.mealTypes.map((mt) => (mt.id === id ? updated : mt)),
           isLoading: false,
         }));
+      } else {
+        set({ isLoading: false, error: 'Meal type not found' });
       }
     } catch (error) {
       set({
