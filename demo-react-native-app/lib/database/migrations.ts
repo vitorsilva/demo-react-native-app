@@ -1,5 +1,11 @@
   import type { DatabaseAdapter } from './adapters/types';
 
+  // Silent logging during tests
+  const isTestEnv = process.env.NODE_ENV === 'test';
+  const log = (message: string) => {
+    if (!isTestEnv) console.log(message);
+  };
+
   // Track current schema version
   const MIGRATIONS_TABLE_SQL = `
     CREATE TABLE IF NOT EXISTS migrations (
@@ -122,12 +128,12 @@
 
     // 2. Get current version
     const currentVersion = await getCurrentVersion(db);
-    console.log(`📊 Current database version: ${currentVersion}`);
+    log(`📊 Current database version: ${currentVersion}`);
 
     // 3. Run all migrations with version > currentVersion
     for (const migration of migrations) {
       if (migration.version > currentVersion) {
-        console.log(`⬆️ Running migration ${migration.version}...`);
+        log(`⬆️ Running migration ${migration.version}...`);
         await migration.up(db);
 
         // 4. Record migration
@@ -135,9 +141,9 @@
           'INSERT INTO migrations (version, applied_at) VALUES (?, ?)',
           [migration.version, new Date().toISOString()]
         );
-        console.log(`✅ Migration ${migration.version} complete`);
+        log(`✅ Migration ${migration.version} complete`);
       }
     }
 
-    console.log('📊 All migrations complete');
+    log('📊 All migrations complete');
   }
