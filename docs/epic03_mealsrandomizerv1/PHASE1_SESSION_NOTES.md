@@ -565,6 +565,104 @@ Continue with Step 1.7: Manage Categories Screen
 ---
 
 **Status:** Step 1.6 COMPLETE
+
+---
+
+## Session 6: Step 1.6 Fix - Meal Type ID Refactor
+
+**Date:** 2025-12-15
+**Session Duration:** ~15 minutes
+**Focus:** Fixing meal type storage to use IDs instead of names
+
+---
+
+## Summary
+
+Quick fix session to address a design inconsistency in the Manage Ingredients screen. The form was storing meal types as lowercase name strings, which is fragile. Refactored to use IDs instead.
+
+---
+
+## Key Accomplishments
+
+### Refactored Meal Type Selection
+
+**Problem Identified:**
+- Form stored meal types as `["breakfast", "snack"]` (lowercase names)
+- Compared using `mealType.name.toLowerCase()` - case-sensitive and fragile
+- If someone created "BREAKFAST", it would conflict
+
+**Solution Implemented:**
+- Form now stores meal type IDs: `["mt-breakfast-001", "mt-snack-001"]`
+- Converts IDs ↔ names when saving/loading
+- Follows same pattern as `category_id`
+
+### New Helper Functions
+
+Added two conversion functions:
+
+```typescript
+// Convert IDs to names for saving to database
+const getMealTypeNamesFromIds = (ids: string[]): string[] => {
+  return ids
+    .map((id) => mealTypes.find((mt) => mt.id === id)?.name.toLowerCase())
+    .filter((name): name is string => name !== undefined);
+};
+
+// Convert names to IDs for editing
+const getMealTypeIdsFromNames = (names: string[]): string[] => {
+  return names
+    .map((name) => mealTypes.find((mt) => mt.name.toLowerCase() === name.toLowerCase())?.id)
+    .filter((id): id is string => id !== undefined);
+};
+```
+
+### Files Modified
+
+- `app/(tabs)/manage-ingredients.tsx`:
+  - Added `getMealTypeNamesFromIds()` helper
+  - Added `getMealTypeIdsFromNames()` helper
+  - Updated `handleAddIngredient()` to convert IDs → names
+  - Updated `handleEditIngredient()` to convert IDs → names
+  - Updated `openEditModal()` to convert names → IDs
+  - Updated `renderModalForm()` to compare by ID
+
+---
+
+## Technical Concepts Reinforced
+
+### 1. ID vs Name References
+
+**Best Practice:** Always reference entities by ID, not name.
+- IDs are immutable and unique
+- Names can change (user might rename "breakfast" to "Morning Meal")
+- Case sensitivity issues avoided
+
+### 2. TypeScript Type Guards
+
+Used type guard in filter to narrow types:
+```typescript
+.filter((name): name is string => name !== undefined)
+```
+This tells TypeScript the result is `string[]` not `(string | undefined)[]`.
+
+### 3. Data Transformation Layer
+
+Pattern: Keep internal form state clean (IDs), transform at boundaries (save/load).
+- Form uses IDs for selection
+- Database uses names for storage
+- Conversion happens at save/load points
+
+---
+
+## Testing Results
+
+**TypeScript:** Compiles without errors
+**Lint:** Passes
+**Unit Tests:** 67 passing
+
+---
+
+**Status:** Step 1.6 Fix COMPLETE
 **Next Session:** Step 1.7 - Manage Categories Screen
 
 ---

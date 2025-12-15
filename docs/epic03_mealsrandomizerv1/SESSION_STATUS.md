@@ -172,6 +172,14 @@
 
 ## 🔄 Change Log
 
+### 2025-12-15 (Session 6 - Fix)
+- Fixed meal type storage in Manage Ingredients screen
+- Refactored form to use IDs instead of lowercase names
+- Added `getMealTypeNamesFromIds()` and `getMealTypeIdsFromNames()` helpers
+- Updated save/load logic to convert between IDs and names
+- Best practice: reference entities by ID, not name
+- TypeScript, lint, and 67 unit tests all passing
+
 ### 2025-12-15 (Session 5 - Autonomous)
 - Completed Step 1.6: Manage Ingredients Screen
 - Created `app/(tabs)/manage-ingredients.tsx` (700 lines)

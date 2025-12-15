@@ -130,13 +130,13 @@ As you work through Epic 3, update:
 ### Last Session
 **Date:** 2025-12-15
 **Phase:** Phase 1 - User Customization
-**Completed:** Step 1.6 - Manage Ingredients Screen (Autonomous Build)
-  - Created `app/(tabs)/manage-ingredients.tsx` (700 lines)
-  - Features: list ingredients, filter by category, add/edit/delete, toggle active
-  - Modified `_layout.tsx` to add Ingredients tab
-  - Visual testing with Playwright - all features working
+**Completed:** Step 1.6 Fix - Meal Type ID Refactor
+  - Fixed form to store meal type IDs instead of lowercase names
+  - Added `getMealTypeNamesFromIds()` and `getMealTypeIdsFromNames()` helpers
+  - Updated save/load logic to convert between IDs and names
+  - Best practice learned: reference entities by ID, not name
   - TypeScript, lint, and 67 unit tests all passing
-**First UI screen complete!** Backend + Manage Ingredients screen done.
+**First UI screen complete + refined!** Backend + Manage Ingredients screen done.
 **Next:** Step 1.7 - Manage Categories Screen
 
 ---
