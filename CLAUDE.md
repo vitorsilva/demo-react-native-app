@@ -9,12 +9,15 @@ This is a learning-focused React Native mobile application built with Expo. The 
 **Current Status:**
 - ✅ **Epic 1: Infrastructure & Foundation** - COMPLETED (2025-10-28)
   - Professional dev workflow, testing, CI/CD, observability stack
-- 🔄 **Epic 2: Meals Randomizer** - IN PROGRESS (Started 2025-01-04)
-  - Building a real app with SQLite, Zustand, and complex UI
-  - ✅ Phase 1: Data Foundation - COMPLETE
-  - ✅ Phase 2: State Management - COMPLETE
-  - ✅ Phase 3: Building UI - COMPLETE (including E2E tests)
-  - 🔄 Phase 4: Navigation & User Flow - NEXT
+- ✅ **Epic 2: Meals Randomizer** - COMPLETED (2025-11-21)
+  - Built a real app with SQLite, Zustand, and complex UI
+  - All 5 phases complete: Data Foundation, State Management, Building UI, Navigation, Polish & Testing
+  - 40 unit tests + 7 E2E tests passing, production APK built
+- 🔄 **Epic 3: Meals Randomizer V1 - Production Readiness** - IN PROGRESS (Started 2025-01-21)
+  - Transforming from learning project to production product
+  - 🔄 Phase 1: User Customization - IN PROGRESS (~10%)
+    - ✅ Step 1.1: Database Migrations - COMPLETE
+    - 🔄 Step 1.2: Category CRUD - NEXT
 
 **Key Characteristics:**
 - Learning project (not production)
@@ -32,18 +35,24 @@ This is a learning-focused React Native mobile application built with Expo. The 
 
 **ALWAYS check these files at the start of a session to understand current progress:**
 
-1. **docs/epic02_mealsrandomizer/PHASE*_SESSION_NOTES.md** - Most recent session notes (check latest by date)
-2. **docs/epic02_mealsrandomizer/OVERVIEW.md** - Epic 2 overview and phase structure
-3. **docs/epic02_mealsrandomizer/SESSION_STATUS.md** - Overall epic progress (may be outdated)
-4. **docs/epic02_mealsrandomizer/QUICK_START_TOMORROW.md** - Quick resume guide (may be outdated)
+**For Epic 3 (CURRENT):**
+1. **docs/epic03_mealsrandomizerv1/SESSION_STATUS.md** - Current progress tracking
+2. **docs/epic03_mealsrandomizerv1/OVERVIEW.md** - Epic 3 overview and phase structure
+3. **docs/epic03_mealsrandomizerv1/QUICK_START.md** - Quick resume guide
+4. **docs/epic03_mealsrandomizerv1/PHASE*_SESSION_NOTES.md** - Session notes (check latest by date)
 
 **When user asks "what's next":**
-1. First check OVERVIEW.md to understand phase structure
+1. First check SESSION_STATUS.md for current phase and step
 2. Look for the most recent PHASE*_SESSION_NOTES.md file
-3. Check the corresponding PHASE*_*.md file for the next phase to see what needs to be done
+3. Check the corresponding PHASE*_*.md file for detailed instructions
 4. Don't assume or guess - always check documentation first
 
-**IMPORTANT:** The SESSION_STATUS.md and QUICK_START_TOMORROW.md files may be outdated. Always verify by checking what's actually implemented in the codebase (app/, lib/, components/ folders).
+**IMPORTANT:** Always verify by checking what's actually implemented in the codebase (app/, lib/, components/ folders).
+
+**For Epic 2 reference (completed work):**
+- docs/epic02_mealsrandomizer/OVERVIEW.md - Epic 2 overview
+- docs/epic02_mealsrandomizer/SESSION_STATUS.md - Final status
+- docs/epic02_mealsrandomizer/PHASE*_LEARNING_NOTES.md - Detailed notes
 
 **For Epic 1 reference (completed work):**
 - docs/epic01_infrastructure/LEARNING_PLAN.md - Completed epic
@@ -528,21 +537,25 @@ await page.getByTestId('snack-ideas-button').click();
 
 ## Current Phase Status
 
-**Phase 3: Building UI - COMPLETE**
-- Home screen with meal type buttons
-- Suggestions screen with image cards
-- Confirmation modal
-- Loading/error states
-- Platform-specific code (LinearGradient, Sentry)
-- E2E tests with Playwright (7 tests passing)
-- Critical bug fixes (database timing, Sentry web compatibility)
+**Epic 2: Meals Randomizer - COMPLETE ✅**
+All 5 phases finished (2025-11-21):
+- Phase 1: Data Foundation (SQLite, CRUD)
+- Phase 2: State Management (Zustand, algorithms)
+- Phase 3: Building UI (Home, Suggestions, Modal, E2E)
+- Phase 4: Navigation (History, Settings, Preferences)
+- Phase 5: Polish & Testing (Haptics, Accessibility, APK)
+- 40 unit tests + 7 E2E tests passing
 
-**Next: Phase 4 - Navigation & User Flow**
-According to PHASE4_NAVIGATION.md:
-- History screen (SectionList for grouped meals)
-- Settings screen (sliders for preferences)
-- Tab navigation structure completion
-- User flow testing
+**Epic 3: Phase 1 - User Customization - IN PROGRESS (~10%)**
+- ✅ Step 1.1: Database Migrations - COMPLETE (2025-11-26)
+  - Created `lib/database/migrations.ts`
+  - Added categories table, meal_types table
+  - Idempotent migration operations
+- 🔄 Step 1.2: Category CRUD - NEXT
+  - Create `lib/database/categories.ts`
+  - Add getAllCategories, addCategory, updateCategory, deleteCategory
+
+**Reference:** See `docs/epic03_mealsrandomizerv1/PHASE1_USER_CUSTOMIZATION.md`
 
 ## Future-Proofing Notes
 
