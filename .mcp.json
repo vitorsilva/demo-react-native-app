@@ -1,0 +1,19 @@
+{
+  "mcpServers": {
+    "playwright": {
+      "command": "cmd",
+      "args": ["/c", "npx", "@playwright/mcp@latest"]
+    },
+    "context7": {
+      "command": "cmd",
+      "args": ["/c", "npx", "-y", "@upstash/context7-mcp@latest"],
+      "env": {
+        "CONTEXT7_API_KEY": "${CONTEXT7_API_KEY}"
+      }
+    },
+    "chrome-devtools": {
+      "command": "cmd",
+      "args": ["/c", "npx", "-y", "chrome-devtools-mcp@latest"]
+    }
+  }
+}

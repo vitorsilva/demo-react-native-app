@@ -38,5 +38,10 @@
     ],
     "deny": [],
     "ask": []
-  }
+  },
+  "enabledMcpjsonServers": [
+    "playwright",
+    "context7",
+    "chrome-devtools"
+  ]
 }
