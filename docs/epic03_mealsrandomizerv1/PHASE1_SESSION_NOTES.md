@@ -165,7 +165,152 @@ Continue with Step 1.2: Category CRUD Operations
 ---
 
 **Status:** Step 1.1 COMPLETE
-**Next Session:** Step 1.2 - Category CRUD Operations
+
+---
+
+## Session 2: Step 1.2 - Category CRUD Operations
+
+**Date:** 2025-12-15
+**Session Duration:** ~1.5 hours
+**Focus:** Category CRUD Operations
+
+---
+
+## Summary
+
+This session focused on building the database layer for category management. We created full CRUD operations following established patterns from the codebase.
+
+---
+
+## Key Accomplishments
+
+### 1. Added Category Type
+
+**Modified:** `types/database.ts`
+
+- Added `Category` interface with `id`, `name`, `created_at`, `updated_at`
+- Used `string` for `id` (UUID) to match other entities
+
+### 2. Updated Migrations for UUID Consistency
+
+**Modified:** `lib/database/migrations.ts`
+
+- Changed `categories` table from `INTEGER PRIMARY KEY AUTOINCREMENT` to `TEXT PRIMARY KEY`
+- Changed `meal_types` table from `INTEGER PRIMARY KEY AUTOINCREMENT` to `TEXT PRIMARY KEY`
+- Updated seed data to use readable IDs (`mt-breakfast-001`, `mt-snack-001`)
+
+### 3. Created Category CRUD Module
+
+**Created:** `lib/database/categories.ts`
+
+Full CRUD operations following established patterns:
+- `getAllCategories(db)` - Fetch all categories, ordered by name
+- `getCategoryById(db, id)` - Fetch single category by ID
+- `addCategory(db, { name })` - Create with UUID, returns full entity
+- `updateCategory(db, id, { name })` - Update name and updated_at
+- `deleteCategory(db, id)` - Delete with foreign key safety check
+
+### 4. Updated Test Infrastructure
+
+**Modified:** `lib/database/__mocks__/index.ts`
+
+- Added import for `runMigrations`
+- Added `await runMigrations(database)` after base schema creation
+- Tests now properly create categories/meal_types tables
+
+### 5. Created Category Tests
+
+**Created:** `lib/database/__tests__/categories.test.ts`
+
+7 unit tests covering:
+- Empty state handling
+- Category creation with UUID
+- Alphabetical ordering
+- Get by ID (found and not found)
+- Update with timestamp change
+- Delete when no ingredients assigned
+
+---
+
+## Technical Concepts Learned
+
+### 1. Code Consistency & Standardization
+
+**Discussion:** Noticed inconsistent naming patterns across modules:
+- `addIngredient` vs `logMeal` vs `createCategory`
+- Different parameter patterns (object vs individual args)
+
+**Decision:** Standardized on:
+- Method naming: `add[EntityName]`
+- Parameter pattern: `Omit<Entity, 'auto-generated-fields'>`
+- Return pattern: Construct object directly, don't re-query
+
+### 2. UUID vs Auto-increment
+
+**Discussion:** Categories table used `INTEGER PRIMARY KEY AUTOINCREMENT`, but other tables use UUID.
+
+**Decision:** Changed to UUID (`TEXT PRIMARY KEY`) for consistency:
+- All entities now use UUID
+- IDs generated in code with `Crypto.randomUUID()`
+- Seed data uses readable IDs for system records
+
+### 3. Update Pattern
+
+**Key insight:** `updateCategory` must query after update because:
+- We don't have `created_at` in the input
+- Need to return complete entity
+- Different from `addCategory` where we have all values
+
+### 4. Safe Delete Pattern
+
+**Implementation:** Check foreign keys before delete:
+```typescript
+const count = await db.getFirstAsync<{ count: number }>(
+  'SELECT COUNT(*) as count FROM ingredients WHERE category_id = ?',
+  [id]
+);
+if (count && count.count > 0) {
+  return { success: false, error: '...' };
+}
+```
+
+### 5. Test Infrastructure Update
+
+**Learning:** When adding new tables via migrations, the test mock must also run migrations to create those tables.
+
+---
+
+## Files Created
+
+- `lib/database/categories.ts` - Category CRUD operations
+- `lib/database/__tests__/categories.test.ts` - 7 unit tests
+
+## Files Modified
+
+- `types/database.ts` - Added Category interface
+- `lib/database/migrations.ts` - Changed to UUID, updated seed data
+- `lib/database/__mocks__/index.ts` - Added migration support
+
+---
+
+## Testing Results
+
+**Unit Tests:** 47 passing (7 new)
+**Web Mode:** App runs correctly, migrations execute
+
+---
+
+## Next Steps
+
+Continue with Step 1.3: Meal Type CRUD Operations
+- Create `lib/database/mealTypes.ts`
+- Implement CRUD with additional fields (min/max ingredients, cooldown, is_active)
+- Add tests in `__tests__/mealTypes.test.ts`
+
+---
+
+**Status:** Step 1.2 COMPLETE
+**Next Session:** Step 1.3 - Meal Type CRUD Operations
 
 ---
 

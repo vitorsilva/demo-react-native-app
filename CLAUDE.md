@@ -15,9 +15,10 @@ This is a learning-focused React Native mobile application built with Expo. The 
   - 40 unit tests + 7 E2E tests passing, production APK built
 - 🔄 **Epic 3: Meals Randomizer V1 - Production Readiness** - IN PROGRESS (Started 2025-01-21)
   - Transforming from learning project to production product
-  - 🔄 Phase 1: User Customization - IN PROGRESS (~10%)
+  - 🔄 Phase 1: User Customization - IN PROGRESS (~20%)
     - ✅ Step 1.1: Database Migrations - COMPLETE
-    - 🔄 Step 1.2: Category CRUD - NEXT
+    - ✅ Step 1.2: Category CRUD - COMPLETE
+    - 🔄 Step 1.3: Meal Type CRUD - NEXT
 
 **Key Characteristics:**
 - Learning project (not production)
@@ -546,14 +547,18 @@ All 5 phases finished (2025-11-21):
 - Phase 5: Polish & Testing (Haptics, Accessibility, APK)
 - 40 unit tests + 7 E2E tests passing
 
-**Epic 3: Phase 1 - User Customization - IN PROGRESS (~10%)**
+**Epic 3: Phase 1 - User Customization - IN PROGRESS (~20%)**
 - ✅ Step 1.1: Database Migrations - COMPLETE (2025-11-26)
   - Created `lib/database/migrations.ts`
   - Added categories table, meal_types table
   - Idempotent migration operations
-- 🔄 Step 1.2: Category CRUD - NEXT
-  - Create `lib/database/categories.ts`
-  - Add getAllCategories, addCategory, updateCategory, deleteCategory
+- ✅ Step 1.2: Category CRUD - COMPLETE (2025-12-15)
+  - Created `lib/database/categories.ts` with full CRUD
+  - Updated migrations to use UUID for consistency
+  - Added 7 unit tests (47 total passing)
+- 🔄 Step 1.3: Meal Type CRUD - NEXT
+  - Create `lib/database/mealTypes.ts`
+  - Add CRUD with min/max ingredients, cooldown, is_active fields
 
 **Reference:** See `docs/epic03_mealsrandomizerv1/PHASE1_USER_CUSTOMIZATION.md`
 
