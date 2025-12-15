@@ -4,14 +4,14 @@
 
 **Started:** 2025-01-21
 
-**Current Status:** Phase 1 In Progress - Step 1.2 Complete
+**Current Status:** Phase 1 In Progress - Step 1.4 Complete
 
 ---
 
 ## 📊 Overall Progress
 
 - ✅ **Planning:** Epic structure defined, all phase documentation created
-- 🔄 **Phase 1:** User Customization - IN PROGRESS (~20% complete)
+- 🔄 **Phase 1:** User Customization - IN PROGRESS (~30% complete)
 - ⏸️ **Phase 2:** Branding & Identity - Not started
 - ⏸️ **Phase 3:** Project Structure & Documentation - Not started
 - ⏸️ **Phase 4:** Polish Feature (Optional) - Not started
@@ -25,16 +25,16 @@
 ## 📋 Phase Status
 
 ### Phase 1: User Customization (6-8 hours)
-**Status:** IN PROGRESS (~10% complete)
+**Status:** IN PROGRESS (~30% complete)
 
 **Goal:** Add user control over ingredients, categories, and meal types
 
 **Key Deliverables:**
 - [x] Database migrations system (Step 1.1) ✅
 - [x] Category management (CRUD) (Step 1.2) ✅
-- [ ] Meal type management (CRUD) (Step 1.3) - NEXT
-- [ ] Enhanced ingredient operations (Step 1.4)
-- [ ] Zustand store updates (Step 1.5)
+- [x] Meal type management (CRUD) (Step 1.3) ✅
+- [x] Enhanced ingredient operations (Step 1.4) ✅
+- [ ] Zustand store updates (Step 1.5) - NEXT
 - [ ] Manage Ingredients screen (Step 1.6)
 - [ ] Manage Categories screen (Step 1.7)
 - [ ] Meal Type configuration (Step 1.8)
@@ -169,7 +169,36 @@
 
 ## 🔄 Change Log
 
-### 2025-12-15
+### 2025-12-15 (Session 3)
+- Completed Step 1.4: Enhanced Ingredient Operations
+- Updated `Ingredient` interface with new fields: `category_id`, `is_active`, `is_user_added`, `updated_at`
+- Updated `getAllIngredients` and `addIngredient` for new fields
+- Added new functions to `lib/database/ingredients.ts`:
+  - `getIngredientById()` - fetch single ingredient
+  - `updateIngredient()` - dynamic partial updates
+  - `toggleIngredientActive()` - toggle is_active status
+  - `getIngredientsByCategory()` - filter by category_id
+  - `getActiveIngredientsByMealType()` - active ingredients only
+- Updated `getIngredientsByMealType()` to accept any string (not just 'breakfast'|'snack')
+- Silenced console.log during tests (migrations.ts, __mocks__/index.ts, store/index.ts)
+- Added 9 new ingredient tests
+- All 68 tests passing (9 new)
+
+### 2025-12-15 (Session 2)
+- Completed Step 1.3: Meal Type CRUD Operations
+- Added `MealType` interface to `types/database.ts`
+- Created `lib/database/mealTypes.ts` with full CRUD:
+  - `getAllMealTypes(activeOnly?)` - fetch all/active meal types with boolean conversion
+  - `getMealTypeById()` - fetch single meal type
+  - `addMealType()` - create with UUID, supports optional config (min/max ingredients, cooldown, is_active)
+  - `updateMealType()` - dynamic partial updates (only updates provided fields)
+  - `deleteMealType()` - with safety checks for meal_logs AND ingredients references
+- Created `lib/database/__tests__/mealTypes.test.ts` with 9 unit tests
+- Created `lib/database/__tests__/database.integration.test.ts` for cross-entity tests (3 tests)
+- All 59 tests passing (12 new: 9 unit + 3 integration)
+- Learned: `Omit<T, K>` for type manipulation, dynamic SQL building, integration test organization
+
+### 2025-12-15 (Session 1)
 - Completed Step 1.2: Category CRUD Operations
 - Added `Category` interface to `types/database.ts`
 - Updated migrations to use UUID (TEXT PRIMARY KEY) for categories and meal_types
@@ -203,4 +232,4 @@
 ---
 
 **Last Updated:** 2025-12-15
-**Next Session:** Step 1.3 - Meal Type CRUD Operations
+**Next Session:** Step 1.5 - Zustand Store Updates

@@ -1,9 +1,13 @@
 export interface Ingredient {
   id: string;
   name: string;
-  category: 'protein' | 'carb' | 'sweet' | 'fruit';
-  mealTypes: ('breakfast' | 'snack')[];
+  category: string;  // Changed from union type to string (more flexible)
+  mealTypes: string[];  // Changed from union type to string[] (more flexible)
+  category_id?: string;  // NEW: optional FK to categories table
+  is_active: boolean;  // NEW: whether ingredient is enabled
+  is_user_added: boolean;  // NEW: whether user added it (vs seeded)
   createdAt: string;
+  updated_at?: string;  // NEW: optional for backwards compatibility
 }
 
 export interface MealLog {

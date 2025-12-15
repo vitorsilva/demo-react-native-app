@@ -3,6 +3,12 @@ import { createTestAdapter, resetTestDatabase } from '../__tests__/testDb';
 import { SCHEMA_SQL, DEFAULT_PREFERENCES } from '../schema';
 import { runMigrations } from '../migrations';
 
+// Silent logging during tests
+const isTestEnv = process.env.NODE_ENV === 'test';
+const log = (message: string) => {
+  if (!isTestEnv) console.log(message);
+};
+
 let database: DatabaseAdapter | null = null;
 
 export async function initDatabase(): Promise<DatabaseAdapter> {
@@ -10,7 +16,7 @@ export async function initDatabase(): Promise<DatabaseAdapter> {
     return database;
   }
 
-  console.log('🧪 Test environment - using better-sqlite3 in-memory database');
+  log('🧪 Test environment - using better-sqlite3 in-memory database');
   database = createTestAdapter();
 
   // Create tables

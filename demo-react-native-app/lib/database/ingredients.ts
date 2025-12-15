@@ -2,53 +2,211 @@ import type { DatabaseAdapter } from './adapters/types';
 import { Ingredient } from '../../types/database';
 import * as Crypto from 'expo-crypto';
 
-export async function addIngredient(
-  db: DatabaseAdapter,
-  ingredient: Omit<Ingredient, 'id' | 'createdAt'>
-): Promise<Ingredient> {
-  const id = await Crypto.randomUUID();
-  const createdAt = new Date().toISOString();
+  export async function addIngredient(
+    db: DatabaseAdapter,
+    ingredient: {
+      name: string;
+      category: string;
+      mealTypes: string[];
+      category_id?: string;
+      is_active?: boolean;
+      is_user_added?: boolean;
+    }
+  ): Promise<Ingredient> {
+    const id = Crypto.randomUUID();
+    const now = new Date().toISOString();
 
-  await db.runAsync(
-    `INSERT INTO ingredients (id, name, category, meal_types, created_at)
-       VALUES (?, ?, ?, ?, ?)`,
-    [id, ingredient.name, ingredient.category, JSON.stringify(ingredient.mealTypes), createdAt]
-  );
+    // Apply defaults
+    const is_active = ingredient.is_active ?? true;
+    const is_user_added = ingredient.is_user_added ?? true;
 
-  return {
-    id,
-    name: ingredient.name,
-    category: ingredient.category,
-    mealTypes: ingredient.mealTypes,
-    createdAt,
-  };
-}
+    await db.runAsync(
+      `INSERT INTO ingredients (id, name, category, meal_types, category_id,
+       is_active, is_user_added, created_at, updated_at)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      [
+        id,
+        ingredient.name,
+        ingredient.category,
+        JSON.stringify(ingredient.mealTypes),
+        ingredient.category_id ?? null,
+        is_active ? 1 : 0,
+        is_user_added ? 1 : 0,
+        now,
+        now,
+      ]
+    );
 
-export async function getAllIngredients(db: DatabaseAdapter): Promise<Ingredient[]> {
-  const rows = await db.getAllAsync<{
+    return {
+      id,
+      name: ingredient.name,
+      category: ingredient.category,
+      mealTypes: ingredient.mealTypes,
+      category_id: ingredient.category_id,
+      is_active,
+      is_user_added,
+      createdAt: now,
+      updated_at: now,
+    };
+  }
+
+  // Get a single ingredient by ID
+  export async function getIngredientById(
+    db: DatabaseAdapter,
+    id: string
+  ): Promise<Ingredient | null> {
+    const row = await db.getFirstAsync<IngredientRow>(
+      `SELECT id, name, category, meal_types, category_id, is_active,
+       is_user_added, created_at, updated_at
+       FROM ingredients WHERE id = ?`,
+      [id]
+    );
+
+    if (!row) return null;
+
+    return {
+      id: row.id,
+      name: row.name,
+      category: row.category,
+      mealTypes: JSON.parse(row.meal_types),
+      category_id: row.category_id ?? undefined,
+      is_active: row.is_active === 1,
+      is_user_added: row.is_user_added === 1,
+      createdAt: row.created_at,
+      updated_at: row.updated_at ?? undefined,
+    };
+  }
+
+  // Update an ingredient
+  export async function updateIngredient(
+    db: DatabaseAdapter,
+    id: string,
+    updates: Partial<Pick<Ingredient, 'name' | 'category' | 'mealTypes' | 'category_id' | 'is_active'>>
+  ): Promise<Ingredient | null> {
+    const now = new Date().toISOString();
+
+    const setClauses: string[] = ['updated_at = ?'];
+    const values: unknown[] = [now];
+
+    if (updates.name !== undefined) {
+      setClauses.push('name = ?');
+      values.push(updates.name);
+    }
+    if (updates.category !== undefined) {
+      setClauses.push('category = ?');
+      values.push(updates.category);
+    }
+    if (updates.mealTypes !== undefined) {
+      setClauses.push('meal_types = ?');
+      values.push(JSON.stringify(updates.mealTypes));
+    }
+    if (updates.category_id !== undefined) {
+      setClauses.push('category_id = ?');
+      values.push(updates.category_id);
+    }
+    if (updates.is_active !== undefined) {
+      setClauses.push('is_active = ?');
+      values.push(updates.is_active ? 1 : 0);
+    }
+
+    values.push(id);
+
+    await db.runAsync(
+      `UPDATE ingredients SET ${setClauses.join(', ')} WHERE id = ?`,
+      values
+    );
+
+    return getIngredientById(db, id);
+  }
+
+  // Toggle ingredient active status
+  export async function toggleIngredientActive(
+    db: DatabaseAdapter,
+    id: string
+  ): Promise<Ingredient | null> {
+    const ingredient = await getIngredientById(db, id);
+    if (!ingredient) return null;
+
+    return updateIngredient(db, id, { is_active: !ingredient.is_active });
+  }
+
+  // Get ingredients by category ID
+  export async function getIngredientsByCategory(
+    db: DatabaseAdapter,
+    categoryId: string
+  ): Promise<Ingredient[]> {
+    const rows = await db.getAllAsync<IngredientRow>(
+      `SELECT id, name, category, meal_types, category_id, is_active,
+       is_user_added, created_at, updated_at
+       FROM ingredients WHERE category_id = ? ORDER BY name ASC`,
+      [categoryId]
+    );
+
+    return rows.map((row) => ({
+      id: row.id,
+      name: row.name,
+      category: row.category,
+      mealTypes: JSON.parse(row.meal_types),
+      category_id: row.category_id ?? undefined,
+      is_active: row.is_active === 1,
+      is_user_added: row.is_user_added === 1,
+      createdAt: row.created_at,
+      updated_at: row.updated_at ?? undefined,
+    }));
+  }
+
+  // Raw row type from SQLite (is_active, is_user_added stored as 0/1)
+  type IngredientRow = {
     id: string;
     name: string;
     category: string;
     meal_types: string;
+    category_id: string | null;
+    is_active: number;
+    is_user_added: number;
     created_at: string;
-  }>('SELECT id, name, category, meal_types, created_at FROM ingredients ORDER BY name ASC');
+    updated_at: string | null;
+  };
 
-  return rows.map((row) => ({
-    id: row.id,
-    name: row.name,
-    category: row.category as Ingredient['category'],
-    mealTypes: JSON.parse(row.meal_types),
-    createdAt: row.created_at,
-  }));
-}
+  export async function getAllIngredients(db: DatabaseAdapter): Promise<Ingredient[]> {
+    const rows = await db.getAllAsync<IngredientRow>(
+      `SELECT id, name, category, meal_types, category_id, is_active,
+       is_user_added, created_at, updated_at
+       FROM ingredients ORDER BY name ASC`
+    );
 
-export async function getIngredientsByMealType(
-  db: DatabaseAdapter,
-  mealType: 'breakfast' | 'snack'
-): Promise<Ingredient[]> {
-  const allIngredients = await getAllIngredients(db);
-  return allIngredients.filter((ing) => ing.mealTypes.includes(mealType));
-}
+    return rows.map((row) => ({
+      id: row.id,
+      name: row.name,
+      category: row.category,
+      mealTypes: JSON.parse(row.meal_types),
+      category_id: row.category_id ?? undefined,
+      is_active: row.is_active === 1,
+      is_user_added: row.is_user_added === 1,
+      createdAt: row.created_at,
+      updated_at: row.updated_at ?? undefined,
+    }));
+  }
+
+  // Get ingredients by meal type (filters by mealTypes array)
+  export async function getIngredientsByMealType(
+    db: DatabaseAdapter,
+    mealType: string
+  ): Promise<Ingredient[]> {
+    const allIngredients = await getAllIngredients(db);
+    return allIngredients.filter((ing) => ing.mealTypes.includes(mealType));
+  }
+
+  // Get only active ingredients by meal type
+  export async function getActiveIngredientsByMealType(
+    db: DatabaseAdapter,
+    mealType: string
+  ): Promise<Ingredient[]> {
+    const allIngredients = await getAllIngredients(db);
+    return allIngredients.filter(
+      (ing) => ing.is_active && ing.mealTypes.includes(mealType)
+    );
+  }
 
 export async function deleteIngredient(db: DatabaseAdapter, id: string): Promise<void> {
   await db.runAsync('DELETE FROM ingredients WHERE id = ?', [id]);

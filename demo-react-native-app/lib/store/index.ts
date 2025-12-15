@@ -12,6 +12,13 @@ import {
   suggestionsGeneratedCounter,
 } from '@/lib/telemetry/mealGenerationMetrics';
 import { setPreferences, UserPreferences } from '@/lib/database/preferences';
+
+// Silent logging during tests
+const isTestEnv = process.env.NODE_ENV === 'test';
+const log = (message: string, data?: unknown) => {
+  if (!isTestEnv) console.log(message, data);
+};
+
 interface StoreState {
   // State: Data
   ingredients: Ingredient[];
@@ -171,7 +178,7 @@ export const useStore = create<StoreState>((set, get) => ({
       mealGenerationDuration.record(duration);
 
       set({ suggestedCombinations: combinations, isLoading: false });
-      console.log('Metrics recorded:', { duration, suggestionsCount: combinations.length });
+      log('Metrics recorded:', { duration, suggestionsCount: combinations.length });
     } catch (error) {
       // Still record duration even on failure
       const duration = Date.now() - startTime;
