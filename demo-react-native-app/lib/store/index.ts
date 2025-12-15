@@ -1,8 +1,10 @@
 import { create } from 'zustand';
-import type { Ingredient, MealLog } from '@/types/database';
+import type { Ingredient, MealLog, Category, MealType } from '@/types/database';
 import * as ingredientsDb from '@/lib/database/ingredients';
 import * as mealLogsDb from '@/lib/database/mealLogs';
 import * as preferencesDb from '@/lib/database/preferences';
+import * as categoriesDb from '@/lib/database/categories';
+import * as mealTypesDb from '@/lib/database/mealTypes';
 import { getDatabase } from '@/lib/database';
 import { getRecentlyUsedIngredients } from '../business-logic/varietyEngine';
 import { generateCombinations } from '@/lib/business-logic/combinationGenerator';
@@ -19,31 +21,66 @@ const log = (message: string, data?: unknown) => {
   if (!isTestEnv) console.log(message, data);
 };
 
-interface StoreState {
-  // State: Data
-  ingredients: Ingredient[];
-  mealLogs: MealLog[];
-  suggestedCombinations: Ingredient[][];
-  isLoading: boolean;
-  error: string | null;
-  isDatabaseReady: boolean;
-  preferences: preferencesDb.UserPreferences;
+  interface StoreState {
+    // State: Data
+    ingredients: Ingredient[];
+    mealLogs: MealLog[];
+    categories: Category[];
+    mealTypes: MealType[];
+    suggestedCombinations: Ingredient[][];
+    isLoading: boolean;
+    error: string | null;
+    isDatabaseReady: boolean;
+    preferences: preferencesDb.UserPreferences;
 
-  // Actions: Functions that modify state
-  loadIngredients: () => Promise<void>;
-  loadMealLogs: (days?: number) => Promise<void>;
-  loadPreferences: () => Promise<void>;
-  updatePreferences: (preferences: preferencesDb.UserPreferences) => Promise<void>;
-  addIngredient: (ingredient: Omit<Ingredient, 'id'>) => Promise<void>;
-  logMeal: (mealLog: Omit<MealLog, 'id' | 'createdAt'>) => Promise<void>;
-  setDatabaseReady: () => void;
-  generateMealSuggestions: () => Promise<void>;
-}
+    // Actions: Ingredients
+    loadIngredients: () => Promise<void>;
+    addIngredient: (ingredient: {
+      name: string;
+      category: string;
+      mealTypes: string[];
+      category_id?: string;
+      is_active?: boolean;
+    }) => Promise<void>;
+    updateIngredient: (id: string, updates: Partial<Pick<Ingredient, 'name' | 'category' | 'mealTypes' | 'category_id' | 'is_active'>>) => Promise<void>;
+    toggleIngredientActive: (id: string) => Promise<void>;
+    deleteIngredient: (id: string) => Promise<void>;
+
+    // Actions: Categories
+    loadCategories: () => Promise<void>;
+    addCategory: (name: string) => Promise<void>;
+    updateCategory: (id: string, name: string) => Promise<void>;
+    deleteCategory: (id: string) => Promise<{ success: boolean; error?: string }>;
+
+    // Actions: Meal Types
+    loadMealTypes: () => Promise<void>;
+    addMealType: (params: {
+      name: string;
+      min_ingredients?: number;
+      max_ingredients?: number;
+      default_cooldown_days?: number;
+      is_active?: boolean;
+    }) => Promise<void>;
+    updateMealType: (id: string, updates: Partial<Pick<MealType, 'name' | 'min_ingredients' | 'max_ingredients' | 'default_cooldown_days' | 'is_active'>>) => Promise<void>;
+    deleteMealType: (id: string) => Promise<{ success: boolean; error?: string }>;
+
+    // Actions: Meal Logs
+    loadMealLogs: (days?: number) => Promise<void>;
+    logMeal: (mealLog: Omit<MealLog, 'id' | 'createdAt'>) => Promise<void>;
+
+    // Actions: Preferences & Other
+    loadPreferences: () => Promise<void>;
+    updatePreferences: (preferences: preferencesDb.UserPreferences) => Promise<void>;
+    setDatabaseReady: () => void;
+    generateMealSuggestions: () => Promise<void>;
+  }
 
 export const useStore = create<StoreState>((set, get) => ({
   // Initial state values
   ingredients: [],
   mealLogs: [],
+  categories: [],
+  mealTypes: [],
   suggestedCombinations: [],
   isLoading: false,
   error: null,
@@ -188,6 +225,214 @@ export const useStore = create<StoreState>((set, get) => ({
         error: error instanceof Error ? error.message : 'Failed to generate suggestions',
         isLoading: false,
       });
+    }
+  },
+
+  // Action: Update an ingredient
+  updateIngredient: async (id, updates) => {
+    set({ isLoading: true, error: null });
+    try {
+      const db = getDatabase();
+      const updated = await ingredientsDb.updateIngredient(db, id, updates);
+      if (updated) {
+        set((state) => ({
+          ingredients: state.ingredients.map((ing) => (ing.id === id ? updated : ing)),
+          isLoading: false,
+        }));
+      }
+    } catch (error) {
+      set({
+        error: error instanceof Error ? error.message : 'Failed to update ingredient',
+        isLoading: false,
+      });
+    }
+  },
+
+  // Action: Toggle ingredient active status
+  toggleIngredientActive: async (id) => {
+    set({ isLoading: true, error: null });
+    try {
+      const db = getDatabase();
+      const updated = await ingredientsDb.toggleIngredientActive(db, id);
+      if (updated) {
+        set((state) => ({
+          ingredients: state.ingredients.map((ing) => (ing.id === id ? updated : ing)),
+          isLoading: false,
+        }));
+      }
+    } catch (error) {
+      set({
+        error: error instanceof Error ? error.message : 'Failed to toggle ingredient',
+        isLoading: false,
+      });
+    }
+  },
+
+  // Action: Delete an ingredient
+  deleteIngredient: async (id) => {
+    set({ isLoading: true, error: null });
+    try {
+      const db = getDatabase();
+      await ingredientsDb.deleteIngredient(db, id);
+      set((state) => ({
+        ingredients: state.ingredients.filter((ing) => ing.id !== id),
+        isLoading: false,
+      }));
+    } catch (error) {
+      set({
+        error: error instanceof Error ? error.message : 'Failed to delete ingredient',
+        isLoading: false,
+      });
+    }
+  },
+
+  // Action: Load all categories
+  loadCategories: async () => {
+    set({ isLoading: true, error: null });
+    try {
+      const db = getDatabase();
+      const categories = await categoriesDb.getAllCategories(db);
+      set({ categories, isLoading: false });
+    } catch (error) {
+      set({
+        error: error instanceof Error ? error.message : 'Failed to load categories',
+        isLoading: false,
+      });
+    }
+  },
+
+  // Action: Add a new category
+  addCategory: async (name) => {
+    set({ isLoading: true, error: null });
+    try {
+      const db = getDatabase();
+      const newCategory = await categoriesDb.addCategory(db, { name });
+      set((state) => ({
+        categories: [...state.categories, newCategory],
+        isLoading: false,
+      }));
+    } catch (error) {
+      set({
+        error: error instanceof Error ? error.message : 'Failed to add category',
+        isLoading: false,
+      });
+    }
+  },
+
+  // Action: Update a category
+  updateCategory: async (id, name) => {
+    set({ isLoading: true, error: null });
+    try {
+      const db = getDatabase();
+      const updated = await categoriesDb.updateCategory(db, id, { name });
+      if (updated) {
+        set((state) => ({
+          categories: state.categories.map((cat) => (cat.id === id ? updated : cat)),
+          isLoading: false,
+        }));
+      }
+    } catch (error) {
+      set({
+        error: error instanceof Error ? error.message : 'Failed to update category',
+        isLoading: false,
+      });
+    }
+  },
+
+  // Action: Delete a category
+  deleteCategory: async (id) => {
+    set({ isLoading: true, error: null });
+    try {
+      const db = getDatabase();
+      const result = await categoriesDb.deleteCategory(db, id);
+      if (result.success) {
+        set((state) => ({
+          categories: state.categories.filter((cat) => cat.id !== id),
+          isLoading: false,
+        }));
+      } else {
+        set({ error: result.error, isLoading: false });
+      }
+      return result;
+    } catch (error) {
+      const errorMsg = error instanceof Error ? error.message : 'Failed to delete category';
+      set({ error: errorMsg, isLoading: false });
+      return { success: false, error: errorMsg };
+    }
+  },
+
+  // Action: Load all meal types
+  loadMealTypes: async () => {
+    set({ isLoading: true, error: null });
+    try {
+      const db = getDatabase();
+      const mealTypes = await mealTypesDb.getAllMealTypes(db);
+      set({ mealTypes, isLoading: false });
+    } catch (error) {
+      set({
+        error: error instanceof Error ? error.message : 'Failed to load meal types',
+        isLoading: false,
+      });
+    }
+  },
+
+  // Action: Add a new meal type
+  addMealType: async (params) => {
+    set({ isLoading: true, error: null });
+    try {
+      const db = getDatabase();
+      const newMealType = await mealTypesDb.addMealType(db, params);
+      set((state) => ({
+        mealTypes: [...state.mealTypes, newMealType],
+        isLoading: false,
+      }));
+    } catch (error) {
+      set({
+        error: error instanceof Error ? error.message : 'Failed to add meal type',
+        isLoading: false,
+      });
+    }
+  },
+
+  // Action: Update a meal type
+  updateMealType: async (id, updates) => {
+    set({ isLoading: true, error: null });
+    try {
+      const db = getDatabase();
+      const updated = await mealTypesDb.updateMealType(db, id, updates);
+      if (updated) {
+        set((state) => ({
+          mealTypes: state.mealTypes.map((mt) => (mt.id === id ? updated : mt)),
+          isLoading: false,
+        }));
+      }
+    } catch (error) {
+      set({
+        error: error instanceof Error ? error.message : 'Failed to update meal type',
+        isLoading: false,
+      });
+    }
+  },
+
+  // Action: Delete a meal type
+  deleteMealType: async (id) => {
+    set({ isLoading: true, error: null });
+    try {
+      const db = getDatabase();
+      const result = await mealTypesDb.deleteMealType(db, id);
+      if (result.success) {
+        set((state) => ({
+          mealTypes: state.mealTypes.filter((mt) => mt.id !== id),
+          isLoading: false,
+        }));
+      } else {
+        set({ error: result.error, isLoading: false });
+      }
+      return result;
+    } catch (error) {
+      const errorMsg = error instanceof Error ? error.message : 'Failed to delete meal type';
+      set({ error: errorMsg, isLoading: false });
+      return { success: false, error: errorMsg };
     }
   },
 
