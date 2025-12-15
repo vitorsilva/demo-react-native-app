@@ -50,7 +50,7 @@
         // Create categories table (idempotent with IF NOT EXISTS)
         await db.runAsync(`
           CREATE TABLE IF NOT EXISTS categories (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            id TEXT PRIMARY KEY,
             name TEXT NOT NULL UNIQUE,
             created_at TEXT NOT NULL,
             updated_at TEXT NOT NULL
@@ -60,7 +60,7 @@
         // Create meal_types table (idempotent with IF NOT EXISTS)
         await db.runAsync(`
           CREATE TABLE IF NOT EXISTS meal_types (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            id TEXT PRIMARY KEY,
             name TEXT NOT NULL UNIQUE,
             min_ingredients INTEGER DEFAULT 2,
             max_ingredients INTEGER DEFAULT 4,
@@ -95,21 +95,22 @@
 
         if (!(await recordExists(db, 'meal_types', 'name = ?', ['breakfast']))) {
           await db.runAsync(
-            `INSERT INTO meal_types (name, min_ingredients, max_ingredients,
-  default_cooldown_days, is_active, created_at, updated_at)
-             VALUES (?, ?, ?, ?, ?, ?, ?)`,
-            ['breakfast', 2, 4, 3, 1, now, now]
+            `INSERT INTO meal_types (id, name, min_ingredients, max_ingredients,
+        default_cooldown_days, is_active, created_at, updated_at)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+            ['mt-breakfast-001', 'breakfast', 2, 4, 3, 1, now, now]
           );
         }
 
         if (!(await recordExists(db, 'meal_types', 'name = ?', ['snack']))) {
           await db.runAsync(
-            `INSERT INTO meal_types (name, min_ingredients, max_ingredients,
-  default_cooldown_days, is_active, created_at, updated_at)
-             VALUES (?, ?, ?, ?, ?, ?, ?)`,
-            ['snack', 2, 4, 3, 1, now, now]
+            `INSERT INTO meal_types (id, name, min_ingredients, max_ingredients,
+        default_cooldown_days, is_active, created_at, updated_at)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+            ['mt-snack-001', 'snack', 2, 4, 3, 1, now, now]
           );
         }
+        
       },
     },
   ];

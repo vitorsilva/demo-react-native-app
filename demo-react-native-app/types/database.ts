@@ -18,3 +18,10 @@ export interface Preferences {
   cooldownDays: number;
   suggestionsCount: number;
 }
+
+export interface Category {
+  id: string;
+  name: string;
+  created_at: string;
+  updated_at: string;
+}

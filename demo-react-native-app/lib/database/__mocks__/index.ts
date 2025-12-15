@@ -1,6 +1,7 @@
 import { DatabaseAdapter } from '../adapters/types';
 import { createTestAdapter, resetTestDatabase } from '../__tests__/testDb';
 import { SCHEMA_SQL, DEFAULT_PREFERENCES } from '../schema';
+import { runMigrations } from '../migrations';
 
 let database: DatabaseAdapter | null = null;
 
@@ -19,6 +20,9 @@ export async function initDatabase(): Promise<DatabaseAdapter> {
       await database.runAsync(statement);
     }
   }
+
+  // Run migrations (creates categories, meal_types, etc.)
+  await runMigrations(database);
 
   // Initialize default preferences
   await database.runAsync(
