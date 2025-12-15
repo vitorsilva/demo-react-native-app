@@ -25,3 +25,14 @@ export interface Category {
   created_at: string;
   updated_at: string;
 }
+
+export interface MealType {
+  id: string;
+  name: string;
+  min_ingredients: number;
+  max_ingredients: number;
+  default_cooldown_days: number;
+  is_active: boolean;
+  created_at: string;
+  updated_at: string;
+}
