@@ -14,24 +14,31 @@ export default function HomeScreen() {
   const mealLogs = useStore((state) => state.mealLogs);
   const loadMealLogs = useStore((state) => state.loadMealLogs);
   const ingredients = useStore((state) => state.ingredients);
+  const mealTypes = useStore((state) => state.mealTypes);
+  const loadMealTypes = useStore((state) => state.loadMealTypes);
 
-  // Load ingredients and meal logs when database is ready
+  // Load data when database is ready
   useEffect(() => {
     if (isDatabaseReady) {
       loadIngredients();
       loadMealLogs(30); // Load last 30 days of meals
+      loadMealTypes();
     }
-  }, [isDatabaseReady, loadIngredients, loadMealLogs]);
+  }, [isDatabaseReady, loadIngredients, loadMealLogs, loadMealTypes]);
 
-  // Reload meal logs when screen comes into focus (after logging a new meal)
+  // Reload data when screen comes into focus (after logging a new meal)
   useFocusEffect(
     useCallback(() => {
       analytics.screenView('home');
       if (isDatabaseReady) {
         loadMealLogs(30);
+        loadMealTypes();
       }
-    }, [isDatabaseReady, loadMealLogs])
+    }, [isDatabaseReady, loadMealLogs, loadMealTypes])
   );
+
+  // Get active meal types only
+  const activeMealTypes = mealTypes.filter((mt) => mt.is_active);
 
   // Helper function to format date
   const formatDate = (dateString: string): string => {
@@ -77,12 +84,11 @@ export default function HomeScreen() {
       mealType: log.mealType,
     }));
 
-  const handleBreakfastPress = () => {
-    router.push('/suggestions/breakfast');
-  };
-
-  const handleSnackPress = () => {
-    router.push('/suggestions/snack');
+  // Navigate to suggestions for a meal type
+  const handleMealTypePress = (mealTypeName: string) => {
+    // Use lowercase for URL consistency
+    const urlSlug = mealTypeName.toLowerCase();
+    router.push(`/suggestions/${urlSlug}`);
   };
 
   return (
@@ -95,30 +101,31 @@ export default function HomeScreen() {
         <Text style={styles.headerTitle}>Meals Randomizer</Text>
       </View>
 
-      {/* Meal Type Buttons */}
+      {/* Meal Type Buttons - Dynamically generated */}
       <View style={styles.buttonsContainer}>
-        <TouchableOpacity
-          style={styles.mealTypeButton}
-          onPress={handleBreakfastPress}
-          testID="breakfast-ideas-button"
-          accessible={true}
-          accessibilityLabel="Navigate to breakfast suggestions"
-          accessibilityHint="Opens a screen with breakfast meal combinations"
-          accessibilityRole="button"
-        >
-          <Text style={styles.mealTypeButtonText}>Breakfast Ideas</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.mealTypeButton}
-          onPress={handleSnackPress}
-          testID="snack-ideas-button"
-          accessible={true}
-          accessibilityLabel="Navigate to snack suggestions"
-          accessibilityHint="Opens a screen with snack meal combinations"
-          accessibilityRole="button"
-        >
-          <Text style={styles.mealTypeButtonText}>Snack Ideas</Text>
-        </TouchableOpacity>
+        {activeMealTypes.length === 0 ? (
+          <View style={styles.noMealTypesContainer}>
+            <Text style={styles.noMealTypesText}>No meal types configured</Text>
+            <Text style={styles.noMealTypesSubtext}>
+              Go to Settings to add meal types
+            </Text>
+          </View>
+        ) : (
+          activeMealTypes.map((mealType) => (
+            <TouchableOpacity
+              key={mealType.id}
+              style={styles.mealTypeButton}
+              onPress={() => handleMealTypePress(mealType.name)}
+              testID={`${mealType.name.toLowerCase()}-ideas-button`}
+              accessible={true}
+              accessibilityLabel={`Navigate to ${mealType.name.toLowerCase()} suggestions`}
+              accessibilityHint={`Opens a screen with ${mealType.name.toLowerCase()} meal combinations`}
+              accessibilityRole="button"
+            >
+              <Text style={styles.mealTypeButtonText}>{mealType.name} Ideas</Text>
+            </TouchableOpacity>
+          ))
+        )}
       </View>
 
       {/* Recent Meals Section */}
@@ -128,7 +135,9 @@ export default function HomeScreen() {
         <View style={styles.emptyState} testID="empty-state">
           <Text style={styles.emptyStateText}>No meals logged yet</Text>
           <Text style={styles.emptyStateSubtext}>
-            Tap &quot;Breakfast Ideas&quot; or &quot;Snack Ideas&quot; to get started!
+            {activeMealTypes.length > 0
+              ? `Tap "${activeMealTypes[0].name} Ideas" to get started!`
+              : 'Configure meal types in Settings to get started!'}
           </Text>
         </View>
       ) : (
@@ -200,6 +209,21 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     fontSize: 16,
     fontWeight: 'bold',
+  },
+  // No meal types state
+  noMealTypesContainer: {
+    padding: 16,
+    alignItems: 'center',
+  },
+  noMealTypesText: {
+    color: '#FFFFFF',
+    fontSize: 16,
+    fontWeight: '500',
+  },
+  noMealTypesSubtext: {
+    color: '#9dabb9',
+    fontSize: 14,
+    marginTop: 4,
   },
   // Section title
   sectionTitle: {

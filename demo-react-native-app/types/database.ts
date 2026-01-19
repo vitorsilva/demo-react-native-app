@@ -13,7 +13,7 @@ export interface Ingredient {
 export interface MealLog {
   id: string;
   date: string;
-  mealType: 'breakfast' | 'snack';
+  mealType: string; // Dynamic meal type name (e.g., 'breakfast', 'snack', 'lunch')
   ingredients: string[]; // Array of ingredient IDs
   createdAt: string;
 }

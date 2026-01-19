@@ -48,17 +48,28 @@ export default function SuggestionsScreen() {
   const ingredients = useStore((state) => state.ingredients);
   const loadIngredients = useStore((state) => state.loadIngredients);
   const isDatabaseReady = useStore((state) => state.isDatabaseReady);
+  const mealTypes = useStore((state) => state.mealTypes);
+  const loadMealTypes = useStore((state) => state.loadMealTypes);
 
   // Modal state
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedIngredients, setSelectedIngredients] = useState<string[]>([]);
   const hasGeneratedRef = useRef(false);
 
+  // Find the meal type from the database (case-insensitive match)
+  const currentMealType = mealTypes.find(
+    (mt) => mt.name.toLowerCase() === mealType?.toLowerCase()
+  );
+
+  // Format title for display - use meal type name from database or fallback to URL param
+  const displayName = currentMealType?.name || mealType || 'Meal';
+  const screenTitle = `${displayName} Ideas`;
+
   // Track screen view and generate suggestions on mount
   useEffect(() => {
     analytics.screenView('suggestions');
 
-    // Ensure ingredients are loaded before generating suggestions
+    // Ensure data is loaded before generating suggestions
     const generateSuggestions = async () => {
       // Prevent multiple generation calls
       if (hasGeneratedRef.current) {
@@ -68,6 +79,13 @@ export default function SuggestionsScreen() {
       // Wait for database to be ready
       if (!isDatabaseReady) {
         console.log('Waiting for database to be ready...');
+        return;
+      }
+
+      // Load meal types if not already loaded
+      if (mealTypes.length === 0) {
+        console.log('Loading meal types...');
+        await loadMealTypes();
         return;
       }
 
@@ -82,15 +100,20 @@ export default function SuggestionsScreen() {
       // Mark as generated to prevent re-runs
       hasGeneratedRef.current = true;
 
-      // Generate 3 suggestions with 7-day cooldown
+      // Generate suggestions
       generateMealSuggestions();
     };
 
     generateSuggestions();
-  }, [mealType, generateMealSuggestions, isDatabaseReady, ingredients.length, loadIngredients]);
-
-  // Format title for display
-  const screenTitle = mealType === 'breakfast' ? 'Breakfast Ideas' : 'Snack Ideas';
+  }, [
+    mealType,
+    generateMealSuggestions,
+    isDatabaseReady,
+    ingredients.length,
+    loadIngredients,
+    mealTypes.length,
+    loadMealTypes,
+  ]);
 
   // Transform store data to UI format
   const suggestions = suggestedCombinations.map((ingredientArray, index) => ({
@@ -119,12 +142,15 @@ export default function SuggestionsScreen() {
     );
 
     if (suggestion) {
+      // Use the meal type name from URL (or database if found)
+      const mealTypeName = currentMealType?.name.toLowerCase() || mealType || 'meal';
+
       await logMeal({
         date: new Date().toISOString(),
         ingredients: suggestion.ingredients.map((i) => i.id),
-        mealType: (mealType as 'breakfast' | 'snack') || 'breakfast',
+        mealType: mealTypeName,
       });
-      console.log('Meal logged to database:', selectedIngredients);
+      console.log('Meal logged to database:', selectedIngredients, 'as', mealTypeName);
     }
 
     setModalVisible(false);
@@ -242,7 +268,7 @@ export default function SuggestionsScreen() {
       {/* Confirmation Modal */}
       <ConfirmationModal
         visible={modalVisible}
-        mealType={(mealType as 'breakfast' | 'snack') || 'breakfast'}
+        mealType={currentMealType?.name.toLowerCase() || mealType || 'meal'}
         ingredients={selectedIngredients}
         onDone={handleModalDone}
       />

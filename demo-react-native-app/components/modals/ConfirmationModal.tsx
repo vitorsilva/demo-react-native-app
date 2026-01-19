@@ -2,7 +2,7 @@ import { View, Text, StyleSheet, TouchableOpacity, Modal } from 'react-native';
 import * as Haptics from 'expo-haptics';
 interface ConfirmationModalProps {
   visible: boolean;
-  mealType: 'breakfast' | 'snack';
+  mealType: string; // Dynamic meal type name
   ingredients: string[];
   onDone: () => void;
 }
@@ -13,7 +13,9 @@ export function ConfirmationModal({
   ingredients,
   onDone,
 }: ConfirmationModalProps) {
-  const title = mealType === 'breakfast' ? 'Breakfast Logged' : 'Snack Logged';
+  // Capitalize first letter for display
+  const capitalizedMealType = mealType.charAt(0).toUpperCase() + mealType.slice(1);
+  const title = `${capitalizedMealType} Logged`;
 
   const handleDone = () => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
