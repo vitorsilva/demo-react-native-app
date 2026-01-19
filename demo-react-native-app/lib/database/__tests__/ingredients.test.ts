@@ -117,19 +117,43 @@ describe('Ingredient Operations', () => {
 
   test('deleteIngredient removes ingredient from database', async () => {
     const db = getDatabase();
-    const id = await addIngredient(db, {
+    // Add two ingredients so we can delete one (won't be the last active)
+    await addIngredient(db, {
       name: 'Milk',
+      category: 'protein',
+      mealTypes: ['breakfast'],
+    });
+    await addIngredient(db, {
+      name: 'Eggs',
       category: 'protein',
       mealTypes: ['breakfast'],
     });
 
     let ingredients = await getAllIngredients(db);
-    expect(ingredients).toHaveLength(1);
+    expect(ingredients).toHaveLength(2);
 
-    await deleteIngredient(db, ingredients[0].id);
+    const result = await deleteIngredient(db, ingredients[0].id);
+    expect(result.success).toBe(true);
 
     ingredients = await getAllIngredients(db);
-    expect(ingredients).toHaveLength(0);
+    expect(ingredients).toHaveLength(1);
+  });
+
+  test('deleteIngredient prevents deletion of last active ingredient', async () => {
+    const db = getDatabase();
+    const ingredient = await addIngredient(db, {
+      name: 'Only Ingredient',
+      category: 'protein',
+      mealTypes: ['breakfast'],
+    });
+
+    const result = await deleteIngredient(db, ingredient.id);
+    expect(result.success).toBe(false);
+    expect(result.error).toContain('last active ingredient');
+
+    // Verify ingredient still exists
+    const ingredients = await getAllIngredients(db);
+    expect(ingredients).toHaveLength(1);
   });
 
   test('ingredient has correct structure after retrieval', async () => {
@@ -227,8 +251,14 @@ describe('Ingredient Operations', () => {
 
     test('toggleIngredientActive toggles the active status', async () => {
       const db = getDatabase();
+      // Add two ingredients so we're not the last active one
       const created = await addIngredient(db, {
         name: 'Honey',
+        category: 'sweet',
+        mealTypes: ['breakfast'],
+      });
+      await addIngredient(db, {
+        name: 'Sugar',
         category: 'sweet',
         mealTypes: ['breakfast'],
       });
@@ -236,10 +266,10 @@ describe('Ingredient Operations', () => {
       expect(created.is_active).toBe(true);
 
       const toggled = await toggleIngredientActive(db, created.id);
-      expect(toggled?.is_active).toBe(false);
+      expect(toggled.ingredient?.is_active).toBe(false);
 
       const toggledBack = await toggleIngredientActive(db, created.id);
-      expect(toggledBack?.is_active).toBe(true);
+      expect(toggledBack.ingredient?.is_active).toBe(true);
     });
 
     test('getActiveIngredientsByMealType excludes inactive ingredients', async () => {

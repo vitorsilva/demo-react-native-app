@@ -1,20 +1,46 @@
 import type { Ingredient } from '../../types/database';
 
 /**
+ * Options for generating meal combinations
+ */
+export interface GenerateCombinationsOptions {
+  /** Minimum number of ingredients per combination (default: 1) */
+  minIngredients?: number;
+  /** Maximum number of ingredients per combination (default: 3) */
+  maxIngredients?: number;
+  /** Whether to filter out inactive ingredients (default: true) */
+  filterInactive?: boolean;
+}
+
+/**
  * Generates random meal combinations from available ingredients
  *
  * @param ingredients - All available ingredients
  * @param count - Number of combinations to generate
  * @param recentlyUsedIds - IDs of ingredients to exclude (for variety)
- * @returns Array of combinations, each containing 1-3 ingredients
+ * @param options - Optional configuration for min/max ingredients and filtering
+ * @returns Array of combinations, each containing minIngredients to maxIngredients ingredients
  */
 export function generateCombinations(
   ingredients: Ingredient[],
   count: number,
-  recentlyUsedIds: string[]
+  recentlyUsedIds: string[],
+  options: GenerateCombinationsOptions = {}
 ): Ingredient[][] {
-  // Step 1: Filter out recently used ingredients
-  const availableIngredients = ingredients.filter((ing) => !recentlyUsedIds.includes(ing.id));
+  // Apply defaults
+  const minIngredients = options.minIngredients ?? 1;
+  const maxIngredients = options.maxIngredients ?? 3;
+  const filterInactive = options.filterInactive ?? true;
+
+  // Step 1: Filter out inactive ingredients if requested
+  let availableIngredients = filterInactive
+    ? ingredients.filter((ing) => ing.is_active)
+    : [...ingredients];
+
+  // Step 2: Filter out recently used ingredients
+  availableIngredients = availableIngredients.filter(
+    (ing) => !recentlyUsedIds.includes(ing.id)
+  );
 
   // Edge case: If no ingredients available, return empty array
   if (availableIngredients.length === 0) {
@@ -23,15 +49,16 @@ export function generateCombinations(
 
   const combinations: Ingredient[][] = [];
 
-  // Step 2: Generate 'count' number of combinations
+  // Step 3: Generate 'count' number of combinations
   for (let i = 0; i < count; i++) {
-    // Step 3: Randomly decide combo size (1, 2, or 3)
-    const comboSize = Math.floor(Math.random() * 3) + 1; // Random: 1, 2, or 3
+    // Step 4: Randomly decide combo size within min-max range
+    const range = maxIngredients - minIngredients + 1;
+    const comboSize = Math.floor(Math.random() * range) + minIngredients;
 
-    // Step 4: Shuffle available ingredients (for randomness)
+    // Step 5: Shuffle available ingredients (for randomness)
     const shuffled = shuffleArray([...availableIngredients]);
 
-    // Step 5: Take first 'comboSize' ingredients
+    // Step 6: Take first 'comboSize' ingredients
     // This guarantees no duplicates within the combo
     const combo = shuffled.slice(0, Math.min(comboSize, shuffled.length));
 

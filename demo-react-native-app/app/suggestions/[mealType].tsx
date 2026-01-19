@@ -100,8 +100,8 @@ export default function SuggestionsScreen() {
       // Mark as generated to prevent re-runs
       hasGeneratedRef.current = true;
 
-      // Generate suggestions
-      generateMealSuggestions();
+      // Generate suggestions with meal type config
+      generateMealSuggestions(mealType);
     };
 
     generateSuggestions();
@@ -160,8 +160,8 @@ export default function SuggestionsScreen() {
 
   const handleGenerateNew = () => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-    // Generate new suggestions
-    generateMealSuggestions();
+    // Generate new suggestions with meal type config
+    generateMealSuggestions(mealType);
     console.log('Generating new meal ideas...');
   };
 

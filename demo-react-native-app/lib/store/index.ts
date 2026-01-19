@@ -7,7 +7,7 @@ import * as categoriesDb from '@/lib/database/categories';
 import * as mealTypesDb from '@/lib/database/mealTypes';
 import { getDatabase } from '@/lib/database';
 import { getRecentlyUsedIngredients } from '../business-logic/varietyEngine';
-import { generateCombinations } from '@/lib/business-logic/combinationGenerator';
+import { generateCombinations, GenerateCombinationsOptions } from '@/lib/business-logic/combinationGenerator';
 import {
   mealGenerationCounter,
   mealGenerationDuration,
@@ -72,7 +72,7 @@ const log = (message: string, data?: unknown) => {
     loadPreferences: () => Promise<void>;
     updatePreferences: (preferences: preferencesDb.UserPreferences) => Promise<void>;
     setDatabaseReady: () => void;
-    generateMealSuggestions: () => Promise<void>;
+    generateMealSuggestions: (mealTypeName?: string) => Promise<void>;
   }
 
 export const useStore = create<StoreState>((set, get) => ({
@@ -180,7 +180,8 @@ export const useStore = create<StoreState>((set, get) => ({
   },
 
   // Action: Generate variety-enforced meal suggestions
-  generateMealSuggestions: async () => {
+  // Can optionally take a meal type name to use its specific configuration
+  generateMealSuggestions: async (mealTypeName?: string) => {
     const startTime = Date.now();
 
     set({ isLoading: true, error: null });
@@ -193,19 +194,41 @@ export const useStore = create<StoreState>((set, get) => ({
       // Step 1: Load fresh preferences from database
       const preferences = await preferencesDb.getPreferences(db);
       const count = preferences.suggestionsCount;
-      const cooldownDays = preferences.cooldownDays;
 
-      // Step 2: Get current ingredients from store
+      // Step 2: Get meal type config if specified, otherwise use defaults
+      let minIngredients = 1;
+      let maxIngredients = 3;
+      let cooldownDays = preferences.cooldownDays;
+
+      if (mealTypeName) {
+        const { mealTypes } = get();
+        const mealType = mealTypes.find(
+          (mt) => mt.name.toLowerCase() === mealTypeName.toLowerCase()
+        );
+        if (mealType) {
+          minIngredients = mealType.min_ingredients;
+          maxIngredients = mealType.max_ingredients;
+          cooldownDays = mealType.default_cooldown_days;
+          log('Using meal type config:', { mealTypeName, minIngredients, maxIngredients, cooldownDays });
+        }
+      }
+
+      // Step 3: Get current ingredients from store
       const { ingredients } = get();
 
-      // Step 3: Get recent meal logs from database
+      // Step 4: Get recent meal logs from database
       const recentMealLogs = await mealLogsDb.getRecentMealLogs(db, cooldownDays);
 
-      // Step 4: Extract blocked ingredient IDs
+      // Step 5: Extract blocked ingredient IDs
       const blockedIds = getRecentlyUsedIngredients(recentMealLogs);
 
-      // Step 5: Generate combinations with variety enforcement
-      const combinations = generateCombinations(ingredients, count, blockedIds);
+      // Step 6: Generate combinations with variety enforcement and meal type config
+      const options: GenerateCombinationsOptions = {
+        minIngredients,
+        maxIngredients,
+        filterInactive: true, // Always filter out inactive ingredients
+      };
+      const combinations = generateCombinations(ingredients, count, blockedIds, options);
 
       // Record how many suggestions were generated
       suggestionsGeneratedCounter.add(combinations.length);
@@ -255,14 +278,14 @@ export const useStore = create<StoreState>((set, get) => ({
     set({ isLoading: true, error: null });
     try {
       const db = getDatabase();
-      const updated = await ingredientsDb.toggleIngredientActive(db, id);
-      if (updated) {
+      const result = await ingredientsDb.toggleIngredientActive(db, id);
+      if (result.ingredient) {
         set((state) => ({
-          ingredients: state.ingredients.map((ing) => (ing.id === id ? updated : ing)),
+          ingredients: state.ingredients.map((ing) => (ing.id === id ? result.ingredient! : ing)),
           isLoading: false,
         }));
       } else {
-        set({ isLoading: false, error: 'Ingredient not found' });
+        set({ isLoading: false, error: result.error || 'Ingredient not found' });
       }
     } catch (error) {
       set({
@@ -277,11 +300,15 @@ export const useStore = create<StoreState>((set, get) => ({
     set({ isLoading: true, error: null });
     try {
       const db = getDatabase();
-      await ingredientsDb.deleteIngredient(db, id);
-      set((state) => ({
-        ingredients: state.ingredients.filter((ing) => ing.id !== id),
-        isLoading: false,
-      }));
+      const result = await ingredientsDb.deleteIngredient(db, id);
+      if (result.success) {
+        set((state) => ({
+          ingredients: state.ingredients.filter((ing) => ing.id !== id),
+          isLoading: false,
+        }));
+      } else {
+        set({ error: result.error, isLoading: false });
+      }
     } catch (error) {
       set({
         error: error instanceof Error ? error.message : 'Failed to delete ingredient',

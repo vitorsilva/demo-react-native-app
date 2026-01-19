@@ -1,6 +1,7 @@
 import type { DatabaseAdapter } from './adapters/types';
 import { Ingredient } from '../../types/database';
 import * as Crypto from 'expo-crypto';
+import { canDeleteIngredient, canDisableIngredient } from './validation';
 
   export async function addIngredient(
     db: DatabaseAdapter,
@@ -120,14 +121,24 @@ import * as Crypto from 'expo-crypto';
   }
 
   // Toggle ingredient active status
+  // Returns null with error if this is the last active ingredient for a meal type
   export async function toggleIngredientActive(
     db: DatabaseAdapter,
     id: string
-  ): Promise<Ingredient | null> {
+  ): Promise<{ ingredient: Ingredient | null; error?: string }> {
     const ingredient = await getIngredientById(db, id);
-    if (!ingredient) return null;
+    if (!ingredient) return { ingredient: null, error: 'Ingredient not found' };
 
-    return updateIngredient(db, id, { is_active: !ingredient.is_active });
+    // If trying to disable, check if it's the last active ingredient
+    if (ingredient.is_active) {
+      const canDisable = await canDisableIngredient(db, id);
+      if (!canDisable.isValid) {
+        return { ingredient: null, error: canDisable.error };
+      }
+    }
+
+    const updated = await updateIngredient(db, id, { is_active: !ingredient.is_active });
+    return { ingredient: updated };
   }
 
   // Get ingredients by category ID
@@ -208,6 +219,17 @@ import * as Crypto from 'expo-crypto';
     );
   }
 
-export async function deleteIngredient(db: DatabaseAdapter, id: string): Promise<void> {
+// Delete an ingredient (with safety check for last active ingredient)
+export async function deleteIngredient(
+  db: DatabaseAdapter,
+  id: string
+): Promise<{ success: boolean; error?: string }> {
+  // Check if ingredient can be safely deleted
+  const canDelete = await canDeleteIngredient(db, id);
+  if (!canDelete.isValid) {
+    return { success: false, error: canDelete.error };
+  }
+
   await db.runAsync('DELETE FROM ingredients WHERE id = ?', [id]);
+  return { success: true };
 }

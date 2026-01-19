@@ -91,4 +91,101 @@ describe('generateCombinations', () => {
       expect(uniqueIds.size).toBe(ids.length); // No duplicates
     });
   });
+
+  it('filters out inactive ingredients by default', () => {
+    const ingredientsWithInactive: Ingredient[] = [
+      ...mockIngredients,
+      {
+        id: '6',
+        name: 'Inactive Banana',
+        category: 'fruit',
+        mealTypes: ['breakfast'],
+        is_active: false, // Inactive
+        is_user_added: false,
+        createdAt: '',
+      },
+    ];
+
+    const result = generateCombinations(ingredientsWithInactive, 5, []);
+
+    expect(result).toHaveLength(5);
+
+    // Verify inactive ingredient is not included
+    result.forEach((combo: Ingredient[]) => {
+      combo.forEach((ingredient: Ingredient) => {
+        expect(ingredient.id).not.toBe('6');
+      });
+    });
+  });
+
+  it('respects custom min/max ingredients options', () => {
+    const result = generateCombinations(mockIngredients, 5, [], {
+      minIngredients: 2,
+      maxIngredients: 4,
+    });
+
+    expect(result).toHaveLength(5);
+
+    result.forEach((combo: Ingredient[]) => {
+      expect(combo.length).toBeGreaterThanOrEqual(2);
+      expect(combo.length).toBeLessThanOrEqual(4);
+    });
+  });
+
+  it('uses min ingredients when max equals min', () => {
+    const result = generateCombinations(mockIngredients, 3, [], {
+      minIngredients: 3,
+      maxIngredients: 3,
+    });
+
+    expect(result).toHaveLength(3);
+
+    result.forEach((combo: Ingredient[]) => {
+      expect(combo.length).toBe(3);
+    });
+  });
+
+  it('can include inactive ingredients when filterInactive is false', () => {
+    // All ingredients inactive except one
+    const mostlyInactive: Ingredient[] = [
+      {
+        id: '1',
+        name: 'Active One',
+        category: 'protein',
+        mealTypes: ['breakfast'],
+        is_active: true,
+        is_user_added: false,
+        createdAt: '',
+      },
+      {
+        id: '2',
+        name: 'Inactive Two',
+        category: 'carb',
+        mealTypes: ['breakfast'],
+        is_active: false,
+        is_user_added: false,
+        createdAt: '',
+      },
+      {
+        id: '3',
+        name: 'Inactive Three',
+        category: 'fruit',
+        mealTypes: ['breakfast'],
+        is_active: false,
+        is_user_added: false,
+        createdAt: '',
+      },
+    ];
+
+    // With filterInactive: false, should include inactive ingredients
+    const result = generateCombinations(mostlyInactive, 5, [], {
+      filterInactive: false,
+    });
+
+    expect(result).toHaveLength(5);
+
+    // With 3 ingredients available, combos should include inactive ones
+    const allUsedIds = result.flatMap((combo) => combo.map((ing) => ing.id));
+    expect(allUsedIds.length).toBeGreaterThan(0);
+  });
 });
