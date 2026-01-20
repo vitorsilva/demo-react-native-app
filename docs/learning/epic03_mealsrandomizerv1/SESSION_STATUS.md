@@ -134,7 +134,9 @@
 
 ## 🎯 Next Session Plan
 
-**Resume from:** Phase 4 (Optional) or Phase 5 or Phase 6
+**Resume from:** Phase 5 - Telemetry Expansion
+
+**Decision (2026-01-20):** Skip Phase 4 for now. Phase 4 features (favorites, variety report, etc.) are nice-to-have but not essential. Real user feedback from Phase 6 will reveal which features actually matter. Proceeding with Phase 5 (Telemetry) first to have better observability before beta testing.
 
 **Phase 3 COMPLETE:**
 - ✅ Documentation reorganized (learning/, architecture/, developer-guide/, user-guide/)
@@ -147,12 +149,14 @@
 - ✅ CLAUDE.md updated
 - ✅ All tests passing (101 unit tests)
 
-**Next Options:**
-1. **Phase 4 (Optional):** Add polish feature (favorites, variety report, etc.)
-2. **Phase 5:** Expand telemetry coverage
-3. **Phase 6:** Beta testing and validation
+**Next Session Tasks (Phase 5):**
+1. Database operation tracing (all CRUD operations)
+2. Business logic tracing (combination generator, variety engine)
+3. Enhanced user action tracking
+4. Production metrics setup
+5. Telemetry documentation
 
-**Reference:** [PHASE3_PROJECT_STRUCTURE.md](./PHASE3_PROJECT_STRUCTURE.md)
+**Reference:** [PHASE5_TELEMETRY_EXPANSION.md](./PHASE5_TELEMETRY_EXPANSION.md)
 
 ---
 
