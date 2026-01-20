@@ -511,7 +511,8 @@ const styles = StyleSheet.create({
   },
   // Filter
   filterContainer: {
-    maxHeight: 50,
+    minHeight: 35,
+    maxHeight: 35,
     marginBottom: 8,
   },
   filterContent: {
