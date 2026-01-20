@@ -134,29 +134,29 @@
 
 ## 🎯 Next Session Plan
 
-**Resume from:** Phase 5 - Telemetry Expansion
+**Resume from:** Phase 5 - Telemetry Expansion (Implementation)
 
-**Decision (2026-01-20):** Skip Phase 4 for now. Phase 4 features (favorites, variety report, etc.) are nice-to-have but not essential. Real user feedback from Phase 6 will reveal which features actually matter. Proceeding with Phase 5 (Telemetry) first to have better observability before beta testing.
+**Plan Revised (2026-01-20):** Adopted Saberloop's lightweight telemetry approach instead of OpenTelemetry/Jaeger/Prometheus. See [PHASE5_TELEMETRY_EXPANSION_REVISED.md](./PHASE5_TELEMETRY_EXPANSION_REVISED.md) for full plan.
 
-**Phase 3 COMPLETE:**
-- ✅ Documentation reorganized (learning/, architecture/, developer-guide/, user-guide/)
-- ✅ User guide created (3 files)
-- ✅ Architecture documentation (3 files)
-- ✅ Developer guide (3 files)
-- ✅ CONTRIBUTING.md, CODE_OF_CONDUCT.md, CHANGELOG.md, LICENSE added
-- ✅ Professional README.md
-- ✅ GitHub templates (.github/)
-- ✅ CLAUDE.md updated
-- ✅ All tests passing (101 unit tests)
+**Key Changes from Original Plan:**
+- ❌ Removed: OpenTelemetry, Jaeger, Prometheus, Sentry, Pino
+- ✅ Added: Custom TelemetryClient with batching + offline queue (Saberloop pattern)
+- ✅ Using: Existing Saberloop backend (no new PHP code needed)
+- ✅ Simpler: ~600 lines new code vs ~1,200 lines original
 
-**Next Session Tasks (Phase 5):**
-1. Database operation tracing (all CRUD operations)
-2. Business logic tracing (combination generator, variety engine)
-3. Enhanced user action tracking
-4. Production metrics setup
-5. Telemetry documentation
+**Next Session Tasks:**
+1. Create feature branch `feature/phase5-telemetry-saberloop`
+2. **Step 5.0:** Cleanup - Remove old dependencies and files
+3. **Step 5.1:** Create TelemetryClient
+4. **Step 5.2:** Create unified Logger
+5. **Step 5.3:** Create ErrorHandler
+6. **Step 5.4-5.9:** Integrate telemetry throughout app
+7. **Step 5.10-5.11:** Configure backend connection
+8. **Step 5.12:** Write tests (~20 tests)
+9. **Step 5.13:** Documentation
+10. Merge to main
 
-**Reference:** [PHASE5_TELEMETRY_EXPANSION.md](./PHASE5_TELEMETRY_EXPANSION.md)
+**Reference:** [PHASE5_TELEMETRY_EXPANSION_REVISED.md](./PHASE5_TELEMETRY_EXPANSION_REVISED.md)
 
 ---
 
@@ -181,6 +181,23 @@
 ---
 
 ## 🔄 Change Log
+
+### 2026-01-20 (Session 12 - Phase 5 Planning)
+- **Revised Phase 5 plan to use Saberloop telemetry approach**
+- Analyzed existing Saberloop telemetry implementation (demo-pwa-app)
+- Key decision: Replace OpenTelemetry/Jaeger/Prometheus with simpler custom solution
+- Created `PHASE5_TELEMETRY_EXPANSION_REVISED.md` with:
+  - Branching strategy (feature branch)
+  - Commit strategy (small atomic commits)
+  - Cleanup section (remove 11 dependencies, 7 files)
+  - TelemetryClient implementation (~150 lines)
+  - Unified Logger with sensitive data redaction (~100 lines)
+  - ErrorHandler for global error capturing
+  - Screen tracking
+  - Detailed test plan (~20 tests for TelemetryClient and Logger)
+- Will use existing Saberloop backend (no new PHP code)
+- Added `app: 'saborspin'` field to events for filtering in shared backend
+- **Ready for implementation next session**
 
 ### 2026-01-20 (Session 11 - Phase 3 Documentation)
 - **Completed Phase 3: Project Structure & Documentation**
@@ -416,4 +433,4 @@
 ---
 
 **Last Updated:** 2026-01-20
-**Next Session:** Phase 4 (Optional), Phase 5, or Phase 6
+**Next Session:** Phase 5 Implementation (telemetry using Saberloop approach)
