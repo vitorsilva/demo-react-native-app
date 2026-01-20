@@ -178,6 +178,21 @@
 
 ## 🔄 Change Log
 
+### 2026-01-20 (Session 9 - Deployment & Bug Fixes)
+- Built and deployed preview APK via EAS Build
+- Tested app on Android emulator and physical phone
+- **Bug Fix: Categories not saving on physical phone**
+  - Root cause: Old database had `categories.id` as INTEGER, not TEXT (UUID)
+  - `CREATE TABLE IF NOT EXISTS` doesn't modify existing tables
+  - Added Migration 2: Fixed `ingredients.category_id` type (INTEGER → TEXT)
+  - Added Migration 3: Rebuilt categories table with correct schema
+  - Debugging process: Added PRAGMA table_info logging to identify schema mismatch
+- **UI Fix: Filter buttons truncated on Manage Ingredients**
+  - Changed `filterContainer.maxHeight: 50` to `height: 44`
+- Reverted uuid/polyfill experiment back to expo-crypto (original was correct)
+- Fixed npm security vulnerabilities (6 → 0)
+- **Key Learning:** Migration debugging - use PRAGMA table_info to inspect actual schema
+
 ### 2025-01-19 (Session 8 - Phase 1 Complete)
 - Completed Steps 1.10-1.13 (Final Phase 1 Steps)
 - **Step 1.10: Data validation & safety**
@@ -329,5 +344,5 @@
 
 ---
 
-**Last Updated:** 2026-01-19
+**Last Updated:** 2026-01-20
 **Next Session:** Phase 2 - Branding & Identity
