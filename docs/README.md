@@ -1,145 +1,116 @@
-# Learning Documentation
+# SaborSpin Documentation
 
-This directory contains all learning documentation organized by epic.
+This directory contains all documentation for the SaborSpin project.
 
-## 📚 Epic Structure
-
-### ✅ Epic 1: Infrastructure & Foundation (COMPLETED)
-
-**Status:** 100% Complete | **Completed:** 2025-10-28
-
-Built professional development infrastructure and learned React Native fundamentals.
-
-**Documentation:**
-- [Learning Plan](./epic01_infrastructure/LEARNING_PLAN.md) - Full phase breakdown
-- [Phase 1 Learning Notes](./epic01_infrastructure/PHASE1_LEARNING_NOTES.md) - Basic setup
-- [Phase 2 Learning Notes](./epic01_infrastructure/PHASE2_LEARNING_NOTES.md) - Automation & Observability
-
-**Key Achievements:**
-- React Native fundamentals
-- Testing with Jest
-- CI/CD with GitHub Actions
-- OpenTelemetry observability stack
-- Error tracking with Sentry
-- Professional dev workflow
+**Live App:** Coming soon to app stores
+**Landing Page:** [saborspin.com](https://saborspin.com)
 
 ---
 
-### ✅ Epic 2: Meals Randomizer (COMPLETED)
+## Documentation Structure
 
-**Status:** 100% Complete | **Started:** 2025-01-04 | **Completed:** 2025-01-21
-
-Built a real mobile app for meal suggestions with variety enforcement.
-
-**Documentation:**
-- [Overview](./epic02_mealsrandomizer/OVERVIEW.md) - Epic introduction
-- [Phase 3 Session Notes](./epic02_mealsrandomizer/PHASE3_SESSION_NOTES.md) - Latest session
-- [Phase 1: Data Foundation](./epic02_mealsrandomizer/PHASE1_DATA_FOUNDATION.md)
-- [Phase 2: State Management](./epic02_mealsrandomizer/PHASE2_STATE_MANAGEMENT.md)
-- [Phase 4: Navigation](./epic02_mealsrandomizer/PHASE4_NAVIGATION.md)
-- [Phase 5: Polish & Testing](./epic02_mealsrandomizer/PHASE5_POLISH_TESTING.md)
-- [Phase 6: Future Enhancements](./parking-lot/EPIC02_PHASE6_FUTURE_ENHANCEMENTS.md) (Parked - see Epic 3 Phase 4)
-
-**Key Achievements:**
-- SQLite database with cross-platform adapters
-- Zustand state management
-- Combination generator algorithm
-- Variety enforcement engine
-- Home screen with meal type navigation
-- Suggestions screen with image cards
-- Confirmation modal for meal logging
-- Recent meals history display
-- E2E tests with Playwright (7 tests passing)
+```
+docs/
+├── README.md (this file)
+├── learning/                    # Learning journey (archived)
+│   ├── epic01_infrastructure/
+│   ├── epic02_mealsrandomizer/
+│   └── epic03_mealsrandomizerv1/
+├── architecture/                # System architecture
+│   ├── SYSTEM_OVERVIEW.md
+│   ├── DATABASE_SCHEMA.md
+│   └── STATE_MANAGEMENT.md
+├── developer-guide/             # Developer how-to guides
+│   ├── INSTALLATION.md
+│   ├── TESTING.md
+│   └── TROUBLESHOOTING.md
+└── user-guide/                  # End-user documentation
+    ├── getting-started.md
+    ├── customization.md
+    └── faq.md
+```
 
 ---
 
-### 🔄 Epic 3: Meals Randomizer V1 - Production Readiness (IN PROGRESS)
+## Quick Navigation
 
-**Status:** Phase 1 COMPLETE ✅ | **Started:** 2025-01-21
+### By Purpose
 
-Transforming from learning project to production-ready product.
+**I want to use the app**
+- [User Guide: Getting Started](./user-guide/getting-started.md)
+- [User Guide: Customization](./user-guide/customization.md)
+- [FAQ](./user-guide/faq.md)
 
-**Documentation:**
-- [Overview](./epic03_mealsrandomizerv1/OVERVIEW.md) - Epic introduction
-- [Session Status](./epic03_mealsrandomizerv1/SESSION_STATUS.md) - Current progress (⭐ CHECK HERE)
-- [Quick Start](./epic03_mealsrandomizerv1/QUICK_START.md) - Resume guide
-- [Phase 1 Session Notes](./epic03_mealsrandomizerv1/PHASE1_SESSION_NOTES.md) - Learning notes
-- [Phase 1: User Customization](./epic03_mealsrandomizerv1/PHASE1_USER_CUSTOMIZATION.md)
-- [Phase 2: Branding & Identity](./epic03_mealsrandomizerv1/PHASE2_BRANDING_IDENTITY.md)
-- [Phase 3: Project Structure & Documentation](./epic03_mealsrandomizerv1/PHASE3_PROJECT_STRUCTURE.md)
-- [Phase 4: Polish Feature (Optional)](./epic03_mealsrandomizerv1/PHASE4_POLISH_FEATURE.md)
+**I want to contribute**
+- [Contributing Guide](../CONTRIBUTING.md)
+- [Installation](./developer-guide/INSTALLATION.md)
+- [Architecture Overview](./architecture/SYSTEM_OVERVIEW.md)
 
-**Current Progress:**
-- ✅ Planning: Epic structure defined, documentation created
-- ✅ Phase 1: User Customization - COMPLETE (100%)
-  - ✅ Database migrations, Categories, Meal Types, Ingredients CRUD
-  - ✅ Zustand store with 11 new actions
-  - ✅ Manage Ingredients screen, Manage Categories screen
-  - ✅ Meal Type configuration in Settings
-  - ✅ Dynamic suggestions flow (any meal type)
-  - ✅ Data validation & safety checks
-  - ✅ Algorithm uses meal type settings
-  - ✅ 101 unit tests + 12 E2E tests passing
-- ⏸️ Phase 2: Branding & Identity - NEXT
-- ⏸️ Phase 3: Project Structure & Documentation - Not started
-- ⏸️ Phase 4: Polish Feature (Optional) - Not started
-
-**Epic Goals:**
-- ✅ Add user customization (ingredients, categories, meal types)
-- ⏸️ Create professional branding and identity
-- ⏸️ Reorganize codebase from learning to product
-- ⏸️ Add one polish feature (optional)
-
-**⭐ To Continue Epic 3:**
-See [Phase 2: Branding & Identity](./epic03_mealsrandomizerv1/PHASE2_BRANDING_IDENTITY.md)
+**I want to learn from this project**
+- [Epic 1: Infrastructure](./learning/epic01_infrastructure/LEARNING_PLAN.md)
+- [Epic 2: Meals Randomizer](./learning/epic02_mealsrandomizer/OVERVIEW.md)
+- [Epic 3: Production Readiness](./learning/epic03_mealsrandomizerv1/OVERVIEW.md)
 
 ---
 
-## 🎯 Current Focus
+## Epic Overview
 
-**Epic:** Epic 3 - Production Readiness
-**Phase:** Phase 1 COMPLETE ✅ → Ready for Phase 2
-**Next Steps:** Phase 2 - Branding & Identity (app name, icon, colors)
-**Tests:** 101 unit tests + 12 E2E tests passing
+| Epic | Focus | Status | Completion |
+|------|-------|--------|------------|
+| Epic 1 | Infrastructure & Foundation | Complete | 100% |
+| Epic 2 | Meals Randomizer Features | Complete | 100% |
+| Epic 3 | Production Readiness | Complete | 100% |
 
----
+### Epic Progression
 
-## 📊 Overall Progress
+```
+Epic 1: Learn the tools
+├─ Testing, CI/CD, Observability
+└─ Infrastructure ready
 
-| Epic | Status | Completion | Time Invested |
-|------|--------|------------|---------------|
-| Epic 1: Infrastructure | ✅ Complete | 100% | ~20 hours |
-| Epic 2: Meals Randomizer | ✅ Complete | 100% | ~15 hours |
-| Epic 3: Production Readiness | 🔄 In Progress | ~35% | ~12 hours |
+Epic 2: Build the features
+├─ SQLite, Zustand, UI
+└─ Functional prototype
 
-**Total:** ~47 hours of focused learning and development
-
----
-
-## 📖 How to Use This Documentation
-
-### For New Sessions
-1. Check the current epic's session notes for latest progress
-2. Review what was completed and what's next
-3. Follow the phase guides step by step
-
-### For Reference
-- Look up completed Epic 1 documentation for infrastructure topics
-- Check phase guides for upcoming features
-- Review learning notes for concepts and decisions
-- Check [Parking Lot](./parking-lot/) for deferred/unimplemented phases
+Epic 3: Ship the product
+├─ User customization, branding
+└─ Production-ready app
+```
 
 ---
 
-## 🅿️ Parking Lot
+## Document Conventions
 
-The [parking-lot](./parking-lot/) folder contains phases and features that were documented but not implemented. These are kept for future reference and potential implementation in later versions.
+### Status Indicators
 
-**Currently Parked:**
-- [Epic 2 Phase 6: Future Enhancements](./parking-lot/EPIC02_PHASE6_FUTURE_ENHANCEMENTS.md) - Moved to Epic 3 Phase 4
+| Symbol | Meaning |
+|--------|---------|
+| Complete | Phase/feature finished |
+| Planned | Documented but not executed |
+| Deferred | Moved to different epic/phase |
+| In Progress | Currently working |
+| Ongoing | Continuous activity |
+
+### File Naming
+
+| Pattern | Purpose |
+|---------|---------|
+| `LEARNING_PLAN.md` | Epic overview and structure |
+| `OVERVIEW.md` | Epic summary |
+| `PHASE#_*.md` | Phase planning documents |
+| `PHASE#_SESSION_NOTES.md` | Session notes after completion |
+| `SESSION_STATUS.md` | Current progress tracking |
+| `*_SUMMARY.md` | Summary documents |
+
+---
+
+## Questions?
+
+- **Using the app:** See [User Guide](./user-guide/)
+- **Contributing:** See [CONTRIBUTING.md](../CONTRIBUTING.md)
+- **Technical questions:** See [Architecture](./architecture/)
+- **Learning journey:** See [Learning Materials](./learning/)
 
 ---
 
 **Last Updated:** 2026-01-20
-**Current Epic:** Epic 3 - Production Readiness
-**Current Phase:** Phase 1 COMPLETE → Phase 2 Next
