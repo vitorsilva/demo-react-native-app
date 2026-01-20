@@ -12,6 +12,10 @@ This directory contains all documentation for the SaborSpin project.
 ```
 docs/
 ├── README.md (this file)
+├── product_info/                # Product exploration & mockups
+│   ├── meals-randomizer-exploration.md
+│   ├── icon/
+│   └── mockups/
 ├── learning/                    # Learning journey (archived)
 │   ├── epic01_infrastructure/
 │   ├── epic02_mealsrandomizer/
