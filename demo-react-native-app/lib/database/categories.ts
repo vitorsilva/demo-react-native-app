@@ -1,6 +1,6 @@
 import type { DatabaseAdapter } from './adapters/types';
 import type { Category } from '../../types/database';
-import * as Crypto from 'expo-crypto';
+import { v4 as uuidv4 } from 'uuid';
 
 // Get all categories
 export async function getAllCategories(db: DatabaseAdapter): Promise<Category[]> {
@@ -15,13 +15,16 @@ export async function addCategory(
   db: DatabaseAdapter,
   category: Omit<Category, 'id' | 'created_at' | 'updated_at'>
  ): Promise<Category> {
-  const id = Crypto.randomUUID();
+  const id = uuidv4();
   const now = new Date().toISOString();
 
-  await db.runAsync(
-    `INSERT INTO categories (id, name, created_at, updated_at) VALUES (?, ?, ?, ?)`,
-    [id, category.name, now, now]
-  );
+   // Debug logging
+    console.log('Adding category with:', { id, name: category.name, now, idType: typeof id });
+
+    await db.runAsync(
+      `INSERT INTO categories (id, name, created_at, updated_at) VALUES (?, ?, ?, ?)`,
+      [String(id), String(category.name), String(now), String(now)]
+    );
 
   return {
     id,

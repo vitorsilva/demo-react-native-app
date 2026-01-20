@@ -5,6 +5,7 @@
         "jaegertracing",
         "Millis",
         "prefs",
+        "uuidv",
         "worklets"
     ]
 }

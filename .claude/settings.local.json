@@ -40,7 +40,15 @@
       "mcp__playwright__browser_handle_dialog",
       "mcp__playwright__browser_wait_for",
       "mcp__playwright__browser_evaluate",
-      "mcp__playwright__browser_close"
+      "mcp__playwright__browser_close",
+      "Bash(eas build:*)",
+      "Bash(npx eas-cli:*)",
+      "Bash(npx expo start:*)",
+      "Bash(emulator -list-avds:*)",
+      "Bash(\"%LOCALAPPDATA%\\\\Android\\\\Sdk\\\\emulator\\\\emulator.exe\" -list-avds)",
+      "Bash(\"C:\\\\Users\\\\omeue\\\\AppData\\\\Local\\\\Android\\\\Sdk\\\\emulator\\\\emulator.exe\" -list-avds)",
+      "Bash(\"C:\\\\Users\\\\omeue\\\\AppData\\\\Local\\\\Android\\\\Sdk\\\\emulator\\\\emulator.exe\" -avd Medium_Phone_API_36.1)",
+      "Bash(\"C:\\\\Users\\\\omeue\\\\AppData\\\\Local\\\\Android\\\\Sdk\\\\platform-tools\\\\adb.exe\" devices)"
     ],
     "deny": [],
     "ask": []

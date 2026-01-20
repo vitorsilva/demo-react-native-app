@@ -119,6 +119,43 @@
         
       },
     },
+    {
+        version: 2,
+        up: async (db: DatabaseAdapter) => {
+          // Fix category_id column type: INTEGER -> TEXT
+          // SQLite doesn't support ALTER COLUMN, so we rebuild the table
+
+          // 1. Create new table with correct schema
+          await db.runAsync(`
+            CREATE TABLE IF NOT EXISTS ingredients_new (
+              id TEXT PRIMARY KEY NOT NULL,
+              name TEXT NOT NULL,
+              category TEXT NOT NULL,
+              meal_types TEXT NOT NULL,
+              created_at TEXT NOT NULL,
+              category_id TEXT,
+              is_active INTEGER DEFAULT 1,
+              is_user_added INTEGER DEFAULT 0,
+              updated_at TEXT
+            )
+          `);
+
+          // 2. Copy data from old table
+          await db.runAsync(`
+            INSERT INTO ingredients_new (id, name, category, meal_types, created_at, category_id, is_active,
+      is_user_added, updated_at)
+            SELECT id, name, category, meal_types, created_at, CAST(category_id AS TEXT), is_active,        
+      is_user_added, updated_at
+            FROM ingredients
+          `);
+
+          // 3. Drop old table
+          await db.runAsync(`DROP TABLE ingredients`);
+
+          // 4. Rename new table
+          await db.runAsync(`ALTER TABLE ingredients_new RENAME TO ingredients`);
+        },
+      },    
   ];
 
   // Main function to run pending migrations
