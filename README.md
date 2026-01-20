@@ -1,174 +1,140 @@
-# SaborSpin
+<div align="center">
+  <img src="./demo-react-native-app/assets/images/icon.png" alt="SaborSpin Logo" width="120" />
+  <h1>SaborSpin</h1>
+  <p><strong>Shake up your plate</strong> - Variety-enforced meal suggestions</p>
 
-**Shake up your plate** - Variety-enforced meal suggestions for people who love food but hate deciding what to eat.
+  [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](./LICENSE)
+  [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](./CONTRIBUTING.md)
+</div>
 
-![SaborSpin Screenshot](landing/images/screenshot-suggestions.png)
+---
 
 ## What is SaborSpin?
 
-SaborSpin is a React Native mobile app that helps you break the monotony of everyday eating. Add your favorite ingredients, and the app generates varied meal combinations while ensuring you don't repeat the same meals too often.
+SaborSpin helps you decide what to eat without repeating meals too often. Get personalized meal suggestions based on your ingredients and eating history.
 
-**Key Features:**
-- **Random Suggestions** - Get fresh meal combinations with a single tap
-- **Variety Engine** - Smart algorithm prevents meal repetition within a configurable cooldown
-- **Your Ingredients** - Customize your ingredient list by categories
-- **Meal Types** - Configure breakfast, lunch, dinner, snacks with individual settings
-- **Meal History** - Track what you've eaten over time
+**Problem:** Decision fatigue around daily meals. Eating the same things repeatedly.
 
-## Quick Start
+**Solution:** Variety-enforced meal suggestions that prevent repetition while respecting your preferences.
 
-### Prerequisites
-- Node.js 20+
-- npm or yarn
-- Expo Go app (for mobile testing)
-- Android emulator or iOS simulator (optional)
+**Website:** [saborspin.com](https://saborspin.com)
 
-### Setup
+---
+
+## Features
+
+- **Variety Enforced** - Algorithm prevents repeating ingredients within your cooldown period
+- **Fast Decisions** - Pick a meal in under 20 seconds
+- **Fully Customizable** - Add your own ingredients, categories, and meal types
+- **Meal Tracking** - See your eating history and patterns
+- **Dark Mode** - Easy on the eyes, day or night
+- **Privacy First** - All data stored locally, no cloud sync
+- **Cross-Platform** - iOS, Android, and Web
+
+---
+
+## Screenshots
+
+<div align="center">
+  <img src="./landing/images/screenshot-suggestions.png" alt="Suggestions Screen" width="250" />
+</div>
+
+---
+
+## Download
+
+### Android
+- Download APK from [Releases](https://github.com/vitorsilva/saborspin/releases)
+- Coming soon to Google Play Store
+
+### iOS
+Coming soon to the App Store
+
+### Web
+Try the web version (data not persisted) by running locally.
+
+---
+
+## Quick Start for Developers
+
 ```bash
-cd demo-react-native-app
+# Clone the repo
+git clone https://github.com/vitorsilva/saborspin.git
+cd saborspin/demo-react-native-app
+
+# Install dependencies
 npm install
+
+# Start development server
 npm start
+
+# Run tests
+npm test
+
+# Run E2E tests
+npm run test:e2e
 ```
 
-### Running Tests
-```bash
-npm test              # Run all unit tests (100+ tests)
-npm run test:e2e      # Run Playwright E2E tests (12 tests)
-```
+See [Installation Guide](./docs/developer-guide/INSTALLATION.md) for detailed setup.
 
-### Building
-```bash
-# Preview build (APK for testing)
-eas build --platform android --profile preview
+---
 
-# Production build (AAB for Play Store)
-eas build --platform android --profile production
-```
+## Built With
 
-## Tech Stack
+| Technology | Purpose |
+|------------|---------|
+| [React Native](https://reactnative.dev) + [Expo](https://expo.dev) | Mobile framework |
+| [SQLite](https://www.sqlite.org) | Local-first database |
+| [Zustand](https://zustand.pmnd.rs) | State management |
+| [TypeScript](https://www.typescriptlang.org) | Type safety |
+| [Playwright](https://playwright.dev) | E2E testing |
 
-**Core:**
-- React Native 0.81.4 with New Architecture
-- Expo SDK 54
-- TypeScript
-- Expo Router (file-based routing)
+---
 
-**Database:**
-- expo-sqlite (native)
-- sql.js (web)
-- better-sqlite3 (testing)
+## Documentation
 
-**State Management:**
-- Zustand
+| Document | Description |
+|----------|-------------|
+| [User Guide](./docs/user-guide/) | How to use SaborSpin |
+| [Architecture](./docs/architecture/) | Technical documentation |
+| [Developer Guide](./docs/developer-guide/) | Setup and development |
+| [Contributing](./CONTRIBUTING.md) | How to contribute |
+| [Changelog](./CHANGELOG.md) | Version history |
 
-**Testing:**
-- Jest (100+ unit tests)
-- Playwright (12 E2E tests)
-- React Native Testing Library
+---
 
-**Observability:**
-- OpenTelemetry (traces & metrics)
-- Jaeger (trace visualization)
-- Prometheus (metrics)
-- Sentry (error tracking)
+## Project Status
 
-## Project Structure
+| Epic | Status |
+|------|--------|
+| Epic 1: Infrastructure & Foundation | Complete |
+| Epic 2: Meals Randomizer Features | Complete |
+| Epic 3: Production Readiness | Complete |
 
-```
-demo-react-native-app/           # Root repo
-├── landing/                     # Landing page (saborspin.com)
-│   ├── index.html
-│   └── images/
-├── scripts/                     # Deployment scripts
-│   └── deploy-landing.cjs
-├── demo-react-native-app/       # React Native app
-│   ├── app/                     # Expo Router (file-based routing)
-│   │   ├── (tabs)/             # Tab navigation
-│   │   │   ├── index.tsx       # Home - meal type buttons
-│   │   │   ├── history.tsx     # Meal history
-│   │   │   ├── manage-ingredients.tsx
-│   │   │   ├── manage-categories.tsx
-│   │   │   └── settings.tsx    # Global & meal type settings
-│   │   └── suggestions/
-│   │       └── [mealType].tsx  # Dynamic suggestions screen
-│   ├── lib/
-│   │   ├── database/           # SQLite with migrations
-│   │   ├── business-logic/     # Combination generator, variety engine
-│   │   ├── store/              # Zustand global state
-│   │   └── telemetry/          # OpenTelemetry setup
-│   ├── components/             # Reusable UI components
-│   ├── e2e/                    # Playwright E2E tests
-│   └── types/                  # TypeScript definitions
-└── docs/                        # Documentation
-    ├── epic01_infrastructure/   # Completed
-    ├── epic02_mealsrandomizer/  # Completed
-    └── epic03_mealsrandomizerv1/ # Current
-```
+**Test Coverage:** 101+ unit tests, 12 E2E tests
 
-## Development Progress
+---
 
-This project follows a structured learning approach organized into epics.
+## Contributing
 
-### Completed Epics
+Contributions are welcome! Please read our [Contributing Guide](./CONTRIBUTING.md) and [Code of Conduct](./CODE_OF_CONDUCT.md).
 
-| Epic | Description | Status |
-|------|-------------|--------|
-| Epic 1 | Infrastructure & Foundation | ✅ Complete |
-| Epic 2 | Meals Randomizer Core | ✅ Complete |
-
-### Current: Epic 3 - Production Readiness
-
-**Goal:** Transform from learning project to production-ready app
-
-| Phase | Description | Status |
-|-------|-------------|--------|
-| Phase 1 | User Customization (CRUD for categories, meal types, ingredients) | ✅ Complete |
-| Phase 2 | Branding & Identity (SaborSpin name, icons, landing page) | 🔄 ~85% |
-| Phase 3 | Project Structure & Documentation | ⏳ Pending |
-| Phase 4 | Polish Feature (Optional) | ⏳ Pending |
-| Phase 5 | Telemetry Expansion | ⏳ Pending |
-| Phase 6 | Validation & Iteration | ⏳ Pending |
-
-**Current Progress:** [docs/epic03_mealsrandomizerv1/SESSION_STATUS.md](./docs/epic03_mealsrandomizerv1/SESSION_STATUS.md)
-
-## Landing Page
-
-The SaborSpin landing page is in the `landing/` directory.
-
-**Preview locally:**
-```bash
-npm run preview:landing  # Serves at http://localhost:3333
-```
-
-**Deploy:**
-```bash
-cp .env.example .env     # Fill in FTP credentials
-npm install              # Install dependencies
-npm run deploy:landing   # Deploy to saborspin.com
-```
-
-## Observability
-
-**Start observability stack:**
-```bash
-docker-compose up -d
-```
-
-- **Jaeger (Traces):** http://localhost:16686
-- **Prometheus (Metrics):** http://localhost:9090
+---
 
 ## Brand
 
 - **Name:** SaborSpin (sabor = flavor in Portuguese)
 - **Tagline:** "Shake up your plate"
 - **Colors:** Orange #FF6B35 | Green #4CAF50 | Yellow #FFC107
-- **Domain:** saborspin.com
-
-## License
-
-This is a learning project for educational purposes.
 
 ---
 
-**Made with love in Portugal**
+## License
 
+This project is licensed under the MIT License - see the [LICENSE](./LICENSE) file.
+
+---
+
+<div align="center">
+  Made with care in Portugal
+</div>
