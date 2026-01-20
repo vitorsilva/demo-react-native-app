@@ -127,6 +127,19 @@ User idea: Add shake functionality to generate new meal suggestions.
    - Updated `lib/telemetry/telemetry.ts`: service name → "saborspin"
    - Note: Folder path references kept (actual folder structure, not app name)
 
+5. **Step 2.7: Update Theme Colors** ✅
+   - Updated `constants/theme.ts` with brand colors
+   - Primary: #FF6B35 (Orange), Secondary: #4CAF50 (Green), Accent: #FFC107 (Yellow)
+   - Background dark: #1A1A2E
+
+6. **Step 2.8: Landing Page** ✅
+   - Created `landing/index.html` following Saberloop methodology
+   - Single HTML file with inline CSS
+   - Sections: Header, Hero, Features, How It Works, Variety, CTA, Footer
+   - Mobile responsive design
+   - Brand colors and SaborSpin messaging
+   - Copied icon.png and favicon.png to `landing/images/`
+
 ---
 
 ## Current Progress
@@ -137,9 +150,9 @@ User idea: Add shake functionality to generate new meal suggestions.
 **Step 2.4: Splash Screen Design** ✅ COMPLETE
 **Step 2.5: Update App Configuration** ✅ COMPLETE
 **Step 2.6: Remove Demo References** ✅ COMPLETE
-**Step 2.7: Update Theme Colors** - NEXT
-**Step 2.8: Landing Page** - Pending
-**Step 2.9: Take Screenshots** - Pending
+**Step 2.7: Update Theme Colors** ✅ COMPLETE
+**Step 2.8: Landing Page** ✅ COMPLETE
+**Step 2.9: Take Screenshots** - NEXT
 **Step 2.10: Update README.md** - Pending
 **Step 2.11: Testing & Validation** - Pending
 **Step 2.12: Deployment** - Pending
@@ -171,20 +184,22 @@ User idea: Add shake functionality to generate new meal suggestions.
 | `assets/images/favicon.png` | Web favicon (48x48) |
 | `assets/images/splash-icon.png` | Splash screen icon (512x512) |
 | `scripts/generate-icons.js` | NEW - Icon generation script |
+| `constants/theme.ts` | Updated with brand colors |
+| `landing/index.html` | NEW - Landing page |
+| `landing/images/icon.png` | Landing page logo |
+| `landing/images/favicon.png` | Landing page favicon |
 
 ---
 
 ## Next Steps
 
-**Resume from:** Step 2.7 - Update Theme Colors
+**Resume from:** Step 2.9 - Take Screenshots
 
 **Remaining Tasks:**
-1. Update `constants/Colors.ts` with brand palette
-2. Create landing page (optional/simple)
-3. Take screenshots for marketing
-4. Update README.md
-5. Run tests to validate branding changes
-6. Build and deploy branded APK
+1. Take screenshots for marketing
+2. Update README.md
+3. Run tests to validate branding changes
+4. Build and deploy branded APK
 
 ---
 
