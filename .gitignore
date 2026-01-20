@@ -4,3 +4,7 @@ nul
 .vs/
 playwright-report/
 test-results/
+
+# Environment variables (FTP credentials, etc)
+.env
+node_modules/

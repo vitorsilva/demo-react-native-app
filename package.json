@@ -1,0 +1,14 @@
+{
+  "name": "saborspin-landing",
+  "version": "1.0.0",
+  "description": "SaborSpin landing page and deployment scripts",
+  "private": true,
+  "scripts": {
+    "deploy:landing": "node scripts/deploy-landing.cjs",
+    "preview:landing": "npx serve landing -l 3333"
+  },
+  "devDependencies": {
+    "dotenv": "^17.2.3",
+    "ftp-deploy": "^2.4.7"
+  }
+}
