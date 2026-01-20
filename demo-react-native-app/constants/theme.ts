@@ -5,25 +5,37 @@
 
 import { Platform } from 'react-native';
 
-const tintColorLight = '#0a7ea4';
-const tintColorDark = '#fff';
+// SaborSpin Brand Colors
+const brandColors = {
+  primary: '#FF6B35', // Orange - main brand color
+  secondary: '#4CAF50', // Green - success, fresh/healthy
+  accent: '#FFC107', // Yellow - warnings, highlights
+};
 
 export const Colors = {
   light: {
-    text: '#11181C',
-    background: '#fff',
-    tint: tintColorLight,
+    text: '#1A1A1A',
+    background: '#F8F9FA',
+    tint: brandColors.primary,
     icon: '#687076',
     tabIconDefault: '#687076',
-    tabIconSelected: tintColorLight,
+    tabIconSelected: brandColors.primary,
+    // Brand colors
+    primary: brandColors.primary,
+    secondary: brandColors.secondary,
+    accent: brandColors.accent,
   },
   dark: {
     text: '#ECEDEE',
-    background: '#151718',
-    tint: tintColorDark,
+    background: '#1A1A2E',
+    tint: brandColors.primary,
     icon: '#9BA1A6',
     tabIconDefault: '#9BA1A6',
-    tabIconSelected: tintColorDark,
+    tabIconSelected: brandColors.primary,
+    // Brand colors
+    primary: brandColors.primary,
+    secondary: brandColors.secondary,
+    accent: brandColors.accent,
   },
 };
 
