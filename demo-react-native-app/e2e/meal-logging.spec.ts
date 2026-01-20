@@ -246,7 +246,7 @@ test.describe('Meal Logging Flow', () => {
 
     // Should be back on home
     await expect(page).toHaveURL('/');
-    await expect(page.getByText('Meals Randomizer')).toBeVisible();
+    await expect(page.getByText('SaborSpin')).toBeVisible();
 
     // Screenshot: Back on home screen
     await page.screenshot({ path: 'e2e/screenshots/20-home-after-back.png' });

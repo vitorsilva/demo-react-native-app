@@ -98,7 +98,7 @@ export default function HomeScreen() {
         <View style={styles.menuIcon}>
           <Text style={styles.menuIconText}>☰</Text>
         </View>
-        <Text style={styles.headerTitle}>Meals Randomizer</Text>
+        <Text style={styles.headerTitle}>SaborSpin</Text>
       </View>
 
       {/* Meal Type Buttons - Dynamically generated */}
