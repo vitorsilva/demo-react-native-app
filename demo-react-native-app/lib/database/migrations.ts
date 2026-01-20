@@ -155,7 +155,26 @@
           // 4. Rename new table
           await db.runAsync(`ALTER TABLE ingredients_new RENAME TO ingredients`);
         },
-      },    
+      },
+  {
+    version: 3,
+    up: async (db: DatabaseAdapter) => {
+      // Fix categories table: id was INTEGER, should be TEXT (UUID)
+
+      // 1. Drop the old table (no data to preserve)
+      await db.runAsync(`DROP TABLE IF EXISTS categories`);
+
+      // 2. Recreate with correct schema
+      await db.runAsync(`
+        CREATE TABLE categories (
+          id TEXT PRIMARY KEY,
+          name TEXT NOT NULL UNIQUE,
+          created_at TEXT NOT NULL,
+          updated_at TEXT NOT NULL
+        )
+      `);
+    },
+  },          
   ];
 
   // Main function to run pending migrations
