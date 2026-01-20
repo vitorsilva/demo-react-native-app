@@ -139,6 +139,32 @@ User idea: Add shake functionality to generate new meal suggestions.
    - Mobile responsive design
    - Brand colors and SaborSpin messaging
    - Copied icon.png and favicon.png to `landing/images/`
+   - Created `scripts/deploy-landing.cjs` for FTP deployment
+   - Created root `package.json` with deploy scripts
+
+7. **Step 2.9: Take Screenshots** ✅
+   - Updated app header from "Meals Randomizer" to "SaborSpin"
+   - Updated E2E test to match new header
+   - Captured branded screenshots: home, suggestions, ingredients, settings
+   - Added screenshots to landing page (phone mockup)
+
+8. **Step 2.10: Update README.md** ✅
+   - Rebranded from "Demo React Native App" to "SaborSpin"
+   - Added app screenshot
+   - Updated feature list, tech stack, project structure
+   - Documented landing page deployment
+   - Added brand section
+
+9. **Step 2.11: Testing & Validation** ✅
+   - 101 unit tests passing
+   - TypeScript type check passing
+   - ESLint passing
+
+10. **Step 2.12: Deployment** ⚠️
+    - EAS project needs re-linking due to slug change
+    - Removed old projectId from app.json
+    - Manual step required: Run `npx eas init` and select "Create new project"
+    - Then run: `npx eas build --platform android --profile preview`
 
 ---
 
@@ -152,10 +178,14 @@ User idea: Add shake functionality to generate new meal suggestions.
 **Step 2.6: Remove Demo References** ✅ COMPLETE
 **Step 2.7: Update Theme Colors** ✅ COMPLETE
 **Step 2.8: Landing Page** ✅ COMPLETE
-**Step 2.9: Take Screenshots** - NEXT
-**Step 2.10: Update README.md** - Pending
-**Step 2.11: Testing & Validation** - Pending
-**Step 2.12: Deployment** - Pending
+**Step 2.9: Take Screenshots** ✅ COMPLETE
+**Step 2.10: Update README.md** ✅ COMPLETE
+**Step 2.11: Testing & Validation** ✅ COMPLETE
+**Step 2.12: Deployment** ⚠️ MANUAL STEP REQUIRED (see notes above)
+
+## Phase 2 ~99% COMPLETE!
+
+**Note:** One manual step remains - re-link EAS project and trigger build.
 
 ---
 
