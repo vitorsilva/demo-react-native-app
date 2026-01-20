@@ -1,5 +1,6 @@
 {
-  "name": "demo-react-native-app",
+  "name": "saborspin",
+  "description": "Shake up your plate - Variety-enforced meal suggestions",
   "main": "expo-router/entry",
   "version": "1.0.0",
   "scripts": {
@@ -80,6 +81,7 @@
     "lint-staged": "^16.2.6",
     "prettier": "^3.6.2",
     "react-test-renderer": "19.1.0",
+    "sharp": "^0.34.5",
     "typescript": "~5.9.2"
   },
   "lint-staged": {
