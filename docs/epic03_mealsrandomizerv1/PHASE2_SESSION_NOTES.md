@@ -160,11 +160,12 @@ User idea: Add shake functionality to generate new meal suggestions.
    - TypeScript type check passing
    - ESLint passing
 
-10. **Step 2.12: Deployment** ⚠️
-    - EAS project needs re-linking due to slug change
-    - Removed old projectId from app.json
-    - Manual step required: Run `npx eas init` and select "Create new project"
-    - Then run: `npx eas build --platform android --profile preview`
+10. **Step 2.12: Deployment** ✅
+    - Created new EAS project "saborspin" on expo.dev
+    - Linked with `eas init --id 19c4e3a2-2799-4437-b562-89d18834a2dd`
+    - Deleted old "demo-react-native-app" project
+    - Build triggered: `eas build --platform android --profile preview`
+    - **Learning:** EAS project slugs cannot be renamed - must create new project
 
 ---
 
@@ -181,11 +182,9 @@ User idea: Add shake functionality to generate new meal suggestions.
 **Step 2.9: Take Screenshots** ✅ COMPLETE
 **Step 2.10: Update README.md** ✅ COMPLETE
 **Step 2.11: Testing & Validation** ✅ COMPLETE
-**Step 2.12: Deployment** ⚠️ MANUAL STEP REQUIRED (see notes above)
+**Step 2.12: Deployment** ✅ COMPLETE
 
-## Phase 2 ~99% COMPLETE!
-
-**Note:** One manual step remains - re-link EAS project and trigger build.
+## Phase 2 COMPLETE! 🎉
 
 ---
 
@@ -199,6 +198,8 @@ User idea: Add shake functionality to generate new meal suggestions.
 6. **Sharp for icon generation** - Node.js library for image processing, installed as dev dependency
 7. **AI icon generation** - Gemini produces good results with detailed prompts (colors, style, format)
 8. **Adaptive icons** - Android uses foreground + background layers, safe zone is center 66%
+9. **EAS project slugs cannot be renamed** - Changing slug requires creating a new project on expo.dev and relinking with `eas init --id <new-id>`
+10. **Use `eas-cli` not `eas`** - The npm package name is `eas-cli`, use `npx eas-cli` or install globally
 
 ---
 
