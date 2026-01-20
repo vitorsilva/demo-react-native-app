@@ -210,6 +210,9 @@
   - Simplified for production mode
   - Updated documentation paths
 - **Validation:** All 101 unit tests passing, TypeScript and lint clean
+- **Step 3.12: Move product_info to docs/**
+  - Moved `product_info/` to `docs/product_info/`
+  - Updated docs/README.md structure
 - **Phase 3 is now COMPLETE!**
 
 ### 2026-01-20 (Session 10 - Phase 2 Branding)
