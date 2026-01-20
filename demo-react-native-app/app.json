@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "SaborSpin",
-    "slug": "saborspin",
+    "slug": "demo-react-native-app",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -38,13 +38,13 @@
           }
         }
       ],
-    [
-      "@sentry/react-native/expo",
-      {
-        "organization": "vitorsilva",
-        "project": "react-native"
-      }
-    ],
+      [
+        "@sentry/react-native/expo",
+        {
+          "organization": "vitorsilva",
+          "project": "react-native"
+        }
+      ],
       "expo-sqlite"
     ],
     "experiments": {
@@ -52,10 +52,8 @@
       "reactCompiler": true
     },
     "extra": {
-      "router": {},
-      "eas": {
-        "projectId": "4f3a5d38-3ecf-4c47-900b-6e6954dc81fc"
-      }
-    }
+      "router": {}
+    },
+    "owner": "vitorsilvavmrs"
   }
 }
