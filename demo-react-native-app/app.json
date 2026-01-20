@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "SaborSpin",
-    "slug": "demo-react-native-app",
+    "slug": "saborspin",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -52,7 +52,10 @@
       "reactCompiler": true
     },
     "extra": {
-      "router": {}
+      "router": {},
+      "eas": {
+        "projectId": "19c4e3a2-2799-4437-b562-89d18834a2dd"
+      }
     },
     "owner": "vitorsilvavmrs"
   }
