@@ -50,7 +50,8 @@
       "Bash(\"C:\\\\Users\\\\omeue\\\\AppData\\\\Local\\\\Android\\\\Sdk\\\\emulator\\\\emulator.exe\" -avd Medium_Phone_API_36.1)",
       "Bash(\"C:\\\\Users\\\\omeue\\\\AppData\\\\Local\\\\Android\\\\Sdk\\\\platform-tools\\\\adb.exe\" devices)",
       "Bash(node scripts/generate-icons.js:*)",
-      "mcp__playwright__browser_resize"
+      "mcp__playwright__browser_resize",
+      "Bash(git push:*)"
     ],
     "deny": [],
     "ask": []
