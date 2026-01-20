@@ -8,7 +8,7 @@ import { OTLPMetricExporter } from '@opentelemetry/exporter-metrics-otlp-http';
 // Define metadata about your application
 // This helps identify your app in observability backends
 const resource = new Resource({
-  [ATTR_SERVICE_NAME]: 'demo-react-native-app',
+  [ATTR_SERVICE_NAME]: 'saborspin',
   [ATTR_SERVICE_VERSION]: '1.0.0',
 });
 
@@ -49,7 +49,7 @@ meterProvider.addMetricReader(
 provider.register();
 
 // Export a tracer that other files can import and use
-export const tracer = provider.getTracer('demo-react-native-app');
+export const tracer = provider.getTracer('saborspin');
 
 // Export a metric that other files can import and use
-export const meter = meterProvider.getMeter('demo-react-native-app');
+export const meter = meterProvider.getMeter('saborspin');
