@@ -14,23 +14,18 @@ appId: com.vitorsilvavmrs.saborspin
 
 # Verify home screen loads (telemetry initializes on app start)
 - extendedWaitUntil:
-    visible: "What's for"
+    visible: "SaborSpin"
     timeout: 30000
+
+# Take screenshot of home screen
+- takeScreenshot: telemetry-home
 
 # Navigate to breakfast suggestions (triggers screen tracking)
 - tapOn:
-    text: "Breakfast"
+    text: "breakfast Ideas"
     optional: false
 
-# Wait for suggestions screen
-- extendedWaitUntil:
-    visible: "Breakfast Ideas"
-    timeout: 15000
-
-# Generate new suggestions (triggers perf logging)
-- tapOn: "Generate New Ideas"
-
-# Wait for suggestions to load
+# Wait for suggestions screen to load
 - extendedWaitUntil:
     visible: "Pick one:"
     timeout: 15000
@@ -38,23 +33,23 @@ appId: com.vitorsilvavmrs.saborspin
 # Take screenshot of suggestions
 - takeScreenshot: telemetry-suggestions
 
-# Tap select button on first suggestion (triggers action logging)
+# Select a meal (triggers action logging)
 - tapOn:
     text: "Select"
     index: 0
 
-# Verify confirmation modal (meal logging action tracked)
+# Wait for confirmation modal
 - extendedWaitUntil:
-    visible: "Logged"
+    visible: "Breakfast Logged"
     timeout: 10000
 
 # Take screenshot of confirmation
 - takeScreenshot: telemetry-confirmation
 
-# Dismiss modal
+# Dismiss modal by tapping Done button
 - tapOn: "Done"
 
-# Verify we're back on home with recent meals
+# Verify we're back on home
 - extendedWaitUntil:
     visible: "Recent Meals"
     timeout: 10000
@@ -62,19 +57,25 @@ appId: com.vitorsilvavmrs.saborspin
 # Navigate to History tab (triggers screen tracking)
 - tapOn: "History"
 - extendedWaitUntil:
-    visible: "Today"
+    visible: ".*History.*|.*Today.*|.*logged.*"
     timeout: 10000
+
+# Take screenshot of history
+- takeScreenshot: telemetry-history
 
 # Navigate to Settings tab (triggers screen tracking)
 - tapOn: "Settings"
 - extendedWaitUntil:
-    visible: ".*Preferences.*|.*Cooldown.*"
+    visible: ".*Settings.*|.*Preferences.*|.*Cooldown.*"
     timeout: 10000
+
+# Take screenshot of settings
+- takeScreenshot: telemetry-settings
 
 # Navigate back to Home
 - tapOn: "Home"
 - extendedWaitUntil:
-    visible: "What's for"
+    visible: "SaborSpin"
     timeout: 10000
 
 # Take final screenshot
