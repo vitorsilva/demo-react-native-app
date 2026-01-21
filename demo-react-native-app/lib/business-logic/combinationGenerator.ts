@@ -1,4 +1,7 @@
 import type { Ingredient } from '../../types/database';
+import { logger } from '../telemetry/logger';
+
+const log = logger.child({ module: 'CombinationGenerator' });
 
 /**
  * Options for generating meal combinations
@@ -27,10 +30,20 @@ export function generateCombinations(
   recentlyUsedIds: string[],
   options: GenerateCombinationsOptions = {}
 ): Ingredient[][] {
+  const startTime = Date.now();
+
   // Apply defaults
   const minIngredients = options.minIngredients ?? 1;
   const maxIngredients = options.maxIngredients ?? 3;
   const filterInactive = options.filterInactive ?? true;
+
+  log.debug('Generating combinations', {
+    totalIngredients: ingredients.length,
+    requestedCount: count,
+    recentlyUsedCount: recentlyUsedIds.length,
+    minIngredients,
+    maxIngredients,
+  });
 
   // Step 1: Filter out inactive ingredients if requested
   let availableIngredients = filterInactive
@@ -44,6 +57,9 @@ export function generateCombinations(
 
   // Edge case: If no ingredients available, return empty array
   if (availableIngredients.length === 0) {
+    log.warn('No ingredients available after filtering', {
+      reason: 'all_filtered_out',
+    });
     return [];
   }
 
@@ -64,6 +80,13 @@ export function generateCombinations(
 
     combinations.push(combo);
   }
+
+  const duration = Date.now() - startTime;
+  log.perf('combination_generation', {
+    value: duration,
+    generated: combinations.length,
+    availableIngredients: availableIngredients.length,
+  });
 
   return combinations;
 }

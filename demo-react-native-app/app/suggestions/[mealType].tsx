@@ -11,6 +11,7 @@ import {
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useEffect, useState, useRef } from 'react';
 import { trackScreenView } from '../../lib/telemetry/screenTracking';
+import { logger } from '../../lib/telemetry/logger';
 import { ConfirmationModal } from '../../components/modals/ConfirmationModal';
 import { useStore } from '../../lib/store';
 import * as Haptics from 'expo-haptics';
@@ -145,12 +146,17 @@ export default function SuggestionsScreen() {
       // Use the meal type name from URL (or database if found)
       const mealTypeName = currentMealType?.name.toLowerCase() || mealType || 'meal';
 
+      // Track user action
+      logger.action('suggestion_accepted', {
+        mealType: mealTypeName,
+        ingredientCount: suggestion.ingredients.length,
+      });
+
       await logMeal({
         date: new Date().toISOString(),
         ingredients: suggestion.ingredients.map((i) => i.id),
         mealType: mealTypeName,
       });
-      console.log('Meal logged to database:', selectedIngredients, 'as', mealTypeName);
     }
 
     setModalVisible(false);
@@ -160,9 +166,12 @@ export default function SuggestionsScreen() {
 
   const handleGenerateNew = () => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+
+    // Track user action
+    logger.action('regenerate_suggestions', { mealType });
+
     // Generate new suggestions with meal type config
     generateMealSuggestions(mealType);
-    console.log('Generating new meal ideas...');
   };
 
   return (

@@ -8,13 +8,16 @@ import * as mealTypesDb from '@/lib/database/mealTypes';
 import { getDatabase } from '@/lib/database';
 import { getRecentlyUsedIngredients } from '../business-logic/varietyEngine';
 import { generateCombinations, GenerateCombinationsOptions } from '@/lib/business-logic/combinationGenerator';
-// TODO: Metrics will be added back in Step 5.9
+import { logger } from '@/lib/telemetry/logger';
 import { setPreferences, UserPreferences } from '@/lib/database/preferences';
+
+// Create store logger instance
+const storeLogger = logger.child({ module: 'Store' });
 
 // Silent logging during tests
 const isTestEnv = process.env.NODE_ENV === 'test';
 const log = (message: string, data?: unknown) => {
-  if (!isTestEnv) console.log(message, data);
+  if (!isTestEnv) storeLogger.debug(message, data as Record<string, unknown>);
 };
 
   interface StoreState {
@@ -180,11 +183,12 @@ export const useStore = create<StoreState>((set, get) => ({
   generateMealSuggestions: async (mealTypeName?: string) => {
     const startTime = Date.now();
 
+    // Track action start
+    storeLogger.action('generate_suggestions_start', { mealTypeName });
+
     set({ isLoading: true, error: null });
     try {
       const db = getDatabase();
-
-      // TODO: Metrics will be added back in Step 5.9
 
       // Step 1: Load fresh preferences from database
       const preferences = await preferencesDb.getPreferences(db);
@@ -225,14 +229,27 @@ export const useStore = create<StoreState>((set, get) => ({
       };
       const combinations = generateCombinations(ingredients, count, blockedIds, options);
 
-      // TODO: Metrics will be added back in Step 5.9
       const duration = Date.now() - startTime;
+
+      // Record performance and success
+      storeLogger.perf('meal_generation', {
+        value: duration,
+        status: 'success',
+        suggestionsGenerated: combinations.length,
+        mealTypeName,
+      });
 
       set({ suggestedCombinations: combinations, isLoading: false });
       log('Generation complete:', { duration, suggestionsCount: combinations.length });
     } catch (error) {
       const duration = Date.now() - startTime;
-      log('Generation failed:', { duration, error });
+
+      // Record failure
+      storeLogger.perf('meal_generation', {
+        value: duration,
+        status: 'error',
+        error: error instanceof Error ? error.message : 'Unknown error',
+      });
 
       set({
         error: error instanceof Error ? error.message : 'Failed to generate suggestions',

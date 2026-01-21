@@ -24,5 +24,7 @@ module.exports = {
   moduleNameMapper: {
     '^expo-sqlite$': '<rootDir>/lib/database/__tests__/__mocks__/expo-sqlite.ts',
     '^expo-crypto$': '<rootDir>/lib/database/__tests__/__mocks__/expo-crypto.ts',
+    '^@react-native-async-storage/async-storage$':
+      '<rootDir>/lib/database/__tests__/__mocks__/async-storage.ts',
   },
 };
