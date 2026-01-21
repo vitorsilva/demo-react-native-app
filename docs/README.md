@@ -27,6 +27,7 @@ docs/
 ├── developer-guide/             # Developer how-to guides
 │   ├── INSTALLATION.md
 │   ├── TESTING.md
+│   ├── MAESTRO_TESTING.md
 │   ├── TELEMETRY.md
 │   └── TROUBLESHOOTING.md
 └── user-guide/                  # End-user documentation

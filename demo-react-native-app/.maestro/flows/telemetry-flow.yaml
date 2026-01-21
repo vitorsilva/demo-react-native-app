@@ -1,0 +1,83 @@
+# Maestro E2E test for telemetry functionality
+# Verifies app doesn't crash during telemetry operations on mobile
+#
+# Prerequisites:
+#   - Android emulator running: adb devices
+#   - App installed (see MAESTRO_TESTING.md for options)
+#
+# Run with: maestro test .maestro/flows/telemetry-flow.yaml
+
+appId: com.vitorsilvavmrs.saborspin
+---
+# Launch app
+- launchApp
+
+# Verify home screen loads (telemetry initializes on app start)
+- extendedWaitUntil:
+    visible: "What's for"
+    timeout: 30000
+
+# Navigate to breakfast suggestions (triggers screen tracking)
+- tapOn:
+    text: "Breakfast"
+    optional: false
+
+# Wait for suggestions screen
+- extendedWaitUntil:
+    visible: "Breakfast Ideas"
+    timeout: 15000
+
+# Generate new suggestions (triggers perf logging)
+- tapOn: "Generate New Ideas"
+
+# Wait for suggestions to load
+- extendedWaitUntil:
+    visible: "Pick one:"
+    timeout: 15000
+
+# Take screenshot of suggestions
+- takeScreenshot: telemetry-suggestions
+
+# Tap select button on first suggestion (triggers action logging)
+- tapOn:
+    text: "Select"
+    index: 0
+
+# Verify confirmation modal (meal logging action tracked)
+- extendedWaitUntil:
+    visible: "Logged"
+    timeout: 10000
+
+# Take screenshot of confirmation
+- takeScreenshot: telemetry-confirmation
+
+# Dismiss modal
+- tapOn: "Done"
+
+# Verify we're back on home with recent meals
+- extendedWaitUntil:
+    visible: "Recent Meals"
+    timeout: 10000
+
+# Navigate to History tab (triggers screen tracking)
+- tapOn: "History"
+- extendedWaitUntil:
+    visible: "Today"
+    timeout: 10000
+
+# Navigate to Settings tab (triggers screen tracking)
+- tapOn: "Settings"
+- extendedWaitUntil:
+    visible: ".*Preferences.*|.*Cooldown.*"
+    timeout: 10000
+
+# Navigate back to Home
+- tapOn: "Home"
+- extendedWaitUntil:
+    visible: "What's for"
+    timeout: 10000
+
+# Take final screenshot
+- takeScreenshot: telemetry-complete
+
+# If we got here, telemetry didn't cause any crashes ✅
