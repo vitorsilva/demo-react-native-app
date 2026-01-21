@@ -4,8 +4,7 @@ import { StatusBar } from 'expo-status-bar';
 import { AppState, AppStateStatus } from 'react-native';
 import 'react-native-reanimated';
 
-// Initialize telemetry
-import '../lib/telemetry/telemetry';
+// Initialize telemetry (import for side effects + named exports)
 import { isTelemetryEnabled } from '../lib/telemetry/telemetry';
 import { logger } from '../lib/telemetry/logger';
 import { initErrorHandling } from '../lib/telemetry/errorHandler';

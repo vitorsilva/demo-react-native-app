@@ -38,13 +38,6 @@
           }
         }
       ],
-      [
-        "@sentry/react-native/expo",
-        {
-          "organization": "vitorsilva",
-          "project": "react-native"
-        }
-      ],
       "expo-sqlite"
     ],
     "experiments": {
@@ -55,7 +48,12 @@
       "router": {},
       "eas": {
         "projectId": "19c4e3a2-2799-4437-b562-89d18834a2dd"
-      }
+      },
+      "telemetryEnabled": false,
+      "telemetryEndpoint": "",
+      "telemetryToken": "",
+      "telemetryBatchSize": 10,
+      "telemetryFlushInterval": 30000
     },
     "owner": "vitorsilvavmrs"
   }
