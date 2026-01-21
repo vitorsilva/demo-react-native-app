@@ -13,6 +13,7 @@ import {
 } from 'react-native';
 import { useState, useEffect, useCallback } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
+import { trackScreenView } from '../../lib/telemetry/screenTracking';
 import { useStore } from '../../lib/store';
 
 type FilterOption = 'all' | string;
@@ -66,6 +67,7 @@ export default function ManageIngredientsScreen() {
   // Reload when screen comes into focus
   useFocusEffect(
     useCallback(() => {
+      trackScreenView('manage_ingredients');
       if (isDatabaseReady) {
         loadIngredients();
         loadCategories();

@@ -1,9 +1,16 @@
 import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
+import { AppState, AppStateStatus } from 'react-native';
 import 'react-native-reanimated';
-// TODO: Telemetry will be initialized in Step 5.7
-// import '../lib/telemetry/telemetry';
+
+// Initialize telemetry
+import '../lib/telemetry/telemetry';
+import { isTelemetryEnabled } from '../lib/telemetry/telemetry';
+import { logger } from '../lib/telemetry/logger';
+import { initErrorHandling } from '../lib/telemetry/errorHandler';
+import { trackAppBackground, trackAppForeground } from '../lib/telemetry/screenTracking';
+
 import ErrorBoundary from '../components/ErrorBoundary';
 import { useColorScheme } from '../hooks/use-color-scheme';
 import { useEffect } from 'react';
@@ -19,15 +26,40 @@ export default function RootLayout() {
   const colorScheme = useColorScheme();
   const setDatabaseReady = useStore((state) => state.setDatabaseReady);
 
+  // Initialize telemetry and error handling
+  useEffect(() => {
+    // Initialize error handling
+    initErrorHandling();
+
+    // Log app start
+    logger.info('App started', { telemetryEnabled: isTelemetryEnabled });
+
+    // Track app state changes (background/foreground)
+    const subscription = AppState.addEventListener('change', (state: AppStateStatus) => {
+      if (state === 'background') {
+        trackAppBackground();
+      } else if (state === 'active') {
+        trackAppForeground();
+      }
+    });
+
+    return () => {
+      subscription.remove();
+    };
+  }, []);
+
+  // Initialize database
   useEffect(() => {
     async function setup() {
       try {
         await initDatabase();
         await seedDatabase();
-        console.log('✅ Database ready');
+        logger.info('Database ready');
         setDatabaseReady();
       } catch (error) {
-        console.error('❌ Database initialization failed:', error);
+        logger.error('Database initialization failed', {
+          error: error instanceof Error ? error.message : String(error),
+        });
       }
     }
     setup();

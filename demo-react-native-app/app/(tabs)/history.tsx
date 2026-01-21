@@ -1,7 +1,7 @@
 import { View, Text, StyleSheet, SectionList } from 'react-native';
 import { useEffect, useCallback } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
-// TODO: Analytics will be added back in Step 5.8
+import { trackScreenView } from '../../lib/telemetry/screenTracking';
 import { useStore } from '../../lib/store';
 import type { MealLog } from '../../types/database';
 
@@ -24,7 +24,7 @@ export default function HistoryScreen() {
   // Reload when screen comes into focus
   useFocusEffect(
     useCallback(() => {
-      // TODO: Screen tracking will be added back in Step 5.8
+      trackScreenView('history');
       if (isDatabaseReady) {
         loadMealLogs(30);
       }

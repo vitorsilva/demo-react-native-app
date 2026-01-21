@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useEffect, useState, useRef } from 'react';
-// TODO: Analytics will be added back in Step 5.8
+import { trackScreenView } from '../../lib/telemetry/screenTracking';
 import { ConfirmationModal } from '../../components/modals/ConfirmationModal';
 import { useStore } from '../../lib/store';
 import * as Haptics from 'expo-haptics';
@@ -67,7 +67,7 @@ export default function SuggestionsScreen() {
 
   // Track screen view and generate suggestions on mount
   useEffect(() => {
-    // TODO: Screen tracking will be added back in Step 5.8
+    trackScreenView('suggestions');
 
     // Ensure data is loaded before generating suggestions
     const generateSuggestions = async () => {

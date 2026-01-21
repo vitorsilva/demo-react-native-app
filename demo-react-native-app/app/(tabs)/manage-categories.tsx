@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import { useState, useEffect, useCallback } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
+import { trackScreenView } from '../../lib/telemetry/screenTracking';
 import { useStore } from '../../lib/store';
 
 export default function ManageCategoriesScreen() {
@@ -45,6 +46,7 @@ export default function ManageCategoriesScreen() {
   // Reload when screen comes into focus
   useFocusEffect(
     useCallback(() => {
+      trackScreenView('manage_categories');
       if (isDatabaseReady) {
         loadCategories();
         loadIngredients();
