@@ -11,6 +11,44 @@ SaborSpin uses **Maestro** for mobile E2E testing on Android.
 └─────────────┘     └─────────────┘     └─────────────┘
 ```
 
+## Complete Setup Walkthrough (Windows)
+
+Follow these steps in order to run Maestro tests from scratch:
+
+```powershell
+# Step 1: Install Maestro CLI
+Invoke-WebRequest -Uri "https://github.com/mobile-dev-inc/maestro/releases/latest/download/maestro.zip" -OutFile "$env:USERPROFILE\Downloads\maestro.zip"
+Expand-Archive -Path "$env:USERPROFILE\Downloads\maestro.zip" -DestinationPath "$env:USERPROFILE\maestro" -Force
+[Environment]::SetEnvironmentVariable("Path", $env:Path + ";$env:USERPROFILE\maestro\maestro\bin", "User")
+
+# Step 2: Set JAVA_HOME (Android Studio's JDK)
+[Environment]::SetEnvironmentVariable("JAVA_HOME", "C:\Program Files\Android\Android Studio\jbr", "User")
+
+# Step 3: Add ADB to PATH
+[Environment]::SetEnvironmentVariable("Path", $env:Path + ";$env:LOCALAPPDATA\Android\Sdk\platform-tools", "User")
+
+# Step 4: RESTART PowerShell, then verify installations
+maestro --version    # Should show version number
+adb --version        # Should show version number
+java -version        # Should show Java version
+
+# Step 5: Start Android emulator
+$env:LOCALAPPDATA/Android/Sdk/emulator/emulator -list-avds  # List available
+$env:LOCALAPPDATA/Android/Sdk/emulator/emulator -avd Medium_Phone_API_36 &  # Start one
+
+# Step 6: Wait for emulator to boot, verify connection
+adb devices          # Should show: emulator-5554   device
+
+# Step 7: Get and install the APK
+cd demo-react-native-app
+eas build:list --platform android --limit 1  # Get latest build URL
+curl -L -o saborspin.apk "https://expo.dev/artifacts/eas/YOUR_BUILD_ID.apk"
+adb install saborspin.apk
+
+# Step 8: Run Maestro tests
+maestro test .maestro/flows/telemetry-flow.yaml
+```
+
 ## Prerequisites
 
 ### Install Maestro CLI
@@ -138,6 +176,35 @@ Maestro tests are in `.maestro/`:
 ├── config.yaml                 # Workspace configuration
 └── flows/
     └── telemetry-flow.yaml     # Telemetry integration test
+```
+
+### config.yaml
+
+The workspace configuration file:
+
+```yaml
+# Output directory for test artifacts (screenshots, logs, reports)
+testOutputDir: .maestro/tests
+```
+
+This tells Maestro where to save:
+- Screenshots taken during tests
+- Debug screenshots on failures
+- Test reports and logs
+
+### Flow Files
+
+Each `.yaml` file in `flows/` is a test flow. The flow starts with app configuration:
+
+```yaml
+appId: com.vitorsilvavmrs.saborspin  # Package name of the app
+---
+# Test steps follow...
+```
+
+The `appId` must match the installed app's package name. Find it with:
+```bash
+adb shell pm list packages | grep saborspin
 ```
 
 ## Quick Start
