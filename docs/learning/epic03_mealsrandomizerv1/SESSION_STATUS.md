@@ -136,27 +136,28 @@
 
 **Resume from:** Phase 5 - Telemetry Expansion (Implementation)
 
-**Plan Revised (2026-01-20):** Adopted Saberloop's lightweight telemetry approach instead of OpenTelemetry/Jaeger/Prometheus. See [PHASE5_TELEMETRY_EXPANSION_REVISED.md](./PHASE5_TELEMETRY_EXPANSION_REVISED.md) for full plan.
+**Plan Revised (2026-01-20):** Keep OpenTelemetry SDK but replace OTLP exporters with custom exporters that send to Saberloop PHP backend. See [PHASE5_TELEMETRY_EXPANSION.md](./PHASE5_TELEMETRY_EXPANSION.md) for full plan.
 
 **Key Changes from Original Plan:**
-- ❌ Removed: OpenTelemetry, Jaeger, Prometheus, Sentry, Pino
-- ✅ Added: Custom TelemetryClient with batching + offline queue (Saberloop pattern)
-- ✅ Using: Existing Saberloop backend (no new PHP code needed)
-- ✅ Simpler: ~600 lines new code vs ~1,200 lines original
+- ✅ Kept: OpenTelemetry SDK (tracer, meter, spans, metrics)
+- ❌ Removed: OTLP exporters, Sentry, Pino, Docker infrastructure (Jaeger/Prometheus)
+- ✅ Added: Custom SaberloopSpanExporter and SaberloopMetricExporter
+- ✅ Using: Existing Saberloop PHP backend (no new backend code needed)
+- ✅ Simpler: ~700 lines new code, removes Docker infrastructure entirely
 
 **Next Session Tasks:**
 1. Create feature branch `feature/phase5-telemetry-saberloop`
-2. **Step 5.0:** Cleanup - Remove old dependencies and files
-3. **Step 5.1:** Create TelemetryClient
-4. **Step 5.2:** Create unified Logger
-5. **Step 5.3:** Create ErrorHandler
-6. **Step 5.4-5.9:** Integrate telemetry throughout app
-7. **Step 5.10-5.11:** Configure backend connection
-8. **Step 5.12:** Write tests (~20 tests)
-9. **Step 5.13:** Documentation
-10. Merge to main
+2. **Step 5.0:** Cleanup - Remove OTLP exporters, Sentry, Pino, old files
+3. **Step 5.1-5.3:** Create custom exporters (SaberloopSpanExporter, SaberloopMetricExporter, update telemetry.ts)
+4. **Step 5.4:** Create unified Logger (with perf/action methods for OTel spans)
+5. **Step 5.5-5.8:** Add error handler and screen tracking
+6. **Step 5.9-5.11:** Instrument business logic, database, and user actions
+7. **Step 5.12-5.13:** Configure backend connection
+8. **Step 5.14:** Write tests (~24 tests for exporter and logger)
+9. **Step 5.15:** Documentation
+10. **Step 5.16:** Final validation and merge to main
 
-**Reference:** [PHASE5_TELEMETRY_EXPANSION_REVISED.md](./PHASE5_TELEMETRY_EXPANSION_REVISED.md)
+**Reference:** [PHASE5_TELEMETRY_EXPANSION.md](./PHASE5_TELEMETRY_EXPANSION.md)
 
 ---
 
@@ -182,22 +183,40 @@
 
 ## 🔄 Change Log
 
+### 2026-01-21 (Session 13 - Phase 5 Plan Finalization)
+- **Consolidated Phase 5 documentation** - deleted old files, kept revised plan
+- Renamed `PHASE5_TELEMETRY_EXPANSION_REVISED.md` → `PHASE5_TELEMETRY_EXPANSION.md`
+- **Added Step 5.13:** Enable production telemetry and verify backend (was "Next Steps", now in-phase)
+- **Strengthened PII protection:**
+  - Expanded SENSITIVE_KEYS to include: email, phone, address, ssn, name, deviceid, userid
+  - Added E2E test to verify no PII patterns in telemetry output
+  - Added unit tests for PII redaction
+- **Replaced manual testing with automated tests:**
+  - Created E2E telemetry tests (4 Playwright tests): no errors, screen tracking, perf metrics, no PII
+  - Maestro tests required for mobile (not optional)
+- **Added Step Transition Protocol:**
+  - At end of each step, update SESSION_STATUS.md
+  - Document: errors & resolutions, decisions, doubts, fixes/workarounds, learnings
+  - Ensures progress tracked in real-time, context preserved if interrupted
+- Updated commit strategy and success criteria
+- **Ready for implementation**
+
 ### 2026-01-20 (Session 12 - Phase 5 Planning)
 - **Revised Phase 5 plan to use Saberloop telemetry approach**
 - Analyzed existing Saberloop telemetry implementation (demo-pwa-app)
-- Key decision: Replace OpenTelemetry/Jaeger/Prometheus with simpler custom solution
-- Created `PHASE5_TELEMETRY_EXPANSION_REVISED.md` with:
+- Key decision: Keep OpenTelemetry SDK, replace OTLP exporters with custom Saberloop exporters
+- Still follows OpenTelemetry standards/conventions
+- Created Phase 5 plan with:
   - Branching strategy (feature branch)
   - Commit strategy (small atomic commits)
-  - Cleanup section (remove 11 dependencies, 7 files)
-  - TelemetryClient implementation (~150 lines)
+  - Cleanup section (remove 4 dependencies, 6 files)
+  - Custom SaberloopSpanExporter and SaberloopMetricExporter
   - Unified Logger with sensitive data redaction (~100 lines)
   - ErrorHandler for global error capturing
   - Screen tracking
-  - Detailed test plan (~20 tests for TelemetryClient and Logger)
+  - Detailed test plan (~24 unit tests + 4 E2E tests)
 - Will use existing Saberloop backend (no new PHP code)
 - Added `app: 'saborspin'` field to events for filtering in shared backend
-- **Ready for implementation next session**
 
 ### 2026-01-20 (Session 11 - Phase 3 Documentation)
 - **Completed Phase 3: Project Structure & Documentation**
@@ -432,5 +451,5 @@
 
 ---
 
-**Last Updated:** 2026-01-20
+**Last Updated:** 2026-01-21
 **Next Session:** Phase 5 Implementation (telemetry using Saberloop approach)
