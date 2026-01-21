@@ -4,7 +4,7 @@
 
 **Started:** 2025-01-21
 
-**Current Status:** Phase 3 COMPLETE (100%)
+**Current Status:** Phase 5 IN PROGRESS (~60%)
 
 ---
 
@@ -14,8 +14,8 @@
 - ✅ **Phase 1:** User Customization - COMPLETE (100%)
 - ✅ **Phase 2:** Branding & Identity - COMPLETE (100%)
 - ✅ **Phase 3:** Project Structure & Documentation - COMPLETE (100%)
-- ⏸️ **Phase 4:** Polish Feature (Optional) - Not started
-- ⏸️ **Phase 5:** Telemetry Expansion - Not started
+- ⏸️ **Phase 4:** Polish Feature (Optional) - SKIPPED
+- 🔄 **Phase 5:** Telemetry Expansion - IN PROGRESS (~60%)
 - ⏸️ **Phase 6:** Validation & Iteration - Not started
 
 **Estimated Total Time:** 19-27 hours (development) + 3-4 weeks (validation)
@@ -95,20 +95,32 @@
 **Decision:** To be made after using app with Phase 1-3 features
 
 ### Phase 5: Telemetry Expansion (4-6 hours)
-**Status:** Not Started
+**Status:** IN PROGRESS (~60%)
 
-**Goal:** Expand observability coverage to database and business logic
+**Goal:** Replace OTLP exporters with custom Saberloop exporters while keeping OpenTelemetry SDK
 
-**Key Deliverables:**
-- [ ] Database operation tracing (all CRUD operations)
-- [ ] Business logic tracing (combination generator, variety engine)
-- [ ] Enhanced user action tracking (buttons, forms)
-- [ ] Production metrics (query duration, algorithm performance)
-- [ ] Telemetry tests (unit + E2E)
-- [ ] Environment configuration
-- [ ] End-to-end validation (Jaeger + Prometheus)
-- [ ] Performance impact assessment
-- [ ] Telemetry documentation
+**Completed Steps:**
+- [x] **Step 5.0:** Cleanup - Removed OTLP exporters, Sentry, Pino (~3 commits)
+- [x] **Step 5.1-5.3:** Created custom exporters
+  - SaberloopSpanExporter (batching, offline queue, AsyncStorage)
+  - SaberloopMetricExporter (OTel metrics to JSON)
+  - Updated telemetry.ts to use custom exporters
+- [x] **Step 5.4:** Created unified Logger with PII redaction
+- [x] **Step 5.5-5.8:** Added error handler and screen tracking
+  - errorHandler.ts with global ErrorUtils capture
+  - screenTracking.ts with screen view and time metrics
+  - Integrated telemetry in _layout.tsx (app start, app state)
+  - Added trackScreenView to all 6 screens
+- [x] **Step 5.9-5.11:** Instrumented business logic and user actions
+  - combinationGenerator with perf logging
+  - Store with action tracking
+  - Suggestions screen (suggestion_accepted, regenerate_suggestions)
+
+**Remaining Steps:**
+- [ ] **Step 5.12-5.13:** Update app.json config with telemetry endpoint
+- [ ] **Step 5.14:** Write telemetry tests (~24 unit + 4 E2E)
+- [ ] **Step 5.15:** Create telemetry documentation
+- [ ] **Step 5.16:** Final validation and merge to main
 
 ### Phase 6: Validation & Iteration (3-4 weeks, ongoing)
 **Status:** Not Started
@@ -134,30 +146,22 @@
 
 ## 🎯 Next Session Plan
 
-**Resume from:** Phase 5 - Telemetry Expansion (Implementation)
+**Resume from:** Phase 5 - Step 5.12 (Configuration and Testing)
 
-**Status:** Plan finalized and committed. Ready to begin implementation.
+**Branch:** `feature/phase5-telemetry-saberloop` (8 commits ahead of main)
 
-**Plan:** Keep OpenTelemetry SDK but replace OTLP exporters with custom exporters that send to Saberloop PHP backend. See [PHASE5_TELEMETRY_EXPANSION.md](./PHASE5_TELEMETRY_EXPANSION.md) for full plan.
-
-**Key Changes from Original Plan:**
-- ✅ Kept: OpenTelemetry SDK (tracer, meter, spans, metrics)
-- ❌ Removed: OTLP exporters, Sentry, Pino, Docker infrastructure (Jaeger/Prometheus)
-- ✅ Added: Custom SaberloopSpanExporter and SaberloopMetricExporter
-- ✅ Using: Existing Saberloop PHP backend (no new backend code needed)
-- ✅ Simpler: ~700 lines new code, removes Docker infrastructure entirely
+**Completed This Session:**
+- ✅ Step 5.0: Cleanup (OTLP, Sentry, Pino removed)
+- ✅ Steps 5.1-5.3: Custom exporters created
+- ✅ Step 5.4: Unified Logger with PII redaction
+- ✅ Steps 5.5-5.8: Error handler + screen tracking
+- ✅ Steps 5.9-5.11: Business logic + user action instrumentation
 
 **Next Session Tasks:**
-1. Create feature branch `feature/phase5-telemetry-saberloop`
-2. **Step 5.0:** Cleanup - Remove OTLP exporters, Sentry, Pino, old files
-3. **Step 5.1-5.3:** Create custom exporters (SaberloopSpanExporter, SaberloopMetricExporter, update telemetry.ts)
-4. **Step 5.4:** Create unified Logger (with perf/action methods for OTel spans)
-5. **Step 5.5-5.8:** Add error handler and screen tracking
-6. **Step 5.9-5.11:** Instrument business logic, database, and user actions
-7. **Step 5.12-5.13:** Configure backend connection
-8. **Step 5.14:** Write tests (~24 tests for exporter and logger)
-9. **Step 5.15:** Documentation
-10. **Step 5.16:** Final validation and merge to main
+1. **Step 5.12-5.13:** Update app.json with telemetry config
+2. **Step 5.14:** Write telemetry tests (~24 unit + 4 E2E)
+3. **Step 5.15:** Create telemetry documentation
+4. **Step 5.16:** Final validation and merge to main
 
 **Reference:** [PHASE5_TELEMETRY_EXPANSION.md](./PHASE5_TELEMETRY_EXPANSION.md)
 
@@ -184,6 +188,42 @@
 ---
 
 ## 🔄 Change Log
+
+### 2026-01-21 (Session 14 - Phase 5 Implementation)
+- **Started Phase 5 implementation** on feature branch `feature/phase5-telemetry-saberloop`
+- **Step 5.0: Cleanup**
+  - Removed 4 dependencies: OTLP exporters, Sentry, Pino
+  - Deleted 6 files: docker-compose.yml, otel configs, old telemetry modules
+  - Fixed broken imports in 8 files
+  - 2 commits, all 101 tests passing
+- **Steps 5.1-5.3: Custom Exporters**
+  - Created SaberloopSpanExporter (~160 lines)
+    - Batching with configurable batch size
+    - Offline resilience via AsyncStorage
+    - Periodic flush timer
+  - Created SaberloopMetricExporter (~115 lines)
+  - Updated telemetry.ts to use custom exporters
+  - Added @react-native-async-storage/async-storage and @opentelemetry/core deps
+- **Step 5.4: Unified Logger** (~170 lines)
+  - Sensitive data redaction for PII
+  - Log levels: debug, info (console only), warn, error (console + OTel)
+  - perf() for performance metrics
+  - action() for user action tracking
+  - Child logger support with module prefix
+- **Steps 5.5-5.8: Error Handler + Screen Tracking**
+  - errorHandler.ts with global ErrorUtils capture
+  - screenTracking.ts with screen view and time metrics
+  - Integrated telemetry in _layout.tsx
+  - Added trackScreenView to 6 screens: home, history, settings, manage_ingredients, manage_categories, suggestions
+  - Updated ErrorBoundary to use new logger
+- **Steps 5.9-5.11: Instrumentation**
+  - combinationGenerator: perf logging, timing
+  - Store: action tracking for meal generation
+  - Suggestions screen: suggestion_accepted, regenerate_suggestions actions
+  - Added AsyncStorage mock for tests
+- **New files created:** 5 (exporters, logger, errorHandler, screenTracking, async-storage mock)
+- **Total commits this session:** 8
+- **Tests:** 101 passing (unchanged count)
 
 ### 2026-01-21 (Session 13 - Phase 5 Plan Finalization)
 - **Consolidated Phase 5 documentation** - deleted old files, kept revised plan
@@ -454,4 +494,4 @@
 ---
 
 **Last Updated:** 2026-01-21
-**Next Session:** Phase 5 Implementation (telemetry using Saberloop approach)
+**Next Session:** Phase 5 Steps 5.12-5.16 (configuration, testing, documentation)
