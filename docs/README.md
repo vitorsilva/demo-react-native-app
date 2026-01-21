@@ -27,6 +27,7 @@ docs/
 ├── developer-guide/             # Developer how-to guides
 │   ├── INSTALLATION.md
 │   ├── TESTING.md
+│   ├── TELEMETRY.md
 │   └── TROUBLESHOOTING.md
 └── user-guide/                  # End-user documentation
     ├── getting-started.md
@@ -49,6 +50,7 @@ docs/
 - [Contributing Guide](../CONTRIBUTING.md)
 - [Installation](./developer-guide/INSTALLATION.md)
 - [Architecture Overview](./architecture/SYSTEM_OVERVIEW.md)
+- [Telemetry Guide](./developer-guide/TELEMETRY.md)
 
 **I want to learn from this project**
 - [Epic 1: Infrastructure](./learning/epic01_infrastructure/LEARNING_PLAN.md)
@@ -117,4 +119,4 @@ Epic 3: Ship the product
 
 ---
 
-**Last Updated:** 2026-01-20
+**Last Updated:** 2026-01-21
