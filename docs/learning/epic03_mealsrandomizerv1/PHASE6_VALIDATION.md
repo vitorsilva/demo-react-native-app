@@ -10,7 +10,7 @@
 ## Overview
 
 Phase 6 is the culmination of Epic 3 - deploying Meals Randomizer V1 to real users (family and friends), gathering feedback, and iterating based on real-world usage. This phase transforms the app from "technically complete" to "user-validated product."
-
+/
 **What you'll do:**
 - Beta test with 5-10 family members or friends
 - Collect usage data and feedback via telemetry
