@@ -52,28 +52,53 @@ maestro --version
 
 ## Running Tests
 
-### Option 1: Development Build (Recommended)
+### Option 1: Download Existing EAS Build (Recommended)
 
-Build and install a development APK:
+The fastest way to run Maestro tests is to download an existing EAS build. This avoids local build issues (like Windows path length limits) entirely.
 
 ```bash
 # From demo-react-native-app/ directory
 cd demo-react-native-app
 
-# Build development APK (first time only - takes ~10 min)
-npx expo run:android
+# 1. List available builds
+eas build:list --platform android --limit 5
 
-# Or use EAS Build for a preview APK
-eas build --platform android --profile preview --local
-```
+# 2. Download the APK (copy URL from "Application Archive URL")
+curl -L -o saborspin.apk "https://expo.dev/artifacts/eas/YOUR_BUILD_ID.apk"
 
-Then run Maestro tests:
+# 3. Install on emulator
+adb install saborspin.apk
 
-```bash
+# 4. Run Maestro tests
 maestro test .maestro/flows/telemetry-flow.yaml
 ```
 
-### Option 2: Using Expo Go (Quick Testing)
+### Option 2: Local Development Build
+
+Build a development APK locally (may hit Windows path length limits):
+
+```bash
+# Build development APK (first time takes ~10 min)
+npx expo run:android
+
+# Then run Maestro tests
+maestro test .maestro/flows/telemetry-flow.yaml
+```
+
+### Option 3: Cloud Build with EAS
+
+Build in the cloud to avoid local environment issues:
+
+```bash
+# Build in the cloud
+eas build --platform android --profile preview
+
+# Download and install when ready
+# (EAS will provide download link)
+adb install path/to/downloaded.apk
+```
+
+### Option 4: Using Expo Go (Quick Testing)
 
 1. Start the Expo dev server:
 ```bash
@@ -136,12 +161,23 @@ maestro test .maestro/flows/telemetry-flow.yaml --debug-output
 appId: com.vitorsilvavmrs.saborspin
 ---
 - launchApp
-- assertVisible: "What's for"
-- tapOn: "Breakfast"
 - extendedWaitUntil:
-    visible: "Breakfast Ideas"
+    visible: "SaborSpin"
+    timeout: 30000
+- tapOn: "breakfast Ideas"
+- extendedWaitUntil:
+    visible: "Pick one:"
     timeout: 15000
+- takeScreenshot: suggestions-screen
 ```
+
+### Tips for Reliable Tests
+
+1. **Use exact text from the UI** - Run `maestro studio` to inspect actual element text
+2. **Use `extendedWaitUntil` with timeouts** - More reliable than simple `assertVisible`
+3. **Avoid regex when possible** - Direct text matching is more reliable
+4. **Take screenshots at key steps** - Helps debug failures
+5. **Check debug output on failures** - Screenshots saved to `.maestro/tests/`
 
 ### Common Actions
 
