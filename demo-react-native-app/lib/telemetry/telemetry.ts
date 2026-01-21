@@ -1,36 +1,50 @@
-import { WebTracerProvider } from '@opentelemetry/sdk-trace-web';
+import { WebTracerProvider, BatchSpanProcessor } from '@opentelemetry/sdk-trace-web';
 import { Resource } from '@opentelemetry/resources';
 import { ATTR_SERVICE_NAME, ATTR_SERVICE_VERSION } from '@opentelemetry/semantic-conventions';
-import { MeterProvider } from '@opentelemetry/sdk-metrics';
+import { MeterProvider, PeriodicExportingMetricReader } from '@opentelemetry/sdk-metrics';
+import Constants from 'expo-constants';
 
-// TODO: Step 5.1-5.3 will add custom Saberloop exporters
+// Import custom Saberloop exporters
+import { SaberloopSpanExporter } from './SaberloopSpanExporter';
+import { SaberloopMetricExporter } from './SaberloopMetricExporter';
+
+// Check if telemetry is enabled via app.json config
+const isEnabled = Constants.expoConfig?.extra?.telemetryEnabled ?? false;
 
 // Define metadata about your application
 const resource = new Resource({
   [ATTR_SERVICE_NAME]: 'saborspin',
-  [ATTR_SERVICE_VERSION]: '1.0.0',
+  [ATTR_SERVICE_VERSION]: Constants.expoConfig?.version ?? '1.0.0',
 });
 
 // === TRACER SETUP ===
-const provider = new WebTracerProvider({
-  resource,
-});
+const provider = new WebTracerProvider({ resource });
 
-// TODO: Custom exporter will be added in Step 5.1-5.3
-// provider.addSpanProcessor(new BatchSpanProcessor(spanExporter));
+if (isEnabled) {
+  // Use custom Saberloop exporter
+  const spanExporter = new SaberloopSpanExporter();
+  provider.addSpanProcessor(new BatchSpanProcessor(spanExporter));
+}
 
 provider.register();
 
 // === METRICS SETUP ===
-const meterProvider = new MeterProvider({
-  resource,
-});
+const meterProvider = new MeterProvider({ resource });
 
-// TODO: Custom metric exporter will be added in Step 5.1-5.3
+if (isEnabled) {
+  // Use custom Saberloop exporter
+  const metricExporter = new SaberloopMetricExporter();
+  meterProvider.addMetricReader(
+    new PeriodicExportingMetricReader({
+      exporter: metricExporter,
+      exportIntervalMillis: 60000, // 60 seconds
+    })
+  );
+}
 
 // Export tracer and meter for use throughout the app
 export const tracer = provider.getTracer('saborspin');
 export const meter = meterProvider.getMeter('saborspin');
 
-// Export enabled status (will be configured in Step 5.12)
-export const isTelemetryEnabled = false;
+// Export enabled status for conditional logging
+export const isTelemetryEnabled = isEnabled;
