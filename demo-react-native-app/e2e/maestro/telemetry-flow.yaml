@@ -1,0 +1,62 @@
+# Maestro E2E test for telemetry functionality
+# Verifies app doesn't crash during telemetry operations on mobile
+#
+# Run with: maestro test e2e/maestro/telemetry-flow.yaml
+
+appId: com.vitorsilvavmrs.saborspin
+---
+# Launch app
+- launchApp
+
+# Verify home screen loads (telemetry initializes on app start)
+- assertVisible: "What's for"
+
+# Navigate to breakfast suggestions (triggers screen tracking)
+- tapOn: "Breakfast"
+
+# Wait for suggestions screen
+- assertVisible: "Breakfast Ideas"
+
+# Generate new suggestions (triggers perf logging)
+- tapOn: "Generate New Ideas"
+
+# Wait for animation/loading
+- waitForAnimationToEnd
+
+# Verify suggestions loaded (telemetry didn't crash the app)
+- assertVisible: "Pick one:"
+
+# Tap on first meal card (triggers action logging)
+- tapOn:
+    id: "suggestion-0"
+
+# Verify selection worked
+- assertVisible: "Select"
+
+# Tap select button
+- tapOn:
+    id: "select-button-0"
+
+# Verify confirmation modal (meal logging action tracked)
+- assertVisible: "Logged"
+
+# Dismiss modal
+- tapOn:
+    id: "done-button"
+
+# Verify we're back on home
+- assertVisible: "Recent Meals"
+
+# Navigate to History tab (triggers screen tracking)
+- tapOn: "History"
+- assertVisible: "Today"
+
+# Navigate to Settings tab (triggers screen tracking)
+- tapOn: "Settings"
+- assertVisible: "Preferences"
+
+# Navigate back to Home
+- tapOn: "Home"
+- assertVisible: "What's for"
+
+# If we got here, telemetry didn't cause any crashes

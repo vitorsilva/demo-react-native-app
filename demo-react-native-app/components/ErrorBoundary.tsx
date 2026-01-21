@@ -1,7 +1,6 @@
-import * as Sentry from '@sentry/react-native';
 import React, { Component, ReactNode } from 'react';
 import { View, Text, Button, StyleSheet } from 'react-native';
-import { log } from '../lib/telemetry/logger';
+import { logger } from '../lib/telemetry/logger';
 
 interface Props {
   children: ReactNode;
@@ -23,17 +22,9 @@ class ErrorBoundary extends Component<Props, State> {
   }
 
   componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
-    log.error('React error boundary caught error', error, {
-      componentStack: errorInfo.componentStack,
-    });
-
-    // Send to Sentry (works on all platforms: web, iOS, Android)
-    Sentry.captureException(error, {
-      contexts: {
-        react: {
-          componentStack: errorInfo.componentStack,
-        },
-      },
+    logger.error('React error boundary caught error', {
+      message: error.message,
+      componentStack: errorInfo.componentStack?.split('\n').slice(0, 5).join('\n'),
     });
   }
 

@@ -13,7 +13,7 @@ import {
 import { useState, useEffect, useCallback } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
 import Slider from '@react-native-community/slider';
-import { analytics } from '../../lib/telemetry/analytics';
+import { trackScreenView } from '../../lib/telemetry/screenTracking';
 import { useStore } from '../../lib/store';
 import type { MealType } from '../../types/database';
 
@@ -49,10 +49,10 @@ export default function SettingsScreen() {
   // Reload when screen comes into focus
   useFocusEffect(
     useCallback(() => {
+      trackScreenView('settings');
       if (isDatabaseReady) {
         loadMealTypes();
       }
-      analytics.screenView('settings');
     }, [isDatabaseReady, loadMealTypes])
   );
 
