@@ -13,7 +13,7 @@ import {
 import { useState, useEffect, useCallback } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
 import Slider from '@react-native-community/slider';
-import { analytics } from '../../lib/telemetry/analytics';
+// TODO: Analytics will be added back in Step 5.8
 import { useStore } from '../../lib/store';
 import type { MealType } from '../../types/database';
 
@@ -52,7 +52,7 @@ export default function SettingsScreen() {
       if (isDatabaseReady) {
         loadMealTypes();
       }
-      analytics.screenView('settings');
+      // TODO: Screen tracking will be added back in Step 5.8
     }, [isDatabaseReady, loadMealTypes])
   );
 

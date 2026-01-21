@@ -8,11 +8,7 @@ import * as mealTypesDb from '@/lib/database/mealTypes';
 import { getDatabase } from '@/lib/database';
 import { getRecentlyUsedIngredients } from '../business-logic/varietyEngine';
 import { generateCombinations, GenerateCombinationsOptions } from '@/lib/business-logic/combinationGenerator';
-import {
-  mealGenerationCounter,
-  mealGenerationDuration,
-  suggestionsGeneratedCounter,
-} from '@/lib/telemetry/mealGenerationMetrics';
+// TODO: Metrics will be added back in Step 5.9
 import { setPreferences, UserPreferences } from '@/lib/database/preferences';
 
 // Silent logging during tests
@@ -188,8 +184,7 @@ export const useStore = create<StoreState>((set, get) => ({
     try {
       const db = getDatabase();
 
-      // Increment counter - generation started
-      mealGenerationCounter.add(1);
+      // TODO: Metrics will be added back in Step 5.9
 
       // Step 1: Load fresh preferences from database
       const preferences = await preferencesDb.getPreferences(db);
@@ -230,19 +225,14 @@ export const useStore = create<StoreState>((set, get) => ({
       };
       const combinations = generateCombinations(ingredients, count, blockedIds, options);
 
-      // Record how many suggestions were generated
-      suggestionsGeneratedCounter.add(combinations.length);
-
-      // Record how long it took
+      // TODO: Metrics will be added back in Step 5.9
       const duration = Date.now() - startTime;
-      mealGenerationDuration.record(duration);
 
       set({ suggestedCombinations: combinations, isLoading: false });
-      log('Metrics recorded:', { duration, suggestionsCount: combinations.length });
+      log('Generation complete:', { duration, suggestionsCount: combinations.length });
     } catch (error) {
-      // Still record duration even on failure
       const duration = Date.now() - startTime;
-      mealGenerationDuration.record(duration);
+      log('Generation failed:', { duration, error });
 
       set({
         error: error instanceof Error ? error.message : 'Failed to generate suggestions',

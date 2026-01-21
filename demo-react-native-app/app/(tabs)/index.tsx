@@ -2,7 +2,7 @@ import { View, Text, StyleSheet, TouchableOpacity, FlatList } from 'react-native
 import { useEffect, useCallback } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
 import { useRouter } from 'expo-router';
-import { analytics } from '../../lib/telemetry/analytics';
+// TODO: Analytics will be added back in Step 5.8
 import { useStore } from '../../lib/store';
 
 export default function HomeScreen() {
@@ -29,7 +29,7 @@ export default function HomeScreen() {
   // Reload data when screen comes into focus (after logging a new meal)
   useFocusEffect(
     useCallback(() => {
-      analytics.screenView('home');
+      // TODO: Screen tracking will be added back in Step 5.8
       if (isDatabaseReady) {
         loadMealLogs(30);
         loadMealTypes();
