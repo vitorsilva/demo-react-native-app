@@ -63,17 +63,17 @@ test.describe('i18n Language Switching', () => {
 
     // Click on Portuguese option
     await page.getByTestId('language-option-pt-PT').click();
-    await page.waitForTimeout(500);
+    await page.waitForTimeout(1000);
 
-    // Settings header should now be in Portuguese
-    await expect(page.getByText('Configurações')).toBeVisible();
+    // Settings header should now be in Portuguese (use first() to avoid multiple matches)
+    await expect(page.getByText('Definições').first()).toBeVisible();
 
     // Language section label should be in Portuguese
     await expect(page.getByText('Idioma')).toBeVisible();
 
-    // Other settings labels should be in Portuguese
-    await expect(page.getByText('Preferências Globais')).toBeVisible();
-    await expect(page.getByText('Período de Variedade')).toBeVisible();
+    // Other settings labels should be in Portuguese (use first() to avoid multiple matches)
+    await expect(page.getByText('Preferências Globais').first()).toBeVisible();
+    await expect(page.getByText('Período de Variedade').first()).toBeVisible();
 
     // Screenshot: Portuguese settings screen
     await page.screenshot({ path: 'e2e/screenshots/i18n-04-portuguese-settings.png' });
@@ -89,7 +89,7 @@ test.describe('i18n Language Switching', () => {
     // Tab bar should show Portuguese labels
     await expect(page.getByRole('tab', { name: 'Início' })).toBeVisible();
     await expect(page.getByRole('tab', { name: 'Histórico' })).toBeVisible();
-    await expect(page.getByRole('tab', { name: 'Configurações' })).toBeVisible();
+    await expect(page.getByRole('tab', { name: 'Definições' })).toBeVisible();
 
     // Navigate to Home tab (now "Início")
     await page.getByRole('tab', { name: 'Início' }).click();
@@ -122,10 +122,10 @@ test.describe('i18n Language Switching', () => {
     await page.getByRole('tab', { name: 'Settings' }).click();
     await page.waitForTimeout(1000);
     await page.getByTestId('language-option-pt-PT').click();
-    await page.waitForTimeout(500);
+    await page.waitForTimeout(1000);
 
-    // Verify Portuguese is active
-    await expect(page.getByText('Configurações')).toBeVisible();
+    // Verify Portuguese is active (use first() to avoid multiple matches)
+    await expect(page.getByText('Definições').first()).toBeVisible();
 
     // Screenshot: Portuguese settings before switching back
     await page.screenshot({ path: 'e2e/screenshots/i18n-07-portuguese-before-switch-back.png' });
@@ -134,10 +134,10 @@ test.describe('i18n Language Switching', () => {
     await page.getByTestId('language-option-en').click();
     await page.waitForTimeout(500);
 
-    // Settings should be back in English
-    await expect(page.getByText('Settings')).toBeVisible();
-    await expect(page.getByText('Language')).toBeVisible();
-    await expect(page.getByText('Global Preferences')).toBeVisible();
+    // Settings should be back in English (use first() to avoid multiple matches)
+    await expect(page.getByText('Settings').first()).toBeVisible();
+    await expect(page.getByText('Language').first()).toBeVisible();
+    await expect(page.getByText('Global Preferences').first()).toBeVisible();
 
     // Screenshot: Back to English settings
     await page.screenshot({ path: 'e2e/screenshots/i18n-08-back-to-english.png' });
@@ -148,25 +148,29 @@ test.describe('i18n Language Switching', () => {
     await page.getByRole('tab', { name: 'Settings' }).click();
     await page.waitForTimeout(1000);
     await page.getByTestId('language-option-pt-PT').click();
-    await page.waitForTimeout(500);
+    await page.waitForTimeout(1000);
 
-    // Verify Portuguese is active
-    await expect(page.getByText('Configurações')).toBeVisible();
+    // Verify Portuguese is active (use first() to avoid multiple matches)
+    await expect(page.getByText('Definições').first()).toBeVisible();
 
     // Reload the page
     await page.reload({ waitUntil: 'networkidle', timeout: 60000 });
 
-    // Wait for app to be ready again
-    await page.waitForSelector('[data-testid="breakfast-ideas-button"]', { timeout: 30000 });
+    // Wait for settings page to load (we're still on Settings after reload)
+    await page.waitForTimeout(2000);
 
-    // Should still be in Portuguese after reload
-    await expect(page.getByText('SaborSpin')).toBeVisible();
-    await expect(page.getByText('Refeições Recentes')).toBeVisible();
-
-    // Tab bar should still be in Portuguese
+    // Tab bar should still be in Portuguese after reload (language persisted)
     await expect(page.getByRole('tab', { name: 'Início' })).toBeVisible();
     await expect(page.getByRole('tab', { name: 'Histórico' })).toBeVisible();
-    await expect(page.getByRole('tab', { name: 'Configurações' })).toBeVisible();
+    await expect(page.getByRole('tab', { name: 'Definições' })).toBeVisible();
+
+    // Navigate to Home to verify Portuguese persisted
+    await page.getByRole('tab', { name: 'Início' }).click();
+    await page.waitForTimeout(1000);
+
+    // Should be in Portuguese on home page
+    await expect(page.getByText('SaborSpin')).toBeVisible();
+    await expect(page.getByText('Refeições Recentes')).toBeVisible();
 
     // Screenshot: Portuguese persisted after reload
     await page.screenshot({ path: 'e2e/screenshots/i18n-09-portuguese-persisted.png' });
