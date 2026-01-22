@@ -1,5 +1,6 @@
 {
   "title": "{{mealType}} Suggestions",
+  "pickOne": "Pick one:",
   "loading": "Finding delicious combinations...",
   "empty": {
     "noSuggestions": "No suggestions available",
@@ -7,8 +8,8 @@
     "addMoreIngredients": "Add more ingredients or adjust your meal type settings"
   },
   "actions": {
-    "regenerate": "Regenerate",
-    "accept": "I'll have this!"
+    "regenerate": "Generate New Ideas",
+    "accept": "Select"
   },
   "confirmation": {
     "title": "{{mealType}} Logged",
