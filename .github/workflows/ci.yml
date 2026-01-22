@@ -30,6 +30,9 @@ jobs:
       - name: Run linter
         run: npm run lint
 
+      - name: Check architecture rules
+        run: npm run arch:test
+
       - name: Run tests
         run: npm test -- --coverage
 
