@@ -2,6 +2,12 @@
   "title": "Manage Categories",
   "uncategorized": "Uncategorized",
   "unknown": "Unknown",
+  "summary": {
+    "categories_one": "{{count}} category",
+    "categories_other": "{{count}} categories",
+    "totalIngredients_one": "{{count}} total ingredient",
+    "totalIngredients_other": "{{count}} total ingredients"
+  },
   "empty": {
     "noCategories": "No categories yet",
     "addFirst": "Add your first category to organize ingredients"
