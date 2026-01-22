@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { View, Text, StyleSheet, TouchableOpacity, FlatList } from 'react-native';
 import { useStore } from '../../lib/store';
 import { trackScreenView } from '../../lib/telemetry/screenTracking';
+import { getDaysAgo, isToday, isYesterday } from '../../lib/utils/dateUtils';
 
 export default function HomeScreen() {
   const router = useRouter();
@@ -44,26 +45,12 @@ export default function HomeScreen() {
 
   // Helper function to format date
   const formatDate = (dateString: string): string => {
-    const mealDate = new Date(dateString);
-    const today = new Date();
-    const yesterday = new Date(today);
-    yesterday.setDate(yesterday.getDate() - 1);
-
-    // Reset time for comparison
-    today.setHours(0, 0, 0, 0);
-    yesterday.setHours(0, 0, 0, 0);
-    const mealDateOnly = new Date(mealDate);
-    mealDateOnly.setHours(0, 0, 0, 0);
-
-    if (mealDateOnly.getTime() === today.getTime()) {
+    if (isToday(dateString)) {
       return t('date.today');
-    } else if (mealDateOnly.getTime() === yesterday.getTime()) {
+    } else if (isYesterday(dateString)) {
       return t('date.yesterday');
     } else {
-      const daysAgo = Math.floor(
-        (today.getTime() - mealDateOnly.getTime()) / (1000 * 60 * 60 * 24)
-      );
-      return t('date.daysAgo', { count: daysAgo });
+      return t('date.daysAgo', { count: getDaysAgo(dateString) });
     }
   };
 
