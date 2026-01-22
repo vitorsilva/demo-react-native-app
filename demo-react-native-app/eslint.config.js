@@ -2,6 +2,7 @@
 const { defineConfig } = require('eslint/config');
 const expoConfig = require('eslint-config-expo/flat');
 const boundaries = require('eslint-plugin-boundaries');
+const sonarjs = require('eslint-plugin-sonarjs');
 
 module.exports = defineConfig([
   expoConfig,
@@ -94,6 +95,21 @@ module.exports = defineConfig([
     files: ['app/_layout.tsx'],
     rules: {
       'boundaries/element-types': 'off',
+    },
+  },
+  // SonarJS rules for code quality
+  {
+    plugins: { sonarjs },
+    rules: {
+      'sonarjs/cognitive-complexity': ['warn', 15],
+      'sonarjs/no-duplicate-string': ['warn', { threshold: 3 }],
+      'sonarjs/no-identical-functions': 'warn',
+      'sonarjs/no-collapsible-if': 'warn',
+      'sonarjs/no-collection-size-mischeck': 'error',
+      'sonarjs/no-redundant-boolean': 'warn',
+      'sonarjs/no-unused-collection': 'warn',
+      'sonarjs/prefer-immediate-return': 'warn',
+      'sonarjs/no-inverted-boolean-check': 'warn',
     },
   },
 ]);
