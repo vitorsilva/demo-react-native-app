@@ -1,14 +1,9 @@
 import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
-import 'react-native-reanimated';
-
-// Initialize telemetry (import for side effects + named exports)
-
-// Initialize i18n
-
 import { useEffect, useState } from 'react';
 import { AppState, AppStateStatus } from 'react-native';
+import 'react-native-reanimated';
 import ErrorBoundary from '../components/ErrorBoundary';
 import { useColorScheme } from '../hooks/use-color-scheme';
 import { initDatabase } from '../lib/database';

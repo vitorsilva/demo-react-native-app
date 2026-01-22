@@ -1,6 +1,6 @@
-import { View, Text, StyleSheet, TouchableOpacity, Modal } from 'react-native';
-import { useTranslation } from 'react-i18next';
 import * as Haptics from 'expo-haptics';
+import { useTranslation } from 'react-i18next';
+import { View, Text, StyleSheet, TouchableOpacity, Modal } from 'react-native';
 
 interface ConfirmationModalProps {
   visible: boolean;
