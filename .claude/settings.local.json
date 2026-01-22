@@ -95,7 +95,9 @@
       "Bash(python -m semgrep:*)",
       "Bash(cmd /c \"where semgrep 2>nul\")",
       "Bash(python:*)",
-      "Bash(npx jscpd:*)"
+      "Bash(npx jscpd:*)",
+      "Bash(timeout:*)",
+      "Bash(npm run security:scan:*)"
     ],
     "deny": [],
     "ask": []
