@@ -191,16 +191,24 @@ See `docs/learning/epic04_feature_enhancement/` for details.
 
 ## 🎯 Next Session Plan
 
-**Resume from:** Implementation of Phase 7, 8, or 9
+**Resume from:** Phase 7 Implementation (user choice)
 
-**Branch:** `main`
+**Branch:** `feature/phase7-i18n` (to be created)
 
 **Completed This Session:**
 - ✅ Phase 8 Mutation Testing plan COMPLETE
 - ✅ Phase 9 Architecture Testing plan COMPLETE
+- ✅ Added LLM Context Management Protocol to all phases
+- ✅ Added Incremental Commits requirement to all phases
+- ✅ Added Learning Notes requirement to all phases
+
+**Next Session: START PHASE 7 (i18n)**
+- User decided to start with Phase 7 (internationalization)
+- Read [PHASE7_I18N.md](./PHASE7_I18N.md) to begin
+- First task: Create branch `feature/phase7-i18n`
 
 **All Plans Ready for Implementation:**
-1. **Phase 7 (i18n)** - Multi-language support (7-12 days)
+1. **Phase 7 (i18n)** - Multi-language support (7-12 days) ← **STARTING NEXT**
    - English + Portuguese pt-PT
    - i18next + react-i18next + expo-localization
 2. **Phase 8 (Mutation Testing)** - Test suite validation (9-16 hours)
@@ -209,11 +217,6 @@ See `docs/learning/epic04_feature_enhancement/` for details.
 3. **Phase 9 (Architecture Testing)** - Layer boundary enforcement (6-11 hours)
    - dependency-cruiser + eslint-plugin-boundaries
    - 10+ architectural rules
-
-**Recommended Order:** Phase 9 → Phase 8 → Phase 7
-- Phase 9 is quickest and provides immediate value (prevents future violations)
-- Phase 8 validates test quality before adding new features
-- Phase 7 is the largest feature addition
 
 **References:**
 - [PHASE7_I18N.md](./PHASE7_I18N.md) - Complete plan ✅
