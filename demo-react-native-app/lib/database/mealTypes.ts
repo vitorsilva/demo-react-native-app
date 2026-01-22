@@ -2,10 +2,15 @@ import type { DatabaseAdapter } from './adapters/types';
 import type { MealType } from '../../types/database';
 import * as Crypto from 'expo-crypto';
 
-// Raw row type from SQLite (is_active is stored as 0/1)
+/** Raw row type from SQLite (is_active stored as 0/1) */
 type MealTypeRow = Omit<MealType, 'is_active'> & { is_active: number };
 
-// Get all meal types (optionally filter by active status)
+/**
+ * Retrieves all meal types from the database.
+ * @param db - Database adapter instance
+ * @param activeOnly - If true, only returns active meal types
+ * @returns Array of meal types, sorted by name
+ */
 export async function getAllMealTypes(
   db: DatabaseAdapter,
   activeOnly: boolean = false
@@ -25,7 +30,17 @@ export async function getAllMealTypes(
   }));
 }
 
-// Add a new meal type
+/**
+ * Creates a new meal type in the database.
+ * @param db - Database adapter instance
+ * @param mealType - Meal type configuration
+ * @param mealType.name - Display name (e.g., "Breakfast")
+ * @param mealType.min_ingredients - Minimum ingredients per suggestion (default: 1)
+ * @param mealType.max_ingredients - Maximum ingredients per suggestion (default: 4)
+ * @param mealType.default_cooldown_days - Days before ingredient reuse (default: 3)
+ * @param mealType.is_active - Whether the meal type is active (default: true)
+ * @returns The created meal type with generated ID and timestamps
+ */
 export async function addMealType(
   db: DatabaseAdapter,
   mealType: {
@@ -65,7 +80,12 @@ export async function addMealType(
   };
 }
 
-// Get a single meal type by ID
+/**
+ * Retrieves a single meal type by its ID.
+ * @param db - Database adapter instance
+ * @param id - Meal type UUID
+ * @returns The meal type or null if not found
+ */
 export async function getMealTypeById(
   db: DatabaseAdapter,
   id: string
@@ -84,7 +104,13 @@ export async function getMealTypeById(
   };
 }
 
-// Update a meal type
+/**
+ * Updates a meal type's properties. Only provided fields are updated.
+ * @param db - Database adapter instance
+ * @param id - Meal type UUID
+ * @param updates - Partial meal type data to update
+ * @returns The updated meal type or null if not found
+ */
 export async function updateMealType(
   db: DatabaseAdapter,
   id: string,
@@ -127,8 +153,14 @@ export async function updateMealType(
   return getMealTypeById(db, id);
 }
 
-  // Delete a meal type (only if no meal logs or ingredients reference it)
-  export async function deleteMealType(
+/**
+ * Deletes a meal type from the database.
+ * Fails if any meal logs or ingredients reference it.
+ * @param db - Database adapter instance
+ * @param id - Meal type UUID
+ * @returns Object indicating success or failure with error message
+ */
+export async function deleteMealType(
     db: DatabaseAdapter,
     id: string
   ): Promise<{ success: boolean; error?: string }> {

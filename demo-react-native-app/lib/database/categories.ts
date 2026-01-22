@@ -2,7 +2,11 @@ import type { DatabaseAdapter } from './adapters/types';
 import type { Category } from '../../types/database';
 import * as Crypto from 'expo-crypto';
 
-// Get all categories
+/**
+ * Retrieves all categories from the database.
+ * @param db - Database adapter instance
+ * @returns Array of all categories, sorted by name
+ */
 export async function getAllCategories(db: DatabaseAdapter): Promise<Category[]> {
   const rows = await db.getAllAsync<Category>(
     'SELECT id, name, created_at, updated_at FROM categories ORDER BY name'
@@ -10,7 +14,12 @@ export async function getAllCategories(db: DatabaseAdapter): Promise<Category[]>
   return rows;
 }
 
-// Add a new category
+/**
+ * Creates a new category in the database.
+ * @param db - Database adapter instance
+ * @param category - Category data (name)
+ * @returns The created category with generated ID and timestamps
+ */
 export async function addCategory(
   db: DatabaseAdapter,
   category: Omit<Category, 'id' | 'created_at' | 'updated_at'>
@@ -32,7 +41,13 @@ export async function addCategory(
   };
 }
 
-// Update a category
+/**
+ * Updates a category's name.
+ * @param db - Database adapter instance
+ * @param id - Category UUID
+ * @param category - Partial category data with new name
+ * @returns The updated category or null if not found
+ */
 export async function updateCategory(
   db: DatabaseAdapter,
   id: string,
@@ -54,7 +69,13 @@ export async function updateCategory(
   return updated || null;
   }
 
-  // Delete a category (only if no ingredients are assigned)
+/**
+ * Deletes a category from the database.
+ * Fails if any ingredients are assigned to the category.
+ * @param db - Database adapter instance
+ * @param id - Category UUID
+ * @returns Object indicating success or failure with error message
+ */
 export async function deleteCategory(
   db: DatabaseAdapter,
   id: string
@@ -77,7 +98,12 @@ export async function deleteCategory(
   return { success: true };
 }
 
-// Get a single category by ID
+/**
+ * Retrieves a single category by its ID.
+ * @param db - Database adapter instance
+ * @param id - Category UUID
+ * @returns The category or null if not found
+ */
 export async function getCategoryById(
   db: DatabaseAdapter,
   id: string
