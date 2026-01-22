@@ -73,7 +73,10 @@
       "Bash(eas build:view:*)",
       "Bash(powershell -ExecutionPolicy Bypass -File scripts/download-apk.ps1)",
       "Bash(gh pr view:*)",
-      "Bash(gh pr edit:*)"
+      "Bash(gh pr edit:*)",
+      "Bash(npm run test:mutation:core:*)",
+      "Bash(npm run test:mutation:validation:*)",
+      "Bash(npm run test:mutation:db:*)"
     ],
     "deny": [],
     "ask": []

@@ -47,10 +47,20 @@ describe('Validation Functions', () => {
       expect(result.error).toBeUndefined();
     });
 
+    it('should return valid for string at exactly the limit', () => {
+      const result = validateMaxLength('1234567890', 10, 'Name');
+      expect(result.isValid).toBe(true);
+    });
+
     it('should return invalid for string exceeding limit', () => {
       const result = validateMaxLength('This is a very long string', 10, 'Name');
       expect(result.isValid).toBe(false);
       expect(result.error).toBe('Name cannot exceed 10 characters');
+    });
+
+    it('should return invalid for string one char over limit', () => {
+      const result = validateMaxLength('12345678901', 10, 'Name');
+      expect(result.isValid).toBe(false);
     });
   });
 
@@ -92,6 +102,36 @@ describe('Validation Functions', () => {
     it('should return valid for cooldown days of 0', () => {
       const result = validateMealTypeConfig({
         default_cooldown_days: 0,
+      });
+      expect(result.isValid).toBe(true);
+    });
+
+    it('should return valid for min_ingredients of exactly 1', () => {
+      const result = validateMealTypeConfig({
+        min_ingredients: 1,
+      });
+      expect(result.isValid).toBe(true);
+    });
+
+    it('should return invalid for max_ingredients of 0', () => {
+      const result = validateMealTypeConfig({
+        max_ingredients: 0,
+      });
+      expect(result.isValid).toBe(false);
+      expect(result.error).toBe('Maximum ingredients must be at least 1');
+    });
+
+    it('should return valid for max_ingredients of exactly 1', () => {
+      const result = validateMealTypeConfig({
+        max_ingredients: 1,
+      });
+      expect(result.isValid).toBe(true);
+    });
+
+    it('should return valid when min equals max', () => {
+      const result = validateMealTypeConfig({
+        min_ingredients: 3,
+        max_ingredients: 3,
       });
       expect(result.isValid).toBe(true);
     });
@@ -165,6 +205,18 @@ describe('Validation Functions', () => {
       const result = await isMealTypeNameUnique(db, 'breakfast', existing!.id);
       expect(result.isValid).toBe(true);
     });
+
+    it('should return invalid for empty name', async () => {
+      const result = await isMealTypeNameUnique(db, '');
+      expect(result.isValid).toBe(false);
+      expect(result.error).toBe('Meal type name cannot be empty');
+    });
+
+    it('should return invalid for whitespace-only name', async () => {
+      const result = await isMealTypeNameUnique(db, '   ');
+      expect(result.isValid).toBe(false);
+      expect(result.error).toBe('Meal type name cannot be empty');
+    });
   });
 
   describe('isIngredientNameUnique', () => {
@@ -190,6 +242,18 @@ describe('Validation Functions', () => {
     it('should return valid when updating same record', async () => {
       const result = await isIngredientNameUnique(db, 'Chicken', 'ing-1');
       expect(result.isValid).toBe(true);
+    });
+
+    it('should return invalid for empty name', async () => {
+      const result = await isIngredientNameUnique(db, '');
+      expect(result.isValid).toBe(false);
+      expect(result.error).toBe('Ingredient name cannot be empty');
+    });
+
+    it('should return invalid for whitespace-only name', async () => {
+      const result = await isIngredientNameUnique(db, '   ');
+      expect(result.isValid).toBe(false);
+      expect(result.error).toBe('Ingredient name cannot be empty');
     });
   });
 

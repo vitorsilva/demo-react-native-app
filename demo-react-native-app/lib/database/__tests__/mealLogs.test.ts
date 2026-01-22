@@ -188,4 +188,16 @@ describe('Meal Log Operations', () => {
     meals = await getRecentMealLogs(db, 7);
     expect(meals).toHaveLength(0);
   });
+
+  test('getMealLogsByDateRange throws error when startDate is after endDate', async () => {
+    const db = getDatabase();
+
+    await expect(
+      getMealLogsByDateRange(
+        db,
+        '2025-01-10T00:00:00.000Z', // Start AFTER end
+        '2025-01-05T00:00:00.000Z'
+      )
+    ).rejects.toThrow('Start date must be before or equal to end date');
+  });
 });

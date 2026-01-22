@@ -188,4 +188,88 @@ describe('generateCombinations', () => {
     const allUsedIds = result.flatMap((combo) => combo.map((ing) => ing.id));
     expect(allUsedIds.length).toBeGreaterThan(0);
   });
+
+  it('returns empty array when all ingredients are recently used', () => {
+    // All ingredients are in the recently used list
+    const allIds = mockIngredients.map((ing) => ing.id);
+    const result = generateCombinations(mockIngredients, 3, allIds);
+
+    expect(result).toEqual([]);
+  });
+
+  it('returns empty array when all ingredients are inactive', () => {
+    const allInactive: Ingredient[] = [
+      {
+        id: '1',
+        name: 'Inactive One',
+        category: 'protein',
+        mealTypes: ['breakfast'],
+        is_active: false,
+        is_user_added: false,
+        createdAt: '',
+      },
+      {
+        id: '2',
+        name: 'Inactive Two',
+        category: 'carb',
+        mealTypes: ['breakfast'],
+        is_active: false,
+        is_user_added: false,
+        createdAt: '',
+      },
+    ];
+
+    const result = generateCombinations(allInactive, 3, []);
+
+    expect(result).toEqual([]);
+  });
+
+  it('returns empty array when no ingredients provided', () => {
+    const result = generateCombinations([], 3, []);
+
+    expect(result).toEqual([]);
+  });
+
+  it('actually filters recently used - not just random exclusion', () => {
+    // Use only 2 ingredients where one is blocked
+    const twoIngredients: Ingredient[] = [
+      {
+        id: 'blocked',
+        name: 'Blocked',
+        category: 'protein',
+        mealTypes: ['breakfast'],
+        is_active: true,
+        is_user_added: false,
+        createdAt: '',
+      },
+      {
+        id: 'allowed',
+        name: 'Allowed',
+        category: 'carb',
+        mealTypes: ['breakfast'],
+        is_active: true,
+        is_user_added: false,
+        createdAt: '',
+      },
+    ];
+
+    // Generate many combos - if filter works, blocked should NEVER appear
+    const result = generateCombinations(twoIngredients, 20, ['blocked']);
+
+    expect(result).toHaveLength(20);
+
+    // Verify blocked ingredient never appears in any combo
+    result.forEach((combo) => {
+      combo.forEach((ingredient) => {
+        expect(ingredient.id).not.toBe('blocked');
+      });
+    });
+
+    // Verify only allowed ingredient appears
+    result.forEach((combo) => {
+      combo.forEach((ingredient) => {
+        expect(ingredient.id).toBe('allowed');
+      });
+    });
+  });
 });

@@ -320,4 +320,81 @@ describe('Ingredient Operations', () => {
       expect(dairyIngredients[0].name).toBe('Cheese');
     });
 
+    test('getAllIngredients returns correct boolean values for is_active and is_user_added', async () => {
+      const db = getDatabase();
+
+      // Add an active, user-added ingredient
+      await addIngredient(db, {
+        name: 'User Ingredient',
+        category: 'protein',
+        mealTypes: ['breakfast'],
+        is_active: true,
+        is_user_added: true,
+      });
+
+      // Add another to make it not the last active, then make it inactive
+      const inactive = await addIngredient(db, {
+        name: 'Inactive Ingredient',
+        category: 'protein',
+        mealTypes: ['breakfast'],
+        is_active: true,
+        is_user_added: false,
+      });
+      await updateIngredient(db, inactive.id, { is_active: false });
+
+      const ingredients = await getAllIngredients(db);
+
+      const userIng = ingredients.find(i => i.name === 'User Ingredient');
+      const inactiveIng = ingredients.find(i => i.name === 'Inactive Ingredient');
+
+      // Verify booleans are actual booleans, not numbers
+      expect(userIng?.is_active).toBe(true);
+      expect(typeof userIng?.is_active).toBe('boolean');
+      expect(userIng?.is_user_added).toBe(true);
+      expect(typeof userIng?.is_user_added).toBe('boolean');
+
+      expect(inactiveIng?.is_active).toBe(false);
+      expect(typeof inactiveIng?.is_active).toBe('boolean');
+      expect(inactiveIng?.is_user_added).toBe(false);
+      expect(typeof inactiveIng?.is_user_added).toBe('boolean');
+    });
+
+    test('updateIngredient updates category_id', async () => {
+      const db = getDatabase();
+
+      const category = await addCategory(db, { name: 'New Category' });
+      const ingredient = await addIngredient(db, {
+        name: 'Test',
+        category: 'protein',
+        mealTypes: ['breakfast'],
+      });
+
+      expect(ingredient.category_id).toBeUndefined();
+
+      const updated = await updateIngredient(db, ingredient.id, {
+        category_id: category.id
+      });
+
+      expect(updated?.category_id).toBe(category.id);
+    });
+
+    test('toggleIngredientActive prevents disabling last active ingredient', async () => {
+      const db = getDatabase();
+
+      // Add only one ingredient (will be the last active)
+      const only = await addIngredient(db, {
+        name: 'Only Active',
+        category: 'protein',
+        mealTypes: ['breakfast'],
+      });
+
+      expect(only.is_active).toBe(true);
+
+      // Try to disable it - should fail
+      const result = await toggleIngredientActive(db, only.id);
+
+      expect(result.ingredient).toBeNull();
+      expect(result.error).toContain('last active ingredient');
+    });
+
 });
