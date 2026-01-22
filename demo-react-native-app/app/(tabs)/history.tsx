@@ -1,10 +1,10 @@
-import { View, Text, StyleSheet, SectionList } from 'react-native';
-import { useEffect, useCallback } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
+import { useEffect, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
-import { trackScreenView } from '../../lib/telemetry/screenTracking';
-import { useStore } from '../../lib/store';
+import { View, Text, StyleSheet, SectionList } from 'react-native';
 import { getCurrentLanguage } from '../../lib/i18n';
+import { useStore } from '../../lib/store';
+import { trackScreenView } from '../../lib/telemetry/screenTracking';
 import type { MealLog } from '../../types/database';
 
 export default function HistoryScreen() {

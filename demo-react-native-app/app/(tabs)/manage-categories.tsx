@@ -1,3 +1,6 @@
+import { useFocusEffect } from '@react-navigation/native';
+import { useState, useEffect, useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   View,
   Text,
@@ -9,11 +12,8 @@ import {
   Alert,
   ActivityIndicator,
 } from 'react-native';
-import { useState, useEffect, useCallback } from 'react';
-import { useFocusEffect } from '@react-navigation/native';
-import { useTranslation } from 'react-i18next';
-import { trackScreenView } from '../../lib/telemetry/screenTracking';
 import { useStore } from '../../lib/store';
+import { trackScreenView } from '../../lib/telemetry/screenTracking';
 
 export default function ManageCategoriesScreen() {
   const { t } = useTranslation('categories');

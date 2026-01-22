@@ -1,4 +1,5 @@
-  import { initDatabase, resetDatabase, getDatabase } from '../index';
+   import { addCategory } from '../categories';
+ import { initDatabase, resetDatabase, getDatabase } from '../index';
   import {
     addIngredient,
     getAllIngredients,
@@ -10,7 +11,6 @@
     toggleIngredientActive,
     deleteIngredient,
   } from '../ingredients';
-  import { addCategory } from '../categories';
   import { resetTestDatabase } from './testDb';
 
 jest.mock('../index');

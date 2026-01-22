@@ -1,3 +1,7 @@
+import Slider from '@react-native-community/slider';
+import { useFocusEffect } from '@react-navigation/native';
+import { useState, useEffect, useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   View,
   Text,
@@ -10,17 +14,13 @@ import {
   Alert,
   ActivityIndicator,
 } from 'react-native';
-import { useState, useEffect, useCallback } from 'react';
-import { useFocusEffect } from '@react-navigation/native';
-import { useTranslation } from 'react-i18next';
-import Slider from '@react-native-community/slider';
-import { trackScreenView } from '../../lib/telemetry/screenTracking';
-import { useStore } from '../../lib/store';
 import {
   SUPPORTED_LANGUAGES,
   getCurrentLanguage,
   changeLanguage,
 } from '../../lib/i18n';
+import { useStore } from '../../lib/store';
+import { trackScreenView } from '../../lib/telemetry/screenTracking';
 import type { MealType } from '../../types/database';
 
 export default function SettingsScreen() {

@@ -1,5 +1,5 @@
-import { tracer } from './telemetry';
 import { SpanStatusCode } from '@opentelemetry/api';
+import { tracer } from './telemetry';
 
 /**
  * Keys that should be redacted from logs (PII and secrets)

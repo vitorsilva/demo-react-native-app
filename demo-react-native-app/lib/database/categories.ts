@@ -1,6 +1,6 @@
+import * as Crypto from 'expo-crypto';
 import type { DatabaseAdapter } from './adapters/types';
 import type { Category } from '../../types/database';
-import * as Crypto from 'expo-crypto';
 
 /**
  * Retrieves all categories from the database.
@@ -8,10 +8,9 @@ import * as Crypto from 'expo-crypto';
  * @returns Array of all categories, sorted by name
  */
 export async function getAllCategories(db: DatabaseAdapter): Promise<Category[]> {
-  const rows = await db.getAllAsync<Category>(
+  return await db.getAllAsync<Category>(
     'SELECT id, name, created_at, updated_at FROM categories ORDER BY name'
   );
-  return rows;
 }
 
 /**

@@ -1,6 +1,6 @@
-import { tracer } from './telemetry';
 import { SpanStatusCode } from '@opentelemetry/api';
 import { logger } from './logger';
+import { tracer } from './telemetry';
 
 // Store original handler for restoration
 let originalErrorHandler: ((error: Error, isFatal?: boolean) => void) | null = null;

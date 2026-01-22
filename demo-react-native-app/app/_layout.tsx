@@ -1,24 +1,24 @@
 import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
-import { AppState, AppStateStatus } from 'react-native';
 import 'react-native-reanimated';
 
 // Initialize telemetry (import for side effects + named exports)
-import { isTelemetryEnabled } from '../lib/telemetry/telemetry';
-import { logger } from '../lib/telemetry/logger';
-import { initErrorHandling } from '../lib/telemetry/errorHandler';
-import { trackAppBackground, trackAppForeground } from '../lib/telemetry/screenTracking';
 
 // Initialize i18n
-import { initI18n } from '../lib/i18n';
 
+import { useEffect, useState } from 'react';
+import { AppState, AppStateStatus } from 'react-native';
 import ErrorBoundary from '../components/ErrorBoundary';
 import { useColorScheme } from '../hooks/use-color-scheme';
-import { useEffect, useState } from 'react';
 import { initDatabase } from '../lib/database';
 import { seedDatabase } from '../lib/database/seed';
+import { initI18n } from '../lib/i18n';
 import { useStore } from '../lib/store';
+import { initErrorHandling } from '../lib/telemetry/errorHandler';
+import { logger } from '../lib/telemetry/logger';
+import { trackAppBackground, trackAppForeground } from '../lib/telemetry/screenTracking';
+import { isTelemetryEnabled } from '../lib/telemetry/telemetry';
 
 export const unstable_settings = {
   anchor: '(tabs)',

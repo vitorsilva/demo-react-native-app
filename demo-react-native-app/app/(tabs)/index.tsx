@@ -1,10 +1,10 @@
-import { View, Text, StyleSheet, TouchableOpacity, FlatList } from 'react-native';
-import { useEffect, useCallback } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
 import { useRouter } from 'expo-router';
+import { useEffect, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
-import { trackScreenView } from '../../lib/telemetry/screenTracking';
+import { View, Text, StyleSheet, TouchableOpacity, FlatList } from 'react-native';
 import { useStore } from '../../lib/store';
+import { trackScreenView } from '../../lib/telemetry/screenTracking';
 
 export default function HomeScreen() {
   const router = useRouter();

@@ -1,15 +1,15 @@
 import { create } from 'zustand';
-import type { Ingredient, MealLog, Category, MealType } from '@/types/database';
+import { generateCombinations, GenerateCombinationsOptions } from '@/lib/business-logic/combinationGenerator';
+import { getDatabase } from '@/lib/database';
+import * as categoriesDb from '@/lib/database/categories';
 import * as ingredientsDb from '@/lib/database/ingredients';
 import * as mealLogsDb from '@/lib/database/mealLogs';
-import * as preferencesDb from '@/lib/database/preferences';
-import * as categoriesDb from '@/lib/database/categories';
 import * as mealTypesDb from '@/lib/database/mealTypes';
-import { getDatabase } from '@/lib/database';
-import { getRecentlyUsedIngredients } from '../business-logic/varietyEngine';
-import { generateCombinations, GenerateCombinationsOptions } from '@/lib/business-logic/combinationGenerator';
-import { logger } from '@/lib/telemetry/logger';
+import * as preferencesDb from '@/lib/database/preferences';
 import { setPreferences, UserPreferences } from '@/lib/database/preferences';
+import { logger } from '@/lib/telemetry/logger';
+import { getRecentlyUsedIngredients } from '../business-logic/varietyEngine';
+import type { Ingredient, MealLog, Category, MealType } from '@/types/database';
 
 // Create store logger instance
 const storeLogger = logger.child({ module: 'Store' });

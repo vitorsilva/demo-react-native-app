@@ -1,4 +1,6 @@
 import { SpanStatusCode } from '@opentelemetry/api';
+import { logger } from '../logger';
+import { tracer } from '../telemetry';
 
 // Mock the tracer before importing logger
 const mockSpan = {
@@ -11,9 +13,6 @@ jest.mock('../telemetry', () => ({
     startSpan: jest.fn(() => mockSpan),
   },
 }));
-
-import { logger } from '../logger';
-import { tracer } from '../telemetry';
 
 describe('Logger', () => {
   let consoleSpy: jest.SpyInstance;

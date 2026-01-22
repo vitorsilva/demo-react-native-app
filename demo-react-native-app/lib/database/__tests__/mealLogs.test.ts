@@ -1,6 +1,6 @@
 import { resetDatabase, initDatabase, getDatabase } from '../index';
-import { logMeal, getRecentMealLogs, getMealLogsByDateRange, deleteMealLog } from '../mealLogs';
 import { addIngredient, getAllIngredients, deleteIngredient } from '../ingredients';
+import { logMeal, getRecentMealLogs, getMealLogsByDateRange, deleteMealLog } from '../mealLogs';
 import { resetTestDatabase } from './testDb';
 
 jest.mock('../index');

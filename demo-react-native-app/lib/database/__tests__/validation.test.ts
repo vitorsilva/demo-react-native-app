@@ -1,3 +1,4 @@
+import { initDatabase, getDatabase, resetDatabase } from '../__mocks__';
 import {
   isCategoryNameUnique,
   isMealTypeNameUnique,
@@ -8,7 +9,6 @@ import {
   validateNonEmptyString,
   validateMaxLength,
 } from '../validation';
-import { initDatabase, getDatabase, resetDatabase } from '../__mocks__';
 import type { DatabaseAdapter } from '../adapters/types';
 
 describe('Validation Functions', () => {

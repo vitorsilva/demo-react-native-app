@@ -1,5 +1,5 @@
-import { SpanExporter, ReadableSpan } from '@opentelemetry/sdk-trace-base';
 import { ExportResult, ExportResultCode } from '@opentelemetry/core';
+import { SpanExporter, ReadableSpan } from '@opentelemetry/sdk-trace-base';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Constants from 'expo-constants';
 
