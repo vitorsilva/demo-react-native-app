@@ -158,22 +158,17 @@ See `docs/learning/epic04_feature_enhancement/` for details.
 **Reference:** [PHASE7_I18N.md](./PHASE7_I18N.md) | [PHASE7_LEARNING_NOTES.md](./PHASE7_LEARNING_NOTES.md)
 
 ### Phase 8: Mutation Testing (9-16 hours)
-**Status:** 🔄 IN PROGRESS - Waves 1, 2 & 3 Complete
+**Status:** ✅ COMPLETE (2026-01-22)
 
 **Goal:** Validate test suite effectiveness using mutation testing
 
-**Progress:**
-- [x] Phase 8.1: Setup - StrykerJS v9.4.0 installed and configured
-- [x] Wave 1: Core Logic - 55% → 65% (combinationGenerator.ts)
-- [x] Wave 2: Validation - 81% → 94% (validation.ts)
-- [x] Wave 3: Database - 80% → 87% (5 files)
-- [ ] Phase 8.5: Documentation
-
 **Results:**
-- 18 new unit tests added
-- Unit tests: 202 → 220
+- Wave 1: Core Logic - 55% → 65%
+- Wave 2: Validation - 81% → 94%
+- Wave 3: Database - 80% → 87%
+- 18 new unit tests (220 total)
 
-**Branch:** `feature/phase8-mutation-testing` (7 commits)
+**Branch:** `feature/phase8-mutation-testing` → merged to main (PR #4)
 
 **Reference:** [PHASE8_MUTATION_TESTING.md](./PHASE8_MUTATION_TESTING.md) | [PHASE8_LEARNING_NOTES.md](./PHASE8_LEARNING_NOTES.md)
 
@@ -199,30 +194,25 @@ See `docs/learning/epic04_feature_enhancement/` for details.
 
 ## 🎯 Next Session Plan
 
-**Resume from:** Phase 8 - Wave 3 or Documentation
+**Resume from:** Phase 9 - Architecture Testing
 
-**Branch:** `feature/phase8-mutation-testing`
+**Branch:** Create `feature/phase9-architecture-testing`
 
-**Completed This Session (2026-01-22):**
-- ✅ Phase 7 merged to main (PR #3)
-- ✅ Phase 8.1: Stryker setup complete
-- ✅ Wave 1: Core Logic - 55% → 65% mutation score
-- ✅ Wave 2: Validation - 81% → 94% mutation score
-- ✅ Wave 3: Database - 80% → 87% mutation score
-- ✅ 18 new unit tests (220 total)
-- ✅ 7 commits on feature/phase8-mutation-testing
+**Completed Last Session (2026-01-22):**
+- ✅ Phase 7 merged to main (PR #3) - i18n
+- ✅ Phase 8 merged to main (PR #4) - Mutation testing
+- ✅ 220 unit tests total
 
-**Next Session Options:**
-1. **Finish Phase 8:** Create PR and merge
-2. **Start Phase 9:** Architecture Testing
+**Next Session: START PHASE 9 (Architecture Testing)**
+1. Read [PHASE9_ARCHITECTURE_TESTING.md](./PHASE9_ARCHITECTURE_TESTING.md)
+2. Create branch `feature/phase9-architecture-testing`
+3. Begin Phase 9.1: Install dependency-cruiser
+4. Follow checkpoint/commit protocol
 
-**Remaining Phases:**
-1. **Phase 8 (Mutation Testing)** - Wave 3 optional, docs remaining
-2. **Phase 9 (Architecture Testing)** - Layer boundary enforcement (6-11 hours)
+**Remaining:**
+- **Phase 9 (Architecture Testing)** - Layer boundary enforcement (6-11 hours)
 
 **References:**
-- [PHASE8_MUTATION_TESTING.md](./PHASE8_MUTATION_TESTING.md) - Complete plan ✅
-- [PHASE8_LEARNING_NOTES.md](./PHASE8_LEARNING_NOTES.md) - Session learnings
 - [PHASE9_ARCHITECTURE_TESTING.md](./PHASE9_ARCHITECTURE_TESTING.md) - Complete plan ✅
 
 ---
