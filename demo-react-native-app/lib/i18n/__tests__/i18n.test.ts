@@ -4,6 +4,27 @@
 
 import i18n from 'i18next';
 
+// Import all translation resources for completeness testing
+import enCommon from '../locales/en/common.json';
+import enTabs from '../locales/en/tabs.json';
+import enHome from '../locales/en/home.json';
+import enHistory from '../locales/en/history.json';
+import enSettings from '../locales/en/settings.json';
+import enIngredients from '../locales/en/ingredients.json';
+import enCategories from '../locales/en/categories.json';
+import enSuggestions from '../locales/en/suggestions.json';
+import enErrors from '../locales/en/errors.json';
+
+import ptCommon from '../locales/pt-PT/common.json';
+import ptTabs from '../locales/pt-PT/tabs.json';
+import ptHome from '../locales/pt-PT/home.json';
+import ptHistory from '../locales/pt-PT/history.json';
+import ptSettings from '../locales/pt-PT/settings.json';
+import ptIngredients from '../locales/pt-PT/ingredients.json';
+import ptCategories from '../locales/pt-PT/categories.json';
+import ptSuggestions from '../locales/pt-PT/suggestions.json';
+import ptErrors from '../locales/pt-PT/errors.json';
+
 // Store for AsyncStorage mock
 const mockAsyncStorage = new Map<string, string>();
 
@@ -278,6 +299,111 @@ describe('i18n Module', () => {
     it('should handle zero as plural', () => {
       const result = i18n.t('categories:ingredientCount', { count: 0 });
       expect(result).toBe('0 ingredients');
+    });
+  });
+});
+
+/**
+ * Translation Completeness Tests
+ *
+ * Verifies that all translation keys in English exist in Portuguese
+ * and vice versa, ensuring translation completeness.
+ */
+describe('Translation Completeness', () => {
+  // Helper function to get all keys from a nested object
+  const getAllKeys = (obj: Record<string, unknown>, prefix = ''): string[] => {
+    const keys: string[] = [];
+    for (const key of Object.keys(obj)) {
+      const fullKey = prefix ? `${prefix}.${key}` : key;
+      const value = obj[key];
+      if (typeof value === 'object' && value !== null && !Array.isArray(value)) {
+        keys.push(...getAllKeys(value as Record<string, unknown>, fullKey));
+      } else {
+        keys.push(fullKey);
+      }
+    }
+    return keys;
+  };
+
+  // Helper function to compare keys between two translation files
+  const compareTranslationKeys = (
+    enTranslations: Record<string, unknown>,
+    ptTranslations: Record<string, unknown>,
+    namespace: string
+  ) => {
+    const enKeys = getAllKeys(enTranslations).sort();
+    const ptKeys = getAllKeys(ptTranslations).sort();
+
+    const missingInPt = enKeys.filter((key) => !ptKeys.includes(key));
+    const extraInPt = ptKeys.filter((key) => !enKeys.includes(key));
+
+    return { enKeys, ptKeys, missingInPt, extraInPt, namespace };
+  };
+
+  // Define all translation pairs
+  const translationPairs = [
+    { en: enCommon, pt: ptCommon, namespace: 'common' },
+    { en: enTabs, pt: ptTabs, namespace: 'tabs' },
+    { en: enHome, pt: ptHome, namespace: 'home' },
+    { en: enHistory, pt: ptHistory, namespace: 'history' },
+    { en: enSettings, pt: ptSettings, namespace: 'settings' },
+    { en: enIngredients, pt: ptIngredients, namespace: 'ingredients' },
+    { en: enCategories, pt: ptCategories, namespace: 'categories' },
+    { en: enSuggestions, pt: ptSuggestions, namespace: 'suggestions' },
+    { en: enErrors, pt: ptErrors, namespace: 'errors' },
+  ];
+
+  describe('Portuguese translations have all English keys', () => {
+    translationPairs.forEach(({ en, pt, namespace }) => {
+      it(`${namespace}: no missing keys in pt-PT`, () => {
+        const { missingInPt } = compareTranslationKeys(en, pt, namespace);
+
+        if (missingInPt.length > 0) {
+          fail(`Missing keys in pt-PT/${namespace}.json:\n  - ${missingInPt.join('\n  - ')}`);
+        }
+        expect(missingInPt).toHaveLength(0);
+      });
+    });
+  });
+
+  describe('Portuguese translations have no extra keys', () => {
+    translationPairs.forEach(({ en, pt, namespace }) => {
+      it(`${namespace}: no extra keys in pt-PT`, () => {
+        const { extraInPt } = compareTranslationKeys(en, pt, namespace);
+
+        if (extraInPt.length > 0) {
+          fail(`Extra keys in pt-PT/${namespace}.json (not in en):\n  - ${extraInPt.join('\n  - ')}`);
+        }
+        expect(extraInPt).toHaveLength(0);
+      });
+    });
+  });
+
+  describe('Key count verification', () => {
+    translationPairs.forEach(({ en, pt, namespace }) => {
+      it(`${namespace}: English and Portuguese have same number of keys`, () => {
+        const { enKeys, ptKeys } = compareTranslationKeys(en, pt, namespace);
+        expect(ptKeys.length).toBe(enKeys.length);
+      });
+    });
+  });
+
+  describe('All namespaces are present', () => {
+    it('should have all 9 namespaces', () => {
+      expect(translationPairs).toHaveLength(9);
+    });
+
+    it('should include all expected namespaces', () => {
+      const namespaces = translationPairs.map((p) => p.namespace);
+      expect(namespaces).toContain('common');
+      expect(namespaces).toContain('tabs');
+      expect(namespaces).toContain('home');
+      expect(namespaces).toContain('history');
+      expect(namespaces).toContain('settings');
+      expect(namespaces).toContain('ingredients');
+      expect(namespaces).toContain('categories');
+      expect(namespaces).toContain('suggestions');
+      expect(namespaces).toContain('errors');
     });
   });
 });
