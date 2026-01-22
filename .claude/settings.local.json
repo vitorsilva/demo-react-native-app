@@ -76,7 +76,13 @@
       "Bash(gh pr edit:*)",
       "Bash(npm run test:mutation:core:*)",
       "Bash(npm run test:mutation:validation:*)",
-      "Bash(npm run test:mutation:db:*)"
+      "Bash(npm run test:mutation:db:*)",
+      "Bash(npm run arch:test:*)",
+      "Bash(where dot:*)",
+      "Bash(npm run arch:graph:*)",
+      "Bash(npm run arch:report:*)",
+      "Bash(start reports/architecture/index.html)",
+      "mcp__playwright__browser_press_key"
     ],
     "deny": [],
     "ask": []

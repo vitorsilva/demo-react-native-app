@@ -40,8 +40,14 @@ yarn-error.*
 coverage/
 
 # Stryker mutation testing
-reports/
 .stryker-tmp/
+
+# Reports (mutation testing, architecture, etc.)
+reports/
+
+# Architecture diagrams (can be regenerated)
+architecture.dot
+architecture.svg
 
 # Playwright
 /test-results/

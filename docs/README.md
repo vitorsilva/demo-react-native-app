@@ -29,6 +29,7 @@ docs/
 │   ├── TESTING.md
 │   ├── MAESTRO_TESTING.md
 │   ├── TELEMETRY.md
+│   ├── ARCHITECTURE_RULES.md
 │   └── TROUBLESHOOTING.md
 └── user-guide/                  # End-user documentation
     ├── getting-started.md
@@ -51,6 +52,7 @@ docs/
 - [Contributing Guide](../CONTRIBUTING.md)
 - [Installation](./developer-guide/INSTALLATION.md)
 - [Architecture Overview](./architecture/SYSTEM_OVERVIEW.md)
+- [Architecture Rules](./developer-guide/ARCHITECTURE_RULES.md)
 - [Telemetry Guide](./developer-guide/TELEMETRY.md)
 
 **I want to learn from this project**
