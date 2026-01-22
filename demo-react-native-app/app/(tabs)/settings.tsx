@@ -315,7 +315,7 @@ export default function SettingsScreen() {
                 currentLanguage === lang.code && styles.languageCardSelected,
               ]}
               onPress={() => handleLanguageChange(lang.code)}
-              testID={`language-${lang.code}`}
+              testID={`language-option-${lang.code}`}
             >
               <Text style={styles.languageFlag}>{lang.flag}</Text>
               <Text style={styles.languageName}>{lang.name}</Text>
