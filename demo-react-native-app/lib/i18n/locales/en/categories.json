@@ -1,5 +1,7 @@
 {
   "title": "Manage Categories",
+  "uncategorized": "Uncategorized",
+  "unknown": "Unknown",
   "empty": {
     "noCategories": "No categories yet",
     "addFirst": "Add your first category to organize ingredients"
