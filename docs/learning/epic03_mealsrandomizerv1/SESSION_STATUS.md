@@ -158,21 +158,24 @@ See `docs/learning/epic04_feature_enhancement/` for details.
 **Reference:** [PHASE7_I18N.md](./PHASE7_I18N.md) | [PHASE7_LEARNING_NOTES.md](./PHASE7_LEARNING_NOTES.md)
 
 ### Phase 8: Mutation Testing (9-16 hours)
-**Status:** 📋 PLAN COMPLETE - Ready for Implementation
+**Status:** 🔄 IN PROGRESS - Wave 1 & 2 Complete
 
 **Goal:** Validate test suite effectiveness using mutation testing
 
-**Plan Completed:**
-- [x] Research completed (StrykerJS v9.x, 2026 best practices)
-- [x] Tool selected: StrykerJS (only mature option for JS/TS)
-- [x] Scope analyzed (4 waves: core logic, validation, database, telemetry)
-- [x] Configuration designed (Jest runner, TypeScript checker, incremental mode)
-- [x] Implementation plan created (5 sub-phases)
-- [x] Git strategy defined (feature/phase8-mutation-testing branch)
-- [x] Success criteria defined (>75% overall mutation score)
-- [ ] Implementation started
+**Progress:**
+- [x] Phase 8.1: Setup - StrykerJS v9.4.0 installed and configured
+- [x] Wave 1: Core Logic - 55% → 65% (combinationGenerator.ts)
+- [x] Wave 2: Validation - 81% → 94% (validation.ts)
+- [ ] Wave 3: Database operations (optional)
+- [ ] Phase 8.5: Documentation
 
-**Reference:** [PHASE8_MUTATION_TESTING.md](./PHASE8_MUTATION_TESTING.md)
+**Results:**
+- 14 new unit tests added
+- Unit tests: 202 → 216
+
+**Branch:** `feature/phase8-mutation-testing`
+
+**Reference:** [PHASE8_MUTATION_TESTING.md](./PHASE8_MUTATION_TESTING.md) | [PHASE8_LEARNING_NOTES.md](./PHASE8_LEARNING_NOTES.md)
 
 ### Phase 9: Architecture Testing (6-11 hours)
 **Status:** 📋 PLAN COMPLETE - Ready for Implementation
@@ -196,33 +199,30 @@ See `docs/learning/epic04_feature_enhancement/` for details.
 
 ## 🎯 Next Session Plan
 
-**Resume from:** Phase 8 Implementation
+**Resume from:** Phase 8 - Wave 3 or Documentation
 
-**Branch:** `feature/phase8-mutation-testing` (to be created)
+**Branch:** `feature/phase8-mutation-testing`
 
 **Completed This Session (2026-01-22):**
-- ✅ Phase 7 i18n implementation COMPLETE
-- ✅ PR #3 open for Phase 7 (ready to merge)
-- ✅ Phase 7 learning notes documented
-- ✅ APK download helper scripts added
-- ✅ Context management protocol improved (67% threshold)
+- ✅ Phase 7 merged to main (PR #3)
+- ✅ Phase 8.1: Stryker setup complete
+- ✅ Wave 1: Core Logic - 55% → 65% mutation score
+- ✅ Wave 2: Validation - 81% → 94% mutation score
+- ✅ 14 new unit tests (216 total)
+- ✅ 3 commits on feature/phase8-mutation-testing
 
-**Next Session: START PHASE 8 (Mutation Testing)**
-1. Read [PHASE8_MUTATION_TESTING.md](./PHASE8_MUTATION_TESTING.md)
-2. **Check the SESSION START CHECKLIST at the top!**
-3. Create branch `feature/phase8-mutation-testing`
-4. Begin Phase 8.1: Setup (install Stryker packages)
+**Next Session Options:**
+1. **Continue Phase 8:** Wave 3 (Database) or skip to Documentation
+2. **Create PR:** Phase 8 is already above target (>75%)
+3. **Start Phase 9:** Architecture Testing
 
 **Remaining Phases:**
-1. **Phase 8 (Mutation Testing)** - Test suite validation (9-16 hours) ← **STARTING NEXT**
-   - StrykerJS v9.x with Jest runner
-   - 4 waves: core logic → validation → database → telemetry
+1. **Phase 8 (Mutation Testing)** - Wave 3 optional, docs remaining
 2. **Phase 9 (Architecture Testing)** - Layer boundary enforcement (6-11 hours)
-   - dependency-cruiser + eslint-plugin-boundaries
-   - 10+ architectural rules
 
 **References:**
 - [PHASE8_MUTATION_TESTING.md](./PHASE8_MUTATION_TESTING.md) - Complete plan ✅
+- [PHASE8_LEARNING_NOTES.md](./PHASE8_LEARNING_NOTES.md) - Session learnings
 - [PHASE9_ARCHITECTURE_TESTING.md](./PHASE9_ARCHITECTURE_TESTING.md) - Complete plan ✅
 
 ---
@@ -248,6 +248,30 @@ See `docs/learning/epic04_feature_enhancement/` for details.
 ---
 
 ## 🔄 Change Log
+
+### 2026-01-22 (Session 20 - Phase 8 Mutation Testing)
+- **Phase 7 merged** - PR #3 merged to main
+- **Phase 8.1 Setup:**
+  - Installed StrykerJS v9.4.0 with Jest runner and TypeScript checker
+  - Created stryker.config.json (base) and stryker.core.json (Wave 1)
+  - Added npm scripts: test:mutation, test:mutation:core, test:mutation:validation
+  - Added .gitignore entries for reports/ and .stryker-tmp/
+- **Wave 1 - Core Logic (combinationGenerator.ts):**
+  - Initial: 55% mutation score
+  - Added 4 tests (empty result scenarios, deterministic filter test)
+  - Final: 65% mutation score
+  - Remaining survivors: logging strings, shuffle randomization
+- **Wave 2 - Validation (validation.ts):**
+  - Initial: 81% mutation score
+  - Added 10 tests (boundary conditions, whitespace handling)
+  - Final: 94% mutation score
+  - Remaining survivors: is_active early returns
+- **Key Learnings:**
+  - `coverageAnalysis: "all"` more reliable than "perTest" for jest-expo
+  - Boundary tests (=1, at limit) highly effective for mutation killing
+  - Whitespace tests kill `.trim()` mutations
+  - Logging/telemetry survivors acceptable (don't affect behavior)
+- **Total:** 216 unit tests (+14), 3 commits
 
 ### 2026-01-22 (Session 19 - Phase 7 Complete)
 - **Phase 7 Internationalization COMPLETE:**

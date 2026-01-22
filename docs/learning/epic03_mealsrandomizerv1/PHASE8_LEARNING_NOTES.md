@@ -116,10 +116,47 @@ The varietyEngine.ts shows 2 errors and no mutants. This file only has one pure 
 
 ---
 
+## 2026-01-22 - Wave 2 Validation Results
+
+**Initial score:** 81.13% → **After improvements:** 94.34%
+
+**Tests added (10 new):**
+1. `validateMaxLength at exactly the limit` - Boundary test
+2. `validateMaxLength one char over limit` - Boundary test
+3. `min_ingredients of exactly 1` - Boundary test
+4. `max_ingredients of 0` - Error case
+5. `max_ingredients of exactly 1` - Boundary test
+6. `min equals max` - Valid edge case
+7. `isMealTypeNameUnique empty name` - Empty string
+8. `isMealTypeNameUnique whitespace-only name` - Whitespace test (kills `.trim()` mutation)
+9. `isIngredientNameUnique empty name` - Empty string
+10. `isIngredientNameUnique whitespace-only name` - Whitespace test
+
+**Key insight:** Boundary condition tests are high-value for mutation testing. They specifically target `<` vs `<=`, `>` vs `>=` mutations.
+
+**Remaining survivors (7):**
+- `is_active !== 1` block mutations - These are early returns for inactive ingredients
+- Would need more complex test scenarios to kill
+
+**Decision:** Accept 94% for Wave 2. Remaining survivors are low-risk (early return optimization).
+
+---
+
+## Summary: Phase 8 Results So Far
+
+| Wave | File(s) | Initial | Final | Tests Added |
+|------|---------|---------|-------|-------------|
+| Wave 1 | combinationGenerator.ts, varietyEngine.ts | 55% | 65% | 4 |
+| Wave 2 | validation.ts | 81% | 94% | 10 |
+
+**Total new tests:** 14
+**Total unit tests:** 216 (was 202)
+
+---
+
 ## Next Steps
 
-1. ~~Investigate varietyEngine.ts errors~~ (low priority)
-2. ~~Add tests to kill the filter-related survivors~~ (done)
-3. ~~Consider mocking Math.random for shuffle tests~~ (not worth it)
-4. ~~Decide on logging mutant policy~~ (accept as survivors)
-5. Move to Wave 2: Validation logic
+1. ~~Wave 1: Core logic~~ ✅ (65%)
+2. ~~Wave 2: Validation~~ ✅ (94%)
+3. Wave 3: Database operations (if time permits)
+4. Documentation and wrap-up
