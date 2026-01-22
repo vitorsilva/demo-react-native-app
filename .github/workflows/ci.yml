@@ -32,7 +32,6 @@ jobs:
 
       - name: Check dead code
         run: npm run lint:dead-code
-        continue-on-error: true  # Advisory - shows findings to address
 
       - name: Check duplicates
         run: npm run lint:duplicates
