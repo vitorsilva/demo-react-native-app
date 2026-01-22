@@ -1,0 +1,38 @@
+{
+  "title": "Gerir Categorias",
+  "uncategorized": "Sem Categoria",
+  "unknown": "Desconhecido",
+  "summary": {
+    "categories_one": "{{count}} categoria",
+    "categories_other": "{{count}} categorias",
+    "totalIngredients_one": "{{count}} ingrediente no total",
+    "totalIngredients_other": "{{count}} ingredientes no total"
+  },
+  "empty": {
+    "noCategories": "Ainda não há categorias",
+    "addFirst": "Adicione a sua primeira categoria para organizar ingredientes"
+  },
+  "add": {
+    "title": "Adicionar Categoria",
+    "button": "Adicionar Categoria"
+  },
+  "edit": {
+    "title": "Editar Categoria"
+  },
+  "form": {
+    "name": "Nome",
+    "namePlaceholder": "ex: Frutas, Laticínios, Proteínas"
+  },
+  "delete": {
+    "title": "Eliminar Categoria",
+    "confirm": "Tem a certeza que deseja eliminar \"{{name}}\"?",
+    "hasIngredients": "Esta categoria tem {{count}} ingrediente(s). Mova ou elimine-os primeiro.",
+    "cannotDelete": "Não é possível eliminar categoria com ingredientes"
+  },
+  "validation": {
+    "nameRequired": "O nome da categoria é obrigatório",
+    "nameTaken": "Já existe uma categoria com este nome"
+  },
+  "ingredientCount_one": "{{count}} ingrediente",
+  "ingredientCount_other": "{{count}} ingredientes"
+}

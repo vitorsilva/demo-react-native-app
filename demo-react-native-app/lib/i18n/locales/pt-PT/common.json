@@ -1,0 +1,25 @@
+{
+  "buttons": {
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "delete": "Eliminar",
+    "edit": "Editar",
+    "add": "Adicionar",
+    "confirm": "Confirmar",
+    "close": "Fechar"
+  },
+  "labels": {
+    "loading": "A carregar...",
+    "error": "Erro",
+    "success": "Sucesso",
+    "warning": "Aviso",
+    "custom": "Personalizado",
+    "meal": "Refeição"
+  },
+  "loading": "A carregar...",
+  "noItems": "Nenhum item encontrado",
+  "validation": {
+    "required": "Este campo é obrigatório",
+    "nameTaken": "Este nome já está em uso"
+  }
+}

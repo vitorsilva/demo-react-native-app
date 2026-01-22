@@ -15,6 +15,17 @@ import enCategories from './en/categories.json';
 import enSuggestions from './en/suggestions.json';
 import enErrors from './en/errors.json';
 
+// Portuguese (Portugal) translations
+import ptCommon from './pt-PT/common.json';
+import ptTabs from './pt-PT/tabs.json';
+import ptHome from './pt-PT/home.json';
+import ptHistory from './pt-PT/history.json';
+import ptSettings from './pt-PT/settings.json';
+import ptIngredients from './pt-PT/ingredients.json';
+import ptCategories from './pt-PT/categories.json';
+import ptSuggestions from './pt-PT/suggestions.json';
+import ptErrors from './pt-PT/errors.json';
+
 /**
  * Bundled translation resources
  */
@@ -30,7 +41,17 @@ const resources = {
     suggestions: enSuggestions,
     errors: enErrors,
   },
-  // pt-PT translations will be added in Phase 4
+  'pt-PT': {
+    common: ptCommon,
+    tabs: ptTabs,
+    home: ptHome,
+    history: ptHistory,
+    settings: ptSettings,
+    ingredients: ptIngredients,
+    categories: ptCategories,
+    suggestions: ptSuggestions,
+    errors: ptErrors,
+  },
 };
 
 export default resources;

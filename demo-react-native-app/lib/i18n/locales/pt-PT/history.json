@@ -1,0 +1,11 @@
+{
+  "title": "Histórico de Refeições",
+  "empty": {
+    "title": "Ainda não registou refeições",
+    "subtitle": "Registe a sua primeira refeição a partir do ecrã Início"
+  },
+  "date": {
+    "today": "Hoje",
+    "yesterday": "Ontem"
+  }
+}

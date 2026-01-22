@@ -1,0 +1,43 @@
+{
+  "title": "Gerir Ingredientes",
+  "search": "Pesquisar ingredientes...",
+  "filter": {
+    "all": "Todos",
+    "byCategory": "Por Categoria"
+  },
+  "empty": {
+    "noIngredients": "Ainda não há ingredientes",
+    "noResults": "Nenhum ingrediente encontrado",
+    "addFirst": "Adicione o seu primeiro ingrediente para começar"
+  },
+  "add": {
+    "title": "Adicionar Ingrediente",
+    "button": "Adicionar Ingrediente"
+  },
+  "edit": {
+    "title": "Editar Ingrediente"
+  },
+  "form": {
+    "name": "Nome",
+    "namePlaceholder": "ex: Ovos, Pão, Banana",
+    "category": "Categoria",
+    "selectCategory": "Selecione uma categoria",
+    "mealTypes": "Disponível para",
+    "active": "Ativo"
+  },
+  "delete": {
+    "title": "Eliminar Ingrediente",
+    "confirm": "Tem a certeza que deseja eliminar \"{{name}}\"?",
+    "warning": "Esta ação não pode ser desfeita."
+  },
+  "validation": {
+    "nameRequired": "O nome do ingrediente é obrigatório",
+    "nameTaken": "Já existe um ingrediente com este nome",
+    "categoryRequired": "Por favor selecione uma categoria",
+    "mealTypeRequired": "Por favor selecione pelo menos um tipo de refeição"
+  },
+  "status": {
+    "active": "Ativo",
+    "inactive": "Inativo"
+  }
+}

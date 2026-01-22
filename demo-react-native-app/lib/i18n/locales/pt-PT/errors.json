@@ -1,0 +1,15 @@
+{
+  "generic": {
+    "error": "Erro",
+    "message": "Algo correu mal"
+  },
+  "network": "Erro de rede. Por favor verifique a sua ligação.",
+  "database": "Erro de base de dados. Por favor reinicie a aplicação.",
+  "validation": "Por favor verifique os dados introduzidos e tente novamente.",
+  "notFound": "O item solicitado não foi encontrado.",
+  "unauthorized": "Não tem autorização para realizar esta ação.",
+  "lastActive": {
+    "ingredient": "Não é possível desativar o último ingrediente ativo",
+    "mealType": "Não é possível desativar o último tipo de refeição ativo"
+  }
+}
