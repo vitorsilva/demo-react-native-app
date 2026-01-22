@@ -85,6 +85,58 @@ When executing long implementation sessions, LLM quality degrades significantly 
 **Next action:** Begin Phase 8.1, Step 1 (Install Stryker packages)
 **Blockers:** None
 
+### Incremental Commits (Not at the End!)
+
+**Rule:** Commit after each logical unit of work, NOT at the end of everything.
+
+**Why:**
+- Smaller commits are easier to review and revert
+- Progress is saved even if session ends unexpectedly
+- Each commit message documents what was done
+- Enables checkpoint/resume workflow
+
+**Pattern:**
+```
+1. Complete a task (or logical chunk)
+2. Run verification (tests, lint, TypeScript)
+3. Commit with descriptive message
+4. Update progress marker if needed
+5. Continue to next task
+```
+
+### Learning Notes (Document As You Go!)
+
+**Rule:** Document problems, errors, and fixes IMMEDIATELY when they occur, not at the end.
+
+**Location:** Create/update `PHASE8_LEARNING_NOTES.md` in this folder.
+
+**What to document:**
+- ❌ **Unexpected errors** - What went wrong, error messages
+- 🔍 **Root cause** - Why it happened (if discovered)
+- ✅ **Fix/Workaround** - How it was resolved
+- 💡 **Gotcha** - Things that weren't obvious, future warnings
+- 📚 **Lesson learned** - What to do differently next time
+
+**Template:**
+```markdown
+### [Date] - [Brief title]
+
+**Problem:** [What went wrong]
+
+**Error:** [Exact error message if applicable]
+
+**Root cause:** [Why it happened]
+
+**Fix:** [How it was resolved]
+
+**Lesson:** [What to remember for next time]
+```
+
+**When to write:**
+- Immediately after encountering and fixing a problem
+- Before moving to the next task
+- Part of the commit cycle (problem → fix → document → commit)
+
 ### Self-Contained Task Requirements
 
 Each task in this plan includes:
