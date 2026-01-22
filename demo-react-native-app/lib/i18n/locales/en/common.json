@@ -14,6 +14,8 @@
     "success": "Success",
     "warning": "Warning"
   },
+  "loading": "Loading...",
+  "noItems": "No items found",
   "validation": {
     "required": "This field is required",
     "nameTaken": "This name is already taken"

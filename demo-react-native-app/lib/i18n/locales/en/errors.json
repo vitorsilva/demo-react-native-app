@@ -1,5 +1,8 @@
 {
-  "generic": "Something went wrong",
+  "generic": {
+    "error": "Error",
+    "message": "Something went wrong"
+  },
   "network": "Network error. Please check your connection.",
   "database": "Database error. Please restart the app.",
   "validation": "Please check your input and try again.",
