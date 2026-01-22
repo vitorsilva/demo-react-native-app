@@ -39,6 +39,10 @@ yarn-error.*
 # testing
 coverage/
 
+# Stryker mutation testing
+reports/
+.stryker-tmp/
+
 # Playwright
 /test-results/
 /playwright-report/
