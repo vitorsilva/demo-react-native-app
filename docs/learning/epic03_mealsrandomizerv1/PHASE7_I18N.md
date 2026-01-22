@@ -260,9 +260,9 @@ types/
 - [x] Create `types.ts` (TypeScript types - in lib/i18n/)
 - [x] Extract English strings to JSON files (9 namespaces)
 - [x] Commit: `feat(i18n): create i18n module with language detector`
-- [ ] Add unit tests for i18n module (reference: Saberloop's i18n.test.js)
-- [ ] Commit: `test(i18n): add i18n module unit tests`
-- **Verify:** `npm test` passes, no coverage decrease
+- [x] Add unit tests for i18n module (34 tests)
+- [x] Commit: `test(i18n): add i18n module unit tests`
+- **Verify:** `npm test` passes ✅ (173 tests, +34 new)
 
 ### Phase 2: Core Screens (2-3 days)
 - [ ] Initialize i18n in `app/_layout.tsx`
