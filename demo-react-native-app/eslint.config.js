@@ -112,4 +112,28 @@ module.exports = defineConfig([
       'sonarjs/no-inverted-boolean-check': 'warn',
     },
   },
+  // Import ordering rules
+  {
+    rules: {
+      'import/order': [
+        'warn',
+        {
+          groups: [
+            'builtin',
+            'external',
+            'internal',
+            ['parent', 'sibling'],
+            'index',
+            'type',
+          ],
+          'newlines-between': 'never',
+          alphabetize: {
+            order: 'asc',
+            caseInsensitive: true,
+          },
+        },
+      ],
+      'import/no-duplicates': 'warn',
+    },
+  },
 ]);
