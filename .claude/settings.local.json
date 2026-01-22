@@ -53,7 +53,13 @@
       "mcp__playwright__browser_resize",
       "Bash(git push:*)",
       "Bash(git checkout:*)",
-      "Bash(npm uninstall:*)"
+      "Bash(npm uninstall:*)",
+      "WebFetch(domain:intlayer.org)",
+      "WebFetch(domain:starter.obytes.com)",
+      "WebFetch(domain:react.i18next.com)",
+      "Bash(tree:*)",
+      "Bash(wc:*)",
+      "WebFetch(domain:www.npmjs.com)"
     ],
     "deny": [],
     "ask": []
