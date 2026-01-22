@@ -59,7 +59,9 @@
       "WebFetch(domain:react.i18next.com)",
       "Bash(tree:*)",
       "Bash(wc:*)",
-      "WebFetch(domain:www.npmjs.com)"
+      "WebFetch(domain:www.npmjs.com)",
+      "Bash(npx expo install:*)",
+      "Bash(git restore:*)"
     ],
     "deny": [],
     "ask": []

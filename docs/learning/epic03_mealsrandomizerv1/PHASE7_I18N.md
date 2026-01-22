@@ -254,13 +254,12 @@ types/
 ### Phase 1: Infrastructure (1-2 days)
 - [x] Install: `npm install i18next react-i18next`
 - [x] Commit: `chore(i18n): add i18next dependencies`
-- [ ] Create `lib/i18n/` folder structure (follow Saberloop pattern)
-- [ ] Implement `index.ts` (i18n config)
-- [ ] Implement `languageDetector.ts` (device locale + AsyncStorage)
-- [ ] Create `types/i18n.d.ts` (TypeScript)
-- [ ] Commit: `feat(i18n): create i18n module with language detector`
-- [ ] Extract English strings to JSON files
-- [ ] Commit: `feat(i18n): add English translation files`
+- [x] Create `lib/i18n/` folder structure (follow Saberloop pattern)
+- [x] Implement `index.ts` (i18n config)
+- [x] Implement `languageDetector.ts` (device locale + AsyncStorage)
+- [x] Create `types.ts` (TypeScript types - in lib/i18n/)
+- [x] Extract English strings to JSON files (9 namespaces)
+- [x] Commit: `feat(i18n): create i18n module with language detector`
 - [ ] Add unit tests for i18n module (reference: Saberloop's i18n.test.js)
 - [ ] Commit: `test(i18n): add i18n module unit tests`
 - **Verify:** `npm test` passes, no coverage decrease
