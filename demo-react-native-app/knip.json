@@ -13,6 +13,7 @@
     "@expo/metro-config",
     "metro-minify-terser"
   ],
+  "ignoreBinaries": ["semgrep"],
   "jest": true,
   "typescript": true
 }
