@@ -1,0 +1,50 @@
+{
+  "title": "Settings",
+  "language": {
+    "title": "Language",
+    "description": "Choose your preferred language"
+  },
+  "globalPreferences": {
+    "title": "Global Preferences",
+    "varietyCooldown": {
+      "title": "Variety Cooldown",
+      "description": "How many days to wait before suggesting the same combination again",
+      "day_one": "{{count}} day",
+      "day_other": "{{count}} days"
+    },
+    "suggestions": {
+      "title": "Number of Suggestions",
+      "description": "How many meal combinations to show at once"
+    }
+  },
+  "mealTypes": {
+    "title": "Meal Types",
+    "description": "Configure meal types and their settings",
+    "add": "Add Meal Type",
+    "addNew": "Add New Meal Type",
+    "name": "Name",
+    "namePlaceholder": "e.g., Lunch, Dinner",
+    "active": "Active",
+    "minIngredients": "Min Ingredients",
+    "maxIngredients": "Max Ingredients",
+    "cooldown": "Cooldown (days)",
+    "delete": "Delete",
+    "deleteConfirm": "Are you sure you want to delete \"{{name}}\"?",
+    "deleteWarning": "This will also remove all meal logs for this type.",
+    "expanded": {
+      "ingredients_one": "{{count}} ingredient",
+      "ingredients_other": "{{count}} ingredients",
+      "cooldown": "{{count}}d cooldown"
+    },
+    "validation": {
+      "nameRequired": "Meal type name is required",
+      "nameTaken": "A meal type with this name already exists",
+      "minMaxError": "Minimum cannot exceed maximum"
+    }
+  },
+  "about": {
+    "title": "About These Settings",
+    "globalDescription": "Global Preferences: Apply to all meal types by default.",
+    "mealTypesDescription": "Meal Types: Each type can have its own ingredient count and cooldown settings."
+  }
+}

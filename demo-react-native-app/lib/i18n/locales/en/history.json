@@ -1,0 +1,8 @@
+{
+  "title": "Meal History",
+  "empty": "No meals logged yet",
+  "today": "Today",
+  "yesterday": "Yesterday",
+  "daysAgo": "{{count}} days ago",
+  "meal": "{{type}} - {{ingredients}}"
+}

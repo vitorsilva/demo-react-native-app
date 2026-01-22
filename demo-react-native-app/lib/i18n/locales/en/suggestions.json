@@ -1,0 +1,22 @@
+{
+  "title": "{{mealType}} Suggestions",
+  "loading": "Finding delicious combinations...",
+  "empty": {
+    "noSuggestions": "No suggestions available",
+    "notEnoughIngredients": "Not enough active ingredients for {{mealType}}",
+    "addMoreIngredients": "Add more ingredients or adjust your meal type settings"
+  },
+  "actions": {
+    "regenerate": "Regenerate",
+    "accept": "I'll have this!"
+  },
+  "accepted": {
+    "title": "Enjoy your meal!",
+    "message": "Your selection has been logged"
+  },
+  "error": {
+    "title": "Error",
+    "loadFailed": "Failed to load suggestions",
+    "tryAgain": "Try Again"
+  }
+}

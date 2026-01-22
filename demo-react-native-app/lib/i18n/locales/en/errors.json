@@ -1,0 +1,12 @@
+{
+  "generic": "Something went wrong",
+  "network": "Network error. Please check your connection.",
+  "database": "Database error. Please restart the app.",
+  "validation": "Please check your input and try again.",
+  "notFound": "The requested item was not found.",
+  "unauthorized": "You are not authorized to perform this action.",
+  "lastActive": {
+    "ingredient": "Cannot disable the last active ingredient",
+    "mealType": "Cannot disable the last active meal type"
+  }
+}

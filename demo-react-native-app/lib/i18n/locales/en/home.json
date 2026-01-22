@@ -1,0 +1,8 @@
+{
+  "title": "SaborSpin",
+  "subtitle": "What would you like to eat?",
+  "recentMeals": "Recent Meals",
+  "noRecentMeals": "No recent meals yet",
+  "noMealTypes": "No meal types configured",
+  "configureMealTypes": "Go to Settings to add meal types"
+}

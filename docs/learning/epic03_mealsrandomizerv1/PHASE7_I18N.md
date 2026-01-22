@@ -249,11 +249,11 @@ types/
 ### Phase 0: Setup
 - [x] Create branch: `git checkout -b feature/phase7-i18n`
 - [x] Update this file with implementation plan
-- [ ] Commit: `docs(i18n): update PHASE7_I18N.md with implementation plan`
+- [x] Commit: `docs(i18n): update PHASE7_I18N.md with implementation plan`
 
 ### Phase 1: Infrastructure (1-2 days)
-- [ ] Install: `npm install i18next react-i18next`
-- [ ] Commit: `chore(i18n): add i18next dependencies`
+- [x] Install: `npm install i18next react-i18next`
+- [x] Commit: `chore(i18n): add i18next dependencies`
 - [ ] Create `lib/i18n/` folder structure (follow Saberloop pattern)
 - [ ] Implement `index.ts` (i18n config)
 - [ ] Implement `languageDetector.ts` (device locale + AsyncStorage)
