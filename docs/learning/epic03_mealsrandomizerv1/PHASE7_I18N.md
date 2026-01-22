@@ -144,15 +144,14 @@ When executing long implementation sessions, LLM quality degrades significantly 
 
 ### Current Progress
 
-**Last checkpoint:** 2026-01-22 - Phase 2 complete
-**Next action:** Phase 3 - Add language picker to settings
+**Last checkpoint:** 2026-01-22 - Phase 4 translations complete
+**Next action:** Phase 4 - Add translation completeness tests
 **Commits this session:**
-- chore(i18n): add i18next dependencies
-- feat(i18n): create i18n module with language detector
-- test(i18n): add i18n module unit tests
-- feat(i18n): migrate tab layout translations
-- feat(i18n): migrate home screen translations
-- feat(i18n): migrate confirmation modal
+- feat(i18n): add language picker to settings and migrate translations
+- feat(i18n): migrate manage-ingredients screen translations
+- feat(i18n): migrate manage-categories screen translations
+- feat(i18n): migrate suggestions screen translations
+- feat(i18n): add Portuguese (pt-PT) translations
 
 **Blockers:** None
 
