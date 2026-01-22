@@ -4,6 +4,32 @@
 
 ---
 
+## ⚠️ SESSION START CHECKLIST (Read First!)
+
+Before doing ANY work, complete these steps:
+
+1. **Note your starting context level** - Ask the user or estimate based on conversation length
+2. **Find "Current Progress" section below** - Identify the next pending task
+3. **After EACH task completion:**
+   - Mark task complete ([ ] → [x])
+   - Commit your changes
+   - Check context usage (if approaching 75%, STOP and checkpoint)
+4. **If context ≥ 75%:**
+   - Update "Current Progress" section with checkpoint info
+   - Tell user: "Context is at ~X%. Recommend `/clear` and fresh session."
+   - Do NOT continue working
+
+**How to estimate context usage:**
+- Session just started from `/clear` = ~5-10%
+- After reading this plan = ~15-20%
+- After 2-3 tasks completed = ~40-50%
+- After 4-5 tasks completed = ~60-70%
+- If conversation feels long or you're forgetting earlier details = likely >75%
+
+**When in doubt, ask the user:** "What's the current context usage percentage?"
+
+---
+
 ## Goal
 
 Implement mutation testing to validate the effectiveness and quality of SaborSpin's test suite. Mutation testing systematically introduces small code changes (mutations) and verifies that tests catch them. Surviving mutants indicate gaps in test coverage or quality.
@@ -318,6 +344,8 @@ Based on codebase analysis, here are the mutation testing candidates:
 - HTML report generated in `reports/mutation/`
 - Initial mutation score visible
 
+> **🔄 CHECKPOINT:** After completing Phase 8.1, check context usage. If ≥75%, update "Current Progress" and suggest `/clear`.
+
 ### Phase 8.2: Wave 1 - Core Logic (Est. 2-4 hours)
 
 **Goal:** Achieve >80% mutation score for core business logic
@@ -342,6 +370,8 @@ Based on codebase analysis, here are the mutation testing candidates:
 - Boolean negation (!condition)
 - Array bounds (off-by-one errors)
 - Return value removal
+
+> **🔄 CHECKPOINT:** After completing Phase 8.2, check context usage. If ≥75%, update "Current Progress" and suggest `/clear`.
 
 **Stryker Config (Wave 1):**
 ```json
@@ -373,6 +403,8 @@ Based on codebase analysis, here are the mutation testing candidates:
 4. Add tests for edge cases
 5. Commit: "test: improve validation tests (mutation testing)"
 
+> **🔄 CHECKPOINT:** After completing Phase 8.3, check context usage. If ≥75%, update "Current Progress" and suggest `/clear`.
+
 ### Phase 8.4: Wave 3 - Database (Est. 3-5 hours)
 
 **Goal:** Achieve >70% mutation score for database operations
@@ -393,6 +425,8 @@ Based on codebase analysis, here are the mutation testing candidates:
    - Return value types
 4. Add tests for uncovered paths
 5. Commit: "test: improve database tests (mutation testing)"
+
+> **🔄 CHECKPOINT:** After completing Phase 8.4, check context usage. If ≥75%, update "Current Progress" and suggest `/clear`.
 
 ### Phase 8.5: Documentation & CI (Est. 1-2 hours)
 
