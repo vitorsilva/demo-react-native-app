@@ -1,0 +1,76 @@
+# Maestro E2E test for full app flow in Portuguese
+# Verifies all screens display correctly in Portuguese
+#
+# Run with: maestro test e2e/maestro/i18n/full-flow-pt.yaml
+
+appId: com.vitorsilvavmrs.saborspin
+---
+# Launch app
+- launchApp
+
+# Navigate to Settings and switch to Portuguese
+- tapOn: "Settings"
+- tapOn:
+    id: "language-option-pt-PT"
+
+# Verify settings in Portuguese
+- assertVisible: "Configurações"
+- assertVisible: "Idioma"
+- assertVisible: "Preferências Globais"
+- assertVisible: "Período de Variedade"
+- assertVisible: "Número de Sugestões"
+- assertVisible: "Tipos de Refeição"
+
+# Navigate to Home
+- tapOn: "Início"
+
+# Verify home in Portuguese
+- assertVisible: "SaborSpin"
+- assertVisible: "Refeições Recentes"
+
+# Navigate to breakfast suggestions
+- tapOn: "Pequeno-Almoço"
+
+# Wait for suggestions to load
+- waitForAnimationToEnd
+
+# Verify suggestions screen in Portuguese
+- assertVisible: "Sugestões de"
+- assertVisible: "Escolha uma:"
+- assertVisible: "Gerar Novas Ideias"
+
+# Select first suggestion
+- tapOn:
+    id: "select-button-0"
+
+# Verify confirmation modal in Portuguese
+- assertVisible: "Registado"
+- assertVisible: "Bom apetite!"
+
+# Dismiss modal
+- tapOn:
+    id: "done-button"
+
+# Verify back on home with meal logged
+- assertVisible: "Refeições Recentes"
+- assertVisible: "Hoje"
+
+# Navigate to History
+- tapOn: "Histórico"
+
+# Verify history in Portuguese
+- assertVisible: "Hoje"
+
+# Navigate to Ingredients
+- tapOn: "Ingredientes"
+
+# Verify ingredients screen in Portuguese
+- assertVisible: "Gerir Ingredientes"
+
+# Navigate to Categories
+- tapOn: "Categorias"
+
+# Verify categories screen in Portuguese
+- assertVisible: "Gerir Categorias"
+
+# Test passed - all screens display correctly in Portuguese

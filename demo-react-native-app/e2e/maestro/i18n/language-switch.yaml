@@ -1,0 +1,63 @@
+# Maestro E2E test for language switching
+# Verifies switching between English and Portuguese works correctly
+#
+# Run with: maestro test e2e/maestro/i18n/language-switch.yaml
+
+appId: com.vitorsilvavmrs.saborspin
+---
+# Launch app
+- launchApp
+
+# Verify home screen loads in English (default)
+- assertVisible: "SaborSpin"
+- assertVisible: "Recent Meals"
+
+# Navigate to Settings
+- tapOn: "Settings"
+
+# Verify English language section
+- assertVisible: "Language"
+- assertVisible: "English"
+- assertVisible: "Português"
+
+# Switch to Portuguese
+- tapOn:
+    id: "language-option-pt-PT"
+
+# Verify settings is now in Portuguese
+- assertVisible: "Configurações"
+- assertVisible: "Idioma"
+- assertVisible: "Preferências Globais"
+
+# Navigate to Home (now "Início")
+- tapOn: "Início"
+
+# Verify home is in Portuguese
+- assertVisible: "SaborSpin"
+- assertVisible: "Refeições Recentes"
+
+# Navigate to History (now "Histórico")
+- tapOn: "Histórico"
+
+# Verify history content (either empty state or "Hoje")
+- assertVisible:
+    text: "Histórico"
+    optional: false
+
+# Navigate back to Settings
+- tapOn: "Configurações"
+
+# Switch back to English
+- tapOn:
+    id: "language-option-en"
+
+# Verify we're back in English
+- assertVisible: "Settings"
+- assertVisible: "Language"
+- assertVisible: "Global Preferences"
+
+# Navigate to Home
+- tapOn: "Home"
+
+# Verify home is back in English
+- assertVisible: "Recent Meals"
