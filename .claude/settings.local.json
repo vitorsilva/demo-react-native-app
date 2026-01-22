@@ -85,7 +85,8 @@
       "mcp__playwright__browser_press_key",
       "Bash(npm run lint:*)",
       "Bash(npm run lint:duplicates:*)",
-      "Bash(npx commitlint)"
+      "Bash(npx commitlint)",
+      "Bash(git branch:*)"
     ],
     "deny": [],
     "ask": []

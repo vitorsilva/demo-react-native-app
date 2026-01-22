@@ -3,7 +3,13 @@ import { Ingredient } from '../../types/database';
 import * as Crypto from 'expo-crypto';
 import { canDeleteIngredient, canDisableIngredient } from './validation';
 
-  export async function addIngredient(
+/**
+ * Creates a new ingredient in the database.
+ * @param db - Database adapter instance
+ * @param ingredient - Ingredient data to create
+ * @returns The created ingredient with generated ID and timestamps
+ */
+export async function addIngredient(
     db: DatabaseAdapter,
     ingredient: {
       name: string;
@@ -51,8 +57,13 @@ import { canDeleteIngredient, canDisableIngredient } from './validation';
     };
   }
 
-  // Get a single ingredient by ID
-  export async function getIngredientById(
+/**
+ * Retrieves a single ingredient by its ID.
+ * @param db - Database adapter instance
+ * @param id - Ingredient UUID
+ * @returns The ingredient or null if not found
+ */
+export async function getIngredientById(
     db: DatabaseAdapter,
     id: string
   ): Promise<Ingredient | null> {
@@ -78,8 +89,14 @@ import { canDeleteIngredient, canDisableIngredient } from './validation';
     };
   }
 
-  // Update an ingredient
-  export async function updateIngredient(
+/**
+ * Updates an ingredient's properties. Only provided fields are updated.
+ * @param db - Database adapter instance
+ * @param id - Ingredient UUID
+ * @param updates - Partial ingredient data to update
+ * @returns The updated ingredient or null if not found
+ */
+export async function updateIngredient(
     db: DatabaseAdapter,
     id: string,
     updates: Partial<Pick<Ingredient, 'name' | 'category' | 'mealTypes' | 'category_id' | 'is_active'>>
@@ -120,9 +137,14 @@ import { canDeleteIngredient, canDisableIngredient } from './validation';
     return getIngredientById(db, id);
   }
 
-  // Toggle ingredient active status
-  // Returns null with error if this is the last active ingredient for a meal type
-  export async function toggleIngredientActive(
+/**
+ * Toggles an ingredient's active status.
+ * Prevents disabling if it's the last active ingredient for any meal type.
+ * @param db - Database adapter instance
+ * @param id - Ingredient UUID
+ * @returns Object with the updated ingredient or an error message
+ */
+export async function toggleIngredientActive(
     db: DatabaseAdapter,
     id: string
   ): Promise<{ ingredient: Ingredient | null; error?: string }> {
@@ -141,8 +163,13 @@ import { canDeleteIngredient, canDisableIngredient } from './validation';
     return { ingredient: updated };
   }
 
-  // Get ingredients by category ID
-  export async function getIngredientsByCategory(
+/**
+ * Retrieves all ingredients belonging to a specific category.
+ * @param db - Database adapter instance
+ * @param categoryId - Category UUID
+ * @returns Array of ingredients in the category, sorted by name
+ */
+export async function getIngredientsByCategory(
     db: DatabaseAdapter,
     categoryId: string
   ): Promise<Ingredient[]> {
@@ -166,8 +193,8 @@ import { canDeleteIngredient, canDisableIngredient } from './validation';
     }));
   }
 
-  // Raw row type from SQLite (is_active, is_user_added stored as 0/1)
-  type IngredientRow = {
+/** Raw row type from SQLite (booleans stored as 0/1) */
+type IngredientRow = {
     id: string;
     name: string;
     category: string;
@@ -179,7 +206,12 @@ import { canDeleteIngredient, canDisableIngredient } from './validation';
     updated_at: string | null;
   };
 
-  export async function getAllIngredients(db: DatabaseAdapter): Promise<Ingredient[]> {
+/**
+ * Retrieves all ingredients from the database.
+ * @param db - Database adapter instance
+ * @returns Array of all ingredients, sorted by name
+ */
+export async function getAllIngredients(db: DatabaseAdapter): Promise<Ingredient[]> {
     const rows = await db.getAllAsync<IngredientRow>(
       `SELECT id, name, category, meal_types, category_id, is_active,
        is_user_added, created_at, updated_at
@@ -199,8 +231,13 @@ import { canDeleteIngredient, canDisableIngredient } from './validation';
     }));
   }
 
-  // Get ingredients by meal type (filters by mealTypes array)
-  export async function getIngredientsByMealType(
+/**
+ * Retrieves ingredients that are assigned to a specific meal type.
+ * @param db - Database adapter instance
+ * @param mealType - Meal type name (e.g., "Breakfast")
+ * @returns Array of ingredients for that meal type
+ */
+export async function getIngredientsByMealType(
     db: DatabaseAdapter,
     mealType: string
   ): Promise<Ingredient[]> {
@@ -208,8 +245,14 @@ import { canDeleteIngredient, canDisableIngredient } from './validation';
     return allIngredients.filter((ing) => ing.mealTypes.includes(mealType));
   }
 
-  // Get only active ingredients by meal type
-  export async function getActiveIngredientsByMealType(
+/**
+ * Retrieves only active ingredients for a specific meal type.
+ * Used by the combination generator for meal suggestions.
+ * @param db - Database adapter instance
+ * @param mealType - Meal type name (e.g., "Breakfast")
+ * @returns Array of active ingredients for that meal type
+ */
+export async function getActiveIngredientsByMealType(
     db: DatabaseAdapter,
     mealType: string
   ): Promise<Ingredient[]> {
@@ -219,7 +262,13 @@ import { canDeleteIngredient, canDisableIngredient } from './validation';
     );
   }
 
-// Delete an ingredient (with safety check for last active ingredient)
+/**
+ * Deletes an ingredient from the database.
+ * Prevents deletion if it's the last active ingredient for any meal type.
+ * @param db - Database adapter instance
+ * @param id - Ingredient UUID
+ * @returns Object indicating success or failure with error message
+ */
 export async function deleteIngredient(
   db: DatabaseAdapter,
   id: string

@@ -2,6 +2,12 @@ import type { DatabaseAdapter } from './adapters/types';
 import { MealLog } from '../../types/database';
 import * as Crypto from 'expo-crypto';
 
+/**
+ * Records a new meal log entry in the database.
+ * @param db - Database adapter instance
+ * @param mealLog - Meal log data (date, mealType, ingredients)
+ * @returns The created meal log with generated ID and timestamp
+ */
 export async function logMeal(
   db: DatabaseAdapter,
   mealLog: Omit<MealLog, 'id' | 'createdAt'>
@@ -24,6 +30,13 @@ export async function logMeal(
   };
 }
 
+/**
+ * Retrieves meal logs from the last N days.
+ * Used by the variety engine to determine recently used ingredients.
+ * @param db - Database adapter instance
+ * @param days - Number of days to look back (default: 7)
+ * @returns Array of meal logs, sorted by date descending
+ */
 export async function getRecentMealLogs(db: DatabaseAdapter, days: number = 7): Promise<MealLog[]> {
   const startDate = new Date();
   startDate.setDate(startDate.getDate() - days);
@@ -51,6 +64,14 @@ export async function getRecentMealLogs(db: DatabaseAdapter, days: number = 7): 
   }));
 }
 
+/**
+ * Retrieves meal logs within a specific date range.
+ * @param db - Database adapter instance
+ * @param startDate - Start date (ISO string)
+ * @param endDate - End date (ISO string)
+ * @returns Array of meal logs, sorted by date descending
+ * @throws Error if startDate is after endDate
+ */
 export async function getMealLogsByDateRange(
   db: DatabaseAdapter,
   startDate: string,
@@ -83,6 +104,11 @@ export async function getMealLogsByDateRange(
   }));
 }
 
+/**
+ * Deletes a meal log entry from the database.
+ * @param db - Database adapter instance
+ * @param id - Meal log UUID
+ */
 export async function deleteMealLog(db: DatabaseAdapter, id: string): Promise<void> {
   await db.runAsync('DELETE FROM meal_logs WHERE id = ?', [id]);
 }
