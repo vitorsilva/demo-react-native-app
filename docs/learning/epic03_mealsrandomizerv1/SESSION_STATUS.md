@@ -170,29 +170,32 @@ See `docs/learning/epic04_feature_enhancement/` for details.
 
 ## 🎯 Next Session Plan
 
-**Resume from:** Phase 7 - i18n Plan Review
+**Resume from:** Phase 8 & 9 Planning
 
 **Branch:** `main`
 
-**Epic Restructuring Complete:**
-- ✅ Added Phase 7 (i18n), Phase 8 (Mutation Testing), Phase 9 (Architecture Testing) to Epic 03
+**Completed This Session:**
+- ✅ Epic restructuring (Phases 7, 8, 9 added to Epic 03)
 - ✅ Created Epic 04: Feature Enhancement
-- ✅ Moved Phase 4 (Polish Features) to Epic 04
-- ✅ Phase 7 i18n plan drafted and saved to PHASE7_I18N.md
-
-**Phase 7 i18n Plan Status:**
-- ✅ Research completed (Saberloop patterns analyzed)
-- ✅ Scope: ~157 strings, 2 languages (en, pt-PT)
-- ✅ Implementation plan: 5 phases, 17 commits
-- ✅ Translation workflow: Anthropic API + human review
-- ⏳ Awaiting review before implementation
+- ✅ Moved Phase 4 to Epic 04
+- ✅ Phase 7 i18n plan COMPLETE (detailed, with UI wireframes)
+- ✅ Committed all changes
 
 **Next Session Tasks:**
-1. Review Phase 7 i18n plan (PHASE7_I18N.md)
-2. Approve plan and start implementation OR request changes
-3. (Parallel) Consider Phase 6 beta testing when ready
+1. **Enhance Phase 8 (Mutation Testing)** - expand placeholder into detailed plan
+   - Research Stryker Mutator for TypeScript/Jest
+   - Define scope (which modules to test)
+   - Create implementation steps
+2. **Enhance Phase 9 (Architecture Testing)** - expand placeholder into detailed plan
+   - Research dependency-cruiser for JS/TS
+   - Define architectural rules to enforce
+   - Create implementation steps
+3. Review Phase 7 i18n plan when ready to implement
 
-**Reference:** [PHASE7_I18N.md](./PHASE7_I18N.md)
+**References:**
+- [PHASE7_I18N.md](./PHASE7_I18N.md) - Complete plan ✅
+- [PHASE8_MUTATION_TESTING.md](./PHASE8_MUTATION_TESTING.md) - Placeholder (enhance next)
+- [PHASE9_ARCHITECTURE_TESTING.md](./PHASE9_ARCHITECTURE_TESTING.md) - Placeholder (enhance next)
 
 ---
 
@@ -586,4 +589,4 @@ See `docs/learning/epic04_feature_enhancement/` for details.
 ---
 
 **Last Updated:** 2026-01-22
-**Next Session:** Review Phase 7 i18n plan (PHASE7_I18N.md) and approve/modify
+**Next Session:** Enhance Phase 8 (Mutation Testing) and Phase 9 (Architecture Testing) plans
