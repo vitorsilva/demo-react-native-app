@@ -13,8 +13,8 @@ Before doing ANY work, complete these steps:
 3. **After EACH task completion:**
    - Mark task complete ([ ] → [x])
    - Commit your changes
-   - Check context usage (if approaching 75%, STOP and checkpoint)
-4. **If context ≥ 75%:**
+   - Check context usage (if approaching 67%, STOP and checkpoint)
+4. **If context ≥ 67%:**
    - Update "Current Progress" section with checkpoint info
    - Tell user: "Context is at ~X%. Recommend `/clear` and fresh session."
    - Do NOT continue working
@@ -23,8 +23,8 @@ Before doing ANY work, complete these steps:
 - Session just started from `/clear` = ~5-10%
 - After reading this plan = ~15-20%
 - After 2-3 tasks completed = ~40-50%
-- After 4-5 tasks completed = ~60-70%
-- If conversation feels long or you're forgetting earlier details = likely >75%
+- After 4-5 tasks completed = ~60-67%
+- If conversation feels long or you're forgetting earlier details = likely >67%
 
 **When in doubt, ask the user:** "What's the current context usage percentage?"
 
@@ -83,7 +83,7 @@ When executing long implementation sessions, LLM quality degrades significantly 
 
 ### Solution: Checkpoint Before Compact
 
-**Rule:** At ~75% context usage, STOP execution, mark progress in this plan, and start fresh session.
+**Rule:** At ~67% context usage, STOP execution, mark progress in this plan, and start fresh session.
 
 **Why this works:**
 - This plan document IS the context - it contains everything needed
@@ -344,7 +344,7 @@ Based on codebase analysis, here are the mutation testing candidates:
 - HTML report generated in `reports/mutation/`
 - Initial mutation score visible
 
-> **🔄 CHECKPOINT:** After completing Phase 8.1, check context usage. If ≥75%, update "Current Progress" and suggest `/clear`.
+> **🔄 CHECKPOINT:** After completing Phase 8.1, check context usage. If ≥67%, update "Current Progress" and suggest `/clear`.
 
 ### Phase 8.2: Wave 1 - Core Logic (Est. 2-4 hours)
 
@@ -371,7 +371,7 @@ Based on codebase analysis, here are the mutation testing candidates:
 - Array bounds (off-by-one errors)
 - Return value removal
 
-> **🔄 CHECKPOINT:** After completing Phase 8.2, check context usage. If ≥75%, update "Current Progress" and suggest `/clear`.
+> **🔄 CHECKPOINT:** After completing Phase 8.2, check context usage. If ≥67%, update "Current Progress" and suggest `/clear`.
 
 **Stryker Config (Wave 1):**
 ```json
@@ -403,7 +403,7 @@ Based on codebase analysis, here are the mutation testing candidates:
 4. Add tests for edge cases
 5. Commit: "test: improve validation tests (mutation testing)"
 
-> **🔄 CHECKPOINT:** After completing Phase 8.3, check context usage. If ≥75%, update "Current Progress" and suggest `/clear`.
+> **🔄 CHECKPOINT:** After completing Phase 8.3, check context usage. If ≥67%, update "Current Progress" and suggest `/clear`.
 
 ### Phase 8.4: Wave 3 - Database (Est. 3-5 hours)
 
@@ -426,7 +426,7 @@ Based on codebase analysis, here are the mutation testing candidates:
 4. Add tests for uncovered paths
 5. Commit: "test: improve database tests (mutation testing)"
 
-> **🔄 CHECKPOINT:** After completing Phase 8.4, check context usage. If ≥75%, update "Current Progress" and suggest `/clear`.
+> **🔄 CHECKPOINT:** After completing Phase 8.4, check context usage. If ≥67%, update "Current Progress" and suggest `/clear`.
 
 ### Phase 8.5: Documentation & CI (Est. 1-2 hours)
 
