@@ -10,5 +10,9 @@
   "devDependencies": {
     "dotenv": "^17.2.3",
     "ftp-deploy": "^2.4.7"
+  },
+  "dependencies": {
+    "i18next": "^25.8.0",
+    "react-i18next": "^16.5.3"
   }
 }
