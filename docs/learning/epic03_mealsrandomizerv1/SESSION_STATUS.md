@@ -158,7 +158,7 @@ See `docs/learning/epic04_feature_enhancement/` for details.
 **Reference:** [PHASE7_I18N.md](./PHASE7_I18N.md) | [PHASE7_LEARNING_NOTES.md](./PHASE7_LEARNING_NOTES.md)
 
 ### Phase 8: Mutation Testing (9-16 hours)
-**Status:** 🔄 IN PROGRESS - Wave 1 & 2 Complete
+**Status:** 🔄 IN PROGRESS - Waves 1, 2 & 3 Complete
 
 **Goal:** Validate test suite effectiveness using mutation testing
 
@@ -166,14 +166,14 @@ See `docs/learning/epic04_feature_enhancement/` for details.
 - [x] Phase 8.1: Setup - StrykerJS v9.4.0 installed and configured
 - [x] Wave 1: Core Logic - 55% → 65% (combinationGenerator.ts)
 - [x] Wave 2: Validation - 81% → 94% (validation.ts)
-- [ ] Wave 3: Database operations (optional)
+- [x] Wave 3: Database - 80% → 87% (5 files)
 - [ ] Phase 8.5: Documentation
 
 **Results:**
-- 14 new unit tests added
-- Unit tests: 202 → 216
+- 18 new unit tests added
+- Unit tests: 202 → 220
 
-**Branch:** `feature/phase8-mutation-testing`
+**Branch:** `feature/phase8-mutation-testing` (7 commits)
 
 **Reference:** [PHASE8_MUTATION_TESTING.md](./PHASE8_MUTATION_TESTING.md) | [PHASE8_LEARNING_NOTES.md](./PHASE8_LEARNING_NOTES.md)
 
@@ -208,13 +208,13 @@ See `docs/learning/epic04_feature_enhancement/` for details.
 - ✅ Phase 8.1: Stryker setup complete
 - ✅ Wave 1: Core Logic - 55% → 65% mutation score
 - ✅ Wave 2: Validation - 81% → 94% mutation score
-- ✅ 14 new unit tests (216 total)
-- ✅ 3 commits on feature/phase8-mutation-testing
+- ✅ Wave 3: Database - 80% → 87% mutation score
+- ✅ 18 new unit tests (220 total)
+- ✅ 7 commits on feature/phase8-mutation-testing
 
 **Next Session Options:**
-1. **Continue Phase 8:** Wave 3 (Database) or skip to Documentation
-2. **Create PR:** Phase 8 is already above target (>75%)
-3. **Start Phase 9:** Architecture Testing
+1. **Finish Phase 8:** Create PR and merge
+2. **Start Phase 9:** Architecture Testing
 
 **Remaining Phases:**
 1. **Phase 8 (Mutation Testing)** - Wave 3 optional, docs remaining
@@ -253,25 +253,25 @@ See `docs/learning/epic04_feature_enhancement/` for details.
 - **Phase 7 merged** - PR #3 merged to main
 - **Phase 8.1 Setup:**
   - Installed StrykerJS v9.4.0 with Jest runner and TypeScript checker
-  - Created stryker.config.json (base) and stryker.core.json (Wave 1)
-  - Added npm scripts: test:mutation, test:mutation:core, test:mutation:validation
+  - Created stryker.config.json (base) and wave-specific configs
+  - Added npm scripts: test:mutation, test:mutation:core, test:mutation:validation, test:mutation:db
   - Added .gitignore entries for reports/ and .stryker-tmp/
 - **Wave 1 - Core Logic (combinationGenerator.ts):**
-  - Initial: 55% mutation score
-  - Added 4 tests (empty result scenarios, deterministic filter test)
-  - Final: 65% mutation score
+  - Initial: 55% → Final: 65% (+4 tests)
   - Remaining survivors: logging strings, shuffle randomization
 - **Wave 2 - Validation (validation.ts):**
-  - Initial: 81% mutation score
-  - Added 10 tests (boundary conditions, whitespace handling)
-  - Final: 94% mutation score
+  - Initial: 81% → Final: 94% (+10 tests)
   - Remaining survivors: is_active early returns
+- **Wave 3 - Database (5 files):**
+  - Initial: 80% → Final: 87% (+4 tests)
+  - ingredients.ts: 71% → 84%, mealLogs.ts: 76% → 94%
+  - Remaining survivors: update function conditionals
 - **Key Learnings:**
   - `coverageAnalysis: "all"` more reliable than "perTest" for jest-expo
-  - Boundary tests (=1, at limit) highly effective for mutation killing
-  - Whitespace tests kill `.trim()` mutations
-  - Logging/telemetry survivors acceptable (don't affect behavior)
-- **Total:** 216 unit tests (+14), 3 commits
+  - Boundary tests highly effective for mutation killing
+  - SQLite boolean conversion needs explicit type checks
+  - Logging/telemetry survivors acceptable
+- **Total:** 220 unit tests (+18), 7 commits
 
 ### 2026-01-22 (Session 19 - Phase 7 Complete)
 - **Phase 7 Internationalization COMPLETE:**
