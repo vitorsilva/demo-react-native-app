@@ -10,9 +10,10 @@
     "regenerate": "Regenerate",
     "accept": "I'll have this!"
   },
-  "accepted": {
-    "title": "Enjoy your meal!",
-    "message": "Your selection has been logged"
+  "confirmation": {
+    "title": "{{mealType}} Logged",
+    "enjoyMessage": "Enjoy your meal!",
+    "done": "Done"
   },
   "error": {
     "title": "Error",
