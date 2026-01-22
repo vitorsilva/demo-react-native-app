@@ -13,6 +13,8 @@
     "lint:dead-code": "knip",
     "lint:dead-code:fix": "knip --fix",
     "lint:duplicates": "jscpd app/ lib/ components/",
+    "security:scan": "semgrep scan --config auto app/ lib/",
+    "security:scan:ci": "semgrep scan --config auto --error app/ lib/",
     "test": "jest",
     "test:mutation": "stryker run",
     "test:mutation:core": "stryker run stryker.core.json",
