@@ -113,24 +113,6 @@ Reorganize:
 
 ---
 
-### Phase 4: Polish Feature (Optional, 2-4 hours)
-**Goal:** Add one feature from Epic 2 Phase 6 to enhance the product
-
-Choose one from:
-- ⭐ Favorite combinations
-- 📊 Weekly variety report
-- 📸 Ingredient photos
-- 🥗 Basic nutrition tracking
-- 🔔 Smart notifications
-
-**Why this matters:** Pick one high-impact feature based on your personal usage and feedback.
-
-**You'll learn:** Depends on feature chosen
-
-**[View Enhancement Options →](./PHASE4_POLISH_FEATURE.md)**
-
----
-
 ### Phase 5: Telemetry Expansion (4-6 hours)
 **Goal:** Expand observability coverage to database and business logic
 
@@ -182,6 +164,66 @@ Tasks:
 - Product thinking
 
 **[Start Phase 6 →](./PHASE6_VALIDATION.md)**
+
+---
+
+### Phase 7: Internationalization (i18n) (Planned)
+**Goal:** Add multi-language support to SaborSpin
+
+**Scope:**
+- System language detection
+- User language override in settings
+- Localized UI text, dates, and numbers
+- Support for English, Portuguese, Spanish (TBD)
+
+**Why this matters:** Internationalization opens the app to a global audience and demonstrates professional-grade development practices.
+
+**You'll learn:**
+- i18n/l10n patterns in React Native
+- expo-localization integration
+- Translation management workflows
+
+**[View Phase 7 →](./PHASE7_I18N.md)**
+
+---
+
+### Phase 8: Mutation Testing (Planned)
+**Goal:** Validate test suite effectiveness using mutation testing
+
+**Scope:**
+- Configure mutation testing framework (Stryker)
+- Run mutations on business logic
+- Identify gaps in test coverage
+- Improve test quality
+
+**Why this matters:** Mutation testing reveals whether your tests actually catch bugs. High code coverage doesn't mean tests are effective.
+
+**You'll learn:**
+- Mutation testing concepts
+- Test quality assessment
+- Advanced testing strategies
+
+**[View Phase 8 →](./PHASE8_MUTATION_TESTING.md)**
+
+---
+
+### Phase 9: Architecture Testing (Planned)
+**Goal:** Enforce architectural rules and prevent code structure degradation
+
+**Scope:**
+- Define layer boundaries (UI → Business Logic → Database)
+- Detect circular dependencies
+- Automate architecture validation
+- CI/CD integration
+
+**Why this matters:** Architecture testing prevents "architecture drift" where code slowly violates design principles over time.
+
+**You'll learn:**
+- Architectural fitness functions
+- Dependency management
+- Clean architecture enforcement
+
+**[View Phase 9 →](./PHASE9_ARCHITECTURE_TESTING.md)**
 
 ---
 
@@ -297,14 +339,16 @@ meals-randomizer/                    # Renamed from demo-react-native-app
 
 ## ⏱️ Timeline & Effort
 
-### Total Estimated Time: 19-27 hours (development) + 3-4 weeks (validation)
+### Total Estimated Time: 19-25 hours (core phases) + ongoing work
 
 - **Phase 1:** User Customization (6-8 hours) - includes unit tests, E2E tests, APK deployment
 - **Phase 2:** Branding & Identity (5-7 hours) - includes testing, landing page deployment, branded APK
 - **Phase 3:** Project Structure & Documentation (4-6 hours) - includes documentation validation, final testing, v1.0.0 release
-- **Phase 4:** Polish Feature (2-4 hours, optional) - feature-dependent
 - **Phase 5:** Telemetry Expansion (4-6 hours) - database tracing, metrics, end-to-end validation
 - **Phase 6:** Validation & Iteration (3-4 weeks, ongoing) - beta testing, monitoring, iterative releases
+- **Phase 7:** Internationalization (TBD) - planned
+- **Phase 8:** Mutation Testing (TBD) - planned
+- **Phase 9:** Architecture Testing (TBD) - planned
 
 **Note:** Each phase now includes:
 - ✅ Comprehensive unit testing
@@ -321,16 +365,16 @@ meals-randomizer/                    # Renamed from demo-react-native-app
 - Days 4-5: Phase 2 (Branding)
 - Days 6-7: Phase 3 (Project Structure)
 
-**Week 3: Polish & Observability (Phases 4-5)**
-- Days 8-9: Phase 4 (Optional feature)
-- Days 10-11: Phase 5 (Telemetry Expansion)
-- Day 12: Final testing and V1.0.0 release
+**Week 3: Observability & Validation Prep (Phases 5-6)**
+- Days 8-9: Phase 5 (Telemetry Expansion)
+- Day 10: Final testing and V1.0.0 release
+- Days 11-12: Begin Phase 6 (Validation)
 
-**Week 4-7: Validation & Iteration (Phase 6)**
-- Week 4: Beta testing cycle 1 (V1.0.0 → V1.1.0)
-- Week 5: Beta testing cycle 2 (V1.1.0 → V1.2.0)
-- Week 6-7: Refinement and learning reflection
-- Ongoing: Monitor usage, collect feedback, iterate
+**Week 4+: Validation & Foundation Strengthening**
+- Ongoing: Phase 6 (Beta testing, monitoring, iteration)
+- As needed: Phase 7 (i18n), Phase 8 (Mutation Testing), Phase 9 (Architecture Testing)
+
+**Note:** Phases 7-9 are foundational improvements that can be tackled based on priority and available time.
 
 ---
 

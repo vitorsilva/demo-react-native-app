@@ -4,7 +4,7 @@
 
 **Started:** 2025-01-21
 
-**Current Status:** Phase 5 COMPLETE ✅
+**Current Status:** Phase 7 PLANNING 📋
 
 ---
 
@@ -14,9 +14,12 @@
 - ✅ **Phase 1:** User Customization - COMPLETE (100%)
 - ✅ **Phase 2:** Branding & Identity - COMPLETE (100%)
 - ✅ **Phase 3:** Project Structure & Documentation - COMPLETE (100%)
-- ⏸️ **Phase 4:** Polish Feature (Optional) - SKIPPED
+- ➡️ **Phase 4:** Moved to Epic 04 (Feature Enhancement)
 - ✅ **Phase 5:** Telemetry Expansion - COMPLETE (100%)
 - ⏸️ **Phase 6:** Validation & Iteration - Not started
+- 📋 **Phase 7:** Internationalization (i18n) - PLAN DRAFTED
+- ⏸️ **Phase 8:** Mutation Testing - Planned (placeholder)
+- ⏸️ **Phase 9:** Architecture Testing - Planned (placeholder)
 
 **Estimated Total Time:** 19-27 hours (development) + 3-4 weeks (validation)
 
@@ -80,19 +83,11 @@
 - [x] GitHub templates created (.github/) ✅
 - [x] CLAUDE.md updated for new structure ✅
 
-### Phase 4: Polish Feature (Optional, 2-4 hours)
-**Status:** Not Started
+### Phase 4: Polish Feature
+**Status:** ➡️ MOVED TO EPIC 04
 
-**Goal:** Add one high-impact feature
-
-**Options:**
-- [ ] Favorite Combinations (recommended - 2-3 hours)
-- [ ] Weekly Variety Report (3-4 hours)
-- [ ] Ingredient Photos (3-4 hours)
-- [ ] Basic Nutrition Tracking (4-5 hours)
-- [ ] Smart Notifications (3-4 hours)
-
-**Decision:** To be made after using app with Phase 1-3 features
+**Note:** Phase 4 (Polish Features) has been moved to Epic 04: Feature Enhancement.
+See `docs/learning/epic04_feature_enhancement/` for details.
 
 ### Phase 5: Telemetry Expansion (4-6 hours)
 **Status:** COMPLETE ✅
@@ -140,29 +135,64 @@
 - [ ] Final validation metrics achieved
 - [ ] Epic 3 completion celebrated
 
+### Phase 7: Internationalization (i18n) (7-12 days)
+**Status:** 📋 PLAN DRAFTED - Awaiting Review
+
+**Goal:** Add multi-language support (English + Portuguese pt-PT)
+
+**Plan Drafted:**
+- [x] Research completed (Saberloop patterns, 2026 best practices)
+- [x] Scope analyzed (~157 strings across 9 files)
+- [x] Implementation plan created (5 phases)
+- [x] Git strategy defined (17 commits on feature/phase7-i18n)
+- [x] Testing strategy defined (unit, E2E, Maestro)
+- [x] Translation workflow defined (Anthropic API + human review)
+- [ ] Plan reviewed and approved
+- [ ] Implementation started
+
+**Reference:** [PHASE7_I18N.md](./PHASE7_I18N.md)
+
+### Phase 8: Mutation Testing (TBD)
+**Status:** Planned (Placeholder)
+
+**Goal:** Validate test suite effectiveness using mutation testing
+
+**Reference:** [PHASE8_MUTATION_TESTING.md](./PHASE8_MUTATION_TESTING.md)
+
+### Phase 9: Architecture Testing (TBD)
+**Status:** Planned (Placeholder)
+
+**Goal:** Enforce architectural rules and prevent code structure degradation
+
+**Reference:** [PHASE9_ARCHITECTURE_TESTING.md](./PHASE9_ARCHITECTURE_TESTING.md)
+
 ---
 
 ## 🎯 Next Session Plan
 
-**Resume from:** Phase 6 - Validation & Iteration
+**Resume from:** Phase 7 - i18n Plan Review
 
-**Branch:** `main` (Phase 5 merged ✅)
+**Branch:** `main`
 
-**Phase 5 Complete & Merged:**
-- ✅ All telemetry components implemented
-- ✅ 139 unit tests passing (38 new telemetry tests)
-- ✅ 16 Playwright E2E tests passing
-- ✅ 19 Maestro mobile E2E test steps passing
-- ✅ Documentation complete (TELEMETRY.md, MAESTRO_TESTING.md)
-- ✅ TypeScript and lint checks pass
-- ✅ PR #2 merged to main
+**Epic Restructuring Complete:**
+- ✅ Added Phase 7 (i18n), Phase 8 (Mutation Testing), Phase 9 (Architecture Testing) to Epic 03
+- ✅ Created Epic 04: Feature Enhancement
+- ✅ Moved Phase 4 (Polish Features) to Epic 04
+- ✅ Phase 7 i18n plan drafted and saved to PHASE7_I18N.md
+
+**Phase 7 i18n Plan Status:**
+- ✅ Research completed (Saberloop patterns analyzed)
+- ✅ Scope: ~157 strings, 2 languages (en, pt-PT)
+- ✅ Implementation plan: 5 phases, 17 commits
+- ✅ Translation workflow: Anthropic API + human review
+- ⏳ Awaiting review before implementation
 
 **Next Session Tasks:**
-1. Build production APK (V1.0.0)
-2. Start Phase 6: Beta testing recruitment
-3. (Optional) Add Maestro tests to GitHub Actions CI
+1. Review Phase 7 i18n plan (PHASE7_I18N.md)
+2. Approve plan and start implementation OR request changes
+3. (Parallel) Consider Phase 6 beta testing when ready
 
-**Reference:** [PHASE5_TELEMETRY_EXPANSION.md](./PHASE5_TELEMETRY_EXPANSION.md)
+**Reference:** [PHASE7_I18N.md](./PHASE7_I18N.md)
 
 ---
 
@@ -187,6 +217,28 @@
 ---
 
 ## 🔄 Change Log
+
+### 2026-01-22 (Session 17 - Epic Planning & i18n Research)
+- **Epic Structure Reorganization:**
+  - Added Phase 7 (i18n), Phase 8 (Mutation Testing), Phase 9 (Architecture Testing) placeholders
+  - Created Epic 04: Feature Enhancement (`docs/learning/epic04_feature_enhancement/`)
+  - Moved Phase 4 (Polish Features) from Epic 03 to Epic 04
+  - Updated Epic 03 OVERVIEW.md with new phases
+- **Phase 7 i18n Planning:**
+  - Explored Saberloop PWA (`demo-pwa-app`) i18n implementation
+  - Found comprehensive patterns: i18next v25.7.3, 9 languages, 484 lines of tests
+  - Researched 2026 best practices (Expo, react-i18next, Obytes starter)
+  - Explored SaborSpin codebase: ~157 strings across 9 files
+  - Drafted complete implementation plan:
+    - Library: i18next + react-i18next + expo-localization
+    - Languages: English (default) + Portuguese (pt-PT)
+    - Folder structure matching Saberloop pattern
+    - 5 implementation phases with commits
+    - Git strategy: feature/phase7-i18n branch, 17 small commits
+    - Testing: unit tests, E2E (Playwright), Maestro
+    - Translation workflow: Anthropic API + human review
+  - Saved plan to PHASE7_I18N.md
+- **Status:** Plan awaiting review before implementation
 
 ### 2026-01-21 (Session 16 - Maestro Testing & Merge)
 - **Added Maestro mobile E2E testing infrastructure**
@@ -533,5 +585,5 @@
 
 ---
 
-**Last Updated:** 2026-01-21
-**Next Session:** Phase 6 - Validation & Iteration (build V1.0.0, beta testing)
+**Last Updated:** 2026-01-22
+**Next Session:** Review Phase 7 i18n plan (PHASE7_I18N.md) and approve/modify
