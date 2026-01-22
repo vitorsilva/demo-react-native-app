@@ -291,6 +291,20 @@ See `docs/learning/epic04_feature_enhancement/` for details.
 
 ## 🔄 Change Log
 
+### 2026-01-22 (Session 24 - Documentation & Color Constants)
+- **Documentation Updates:**
+  - Created PHASE12_LEARNING_NOTES.md with detailed learnings
+  - Created PHASE12_CODE_QUALITY_TOOLS.md plan document
+  - Updated SESSION_STATUS.md with Phase 12 completion
+- **Color Constants Extraction:**
+  - Created `constants/colors.ts` with centralized color palette
+  - Updated `constants/shared-styles.ts` to use color constants
+  - Updated `app/(tabs)/index.tsx` to use color constants
+  - Updated `app/(tabs)/history.tsx` to use color constants
+  - Semantic color names (primary, background, textPrimary, etc.)
+- **Verification:** All 220 unit tests + 23 E2E tests passing
+- **Note:** Semgrep requires pip installation (deferred)
+
 ### 2026-01-22 (Session 23 - Phase 12 Advanced Code Quality Tools)
 - **Phase 12 Advanced Code Quality Tools COMPLETE:**
   - Installed eslint-plugin-sonarjs for code quality rules
