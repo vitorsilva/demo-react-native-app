@@ -12,6 +12,11 @@ import {
   Alert,
   ActivityIndicator,
 } from 'react-native';
+import {
+  modalStyles,
+  screenStyles,
+  actionButtonStyles,
+} from '../../constants/shared-styles';
 import { useStore } from '../../lib/store';
 import { trackScreenView } from '../../lib/telemetry/screenTracking';
 
@@ -161,24 +166,24 @@ export default function ManageCategoriesScreen() {
 
         <View style={styles.categoryActions}>
           <TouchableOpacity
-            style={styles.editButton}
+            style={actionButtonStyles.editButton}
             onPress={() => openEditModal(item)}
             testID={`edit-${item.id}`}
           >
-            <Text style={styles.editButtonText}>{t('common:buttons.edit')}</Text>
+            <Text style={actionButtonStyles.editButtonText}>{t('common:buttons.edit')}</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={[
-              styles.deleteButton,
-              ingredientCount > 0 && styles.deleteButtonDisabled,
+              actionButtonStyles.deleteButton,
+              ingredientCount > 0 && actionButtonStyles.deleteButtonDisabled,
             ]}
             onPress={() => handleDeleteCategory(item.id, item.name)}
             testID={`delete-${item.id}`}
           >
             <Text
               style={[
-                styles.deleteButtonText,
-                ingredientCount > 0 && styles.deleteButtonTextDisabled,
+                actionButtonStyles.deleteButtonText,
+                ingredientCount > 0 && actionButtonStyles.deleteButtonTextDisabled,
               ]}
             >
               X
@@ -191,14 +196,14 @@ export default function ManageCategoriesScreen() {
 
   // Render modal form
   const renderModalForm = (isEdit: boolean) => (
-    <View style={styles.modalContent}>
-      <Text style={styles.modalTitle}>
+    <View style={modalStyles.modalContent}>
+      <Text style={modalStyles.modalTitle}>
         {isEdit ? t('edit.title') : t('add.title')}
       </Text>
 
-      <Text style={styles.inputLabel}>{t('form.name')}</Text>
+      <Text style={modalStyles.inputLabel}>{t('form.name')}</Text>
       <TextInput
-        style={styles.textInput}
+        style={modalStyles.textInput}
         value={categoryName}
         onChangeText={setCategoryName}
         placeholder={t('form.namePlaceholder')}
@@ -207,9 +212,9 @@ export default function ManageCategoriesScreen() {
         testID="category-name-input"
       />
 
-      <View style={styles.modalButtons}>
+      <View style={modalStyles.modalButtons}>
         <TouchableOpacity
-          style={styles.cancelButton}
+          style={modalStyles.cancelButton}
           onPress={() => {
             if (isEdit) {
               setIsEditModalVisible(false);
@@ -221,14 +226,14 @@ export default function ManageCategoriesScreen() {
           }}
           testID="cancel-button"
         >
-          <Text style={styles.cancelButtonText}>{t('common:buttons.cancel')}</Text>
+          <Text style={modalStyles.cancelButtonText}>{t('common:buttons.cancel')}</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          style={styles.saveButton}
+          style={modalStyles.saveButton}
           onPress={isEdit ? handleEditCategory : handleAddCategory}
           testID="save-button"
         >
-          <Text style={styles.saveButtonText}>{isEdit ? t('common:buttons.save') : t('common:buttons.add')}</Text>
+          <Text style={modalStyles.saveButtonText}>{isEdit ? t('common:buttons.save') : t('common:buttons.add')}</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -236,34 +241,34 @@ export default function ManageCategoriesScreen() {
 
   if (isLoading && categories.length === 0) {
     return (
-      <View style={styles.loadingContainer}>
+      <View style={screenStyles.loadingContainer}>
         <ActivityIndicator size="large" color="#3e96ef" />
-        <Text style={styles.loadingText}>{t('common:loading')}</Text>
+        <Text style={screenStyles.loadingText}>{t('common:loading')}</Text>
       </View>
     );
   }
 
   return (
-    <View style={styles.container}>
+    <View style={screenStyles.container}>
       {/* Header */}
-      <View style={styles.header}>
-        <Text style={styles.headerTitle}>{t('title')}</Text>
+      <View style={screenStyles.header}>
+        <Text style={screenStyles.headerTitle}>{t('title')}</Text>
         <TouchableOpacity
-          style={styles.addButton}
+          style={screenStyles.addButton}
           onPress={() => {
             setCategoryName('');
             setIsAddModalVisible(true);
           }}
           testID="add-category-button"
         >
-          <Text style={styles.addButtonText}>+ {t('common:buttons.add')}</Text>
+          <Text style={screenStyles.addButtonText}>+ {t('common:buttons.add')}</Text>
         </TouchableOpacity>
       </View>
 
       {/* Error message */}
       {error && (
-        <View style={styles.errorContainer}>
-          <Text style={styles.errorText}>{error}</Text>
+        <View style={screenStyles.errorContainer}>
+          <Text style={screenStyles.errorText}>{error}</Text>
         </View>
       )}
 
@@ -277,9 +282,9 @@ export default function ManageCategoriesScreen() {
 
       {/* Categories list */}
       {sortedCategories.length === 0 ? (
-        <View style={styles.emptyState} testID="empty-state">
-          <Text style={styles.emptyStateText}>{t('empty.noCategories')}</Text>
-          <Text style={styles.emptyStateSubtext}>
+        <View style={screenStyles.emptyState} testID="empty-state">
+          <Text style={screenStyles.emptyStateText}>{t('empty.noCategories')}</Text>
+          <Text style={screenStyles.emptyStateSubtext}>
             {t('empty.addFirst')}
           </Text>
         </View>
@@ -289,7 +294,7 @@ export default function ManageCategoriesScreen() {
           keyExtractor={(item) => item.id}
           renderItem={renderCategoryItem}
           testID="categories-list"
-          contentContainerStyle={styles.listContent}
+          contentContainerStyle={screenStyles.listContent}
         />
       )}
 
@@ -300,7 +305,7 @@ export default function ManageCategoriesScreen() {
         transparent={true}
         onRequestClose={() => setIsAddModalVisible(false)}
       >
-        <View style={styles.modalOverlay}>{renderModalForm(false)}</View>
+        <View style={modalStyles.modalOverlay}>{renderModalForm(false)}</View>
       </Modal>
 
       {/* Edit Modal */}
@@ -310,64 +315,14 @@ export default function ManageCategoriesScreen() {
         transparent={true}
         onRequestClose={() => setIsEditModalVisible(false)}
       >
-        <View style={styles.modalOverlay}>{renderModalForm(true)}</View>
+        <View style={modalStyles.modalOverlay}>{renderModalForm(true)}</View>
       </Modal>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#111418',
-  },
-  loadingContainer: {
-    flex: 1,
-    backgroundColor: '#111418',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  loadingText: {
-    color: '#FFFFFF',
-    marginTop: 16,
-    fontSize: 16,
-  },
-  // Header
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    padding: 16,
-    paddingTop: 60,
-  },
-  headerTitle: {
-    color: '#FFFFFF',
-    fontSize: 24,
-    fontWeight: 'bold',
-  },
-  addButton: {
-    backgroundColor: '#3e96ef',
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    borderRadius: 8,
-  },
-  addButtonText: {
-    color: '#FFFFFF',
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-  // Error
-  errorContainer: {
-    backgroundColor: '#ff4444',
-    padding: 12,
-    marginHorizontal: 16,
-    borderRadius: 8,
-  },
-  errorText: {
-    color: '#FFFFFF',
-    textAlign: 'center',
-  },
-  // Summary
+  // Summary (screen-specific)
   summaryContainer: {
     paddingHorizontal: 16,
     paddingVertical: 8,
@@ -378,11 +333,7 @@ const styles = StyleSheet.create({
     color: '#9dabb9',
     fontSize: 14,
   },
-  // List
-  listContent: {
-    paddingBottom: 20,
-  },
-  // Category item
+  // Category item (screen-specific)
   categoryItem: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -409,110 +360,5 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 8,
-  },
-  editButton: {
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    borderRadius: 4,
-    backgroundColor: '#283039',
-  },
-  editButtonText: {
-    color: '#FFFFFF',
-    fontSize: 12,
-  },
-  deleteButton: {
-    paddingHorizontal: 10,
-    paddingVertical: 6,
-    borderRadius: 4,
-    backgroundColor: '#ff4444',
-  },
-  deleteButtonDisabled: {
-    backgroundColor: '#4a4a4a',
-  },
-  deleteButtonText: {
-    color: '#FFFFFF',
-    fontSize: 12,
-    fontWeight: 'bold',
-  },
-  deleteButtonTextDisabled: {
-    color: '#888888',
-  },
-  // Empty state
-  emptyState: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 32,
-  },
-  emptyStateText: {
-    color: '#FFFFFF',
-    fontSize: 18,
-    fontWeight: '500',
-    marginBottom: 8,
-  },
-  emptyStateSubtext: {
-    color: '#9dabb9',
-    fontSize: 14,
-    textAlign: 'center',
-  },
-  // Modal
-  modalOverlay: {
-    flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.7)',
-    justifyContent: 'center',
-    padding: 20,
-  },
-  modalContent: {
-    backgroundColor: '#1a1f25',
-    borderRadius: 16,
-    padding: 20,
-  },
-  modalTitle: {
-    color: '#FFFFFF',
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginBottom: 20,
-    textAlign: 'center',
-  },
-  inputLabel: {
-    color: '#9dabb9',
-    fontSize: 14,
-    marginBottom: 8,
-  },
-  textInput: {
-    backgroundColor: '#283039',
-    borderRadius: 8,
-    padding: 12,
-    color: '#FFFFFF',
-    fontSize: 16,
-  },
-  modalButtons: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginTop: 24,
-    gap: 12,
-  },
-  cancelButton: {
-    flex: 1,
-    paddingVertical: 14,
-    borderRadius: 8,
-    backgroundColor: '#283039',
-    alignItems: 'center',
-  },
-  cancelButtonText: {
-    color: '#FFFFFF',
-    fontSize: 16,
-  },
-  saveButton: {
-    flex: 1,
-    paddingVertical: 14,
-    borderRadius: 8,
-    backgroundColor: '#3e96ef',
-    alignItems: 'center',
-  },
-  saveButtonText: {
-    color: '#FFFFFF',
-    fontSize: 16,
-    fontWeight: 'bold',
   },
 });
