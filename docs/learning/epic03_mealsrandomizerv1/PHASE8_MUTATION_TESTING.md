@@ -99,8 +99,8 @@ When executing long implementation sessions, LLM quality degrades significantly 
 │  2. EXECUTE task (all context is already in the task)       │
 │  3. MARK complete ([ ] → [x]) and commit                    │
 │  4. CHECK context usage                                      │
-│     └─ If < 75%: continue to next task                      │
-│     └─ If ≥ 75%: update progress below, then /clear         │
+│     └─ If < 67%: continue to next task                      │
+│     └─ If ≥ 67%: update progress below, then /clear         │
 │  5. NEW SESSION reads plan → continues from step 1          │
 └─────────────────────────────────────────────────────────────┘
 ```
