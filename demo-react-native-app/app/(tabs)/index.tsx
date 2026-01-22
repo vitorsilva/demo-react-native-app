@@ -3,6 +3,7 @@ import { useRouter } from 'expo-router';
 import { useEffect, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { View, Text, StyleSheet, TouchableOpacity, FlatList } from 'react-native';
+import { colors } from '../../constants/colors';
 import { useStore } from '../../lib/store';
 import { trackScreenView } from '../../lib/telemetry/screenTracking';
 import { getDaysAgo, isToday, isYesterday } from '../../lib/utils/dateUtils';
@@ -160,7 +161,7 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#111418',
+    backgroundColor: colors.background,
   },
   // Header styles
   header: {
@@ -176,11 +177,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   menuIconText: {
-    color: '#FFFFFF',
+    color: colors.textPrimary,
     fontSize: 24,
   },
   headerTitle: {
-    color: '#FFFFFF',
+    color: colors.textPrimary,
     fontSize: 18,
     fontWeight: 'bold',
     flex: 1,
@@ -192,14 +193,14 @@ const styles = StyleSheet.create({
     gap: 12,
   },
   mealTypeButton: {
-    backgroundColor: '#3e96ef',
+    backgroundColor: colors.primary,
     borderRadius: 8,
     height: 48,
     justifyContent: 'center',
     alignItems: 'center',
   },
   mealTypeButtonText: {
-    color: '#FFFFFF',
+    color: colors.textPrimary,
     fontSize: 16,
     fontWeight: 'bold',
   },
@@ -209,18 +210,18 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   noMealTypesText: {
-    color: '#FFFFFF',
+    color: colors.textPrimary,
     fontSize: 16,
     fontWeight: '500',
   },
   noMealTypesSubtext: {
-    color: '#9dabb9',
+    color: colors.textSecondary,
     fontSize: 14,
     marginTop: 4,
   },
   // Section title
   sectionTitle: {
-    color: '#FFFFFF',
+    color: colors.textPrimary,
     fontSize: 22,
     fontWeight: 'bold',
     paddingHorizontal: 16,
@@ -240,24 +241,24 @@ const styles = StyleSheet.create({
     width: 48,
     height: 48,
     borderRadius: 8,
-    backgroundColor: '#283039',
+    backgroundColor: colors.backgroundInactive,
     justifyContent: 'center',
     alignItems: 'center',
   },
   checkIconText: {
-    color: '#FFFFFF',
+    color: colors.textPrimary,
     fontSize: 24,
   },
   mealItemContent: {
     flex: 1,
   },
   mealItemTitle: {
-    color: '#FFFFFF',
+    color: colors.textPrimary,
     fontSize: 16,
     fontWeight: '500',
   },
   mealItemSubtitle: {
-    color: '#9dabb9',
+    color: colors.textSecondary,
     fontSize: 14,
   },
   // Empty state
@@ -266,13 +267,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   emptyStateText: {
-    color: '#FFFFFF',
+    color: colors.textPrimary,
     fontSize: 18,
     fontWeight: '500',
     marginBottom: 8,
   },
   emptyStateSubtext: {
-    color: '#9dabb9',
+    color: colors.textSecondary,
     fontSize: 14,
     textAlign: 'center',
   },

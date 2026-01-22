@@ -4,6 +4,7 @@
  */
 
 import { StyleSheet } from 'react-native';
+import { colors } from './colors';
 
 /**
  * Modal styles for add/edit dialogs.
@@ -17,27 +18,27 @@ export const modalStyles = StyleSheet.create({
     padding: 20,
   },
   modalContent: {
-    backgroundColor: '#1a1f25',
+    backgroundColor: colors.backgroundModal,
     borderRadius: 16,
     padding: 20,
   },
   modalTitle: {
-    color: '#FFFFFF',
+    color: colors.textPrimary,
     fontSize: 20,
     fontWeight: 'bold',
     marginBottom: 20,
     textAlign: 'center',
   },
   inputLabel: {
-    color: '#9dabb9',
+    color: colors.textSecondary,
     fontSize: 14,
     marginBottom: 8,
   },
   textInput: {
-    backgroundColor: '#283039',
+    backgroundColor: colors.backgroundInput,
     borderRadius: 8,
     padding: 12,
-    color: '#FFFFFF',
+    color: colors.textPrimary,
     fontSize: 16,
   },
   modalButtons: {
@@ -50,22 +51,22 @@ export const modalStyles = StyleSheet.create({
     flex: 1,
     paddingVertical: 14,
     borderRadius: 8,
-    backgroundColor: '#283039',
+    backgroundColor: colors.backgroundInactive,
     alignItems: 'center',
   },
   cancelButtonText: {
-    color: '#FFFFFF',
+    color: colors.textPrimary,
     fontSize: 16,
   },
   saveButton: {
     flex: 1,
     paddingVertical: 14,
     borderRadius: 8,
-    backgroundColor: '#3e96ef',
+    backgroundColor: colors.primary,
     alignItems: 'center',
   },
   saveButtonText: {
-    color: '#FFFFFF',
+    color: colors.textPrimary,
     fontSize: 16,
     fontWeight: 'bold',
   },
@@ -78,16 +79,16 @@ export const modalStyles = StyleSheet.create({
 export const screenStyles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#111418',
+    backgroundColor: colors.background,
   },
   loadingContainer: {
     flex: 1,
-    backgroundColor: '#111418',
+    backgroundColor: colors.background,
     justifyContent: 'center',
     alignItems: 'center',
   },
   loadingText: {
-    color: '#FFFFFF',
+    color: colors.textPrimary,
     marginTop: 16,
     fontSize: 16,
   },
@@ -99,29 +100,29 @@ export const screenStyles = StyleSheet.create({
     paddingTop: 60,
   },
   headerTitle: {
-    color: '#FFFFFF',
+    color: colors.textPrimary,
     fontSize: 24,
     fontWeight: 'bold',
   },
   addButton: {
-    backgroundColor: '#3e96ef',
+    backgroundColor: colors.primary,
     paddingHorizontal: 16,
     paddingVertical: 8,
     borderRadius: 8,
   },
   addButtonText: {
-    color: '#FFFFFF',
+    color: colors.textPrimary,
     fontSize: 16,
     fontWeight: 'bold',
   },
   errorContainer: {
-    backgroundColor: '#ff4444',
+    backgroundColor: colors.error,
     padding: 12,
     marginHorizontal: 16,
     borderRadius: 8,
   },
   errorText: {
-    color: '#FFFFFF',
+    color: colors.textPrimary,
     textAlign: 'center',
   },
   listContent: {
@@ -134,13 +135,13 @@ export const screenStyles = StyleSheet.create({
     padding: 32,
   },
   emptyStateText: {
-    color: '#FFFFFF',
+    color: colors.textPrimary,
     fontSize: 18,
     fontWeight: '500',
     marginBottom: 8,
   },
   emptyStateSubtext: {
-    color: '#9dabb9',
+    color: colors.textSecondary,
     fontSize: 14,
     textAlign: 'center',
   },
@@ -155,27 +156,27 @@ export const actionButtonStyles = StyleSheet.create({
     paddingHorizontal: 12,
     paddingVertical: 6,
     borderRadius: 4,
-    backgroundColor: '#283039',
+    backgroundColor: colors.backgroundInactive,
   },
   editButtonText: {
-    color: '#FFFFFF',
+    color: colors.textPrimary,
     fontSize: 12,
   },
   deleteButton: {
     paddingHorizontal: 10,
     paddingVertical: 6,
     borderRadius: 4,
-    backgroundColor: '#ff4444',
+    backgroundColor: colors.error,
   },
   deleteButtonDisabled: {
-    backgroundColor: '#4a4a4a',
+    backgroundColor: colors.disabled,
   },
   deleteButtonText: {
-    color: '#FFFFFF',
+    color: colors.textPrimary,
     fontSize: 12,
     fontWeight: 'bold',
   },
   deleteButtonTextDisabled: {
-    color: '#888888',
+    color: colors.disabledText,
   },
 });

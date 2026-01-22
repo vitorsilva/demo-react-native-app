@@ -2,6 +2,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import { useEffect, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { View, Text, StyleSheet, SectionList } from 'react-native';
+import { colors } from '../../constants/colors';
 import { getCurrentLanguage } from '../../lib/i18n';
 import { useStore } from '../../lib/store';
 import { trackScreenView } from '../../lib/telemetry/screenTracking';
@@ -151,13 +152,13 @@ export default function HistoryScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#111418',
+    backgroundColor: colors.background,
   },
   listContent: {
     padding: 16,
   },
   sectionHeader: {
-    backgroundColor: '#1a1d23',
+    backgroundColor: colors.historyCardBackground,
     paddingVertical: 8,
     paddingHorizontal: 12,
     borderRadius: 8,
@@ -167,10 +168,10 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 16,
     fontWeight: 'bold',
-    color: '#FFFFFF',
+    color: colors.textPrimary,
   },
   mealItem: {
-    backgroundColor: '#1f2329',
+    backgroundColor: colors.backgroundCard,
     padding: 16,
     borderRadius: 12,
     marginBottom: 8,
@@ -187,11 +188,11 @@ const styles = StyleSheet.create({
   mealType: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#FFFFFF',
+    color: colors.textPrimary,
   },
   ingredients: {
     fontSize: 14,
-    color: '#9BA1A6',
+    color: colors.textMuted,
   },
   emptyState: {
     flex: 1,
@@ -201,11 +202,11 @@ const styles = StyleSheet.create({
   emptyText: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: '#FFFFFF',
+    color: colors.textPrimary,
     marginBottom: 8,
   },
   emptySubtext: {
     fontSize: 14,
-    color: '#9BA1A6',
+    color: colors.textMuted,
   },
 });
