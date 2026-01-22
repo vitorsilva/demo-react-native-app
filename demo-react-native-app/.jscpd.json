@@ -1,0 +1,6 @@
+{
+  "threshold": 10,
+  "reporters": ["console"],
+  "ignore": ["**/__tests__/**", "**/__mocks__/**", "node_modules/**", "e2e/**"],
+  "format": ["typescript", "tsx"]
+}

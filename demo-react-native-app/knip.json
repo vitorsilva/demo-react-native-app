@@ -1,0 +1,18 @@
+{
+  "$schema": "https://unpkg.com/knip@latest/schema.json",
+  "entry": ["app/**/*.tsx", "lib/**/*.ts"],
+  "project": ["app/**/*.tsx", "lib/**/*.ts", "components/**/*.tsx"],
+  "ignore": ["**/__tests__/**", "**/__mocks__/**", "e2e/**"],
+  "ignoreDependencies": [
+    "babel-jest",
+    "react-test-renderer",
+    "baseline-browser-mapping",
+    "eslint-config-prettier",
+    "sharp",
+    "expo-updates",
+    "@expo/metro-config",
+    "metro-minify-terser"
+  ],
+  "jest": true,
+  "typescript": true
+}
