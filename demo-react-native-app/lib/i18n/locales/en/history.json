@@ -1,8 +1,11 @@
 {
   "title": "Meal History",
-  "empty": "No meals logged yet",
-  "today": "Today",
-  "yesterday": "Yesterday",
-  "daysAgo": "{{count}} days ago",
-  "meal": "{{type}} - {{ingredients}}"
+  "empty": {
+    "title": "No meals logged yet",
+    "subtitle": "Log your first meal from the Home screen"
+  },
+  "date": {
+    "today": "Today",
+    "yesterday": "Yesterday"
+  }
 }

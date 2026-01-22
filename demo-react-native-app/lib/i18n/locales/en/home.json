@@ -1,8 +1,20 @@
 {
   "title": "SaborSpin",
-  "subtitle": "What would you like to eat?",
+  "mealTypeIdeas": "{{mealType}} Ideas",
   "recentMeals": "Recent Meals",
-  "noRecentMeals": "No recent meals yet",
+  "noRecentMeals": "No meals logged yet",
+  "getStartedWithMealType": "Tap \"{{mealType}} Ideas\" to get started!",
+  "getStartedConfigureMealTypes": "Configure meal types in Settings to get started!",
   "noMealTypes": "No meal types configured",
-  "configureMealTypes": "Go to Settings to add meal types"
+  "configureMealTypes": "Go to Settings to add meal types",
+  "date": {
+    "today": "Today",
+    "yesterday": "Yesterday",
+    "daysAgo_one": "{{count}} day ago",
+    "daysAgo_other": "{{count}} days ago"
+  },
+  "accessibility": {
+    "navigateToSuggestions": "Navigate to {{mealType}} suggestions",
+    "opensSuggestionsHint": "Opens a screen with {{mealType}} meal combinations"
+  }
 }

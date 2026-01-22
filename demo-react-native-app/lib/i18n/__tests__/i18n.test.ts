@@ -248,7 +248,8 @@ describe('i18n Module', () => {
     });
 
     it('should handle interpolation', () => {
-      const result = i18n.t('history:daysAgo', { count: 5 });
+      // Using home namespace which has daysAgo with pluralization
+      const result = i18n.t('home:date.daysAgo', { count: 5 });
       expect(result).toBe('5 days ago');
     });
 

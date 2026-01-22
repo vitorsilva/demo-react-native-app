@@ -1,11 +1,15 @@
 import { View, Text, StyleSheet, SectionList } from 'react-native';
 import { useEffect, useCallback } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
+import { useTranslation } from 'react-i18next';
 import { trackScreenView } from '../../lib/telemetry/screenTracking';
 import { useStore } from '../../lib/store';
+import { getCurrentLanguage } from '../../lib/i18n';
 import type { MealLog } from '../../types/database';
 
 export default function HistoryScreen() {
+  const { t } = useTranslation('history');
+
   // Zustand store selectors
   const isDatabaseReady = useStore((state) => state.isDatabaseReady);
   const mealLogs = useStore((state) => state.mealLogs);
@@ -31,6 +35,17 @@ export default function HistoryScreen() {
     }, [isDatabaseReady, loadMealLogs])
   );
 
+  // Get locale for date formatting
+  const getDateLocale = (): string => {
+    const lang = getCurrentLanguage();
+    // Map language codes to locale codes
+    const localeMap: Record<string, string> = {
+      en: 'en-US',
+      'pt-PT': 'pt-PT',
+    };
+    return localeMap[lang] || 'en-US';
+  };
+
   // Helper to format date as section title
   const formatDateSection = (dateString: string): string => {
     const mealDate = new Date(dateString);
@@ -45,11 +60,11 @@ export default function HistoryScreen() {
     mealDateOnly.setHours(0, 0, 0, 0);
 
     if (mealDateOnly.getTime() === today.getTime()) {
-      return 'Today';
+      return t('date.today');
     } else if (mealDateOnly.getTime() === yesterday.getTime()) {
-      return 'Yesterday';
+      return t('date.yesterday');
     } else {
-      return mealDate.toLocaleDateString('en-US', {
+      return mealDate.toLocaleDateString(getDateLocale(), {
         weekday: 'short',
         month: 'short',
         day: 'numeric',
@@ -82,10 +97,22 @@ export default function HistoryScreen() {
     [] as { title: string; data: MealLog[] }[]
   );
 
+  // Get meal type icon based on name
+  const getMealIcon = (mealType: string): string => {
+    const iconMap: Record<string, string> = {
+      breakfast: '🌅',
+      snack: '🍎',
+      lunch: '🍽️',
+      dinner: '🌙',
+    };
+    return iconMap[mealType.toLowerCase()] || '🍴';
+  };
+
   // Render each meal item
   const renderMealItem = ({ item }: { item: MealLog }) => {
-    const mealIcon = item.mealType === 'breakfast' ? '🌅' : '🍎';
-    const mealTypeLabel = item.mealType === 'breakfast' ? 'Breakfast' : 'Snack';
+    const mealIcon = getMealIcon(item.mealType);
+    // Use the actual meal type name (capitalized)
+    const mealTypeLabel = item.mealType.charAt(0).toUpperCase() + item.mealType.slice(1);
     const ingredientNames = getIngredientNames(item.ingredients);
 
     return (
@@ -111,8 +138,8 @@ export default function HistoryScreen() {
     return (
       <View style={styles.container}>
         <View style={styles.emptyState} testID="history-empty-state">
-          <Text style={styles.emptyText}>No meals logged yet</Text>
-          <Text style={styles.emptySubtext}>Log your first meal from the Home screen</Text>
+          <Text style={styles.emptyText}>{t('empty.title')}</Text>
+          <Text style={styles.emptySubtext}>{t('empty.subtitle')}</Text>
         </View>
       </View>
     );
