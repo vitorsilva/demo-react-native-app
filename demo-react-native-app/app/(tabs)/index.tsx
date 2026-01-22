@@ -2,11 +2,13 @@ import { View, Text, StyleSheet, TouchableOpacity, FlatList } from 'react-native
 import { useEffect, useCallback } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
 import { useRouter } from 'expo-router';
+import { useTranslation } from 'react-i18next';
 import { trackScreenView } from '../../lib/telemetry/screenTracking';
 import { useStore } from '../../lib/store';
 
 export default function HomeScreen() {
   const router = useRouter();
+  const { t } = useTranslation('home');
 
   // Zustand store selectors
   const isDatabaseReady = useStore((state) => state.isDatabaseReady);
@@ -54,14 +56,14 @@ export default function HomeScreen() {
     mealDateOnly.setHours(0, 0, 0, 0);
 
     if (mealDateOnly.getTime() === today.getTime()) {
-      return 'Today';
+      return t('date.today');
     } else if (mealDateOnly.getTime() === yesterday.getTime()) {
-      return 'Yesterday';
+      return t('date.yesterday');
     } else {
       const daysAgo = Math.floor(
         (today.getTime() - mealDateOnly.getTime()) / (1000 * 60 * 60 * 24)
       );
-      return `${daysAgo} days ago`;
+      return t('date.daysAgo', { count: daysAgo });
     }
   };
 
@@ -98,17 +100,15 @@ export default function HomeScreen() {
         <View style={styles.menuIcon}>
           <Text style={styles.menuIconText}>☰</Text>
         </View>
-        <Text style={styles.headerTitle}>SaborSpin</Text>
+        <Text style={styles.headerTitle}>{t('title')}</Text>
       </View>
 
       {/* Meal Type Buttons - Dynamically generated */}
       <View style={styles.buttonsContainer}>
         {activeMealTypes.length === 0 ? (
           <View style={styles.noMealTypesContainer}>
-            <Text style={styles.noMealTypesText}>No meal types configured</Text>
-            <Text style={styles.noMealTypesSubtext}>
-              Go to Settings to add meal types
-            </Text>
+            <Text style={styles.noMealTypesText}>{t('noMealTypes')}</Text>
+            <Text style={styles.noMealTypesSubtext}>{t('configureMealTypes')}</Text>
           </View>
         ) : (
           activeMealTypes.map((mealType) => (
@@ -118,26 +118,32 @@ export default function HomeScreen() {
               onPress={() => handleMealTypePress(mealType.name)}
               testID={`${mealType.name.toLowerCase()}-ideas-button`}
               accessible={true}
-              accessibilityLabel={`Navigate to ${mealType.name.toLowerCase()} suggestions`}
-              accessibilityHint={`Opens a screen with ${mealType.name.toLowerCase()} meal combinations`}
+              accessibilityLabel={t('accessibility.navigateToSuggestions', {
+                mealType: mealType.name.toLowerCase(),
+              })}
+              accessibilityHint={t('accessibility.opensSuggestionsHint', {
+                mealType: mealType.name.toLowerCase(),
+              })}
               accessibilityRole="button"
             >
-              <Text style={styles.mealTypeButtonText}>{mealType.name} Ideas</Text>
+              <Text style={styles.mealTypeButtonText}>
+                {t('mealTypeIdeas', { mealType: mealType.name })}
+              </Text>
             </TouchableOpacity>
           ))
         )}
       </View>
 
       {/* Recent Meals Section */}
-      <Text style={styles.sectionTitle}>Recent Meals</Text>
+      <Text style={styles.sectionTitle}>{t('recentMeals')}</Text>
 
       {recentMeals.length === 0 ? (
         <View style={styles.emptyState} testID="empty-state">
-          <Text style={styles.emptyStateText}>No meals logged yet</Text>
+          <Text style={styles.emptyStateText}>{t('noRecentMeals')}</Text>
           <Text style={styles.emptyStateSubtext}>
             {activeMealTypes.length > 0
-              ? `Tap "${activeMealTypes[0].name} Ideas" to get started!`
-              : 'Configure meal types in Settings to get started!'}
+              ? t('getStartedWithMealType', { mealType: activeMealTypes[0].name })
+              : t('getStartedConfigureMealTypes')}
           </Text>
         </View>
       ) : (

@@ -12,12 +12,20 @@ import {
 } from 'react-native';
 import { useState, useEffect, useCallback } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
+import { useTranslation } from 'react-i18next';
 import Slider from '@react-native-community/slider';
 import { trackScreenView } from '../../lib/telemetry/screenTracking';
 import { useStore } from '../../lib/store';
+import {
+  SUPPORTED_LANGUAGES,
+  getCurrentLanguage,
+  changeLanguage,
+} from '../../lib/i18n';
 import type { MealType } from '../../types/database';
 
 export default function SettingsScreen() {
+  const { t } = useTranslation('settings');
+
   // Zustand store selectors
   const isDatabaseReady = useStore((state) => state.isDatabaseReady);
   const preferences = useStore((state) => state.preferences);
@@ -37,6 +45,7 @@ export default function SettingsScreen() {
   const [expandedMealType, setExpandedMealType] = useState<string | null>(null);
   const [isAddModalVisible, setIsAddModalVisible] = useState(false);
   const [newMealTypeName, setNewMealTypeName] = useState('');
+  const [currentLanguage, setCurrentLanguage] = useState(getCurrentLanguage());
 
   // Load data when database is ready
   useEffect(() => {
@@ -100,7 +109,7 @@ export default function SettingsScreen() {
   const handleAddMealType = async () => {
     const trimmedName = newMealTypeName.trim();
     if (!trimmedName) {
-      Alert.alert('Error', 'Please enter a meal type name');
+      Alert.alert(t('errors:generic.error'), t('mealTypes.validation.nameRequired'));
       return;
     }
 
@@ -109,7 +118,7 @@ export default function SettingsScreen() {
       (mt) => mt.name.toLowerCase() === trimmedName.toLowerCase()
     );
     if (exists) {
-      Alert.alert('Error', 'A meal type with this name already exists');
+      Alert.alert(t('errors:generic.error'), t('mealTypes.validation.nameTaken'));
       return;
     }
 
@@ -128,22 +137,28 @@ export default function SettingsScreen() {
   // Handle delete meal type
   const handleDeleteMealType = async (mealType: MealType) => {
     Alert.alert(
-      'Delete Meal Type',
-      `Are you sure you want to delete "${mealType.name}"?\n\nThis cannot be undone.`,
+      t('mealTypes.delete'),
+      t('mealTypes.deleteConfirm', { name: mealType.name }),
       [
-        { text: 'Cancel', style: 'cancel' },
+        { text: t('common:buttons.cancel'), style: 'cancel' },
         {
-          text: 'Delete',
+          text: t('mealTypes.delete'),
           style: 'destructive',
           onPress: async () => {
             const result = await deleteMealType(mealType.id);
             if (!result.success && result.error) {
-              Alert.alert('Cannot Delete', result.error);
+              Alert.alert(t('errors:generic.error'), result.error);
             }
           },
         },
       ]
     );
+  };
+
+  // Handle language change
+  const handleLanguageChange = async (langCode: string) => {
+    const newLang = await changeLanguage(langCode);
+    setCurrentLanguage(newLang);
   };
 
   // Toggle expanded meal type
@@ -177,8 +192,9 @@ export default function SettingsScreen() {
               {mealType.name}
             </Text>
             <Text style={styles.mealTypeSummary}>
-              {mealType.min_ingredients}-{mealType.max_ingredients} ingredients |{' '}
-              {mealType.default_cooldown_days}d cooldown
+              {mealType.min_ingredients}-{mealType.max_ingredients}{' '}
+              {t('mealTypes.expanded.ingredients_other', { count: mealType.max_ingredients }).replace(`${mealType.max_ingredients} `, '')} |{' '}
+              {t('mealTypes.expanded.cooldown', { count: mealType.default_cooldown_days })}
             </Text>
           </View>
           <View style={styles.mealTypeActions}>
@@ -199,7 +215,7 @@ export default function SettingsScreen() {
             {/* Min Ingredients */}
             <View style={styles.sliderRow}>
               <View style={styles.sliderHeader}>
-                <Text style={styles.sliderLabel}>Min Ingredients</Text>
+                <Text style={styles.sliderLabel}>{t('mealTypes.minIngredients')}</Text>
                 <Text style={styles.sliderValue}>{mealType.min_ingredients}</Text>
               </View>
               <Slider
@@ -220,7 +236,7 @@ export default function SettingsScreen() {
             {/* Max Ingredients */}
             <View style={styles.sliderRow}>
               <View style={styles.sliderHeader}>
-                <Text style={styles.sliderLabel}>Max Ingredients</Text>
+                <Text style={styles.sliderLabel}>{t('mealTypes.maxIngredients')}</Text>
                 <Text style={styles.sliderValue}>{mealType.max_ingredients}</Text>
               </View>
               <Slider
@@ -241,7 +257,7 @@ export default function SettingsScreen() {
             {/* Cooldown Days */}
             <View style={styles.sliderRow}>
               <View style={styles.sliderHeader}>
-                <Text style={styles.sliderLabel}>Cooldown Days</Text>
+                <Text style={styles.sliderLabel}>{t('mealTypes.cooldown')}</Text>
                 <Text style={styles.sliderValue}>
                   {mealType.default_cooldown_days}
                 </Text>
@@ -267,7 +283,7 @@ export default function SettingsScreen() {
               onPress={() => handleDeleteMealType(mealType)}
               testID={`meal-type-delete-${mealType.id}`}
             >
-              <Text style={styles.deleteMealTypeButtonText}>Delete Meal Type</Text>
+              <Text style={styles.deleteMealTypeButtonText}>{t('mealTypes.delete')}</Text>
             </TouchableOpacity>
           </View>
         )}
@@ -278,7 +294,7 @@ export default function SettingsScreen() {
   return (
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.content}>
-        <Text style={styles.title}>Settings</Text>
+        <Text style={styles.title}>{t('title')}</Text>
 
         {/* Error message */}
         {error && (
@@ -287,17 +303,42 @@ export default function SettingsScreen() {
           </View>
         )}
 
+        {/* === LANGUAGE SECTION === */}
+        <Text style={styles.sectionTitle}>{t('language.title')}</Text>
+
+        <View style={styles.languageList}>
+          {SUPPORTED_LANGUAGES.map((lang) => (
+            <TouchableOpacity
+              key={lang.code}
+              style={[
+                styles.languageCard,
+                currentLanguage === lang.code && styles.languageCardSelected,
+              ]}
+              onPress={() => handleLanguageChange(lang.code)}
+              testID={`language-option-${lang.code}`}
+            >
+              <Text style={styles.languageFlag}>{lang.flag}</Text>
+              <Text style={styles.languageName}>{lang.name}</Text>
+              {currentLanguage === lang.code && (
+                <Text style={styles.languageCheck}>✓</Text>
+              )}
+            </TouchableOpacity>
+          ))}
+        </View>
+
         {/* === GLOBAL PREFERENCES SECTION === */}
-        <Text style={styles.sectionTitle}>Global Preferences</Text>
+        <Text style={styles.sectionTitle}>{t('globalPreferences.title')}</Text>
 
         {/* Cooldown Days Setting */}
         <View style={styles.settingCard}>
           <View style={styles.settingHeader}>
-            <Text style={styles.settingLabel}>Variety Cooldown</Text>
-            <Text style={styles.settingValue}>{preferences.cooldownDays} days</Text>
+            <Text style={styles.settingLabel}>{t('globalPreferences.varietyCooldown.title')}</Text>
+            <Text style={styles.settingValue}>
+              {t('globalPreferences.varietyCooldown.day_other', { count: preferences.cooldownDays })}
+            </Text>
           </View>
           <Text style={styles.settingDescription}>
-            How many days to wait before showing the same ingredient again
+            {t('globalPreferences.varietyCooldown.description')}
           </Text>
           <Slider
             style={styles.slider}
@@ -311,19 +352,23 @@ export default function SettingsScreen() {
             thumbTintColor="#3e96ef"
           />
           <View style={styles.sliderLabels}>
-            <Text style={styles.sliderLabelText}>1 day</Text>
-            <Text style={styles.sliderLabelText}>7 days</Text>
+            <Text style={styles.sliderLabelText}>
+              {t('globalPreferences.varietyCooldown.day_one', { count: 1 })}
+            </Text>
+            <Text style={styles.sliderLabelText}>
+              {t('globalPreferences.varietyCooldown.day_other', { count: 7 })}
+            </Text>
           </View>
         </View>
 
         {/* Suggestions Count Setting */}
         <View style={styles.settingCard}>
           <View style={styles.settingHeader}>
-            <Text style={styles.settingLabel}>Number of Suggestions</Text>
+            <Text style={styles.settingLabel}>{t('globalPreferences.suggestions.title')}</Text>
             <Text style={styles.settingValue}>{preferences.suggestionsCount}</Text>
           </View>
           <Text style={styles.settingDescription}>
-            How many meal combinations to generate at once
+            {t('globalPreferences.suggestions.description')}
           </Text>
           <Slider
             style={styles.slider}
@@ -344,7 +389,7 @@ export default function SettingsScreen() {
 
         {/* === MEAL TYPES SECTION === */}
         <View style={styles.sectionHeaderRow}>
-          <Text style={styles.sectionTitle}>Meal Types</Text>
+          <Text style={styles.sectionTitle}>{t('mealTypes.title')}</Text>
           <TouchableOpacity
             style={styles.addButton}
             onPress={() => {
@@ -353,28 +398,28 @@ export default function SettingsScreen() {
             }}
             testID="add-meal-type-button"
           >
-            <Text style={styles.addButtonText}>+ Add</Text>
+            <Text style={styles.addButtonText}>+ {t('mealTypes.add')}</Text>
           </TouchableOpacity>
         </View>
 
         <Text style={styles.sectionDescription}>
-          Configure meal types and their settings. Tap a meal type to expand and edit.
+          {t('mealTypes.description')}
         </Text>
 
         {/* Loading state */}
         {isLoading && mealTypes.length === 0 && (
           <View style={styles.loadingContainer}>
             <ActivityIndicator size="small" color="#3e96ef" />
-            <Text style={styles.loadingText}>Loading meal types...</Text>
+            <Text style={styles.loadingText}>{t('common:loading')}</Text>
           </View>
         )}
 
         {/* Meal types list */}
         {mealTypes.length === 0 && !isLoading ? (
           <View style={styles.emptyState}>
-            <Text style={styles.emptyStateText}>No meal types configured</Text>
+            <Text style={styles.emptyStateText}>{t('common:noItems')}</Text>
             <Text style={styles.emptyStateSubtext}>
-              Tap &quot;+ Add&quot; to create your first meal type
+              {t('mealTypes.addNew')}
             </Text>
           </View>
         ) : (
@@ -385,15 +430,12 @@ export default function SettingsScreen() {
 
         {/* Info Section */}
         <View style={styles.infoCard}>
-          <Text style={styles.infoTitle}>About These Settings</Text>
+          <Text style={styles.infoTitle}>{t('about.title')}</Text>
           <Text style={styles.infoText}>
-            <Text style={styles.infoBold}>Global Preferences:</Text> Apply to all meal
-            suggestions across the app.
+            {t('about.globalDescription')}
           </Text>
           <Text style={styles.infoText}>
-            <Text style={styles.infoBold}>Meal Types:</Text> Each type can have different
-            ingredient counts and cooldown periods. Disable a type to hide it from the
-            home screen.
+            {t('about.mealTypesDescription')}
           </Text>
         </View>
       </ScrollView>
@@ -407,22 +449,18 @@ export default function SettingsScreen() {
       >
         <View style={styles.modalOverlay}>
           <View style={styles.modalContent}>
-            <Text style={styles.modalTitle}>Add Meal Type</Text>
+            <Text style={styles.modalTitle}>{t('mealTypes.addNew')}</Text>
 
-            <Text style={styles.inputLabel}>Name</Text>
+            <Text style={styles.inputLabel}>{t('mealTypes.name')}</Text>
             <TextInput
               style={styles.textInput}
               value={newMealTypeName}
               onChangeText={setNewMealTypeName}
-              placeholder="e.g., Lunch, Dinner, Snack"
+              placeholder={t('mealTypes.namePlaceholder')}
               placeholderTextColor="#9dabb9"
               autoFocus
               testID="meal-type-name-input"
             />
-
-            <Text style={styles.modalHint}>
-              You can customize ingredients, min/max counts, and cooldown after creating.
-            </Text>
 
             <View style={styles.modalButtons}>
               <TouchableOpacity
@@ -433,14 +471,14 @@ export default function SettingsScreen() {
                 }}
                 testID="cancel-button"
               >
-                <Text style={styles.cancelButtonText}>Cancel</Text>
+                <Text style={styles.cancelButtonText}>{t('common:buttons.cancel')}</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 style={styles.saveButton}
                 onPress={handleAddMealType}
                 testID="save-button"
               >
-                <Text style={styles.saveButtonText}>Add</Text>
+                <Text style={styles.saveButtonText}>{t('common:buttons.add')}</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -484,6 +522,36 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     marginBottom: 12,
     marginTop: 8,
+  },
+  // Language picker
+  languageList: {
+    marginBottom: 24,
+  },
+  languageCard: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#1f2329',
+    borderRadius: 12,
+    padding: 16,
+    marginBottom: 8,
+  },
+  languageCardSelected: {
+    borderWidth: 2,
+    borderColor: '#3e96ef',
+  },
+  languageFlag: {
+    fontSize: 24,
+    marginRight: 12,
+  },
+  languageName: {
+    flex: 1,
+    fontSize: 16,
+    color: '#FFFFFF',
+  },
+  languageCheck: {
+    fontSize: 18,
+    color: '#3e96ef',
+    fontWeight: 'bold',
   },
   sectionHeaderRow: {
     flexDirection: 'row',

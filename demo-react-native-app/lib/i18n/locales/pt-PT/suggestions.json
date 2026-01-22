@@ -1,0 +1,24 @@
+{
+  "title": "Sugestões de {{mealType}}",
+  "pickOne": "Escolha uma:",
+  "loading": "A encontrar combinações deliciosas...",
+  "empty": {
+    "noSuggestions": "Sem sugestões disponíveis",
+    "notEnoughIngredients": "Ingredientes ativos insuficientes para {{mealType}}",
+    "addMoreIngredients": "Adicione mais ingredientes ou ajuste as definições do tipo de refeição"
+  },
+  "actions": {
+    "regenerate": "Gerar Novas Ideias",
+    "accept": "Selecionar"
+  },
+  "confirmation": {
+    "title": "{{mealType}} Registado",
+    "enjoyMessage": "Bom apetite!",
+    "done": "Concluído"
+  },
+  "error": {
+    "title": "Erro",
+    "loadFailed": "Falha ao carregar sugestões",
+    "tryAgain": "Tentar Novamente"
+  }
+}

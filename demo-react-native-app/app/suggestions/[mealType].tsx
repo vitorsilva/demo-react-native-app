@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useEffect, useState, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import { trackScreenView } from '../../lib/telemetry/screenTracking';
 import { logger } from '../../lib/telemetry/logger';
 import { ConfirmationModal } from '../../components/modals/ConfirmationModal';
@@ -39,6 +40,7 @@ const SUGGESTION_IMAGES = [
 export default function SuggestionsScreen() {
   const { mealType } = useLocalSearchParams<{ mealType: string }>();
   const router = useRouter();
+  const { t } = useTranslation('suggestions');
 
   // Zustand store selectors
   const suggestedCombinations = useStore((state) => state.suggestedCombinations);
@@ -63,8 +65,10 @@ export default function SuggestionsScreen() {
   );
 
   // Format title for display - use meal type name from database or fallback to URL param
-  const displayName = currentMealType?.name || mealType || 'Meal';
-  const screenTitle = `${displayName} Ideas`;
+  const displayName = currentMealType?.name || mealType || t('common:labels.meal', { defaultValue: 'Meal' });
+  // Capitalize first letter for display
+  const capitalizedDisplayName = displayName.charAt(0).toUpperCase() + displayName.slice(1);
+  const screenTitle = t('title', { mealType: capitalizedDisplayName });
 
   // Track screen view and generate suggestions on mount
   useEffect(() => {
@@ -186,7 +190,7 @@ export default function SuggestionsScreen() {
       </View>
 
       {/* Pick one subtitle */}
-      <Text style={styles.subtitle}>Pick one:</Text>
+      <Text style={styles.subtitle}>{t('pickOne', { defaultValue: 'Pick one:' })}</Text>
 
       {/* Suggestions list */}
       <ScrollView style={styles.scrollView} contentContainerStyle={styles.scrollContent}>
@@ -194,7 +198,7 @@ export default function SuggestionsScreen() {
         {isLoading && (
           <View style={styles.loadingContainer}>
             <ActivityIndicator size="large" color="#3e96ef" />
-            <Text style={styles.loadingText}>Generating suggestions...</Text>
+            <Text style={styles.loadingText}>{t('loading')}</Text>
           </View>
         )}
 
@@ -203,7 +207,7 @@ export default function SuggestionsScreen() {
           <View style={styles.errorContainer}>
             <Text style={styles.errorText}>{error}</Text>
             <TouchableOpacity style={styles.retryButton} onPress={handleGenerateNew}>
-              <Text style={styles.retryButtonText}>Try Again</Text>
+              <Text style={styles.retryButtonText}>{t('error.tryAgain')}</Text>
             </TouchableOpacity>
           </View>
         )}
@@ -237,7 +241,7 @@ export default function SuggestionsScreen() {
                         onPress={() => handleSelectSuggestion(suggestion.id)}
                         testID={`select-button-${suggestion.id}`}
                       >
-                        <Text style={styles.selectButtonText}>Select</Text>
+                        <Text style={styles.selectButtonText}>{t('actions.accept')}</Text>
                       </TouchableOpacity>
                     </View>
                   </LinearGradient>
@@ -253,7 +257,7 @@ export default function SuggestionsScreen() {
                         onPress={() => handleSelectSuggestion(suggestion.id)}
                         testID={`select-button-${suggestion.id}`}
                       >
-                        <Text style={styles.selectButtonText}>Select</Text>
+                        <Text style={styles.selectButtonText}>{t('actions.accept')}</Text>
                       </TouchableOpacity>
                     </View>
                   </View>
@@ -269,7 +273,7 @@ export default function SuggestionsScreen() {
             onPress={handleGenerateNew}
             testID="generate-new-ideas-button"
           >
-            <Text style={styles.generateButtonText}>Generate New Ideas</Text>
+            <Text style={styles.generateButtonText}>{t('actions.regenerate')}</Text>
           </TouchableOpacity>
         )}
       </ScrollView>

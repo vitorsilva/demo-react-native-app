@@ -13,6 +13,7 @@ import {
 } from 'react-native';
 import { useState, useEffect, useCallback } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
+import { useTranslation } from 'react-i18next';
 import { trackScreenView } from '../../lib/telemetry/screenTracking';
 import { useStore } from '../../lib/store';
 
@@ -26,6 +27,8 @@ interface IngredientFormData {
 }
 
 export default function ManageIngredientsScreen() {
+  const { t } = useTranslation('ingredients');
+
   // Store state
   const isDatabaseReady = useStore((state) => state.isDatabaseReady);
   const ingredients = useStore((state) => state.ingredients);
@@ -90,19 +93,19 @@ export default function ManageIngredientsScreen() {
 
   // Get category name by ID
   const getCategoryName = (categoryId?: string): string => {
-    if (!categoryId) return 'Uncategorized';
+    if (!categoryId) return t('categories:uncategorized', { defaultValue: 'Uncategorized' });
     const category = categories.find((c) => c.id === categoryId);
-    return category?.name || 'Unknown';
+    return category?.name || t('categories:unknown', { defaultValue: 'Unknown' });
   };
 
   // Handle add ingredient
   const handleAddIngredient = async () => {
     if (!formData.name.trim()) {
-      Alert.alert('Error', 'Please enter an ingredient name');
+      Alert.alert(t('errors:generic.error'), t('validation.nameRequired'));
       return;
     }
     if (formData.mealTypes.length === 0) {
-      Alert.alert('Error', 'Please select at least one meal type');
+      Alert.alert(t('errors:generic.error'), t('validation.mealTypeRequired'));
       return;
     }
 
@@ -124,11 +127,11 @@ export default function ManageIngredientsScreen() {
   // Handle edit ingredient
   const handleEditIngredient = async () => {
     if (!editingIngredient || !formData.name.trim()) {
-      Alert.alert('Error', 'Please enter an ingredient name');
+      Alert.alert(t('errors:generic.error'), t('validation.nameRequired'));
       return;
     }
     if (formData.mealTypes.length === 0) {
-      Alert.alert('Error', 'Please select at least one meal type');
+      Alert.alert(t('errors:generic.error'), t('validation.mealTypeRequired'));
       return;
     }
 
@@ -150,12 +153,12 @@ export default function ManageIngredientsScreen() {
   // Handle delete ingredient
   const handleDeleteIngredient = (id: string, name: string) => {
     Alert.alert(
-      'Delete Ingredient',
-      `Are you sure you want to delete "${name}"?`,
+      t('delete.title'),
+      t('delete.confirm', { name }),
       [
-        { text: 'Cancel', style: 'cancel' },
+        { text: t('common:buttons.cancel'), style: 'cancel' },
         {
-          text: 'Delete',
+          text: t('common:buttons.delete'),
           style: 'destructive',
           onPress: () => deleteIngredient(id),
         },
@@ -225,7 +228,7 @@ export default function ManageIngredientsScreen() {
         testID="filter-all"
       >
         <Text style={[styles.filterButtonText, filterCategory === 'all' && styles.filterButtonTextActive]}>
-          All ({ingredients.length})
+          {t('filter.all')} ({ingredients.length})
         </Text>
       </TouchableOpacity>
       {categories.map((category) => {
@@ -257,7 +260,7 @@ export default function ManageIngredientsScreen() {
           {getCategoryName(item.category_id)} • {item.mealTypes.join(', ')}
         </Text>
         {item.is_user_added && (
-          <Text style={styles.userAddedBadge}>Custom</Text>
+          <Text style={styles.userAddedBadge}>{t('common:labels.custom', { defaultValue: 'Custom' })}</Text>
         )}
       </View>
 
@@ -274,7 +277,7 @@ export default function ManageIngredientsScreen() {
           onPress={() => openEditModal(item)}
           testID={`edit-${item.id}`}
         >
-          <Text style={styles.editButtonText}>Edit</Text>
+          <Text style={styles.editButtonText}>{t('common:buttons.edit')}</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.deleteButton}
@@ -290,19 +293,19 @@ export default function ManageIngredientsScreen() {
   // Render modal form
   const renderModalForm = (isEdit: boolean) => (
     <View style={styles.modalContent}>
-      <Text style={styles.modalTitle}>{isEdit ? 'Edit Ingredient' : 'Add Ingredient'}</Text>
+      <Text style={styles.modalTitle}>{isEdit ? t('edit.title') : t('add.title')}</Text>
 
-      <Text style={styles.inputLabel}>Name</Text>
+      <Text style={styles.inputLabel}>{t('form.name')}</Text>
       <TextInput
         style={styles.textInput}
         value={formData.name}
         onChangeText={(text) => setFormData((prev) => ({ ...prev, name: text }))}
-        placeholder="Enter ingredient name"
+        placeholder={t('form.namePlaceholder')}
         placeholderTextColor="#9dabb9"
         testID="ingredient-name-input"
       />
 
-      <Text style={styles.inputLabel}>Category</Text>
+      <Text style={styles.inputLabel}>{t('form.category')}</Text>
       <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.categorySelector}>
         {categories.map((category) => (
           <TouchableOpacity
@@ -326,7 +329,7 @@ export default function ManageIngredientsScreen() {
         ))}
       </ScrollView>
 
-      <Text style={styles.inputLabel}>Meal Types</Text>
+      <Text style={styles.inputLabel}>{t('form.mealTypes')}</Text>
       <View style={styles.mealTypeSelector}>
         {mealTypes.filter((mt) => mt.is_active).map((mealType) => (
           <TouchableOpacity
@@ -364,14 +367,14 @@ export default function ManageIngredientsScreen() {
           }}
           testID="cancel-button"
         >
-          <Text style={styles.cancelButtonText}>Cancel</Text>
+          <Text style={styles.cancelButtonText}>{t('common:buttons.cancel')}</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.saveButton}
           onPress={isEdit ? handleEditIngredient : handleAddIngredient}
           testID="save-button"
         >
-          <Text style={styles.saveButtonText}>{isEdit ? 'Save' : 'Add'}</Text>
+          <Text style={styles.saveButtonText}>{isEdit ? t('common:buttons.save') : t('common:buttons.add')}</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -381,7 +384,7 @@ export default function ManageIngredientsScreen() {
     return (
       <View style={styles.loadingContainer}>
         <ActivityIndicator size="large" color="#3e96ef" />
-        <Text style={styles.loadingText}>Loading ingredients...</Text>
+        <Text style={styles.loadingText}>{t('common:loading')}</Text>
       </View>
     );
   }
@@ -390,7 +393,7 @@ export default function ManageIngredientsScreen() {
     <View style={styles.container}>
       {/* Header */}
       <View style={styles.header}>
-        <Text style={styles.headerTitle}>Manage Ingredients</Text>
+        <Text style={styles.headerTitle}>{t('title')}</Text>
         <TouchableOpacity
           style={styles.addButton}
           onPress={() => {
@@ -399,7 +402,7 @@ export default function ManageIngredientsScreen() {
           }}
           testID="add-ingredient-button"
         >
-          <Text style={styles.addButtonText}>+ Add</Text>
+          <Text style={styles.addButtonText}>+ {t('common:buttons.add')}</Text>
         </TouchableOpacity>
       </View>
 
@@ -416,11 +419,11 @@ export default function ManageIngredientsScreen() {
       {/* Ingredients list */}
       {sortedIngredients.length === 0 ? (
         <View style={styles.emptyState} testID="empty-state">
-          <Text style={styles.emptyStateText}>No ingredients found</Text>
+          <Text style={styles.emptyStateText}>{t('empty.noResults')}</Text>
           <Text style={styles.emptyStateSubtext}>
             {filterCategory === 'all'
-              ? 'Tap "+ Add" to create your first ingredient'
-              : 'No ingredients in this category'}
+              ? t('empty.addFirst')
+              : t('empty.noIngredients')}
           </Text>
         </View>
       ) : (

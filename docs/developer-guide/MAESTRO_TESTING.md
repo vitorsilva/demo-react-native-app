@@ -94,6 +94,20 @@ maestro --version
 
 The fastest way to run Maestro tests is to download an existing EAS build. This avoids local build issues (like Windows path length limits) entirely.
 
+**Using the helper script (easiest):**
+
+```powershell
+# Windows (PowerShell)
+cd demo-react-native-app
+.\scripts\download-apk.ps1 -Install
+
+# macOS/Linux (Bash)
+cd demo-react-native-app
+./scripts/download-apk.sh --install
+```
+
+**Manual download:**
+
 ```bash
 # From demo-react-native-app/ directory
 cd demo-react-native-app
@@ -108,7 +122,7 @@ curl -L -o saborspin.apk "https://expo.dev/artifacts/eas/YOUR_BUILD_ID.apk"
 adb install saborspin.apk
 
 # 4. Run Maestro tests
-maestro test .maestro/flows/telemetry-flow.yaml
+maestro test e2e/maestro/
 ```
 
 ### Option 2: Local Development Build

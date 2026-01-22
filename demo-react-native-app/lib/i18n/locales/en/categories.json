@@ -1,0 +1,38 @@
+{
+  "title": "Manage Categories",
+  "uncategorized": "Uncategorized",
+  "unknown": "Unknown",
+  "summary": {
+    "categories_one": "{{count}} category",
+    "categories_other": "{{count}} categories",
+    "totalIngredients_one": "{{count}} total ingredient",
+    "totalIngredients_other": "{{count}} total ingredients"
+  },
+  "empty": {
+    "noCategories": "No categories yet",
+    "addFirst": "Add your first category to organize ingredients"
+  },
+  "add": {
+    "title": "Add Category",
+    "button": "Add Category"
+  },
+  "edit": {
+    "title": "Edit Category"
+  },
+  "form": {
+    "name": "Name",
+    "namePlaceholder": "e.g., Fruits, Dairy, Proteins"
+  },
+  "delete": {
+    "title": "Delete Category",
+    "confirm": "Are you sure you want to delete \"{{name}}\"?",
+    "hasIngredients": "This category has {{count}} ingredient(s). Move or delete them first.",
+    "cannotDelete": "Cannot delete category with ingredients"
+  },
+  "validation": {
+    "nameRequired": "Category name is required",
+    "nameTaken": "A category with this name already exists"
+  },
+  "ingredientCount_one": "{{count}} ingredient",
+  "ingredientCount_other": "{{count}} ingredients"
+}

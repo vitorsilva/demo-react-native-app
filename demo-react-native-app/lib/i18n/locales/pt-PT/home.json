@@ -1,0 +1,20 @@
+{
+  "title": "SaborSpin",
+  "mealTypeIdeas": "Ideias para {{mealType}}",
+  "recentMeals": "Refeições Recentes",
+  "noRecentMeals": "Ainda não registou refeições",
+  "getStartedWithMealType": "Toque em \"Ideias para {{mealType}}\" para começar!",
+  "getStartedConfigureMealTypes": "Configure os tipos de refeição nas Definições para começar!",
+  "noMealTypes": "Nenhum tipo de refeição configurado",
+  "configureMealTypes": "Vá às Definições para adicionar tipos de refeição",
+  "date": {
+    "today": "Hoje",
+    "yesterday": "Ontem",
+    "daysAgo_one": "Há {{count}} dia",
+    "daysAgo_other": "Há {{count}} dias"
+  },
+  "accessibility": {
+    "navigateToSuggestions": "Navegar para sugestões de {{mealType}}",
+    "opensSuggestionsHint": "Abre um ecrã com combinações de {{mealType}}"
+  }
+}

@@ -4,6 +4,32 @@
 
 ---
 
+## ⚠️ SESSION START CHECKLIST (Read First!)
+
+Before doing ANY work, complete these steps:
+
+1. **Note your starting context level** - Ask the user or estimate based on conversation length
+2. **Find "Current Progress" section below** - Identify the next pending task
+3. **After EACH task completion:**
+   - Mark task complete ([ ] → [x])
+   - Commit your changes
+   - Check context usage (if approaching 67%, STOP and checkpoint)
+4. **If context ≥ 67%:**
+   - Update "Current Progress" section with checkpoint info
+   - Tell user: "Context is at ~X%. Recommend `/clear` and fresh session."
+   - Do NOT continue working
+
+**How to estimate context usage:**
+- Session just started from `/clear` = ~5-10%
+- After reading this plan = ~15-20%
+- After 2-3 tasks completed = ~40-50%
+- After 4-5 tasks completed = ~60-67%
+- If conversation feels long or you're forgetting earlier details = likely >67%
+
+**When in doubt, ask the user:** "What's the current context usage percentage?"
+
+---
+
 ## Goal
 
 Implement architecture testing to enforce and validate layer boundaries, ensuring SaborSpin's clean architecture is maintained as the codebase grows. Architecture tests act as "fitness functions" that automatically catch violations before they reach production.
@@ -106,7 +132,7 @@ When executing long implementation sessions, LLM quality degrades significantly 
 
 ### Solution: Checkpoint Before Compact
 
-**Rule:** At ~75% context usage, STOP execution, mark progress in this plan, and start fresh session.
+**Rule:** At ~67% context usage, STOP execution, mark progress in this plan, and start fresh session.
 
 **Why this works:**
 - This plan document IS the context - it contains everything needed
@@ -122,8 +148,8 @@ When executing long implementation sessions, LLM quality degrades significantly 
 │  2. EXECUTE task (all context is already in the task)       │
 │  3. MARK complete ([ ] → [x]) and commit                    │
 │  4. CHECK context usage                                      │
-│     └─ If < 75%: continue to next task                      │
-│     └─ If ≥ 75%: update progress below, then /clear         │
+│     └─ If < 67%: continue to next task                      │
+│     └─ If ≥ 67%: update progress below, then /clear         │
 │  5. NEW SESSION reads plan → continues from step 1          │
 └─────────────────────────────────────────────────────────────┘
 ```
@@ -523,6 +549,8 @@ Add to `package.json`:
 - No violations in current codebase
 - ESLint shows no boundary violations
 
+> **🔄 CHECKPOINT:** After completing Phase 9.1, check context usage. If ≥67%, update "Current Progress" and suggest `/clear`.
+
 ### Phase 9.2: Core Rules (Est. 2-3 hours)
 
 **Goal:** Implement all layer boundary rules
@@ -545,6 +573,8 @@ npm run arch:test
 npm run arch:graph
 ```
 
+> **🔄 CHECKPOINT:** After completing Phase 9.2, check context usage. If ≥67%, update "Current Progress" and suggest `/clear`.
+
 ### Phase 9.3: Visualization (Est. 1-2 hours)
 
 **Goal:** Generate and document architecture diagrams
@@ -560,6 +590,8 @@ npm run arch:graph
 **Output:**
 - `architecture.svg` - Visual dependency graph
 - `reports/architecture/index.html` - Detailed HTML report
+
+> **🔄 CHECKPOINT:** After completing Phase 9.3, check context usage. If ≥67%, update "Current Progress" and suggest `/clear`.
 
 ### Phase 9.4: CI Integration (Est. 1-2 hours)
 
@@ -577,6 +609,8 @@ npm run arch:graph
 - name: Check architecture rules
   run: npm run arch:test
 ```
+
+> **🔄 CHECKPOINT:** After completing Phase 9.4, check context usage. If ≥67%, update "Current Progress" and suggest `/clear`.
 
 ### Phase 9.5: Documentation (Est. 1-2 hours)
 

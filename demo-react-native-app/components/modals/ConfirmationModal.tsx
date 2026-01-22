@@ -1,5 +1,7 @@
 import { View, Text, StyleSheet, TouchableOpacity, Modal } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import * as Haptics from 'expo-haptics';
+
 interface ConfirmationModalProps {
   visible: boolean;
   mealType: string; // Dynamic meal type name
@@ -13,9 +15,10 @@ export function ConfirmationModal({
   ingredients,
   onDone,
 }: ConfirmationModalProps) {
+  const { t } = useTranslation('suggestions');
+
   // Capitalize first letter for display
   const capitalizedMealType = mealType.charAt(0).toUpperCase() + mealType.slice(1);
-  const title = `${capitalizedMealType} Logged`;
 
   const handleDone = () => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
@@ -32,7 +35,9 @@ export function ConfirmationModal({
           <View style={styles.dragIndicator} />
 
           {/* Title */}
-          <Text style={styles.title}>{title}</Text>
+          <Text style={styles.title}>
+            {t('confirmation.title', { mealType: capitalizedMealType })}
+          </Text>
 
           {/* Ingredients list */}
           <View style={styles.ingredientsList}>
@@ -44,11 +49,11 @@ export function ConfirmationModal({
           </View>
 
           {/* Enjoy message */}
-          <Text style={styles.enjoyMessage}>Enjoy your meal!</Text>
+          <Text style={styles.enjoyMessage}>{t('confirmation.enjoyMessage')}</Text>
 
           {/* Done button */}
           <TouchableOpacity style={styles.doneButton} onPress={handleDone} testID="done-button">
-            <Text style={styles.doneButtonText}>Done</Text>
+            <Text style={styles.doneButtonText}>{t('confirmation.done')}</Text>
           </TouchableOpacity>
         </View>
       </View>

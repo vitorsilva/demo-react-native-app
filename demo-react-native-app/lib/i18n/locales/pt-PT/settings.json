@@ -1,0 +1,50 @@
+{
+  "title": "Definições",
+  "language": {
+    "title": "Idioma",
+    "description": "Escolha o seu idioma preferido"
+  },
+  "globalPreferences": {
+    "title": "Preferências Globais",
+    "varietyCooldown": {
+      "title": "Período de Variedade",
+      "description": "Quantos dias esperar antes de sugerir a mesma combinação novamente",
+      "day_one": "{{count}} dia",
+      "day_other": "{{count}} dias"
+    },
+    "suggestions": {
+      "title": "Número de Sugestões",
+      "description": "Quantas combinações de refeições mostrar de cada vez"
+    }
+  },
+  "mealTypes": {
+    "title": "Tipos de Refeição",
+    "description": "Configure os tipos de refeição e as suas definições",
+    "add": "Adicionar Tipo",
+    "addNew": "Adicionar Novo Tipo de Refeição",
+    "name": "Nome",
+    "namePlaceholder": "ex: Almoço, Jantar",
+    "active": "Ativo",
+    "minIngredients": "Mín. Ingredientes",
+    "maxIngredients": "Máx. Ingredientes",
+    "cooldown": "Período (dias)",
+    "delete": "Eliminar",
+    "deleteConfirm": "Tem a certeza que deseja eliminar \"{{name}}\"?",
+    "deleteWarning": "Isto também irá remover todos os registos de refeições deste tipo.",
+    "expanded": {
+      "ingredients_one": "{{count}} ingrediente",
+      "ingredients_other": "{{count}} ingredientes",
+      "cooldown": "{{count}}d período"
+    },
+    "validation": {
+      "nameRequired": "O nome do tipo de refeição é obrigatório",
+      "nameTaken": "Já existe um tipo de refeição com este nome",
+      "minMaxError": "O mínimo não pode exceder o máximo"
+    }
+  },
+  "about": {
+    "title": "Sobre Estas Definições",
+    "globalDescription": "Preferências Globais: Aplicam-se a todos os tipos de refeição por predefinição.",
+    "mealTypesDescription": "Tipos de Refeição: Cada tipo pode ter a sua própria contagem de ingredientes e definições de período."
+  }
+}

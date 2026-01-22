@@ -10,9 +10,12 @@ import { logger } from '../lib/telemetry/logger';
 import { initErrorHandling } from '../lib/telemetry/errorHandler';
 import { trackAppBackground, trackAppForeground } from '../lib/telemetry/screenTracking';
 
+// Initialize i18n
+import { initI18n } from '../lib/i18n';
+
 import ErrorBoundary from '../components/ErrorBoundary';
 import { useColorScheme } from '../hooks/use-color-scheme';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { initDatabase } from '../lib/database';
 import { seedDatabase } from '../lib/database/seed';
 import { useStore } from '../lib/store';
@@ -24,6 +27,23 @@ export const unstable_settings = {
 export default function RootLayout() {
   const colorScheme = useColorScheme();
   const setDatabaseReady = useStore((state) => state.setDatabaseReady);
+  const [isI18nReady, setIsI18nReady] = useState(false);
+
+  // Initialize i18n
+  useEffect(() => {
+    initI18n()
+      .then(() => {
+        logger.info('i18n initialized');
+        setIsI18nReady(true);
+      })
+      .catch((error) => {
+        logger.error('i18n initialization failed', {
+          error: error instanceof Error ? error.message : String(error),
+        });
+        // Still allow app to run with fallback translations
+        setIsI18nReady(true);
+      });
+  }, []);
 
   // Initialize telemetry and error handling
   useEffect(() => {
@@ -63,6 +83,11 @@ export default function RootLayout() {
     }
     setup();
   }, [setDatabaseReady]);
+
+  // Wait for i18n to be ready before rendering
+  if (!isI18nReady) {
+    return null;
+  }
 
   return (
     <ErrorBoundary>

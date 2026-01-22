@@ -11,10 +11,12 @@ import {
 } from 'react-native';
 import { useState, useEffect, useCallback } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
+import { useTranslation } from 'react-i18next';
 import { trackScreenView } from '../../lib/telemetry/screenTracking';
 import { useStore } from '../../lib/store';
 
 export default function ManageCategoriesScreen() {
+  const { t } = useTranslation('categories');
   // Store state
   const isDatabaseReady = useStore((state) => state.isDatabaseReady);
   const categories = useStore((state) => state.categories);
@@ -68,7 +70,7 @@ export default function ManageCategoriesScreen() {
   const handleAddCategory = async () => {
     const trimmedName = categoryName.trim();
     if (!trimmedName) {
-      Alert.alert('Error', 'Please enter a category name');
+      Alert.alert(t('errors:generic.error'), t('validation.nameRequired'));
       return;
     }
 
@@ -77,7 +79,7 @@ export default function ManageCategoriesScreen() {
       (c) => c.name.toLowerCase() === trimmedName.toLowerCase()
     );
     if (exists) {
-      Alert.alert('Error', 'A category with this name already exists');
+      Alert.alert(t('errors:generic.error'), t('validation.nameTaken'));
       return;
     }
 
@@ -90,7 +92,7 @@ export default function ManageCategoriesScreen() {
   const handleEditCategory = async () => {
     const trimmedName = categoryName.trim();
     if (!editingCategory || !trimmedName) {
-      Alert.alert('Error', 'Please enter a category name');
+      Alert.alert(t('errors:generic.error'), t('validation.nameRequired'));
       return;
     }
 
@@ -101,7 +103,7 @@ export default function ManageCategoriesScreen() {
         c.name.toLowerCase() === trimmedName.toLowerCase()
     );
     if (exists) {
-      Alert.alert('Error', 'A category with this name already exists');
+      Alert.alert(t('errors:generic.error'), t('validation.nameTaken'));
       return;
     }
 
@@ -117,21 +119,21 @@ export default function ManageCategoriesScreen() {
 
     if (ingredientCount > 0) {
       Alert.alert(
-        'Cannot Delete',
-        `"${name}" has ${ingredientCount} ingredient(s) assigned to it. Remove or reassign them first.`
+        t('delete.cannotDelete'),
+        t('delete.hasIngredients', { count: ingredientCount })
       );
       return;
     }
 
-    Alert.alert('Delete Category', `Are you sure you want to delete "${name}"?`, [
-      { text: 'Cancel', style: 'cancel' },
+    Alert.alert(t('delete.title'), t('delete.confirm', { name }), [
+      { text: t('common:buttons.cancel'), style: 'cancel' },
       {
-        text: 'Delete',
+        text: t('common:buttons.delete'),
         style: 'destructive',
         onPress: async () => {
           const result = await deleteCategory(id);
           if (!result.success && result.error) {
-            Alert.alert('Error', result.error);
+            Alert.alert(t('errors:generic.error'), result.error);
           }
         },
       },
@@ -153,7 +155,7 @@ export default function ManageCategoriesScreen() {
         <View style={styles.categoryInfo}>
           <Text style={styles.categoryName}>{item.name}</Text>
           <Text style={styles.ingredientCount}>
-            {ingredientCount} ingredient{ingredientCount !== 1 ? 's' : ''}
+            {t('ingredientCount', { count: ingredientCount })}
           </Text>
         </View>
 
@@ -163,7 +165,7 @@ export default function ManageCategoriesScreen() {
             onPress={() => openEditModal(item)}
             testID={`edit-${item.id}`}
           >
-            <Text style={styles.editButtonText}>Edit</Text>
+            <Text style={styles.editButtonText}>{t('common:buttons.edit')}</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={[
@@ -191,15 +193,15 @@ export default function ManageCategoriesScreen() {
   const renderModalForm = (isEdit: boolean) => (
     <View style={styles.modalContent}>
       <Text style={styles.modalTitle}>
-        {isEdit ? 'Edit Category' : 'Add Category'}
+        {isEdit ? t('edit.title') : t('add.title')}
       </Text>
 
-      <Text style={styles.inputLabel}>Name</Text>
+      <Text style={styles.inputLabel}>{t('form.name')}</Text>
       <TextInput
         style={styles.textInput}
         value={categoryName}
         onChangeText={setCategoryName}
-        placeholder="Enter category name"
+        placeholder={t('form.namePlaceholder')}
         placeholderTextColor="#9dabb9"
         autoFocus
         testID="category-name-input"
@@ -219,14 +221,14 @@ export default function ManageCategoriesScreen() {
           }}
           testID="cancel-button"
         >
-          <Text style={styles.cancelButtonText}>Cancel</Text>
+          <Text style={styles.cancelButtonText}>{t('common:buttons.cancel')}</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.saveButton}
           onPress={isEdit ? handleEditCategory : handleAddCategory}
           testID="save-button"
         >
-          <Text style={styles.saveButtonText}>{isEdit ? 'Save' : 'Add'}</Text>
+          <Text style={styles.saveButtonText}>{isEdit ? t('common:buttons.save') : t('common:buttons.add')}</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -236,7 +238,7 @@ export default function ManageCategoriesScreen() {
     return (
       <View style={styles.loadingContainer}>
         <ActivityIndicator size="large" color="#3e96ef" />
-        <Text style={styles.loadingText}>Loading categories...</Text>
+        <Text style={styles.loadingText}>{t('common:loading')}</Text>
       </View>
     );
   }
@@ -245,7 +247,7 @@ export default function ManageCategoriesScreen() {
     <View style={styles.container}>
       {/* Header */}
       <View style={styles.header}>
-        <Text style={styles.headerTitle}>Manage Categories</Text>
+        <Text style={styles.headerTitle}>{t('title')}</Text>
         <TouchableOpacity
           style={styles.addButton}
           onPress={() => {
@@ -254,7 +256,7 @@ export default function ManageCategoriesScreen() {
           }}
           testID="add-category-button"
         >
-          <Text style={styles.addButtonText}>+ Add</Text>
+          <Text style={styles.addButtonText}>+ {t('common:buttons.add')}</Text>
         </TouchableOpacity>
       </View>
 
@@ -268,17 +270,17 @@ export default function ManageCategoriesScreen() {
       {/* Summary */}
       <View style={styles.summaryContainer}>
         <Text style={styles.summaryText}>
-          {categories.length} categor{categories.length !== 1 ? 'ies' : 'y'} |{' '}
-          {ingredients.length} total ingredients
+          {t('summary.categories', { count: categories.length })} |{' '}
+          {t('summary.totalIngredients', { count: ingredients.length })}
         </Text>
       </View>
 
       {/* Categories list */}
       {sortedCategories.length === 0 ? (
         <View style={styles.emptyState} testID="empty-state">
-          <Text style={styles.emptyStateText}>No categories found</Text>
+          <Text style={styles.emptyStateText}>{t('empty.noCategories')}</Text>
           <Text style={styles.emptyStateSubtext}>
-            Tap &quot;+ Add&quot; to create your first category
+            {t('empty.addFirst')}
           </Text>
         </View>
       ) : (

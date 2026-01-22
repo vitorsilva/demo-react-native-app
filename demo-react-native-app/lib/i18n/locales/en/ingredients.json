@@ -1,0 +1,43 @@
+{
+  "title": "Manage Ingredients",
+  "search": "Search ingredients...",
+  "filter": {
+    "all": "All",
+    "byCategory": "By Category"
+  },
+  "empty": {
+    "noIngredients": "No ingredients yet",
+    "noResults": "No ingredients found",
+    "addFirst": "Add your first ingredient to get started"
+  },
+  "add": {
+    "title": "Add Ingredient",
+    "button": "Add Ingredient"
+  },
+  "edit": {
+    "title": "Edit Ingredient"
+  },
+  "form": {
+    "name": "Name",
+    "namePlaceholder": "e.g., Eggs, Bread, Banana",
+    "category": "Category",
+    "selectCategory": "Select a category",
+    "mealTypes": "Available for",
+    "active": "Active"
+  },
+  "delete": {
+    "title": "Delete Ingredient",
+    "confirm": "Are you sure you want to delete \"{{name}}\"?",
+    "warning": "This action cannot be undone."
+  },
+  "validation": {
+    "nameRequired": "Ingredient name is required",
+    "nameTaken": "An ingredient with this name already exists",
+    "categoryRequired": "Please select a category",
+    "mealTypeRequired": "Please select at least one meal type"
+  },
+  "status": {
+    "active": "Active",
+    "inactive": "Inactive"
+  }
+}

@@ -51,3 +51,6 @@ app-example
 # generated native folders
 /ios
 /android
+
+# Downloaded APKs for Maestro testing
+*.apk
