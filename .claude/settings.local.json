@@ -75,7 +75,8 @@
       "Bash(gh pr view:*)",
       "Bash(gh pr edit:*)",
       "Bash(npm run test:mutation:core:*)",
-      "Bash(npm run test:mutation:validation:*)"
+      "Bash(npm run test:mutation:validation:*)",
+      "Bash(npm run test:mutation:db:*)"
     ],
     "deny": [],
     "ask": []
