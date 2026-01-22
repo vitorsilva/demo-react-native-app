@@ -1,5 +1,5 @@
-import { tracer, meter } from './telemetry';
 import { logger } from './logger';
+import { tracer, meter } from './telemetry';
 
 // Metrics for screen time
 const screenTimeHistogram = meter.createHistogram('screen_time_ms', {

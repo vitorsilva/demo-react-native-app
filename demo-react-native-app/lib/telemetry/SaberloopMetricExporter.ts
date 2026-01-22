@@ -1,10 +1,10 @@
+import { ExportResult, ExportResultCode } from '@opentelemetry/core';
 import {
   PushMetricExporter,
   ResourceMetrics,
   AggregationTemporality,
   InstrumentType,
 } from '@opentelemetry/sdk-metrics';
-import { ExportResult, ExportResultCode } from '@opentelemetry/core';
 import Constants from 'expo-constants';
 
 // Configuration from app.json extra or defaults

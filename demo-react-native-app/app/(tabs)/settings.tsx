@@ -1,3 +1,7 @@
+import Slider from '@react-native-community/slider';
+import { useFocusEffect } from '@react-navigation/native';
+import { useState, useEffect, useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   View,
   Text,
@@ -10,17 +14,14 @@ import {
   Alert,
   ActivityIndicator,
 } from 'react-native';
-import { useState, useEffect, useCallback } from 'react';
-import { useFocusEffect } from '@react-navigation/native';
-import { useTranslation } from 'react-i18next';
-import Slider from '@react-native-community/slider';
-import { trackScreenView } from '../../lib/telemetry/screenTracking';
-import { useStore } from '../../lib/store';
+import { modalStyles } from '../../constants/shared-styles';
 import {
   SUPPORTED_LANGUAGES,
   getCurrentLanguage,
   changeLanguage,
 } from '../../lib/i18n';
+import { useStore } from '../../lib/store';
+import { trackScreenView } from '../../lib/telemetry/screenTracking';
 import type { MealType } from '../../types/database';
 
 export default function SettingsScreen() {
@@ -447,13 +448,13 @@ export default function SettingsScreen() {
         transparent={true}
         onRequestClose={() => setIsAddModalVisible(false)}
       >
-        <View style={styles.modalOverlay}>
-          <View style={styles.modalContent}>
-            <Text style={styles.modalTitle}>{t('mealTypes.addNew')}</Text>
+        <View style={modalStyles.modalOverlay}>
+          <View style={modalStyles.modalContent}>
+            <Text style={modalStyles.modalTitle}>{t('mealTypes.addNew')}</Text>
 
-            <Text style={styles.inputLabel}>{t('mealTypes.name')}</Text>
+            <Text style={modalStyles.inputLabel}>{t('mealTypes.name')}</Text>
             <TextInput
-              style={styles.textInput}
+              style={modalStyles.textInput}
               value={newMealTypeName}
               onChangeText={setNewMealTypeName}
               placeholder={t('mealTypes.namePlaceholder')}
@@ -462,23 +463,23 @@ export default function SettingsScreen() {
               testID="meal-type-name-input"
             />
 
-            <View style={styles.modalButtons}>
+            <View style={modalStyles.modalButtons}>
               <TouchableOpacity
-                style={styles.cancelButton}
+                style={modalStyles.cancelButton}
                 onPress={() => {
                   setIsAddModalVisible(false);
                   setNewMealTypeName('');
                 }}
                 testID="cancel-button"
               >
-                <Text style={styles.cancelButtonText}>{t('common:buttons.cancel')}</Text>
+                <Text style={modalStyles.cancelButtonText}>{t('common:buttons.cancel')}</Text>
               </TouchableOpacity>
               <TouchableOpacity
-                style={styles.saveButton}
+                style={modalStyles.saveButton}
                 onPress={handleAddMealType}
                 testID="save-button"
               >
-                <Text style={styles.saveButtonText}>{t('common:buttons.add')}</Text>
+                <Text style={modalStyles.saveButtonText}>{t('common:buttons.add')}</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -750,71 +751,5 @@ const styles = StyleSheet.create({
   infoBold: {
     fontWeight: 'bold',
     color: '#FFFFFF',
-  },
-  // Modal
-  modalOverlay: {
-    flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.7)',
-    justifyContent: 'center',
-    padding: 20,
-  },
-  modalContent: {
-    backgroundColor: '#1a1f25',
-    borderRadius: 16,
-    padding: 20,
-  },
-  modalTitle: {
-    color: '#FFFFFF',
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginBottom: 20,
-    textAlign: 'center',
-  },
-  inputLabel: {
-    color: '#9dabb9',
-    fontSize: 14,
-    marginBottom: 8,
-  },
-  textInput: {
-    backgroundColor: '#283039',
-    borderRadius: 8,
-    padding: 12,
-    color: '#FFFFFF',
-    fontSize: 16,
-  },
-  modalHint: {
-    color: '#9BA1A6',
-    fontSize: 12,
-    marginTop: 12,
-    fontStyle: 'italic',
-  },
-  modalButtons: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginTop: 24,
-    gap: 12,
-  },
-  cancelButton: {
-    flex: 1,
-    paddingVertical: 14,
-    borderRadius: 8,
-    backgroundColor: '#283039',
-    alignItems: 'center',
-  },
-  cancelButtonText: {
-    color: '#FFFFFF',
-    fontSize: 16,
-  },
-  saveButton: {
-    flex: 1,
-    paddingVertical: 14,
-    borderRadius: 8,
-    backgroundColor: '#3e96ef',
-    alignItems: 'center',
-  },
-  saveButtonText: {
-    color: '#FFFFFF',
-    fontSize: 16,
-    fontWeight: 'bold',
   },
 });

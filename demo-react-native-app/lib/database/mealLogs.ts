@@ -1,6 +1,6 @@
-import type { DatabaseAdapter } from './adapters/types';
-import { MealLog } from '../../types/database';
 import * as Crypto from 'expo-crypto';
+import { MealLog } from '../../types/database';
+import type { DatabaseAdapter } from './adapters/types';
 
 /**
  * Records a new meal log entry in the database.

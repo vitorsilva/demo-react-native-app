@@ -1,6 +1,6 @@
+import * as Crypto from 'expo-crypto';
 import type { DatabaseAdapter } from './adapters/types';
 import type { MealType } from '../../types/database';
-import * as Crypto from 'expo-crypto';
 
 /** Raw row type from SQLite (is_active stored as 0/1) */
 type MealTypeRow = Omit<MealType, 'is_active'> & { is_active: number };

@@ -1,7 +1,7 @@
-import { useStore } from '../index';
 import { initDatabase, resetDatabase, getDatabase } from '@/lib/database';
 import { resetTestDatabase } from '@/lib/database/__tests__/testDb';
 import * as ingredientsDb from '@/lib/database/ingredients';
+import { useStore } from '../index';
 
 // This uses the __mocks__/index.ts file automatically
 jest.mock('@/lib/database');

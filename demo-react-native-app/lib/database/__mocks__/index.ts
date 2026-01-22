@@ -1,7 +1,7 @@
-import { DatabaseAdapter } from '../adapters/types';
 import { createTestAdapter, resetTestDatabase } from '../__tests__/testDb';
-import { SCHEMA_SQL, DEFAULT_PREFERENCES } from '../schema';
+import { DatabaseAdapter } from '../adapters/types';
 import { runMigrations } from '../migrations';
+import { SCHEMA_SQL, DEFAULT_PREFERENCES } from '../schema';
 
 // Silent logging during tests
 const isTestEnv = process.env.NODE_ENV === 'test';

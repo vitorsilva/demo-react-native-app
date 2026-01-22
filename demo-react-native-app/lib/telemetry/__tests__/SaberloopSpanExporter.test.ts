@@ -1,6 +1,9 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { SpanKind, SpanStatusCode } from '@opentelemetry/api';
 import { ExportResultCode } from '@opentelemetry/core';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+// Import after mocks
+import { SaberloopSpanExporter } from '../SaberloopSpanExporter';
 
 // Mock expo-constants
 jest.mock('expo-constants', () => ({
@@ -18,9 +21,6 @@ jest.mock('expo-constants', () => ({
 
 // Mock fetch
 global.fetch = jest.fn();
-
-// Import after mocks
-import { SaberloopSpanExporter } from '../SaberloopSpanExporter';
 
 // Helper to create mock ReadableSpan
 function createMockSpan(name: string, durationMs: number = 100) {

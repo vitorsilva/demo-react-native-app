@@ -1,11 +1,11 @@
-  import { initDatabase, resetDatabase, getDatabase } from '../index';
-  import {
+   import {
     getAllCategories,
     getCategoryById,
     addCategory,
     updateCategory,
     deleteCategory,
   } from '../categories';
+ import { initDatabase, resetDatabase, getDatabase } from '../index';
   import { resetTestDatabase } from './testDb';
 
   jest.mock('../index');

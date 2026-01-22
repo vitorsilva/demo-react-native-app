@@ -1,7 +1,7 @@
-import type { DatabaseAdapter } from './adapters/types';
-import { Ingredient } from '../../types/database';
 import * as Crypto from 'expo-crypto';
 import { canDeleteIngredient, canDisableIngredient } from './validation';
+import { Ingredient } from '../../types/database';
+import type { DatabaseAdapter } from './adapters/types';
 
 /**
  * Creates a new ingredient in the database.

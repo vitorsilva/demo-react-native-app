@@ -1,7 +1,7 @@
 import { Platform } from 'react-native';
 import { DatabaseAdapter } from './adapters/types';
-import { SCHEMA_SQL, DEFAULT_PREFERENCES } from './schema';
 import { runMigrations } from './migrations';
+import { SCHEMA_SQL, DEFAULT_PREFERENCES } from './schema';
 
 let database: DatabaseAdapter | null = null;
 

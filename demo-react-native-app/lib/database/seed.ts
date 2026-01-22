@@ -1,5 +1,5 @@
-import { getDatabase } from './index';
 import { addIngredient, getAllIngredients } from './ingredients';
+import { getDatabase } from './index';
 
 export const DEFAULT_INGREDIENTS = {
   proteins: [

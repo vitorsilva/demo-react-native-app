@@ -5,25 +5,34 @@
 import i18n from 'i18next';
 
 // Import all translation resources for completeness testing
-import enCommon from '../locales/en/common.json';
-import enTabs from '../locales/en/tabs.json';
-import enHome from '../locales/en/home.json';
-import enHistory from '../locales/en/history.json';
-import enSettings from '../locales/en/settings.json';
-import enIngredients from '../locales/en/ingredients.json';
+import {
+  initI18n,
+  changeLanguage,
+  getCurrentLanguage,
+  isI18nReady,
+  onLanguageChange,
+  DEFAULT_LANGUAGE,
+  SUPPORTED_LANGUAGES,
+} from '../index';
+import { normalizeLanguageCode } from '../languageDetector';
 import enCategories from '../locales/en/categories.json';
-import enSuggestions from '../locales/en/suggestions.json';
+import enCommon from '../locales/en/common.json';
 import enErrors from '../locales/en/errors.json';
-
-import ptCommon from '../locales/pt-PT/common.json';
-import ptTabs from '../locales/pt-PT/tabs.json';
-import ptHome from '../locales/pt-PT/home.json';
-import ptHistory from '../locales/pt-PT/history.json';
-import ptSettings from '../locales/pt-PT/settings.json';
-import ptIngredients from '../locales/pt-PT/ingredients.json';
+import enHistory from '../locales/en/history.json';
+import enHome from '../locales/en/home.json';
+import enIngredients from '../locales/en/ingredients.json';
+import enSettings from '../locales/en/settings.json';
+import enSuggestions from '../locales/en/suggestions.json';
+import enTabs from '../locales/en/tabs.json';
 import ptCategories from '../locales/pt-PT/categories.json';
-import ptSuggestions from '../locales/pt-PT/suggestions.json';
+import ptCommon from '../locales/pt-PT/common.json';
 import ptErrors from '../locales/pt-PT/errors.json';
+import ptHistory from '../locales/pt-PT/history.json';
+import ptHome from '../locales/pt-PT/home.json';
+import ptIngredients from '../locales/pt-PT/ingredients.json';
+import ptSettings from '../locales/pt-PT/settings.json';
+import ptSuggestions from '../locales/pt-PT/suggestions.json';
+import ptTabs from '../locales/pt-PT/tabs.json';
 
 // Store for AsyncStorage mock
 const mockAsyncStorage = new Map<string, string>();
@@ -49,17 +58,6 @@ let mockDeviceLocale = 'en-US';
 jest.mock('expo-localization', () => ({
   getLocales: jest.fn(() => [{ languageTag: mockDeviceLocale }]),
 }));
-
-import {
-  initI18n,
-  changeLanguage,
-  getCurrentLanguage,
-  isI18nReady,
-  onLanguageChange,
-  DEFAULT_LANGUAGE,
-  SUPPORTED_LANGUAGES,
-} from '../index';
-import { normalizeLanguageCode } from '../languageDetector';
 
 describe('i18n Module', () => {
   beforeEach(async () => {

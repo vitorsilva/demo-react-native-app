@@ -86,7 +86,16 @@
       "Bash(npm run lint:*)",
       "Bash(npm run lint:duplicates:*)",
       "Bash(npx commitlint)",
-      "Bash(git branch:*)"
+      "Bash(git branch:*)",
+      "Bash(git pull:*)",
+      "Bash(npx eslint:*)",
+      "Bash(pip --version:*)",
+      "Bash(semgrep:*)",
+      "Bash(pip show:*)",
+      "Bash(python -m semgrep:*)",
+      "Bash(cmd /c \"where semgrep 2>nul\")",
+      "Bash(python:*)",
+      "Bash(npx jscpd:*)"
     ],
     "deny": [],
     "ask": []

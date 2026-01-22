@@ -1,3 +1,7 @@
+import * as Haptics from 'expo-haptics';
+import { useLocalSearchParams, useRouter } from 'expo-router';
+import { useEffect, useState, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   View,
   Text,
@@ -8,14 +12,10 @@ import {
   Platform,
   ActivityIndicator,
 } from 'react-native';
-import { useLocalSearchParams, useRouter } from 'expo-router';
-import { useEffect, useState, useRef } from 'react';
-import { useTranslation } from 'react-i18next';
-import { trackScreenView } from '../../lib/telemetry/screenTracking';
-import { logger } from '../../lib/telemetry/logger';
 import { ConfirmationModal } from '../../components/modals/ConfirmationModal';
 import { useStore } from '../../lib/store';
-import * as Haptics from 'expo-haptics';
+import { logger } from '../../lib/telemetry/logger';
+import { trackScreenView } from '../../lib/telemetry/screenTracking';
 
 // Conditionally import LinearGradient only for native platforms
 let LinearGradient: React.ComponentType<{

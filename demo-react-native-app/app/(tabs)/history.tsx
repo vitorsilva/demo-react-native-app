@@ -1,10 +1,11 @@
-import { View, Text, StyleSheet, SectionList } from 'react-native';
-import { useEffect, useCallback } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
+import { useEffect, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
-import { trackScreenView } from '../../lib/telemetry/screenTracking';
-import { useStore } from '../../lib/store';
+import { View, Text, StyleSheet, SectionList } from 'react-native';
 import { getCurrentLanguage } from '../../lib/i18n';
+import { useStore } from '../../lib/store';
+import { trackScreenView } from '../../lib/telemetry/screenTracking';
+import { isToday, isYesterday } from '../../lib/utils/dateUtils';
 import type { MealLog } from '../../types/database';
 
 export default function HistoryScreen() {
@@ -48,23 +49,12 @@ export default function HistoryScreen() {
 
   // Helper to format date as section title
   const formatDateSection = (dateString: string): string => {
-    const mealDate = new Date(dateString);
-    const today = new Date();
-    const yesterday = new Date(today);
-    yesterday.setDate(yesterday.getDate() - 1);
-
-    // Reset time for comparison
-    today.setHours(0, 0, 0, 0);
-    yesterday.setHours(0, 0, 0, 0);
-    const mealDateOnly = new Date(mealDate);
-    mealDateOnly.setHours(0, 0, 0, 0);
-
-    if (mealDateOnly.getTime() === today.getTime()) {
+    if (isToday(dateString)) {
       return t('date.today');
-    } else if (mealDateOnly.getTime() === yesterday.getTime()) {
+    } else if (isYesterday(dateString)) {
       return t('date.yesterday');
     } else {
-      return mealDate.toLocaleDateString(getDateLocale(), {
+      return new Date(dateString).toLocaleDateString(getDateLocale(), {
         weekday: 'short',
         month: 'short',
         day: 'numeric',

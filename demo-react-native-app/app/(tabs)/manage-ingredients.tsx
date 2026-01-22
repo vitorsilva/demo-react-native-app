@@ -1,3 +1,6 @@
+import { useFocusEffect } from '@react-navigation/native';
+import { useState, useEffect, useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   View,
   Text,
@@ -11,11 +14,13 @@ import {
   ActivityIndicator,
   ScrollView,
 } from 'react-native';
-import { useState, useEffect, useCallback } from 'react';
-import { useFocusEffect } from '@react-navigation/native';
-import { useTranslation } from 'react-i18next';
-import { trackScreenView } from '../../lib/telemetry/screenTracking';
+import {
+  modalStyles,
+  screenStyles,
+  actionButtonStyles,
+} from '../../constants/shared-styles';
 import { useStore } from '../../lib/store';
+import { trackScreenView } from '../../lib/telemetry/screenTracking';
 
 type FilterOption = 'all' | string;
 
@@ -273,18 +278,18 @@ export default function ManageIngredientsScreen() {
           testID={`toggle-${item.id}`}
         />
         <TouchableOpacity
-          style={styles.editButton}
+          style={actionButtonStyles.editButton}
           onPress={() => openEditModal(item)}
           testID={`edit-${item.id}`}
         >
-          <Text style={styles.editButtonText}>{t('common:buttons.edit')}</Text>
+          <Text style={actionButtonStyles.editButtonText}>{t('common:buttons.edit')}</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          style={styles.deleteButton}
+          style={actionButtonStyles.deleteButton}
           onPress={() => handleDeleteIngredient(item.id, item.name)}
           testID={`delete-${item.id}`}
         >
-          <Text style={styles.deleteButtonText}>X</Text>
+          <Text style={actionButtonStyles.deleteButtonText}>X</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -292,12 +297,12 @@ export default function ManageIngredientsScreen() {
 
   // Render modal form
   const renderModalForm = (isEdit: boolean) => (
-    <View style={styles.modalContent}>
-      <Text style={styles.modalTitle}>{isEdit ? t('edit.title') : t('add.title')}</Text>
+    <View style={modalStyles.modalContent}>
+      <Text style={modalStyles.modalTitle}>{isEdit ? t('edit.title') : t('add.title')}</Text>
 
-      <Text style={styles.inputLabel}>{t('form.name')}</Text>
+      <Text style={[modalStyles.inputLabel, styles.inputLabelWithMargin]}>{t('form.name')}</Text>
       <TextInput
-        style={styles.textInput}
+        style={modalStyles.textInput}
         value={formData.name}
         onChangeText={(text) => setFormData((prev) => ({ ...prev, name: text }))}
         placeholder={t('form.namePlaceholder')}
@@ -305,7 +310,7 @@ export default function ManageIngredientsScreen() {
         testID="ingredient-name-input"
       />
 
-      <Text style={styles.inputLabel}>{t('form.category')}</Text>
+      <Text style={[modalStyles.inputLabel, styles.inputLabelWithMargin]}>{t('form.category')}</Text>
       <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.categorySelector}>
         {categories.map((category) => (
           <TouchableOpacity
@@ -329,7 +334,7 @@ export default function ManageIngredientsScreen() {
         ))}
       </ScrollView>
 
-      <Text style={styles.inputLabel}>{t('form.mealTypes')}</Text>
+      <Text style={[modalStyles.inputLabel, styles.inputLabelWithMargin]}>{t('form.mealTypes')}</Text>
       <View style={styles.mealTypeSelector}>
         {mealTypes.filter((mt) => mt.is_active).map((mealType) => (
           <TouchableOpacity
@@ -353,9 +358,9 @@ export default function ManageIngredientsScreen() {
         ))}
       </View>
 
-      <View style={styles.modalButtons}>
+      <View style={modalStyles.modalButtons}>
         <TouchableOpacity
-          style={styles.cancelButton}
+          style={modalStyles.cancelButton}
           onPress={() => {
             if (isEdit) {
               setIsEditModalVisible(false);
@@ -367,14 +372,14 @@ export default function ManageIngredientsScreen() {
           }}
           testID="cancel-button"
         >
-          <Text style={styles.cancelButtonText}>{t('common:buttons.cancel')}</Text>
+          <Text style={modalStyles.cancelButtonText}>{t('common:buttons.cancel')}</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          style={styles.saveButton}
+          style={modalStyles.saveButton}
           onPress={isEdit ? handleEditIngredient : handleAddIngredient}
           testID="save-button"
         >
-          <Text style={styles.saveButtonText}>{isEdit ? t('common:buttons.save') : t('common:buttons.add')}</Text>
+          <Text style={modalStyles.saveButtonText}>{isEdit ? t('common:buttons.save') : t('common:buttons.add')}</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -382,34 +387,34 @@ export default function ManageIngredientsScreen() {
 
   if (isLoading && ingredients.length === 0) {
     return (
-      <View style={styles.loadingContainer}>
+      <View style={screenStyles.loadingContainer}>
         <ActivityIndicator size="large" color="#3e96ef" />
-        <Text style={styles.loadingText}>{t('common:loading')}</Text>
+        <Text style={screenStyles.loadingText}>{t('common:loading')}</Text>
       </View>
     );
   }
 
   return (
-    <View style={styles.container}>
+    <View style={screenStyles.container}>
       {/* Header */}
-      <View style={styles.header}>
-        <Text style={styles.headerTitle}>{t('title')}</Text>
+      <View style={screenStyles.header}>
+        <Text style={screenStyles.headerTitle}>{t('title')}</Text>
         <TouchableOpacity
-          style={styles.addButton}
+          style={screenStyles.addButton}
           onPress={() => {
             resetForm();
             setIsAddModalVisible(true);
           }}
           testID="add-ingredient-button"
         >
-          <Text style={styles.addButtonText}>+ {t('common:buttons.add')}</Text>
+          <Text style={screenStyles.addButtonText}>+ {t('common:buttons.add')}</Text>
         </TouchableOpacity>
       </View>
 
       {/* Error message */}
       {error && (
-        <View style={styles.errorContainer}>
-          <Text style={styles.errorText}>{error}</Text>
+        <View style={screenStyles.errorContainer}>
+          <Text style={screenStyles.errorText}>{error}</Text>
         </View>
       )}
 
@@ -418,9 +423,9 @@ export default function ManageIngredientsScreen() {
 
       {/* Ingredients list */}
       {sortedIngredients.length === 0 ? (
-        <View style={styles.emptyState} testID="empty-state">
-          <Text style={styles.emptyStateText}>{t('empty.noResults')}</Text>
-          <Text style={styles.emptyStateSubtext}>
+        <View style={screenStyles.emptyState} testID="empty-state">
+          <Text style={screenStyles.emptyStateText}>{t('empty.noResults')}</Text>
+          <Text style={screenStyles.emptyStateSubtext}>
             {filterCategory === 'all'
               ? t('empty.addFirst')
               : t('empty.noIngredients')}
@@ -432,7 +437,7 @@ export default function ManageIngredientsScreen() {
           keyExtractor={(item) => item.id}
           renderItem={renderIngredientItem}
           testID="ingredients-list"
-          contentContainerStyle={styles.listContent}
+          contentContainerStyle={screenStyles.listContent}
         />
       )}
 
@@ -443,7 +448,7 @@ export default function ManageIngredientsScreen() {
         transparent={true}
         onRequestClose={() => setIsAddModalVisible(false)}
       >
-        <View style={styles.modalOverlay}>
+        <View style={modalStyles.modalOverlay}>
           {renderModalForm(false)}
         </View>
       </Modal>
@@ -455,7 +460,7 @@ export default function ManageIngredientsScreen() {
         transparent={true}
         onRequestClose={() => setIsEditModalVisible(false)}
       >
-        <View style={styles.modalOverlay}>
+        <View style={modalStyles.modalOverlay}>
           {renderModalForm(true)}
         </View>
       </Modal>
@@ -464,57 +469,7 @@ export default function ManageIngredientsScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#111418',
-  },
-  loadingContainer: {
-    flex: 1,
-    backgroundColor: '#111418',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  loadingText: {
-    color: '#FFFFFF',
-    marginTop: 16,
-    fontSize: 16,
-  },
-  // Header
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    padding: 16,
-    paddingTop: 60,
-  },
-  headerTitle: {
-    color: '#FFFFFF',
-    fontSize: 24,
-    fontWeight: 'bold',
-  },
-  addButton: {
-    backgroundColor: '#3e96ef',
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    borderRadius: 8,
-  },
-  addButtonText: {
-    color: '#FFFFFF',
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-  // Error
-  errorContainer: {
-    backgroundColor: '#ff4444',
-    padding: 12,
-    marginHorizontal: 16,
-    borderRadius: 8,
-  },
-  errorText: {
-    color: '#FFFFFF',
-    textAlign: 'center',
-  },
-  // Filter
+  // Filter (screen-specific)
   filterContainer: {
     minHeight: 35,
     maxHeight: 35,
@@ -541,11 +496,7 @@ const styles = StyleSheet.create({
   filterButtonTextActive: {
     color: '#FFFFFF',
   },
-  // List
-  listContent: {
-    paddingBottom: 20,
-  },
-  // Ingredient item
+  // Ingredient item (screen-specific)
   ingredientItem: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -584,76 +535,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: 8,
   },
-  editButton: {
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    borderRadius: 4,
-    backgroundColor: '#283039',
-  },
-  editButtonText: {
-    color: '#FFFFFF',
-    fontSize: 12,
-  },
-  deleteButton: {
-    paddingHorizontal: 10,
-    paddingVertical: 6,
-    borderRadius: 4,
-    backgroundColor: '#ff4444',
-  },
-  deleteButtonText: {
-    color: '#FFFFFF',
-    fontSize: 12,
-    fontWeight: 'bold',
-  },
-  // Empty state
-  emptyState: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 32,
-  },
-  emptyStateText: {
-    color: '#FFFFFF',
-    fontSize: 18,
-    fontWeight: '500',
-    marginBottom: 8,
-  },
-  emptyStateSubtext: {
-    color: '#9dabb9',
-    fontSize: 14,
-    textAlign: 'center',
-  },
-  // Modal
-  modalOverlay: {
-    flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.7)',
-    justifyContent: 'center',
-    padding: 20,
-  },
-  modalContent: {
-    backgroundColor: '#1a1f25',
-    borderRadius: 16,
-    padding: 20,
-  },
-  modalTitle: {
-    color: '#FFFFFF',
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginBottom: 20,
-    textAlign: 'center',
-  },
-  inputLabel: {
-    color: '#9dabb9',
-    fontSize: 14,
-    marginBottom: 8,
+  // Modal form extras (screen-specific - inputLabel has marginTop)
+  inputLabelWithMargin: {
     marginTop: 12,
-  },
-  textInput: {
-    backgroundColor: '#283039',
-    borderRadius: 8,
-    padding: 12,
-    color: '#FFFFFF',
-    fontSize: 16,
   },
   categorySelector: {
     maxHeight: 44,
@@ -695,34 +579,5 @@ const styles = StyleSheet.create({
   },
   mealTypeOptionTextSelected: {
     color: '#FFFFFF',
-  },
-  modalButtons: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginTop: 24,
-    gap: 12,
-  },
-  cancelButton: {
-    flex: 1,
-    paddingVertical: 14,
-    borderRadius: 8,
-    backgroundColor: '#283039',
-    alignItems: 'center',
-  },
-  cancelButtonText: {
-    color: '#FFFFFF',
-    fontSize: 16,
-  },
-  saveButton: {
-    flex: 1,
-    paddingVertical: 14,
-    borderRadius: 8,
-    backgroundColor: '#3e96ef',
-    alignItems: 'center',
-  },
-  saveButtonText: {
-    color: '#FFFFFF',
-    fontSize: 16,
-    fontWeight: 'bold',
   },
 });

@@ -7,8 +7,8 @@
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Localization from 'expo-localization';
-import type { LanguageDetectorAsyncModule } from 'i18next';
 import { DEFAULT_LANGUAGE, SUPPORTED_LANGUAGES, type LanguageCode } from './types';
+import type { LanguageDetectorAsyncModule } from 'i18next';
 
 const LANGUAGE_STORAGE_KEY = 'i18nextLng';
 

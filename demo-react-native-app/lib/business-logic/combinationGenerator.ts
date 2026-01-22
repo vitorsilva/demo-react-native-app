@@ -1,5 +1,5 @@
-import type { Ingredient } from '../../types/database';
 import { logger } from '../telemetry/logger';
+import type { Ingredient } from '../../types/database';
 
 const log = logger.child({ module: 'CombinationGenerator' });
 
