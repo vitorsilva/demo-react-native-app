@@ -82,7 +82,10 @@
       "Bash(npm run arch:graph:*)",
       "Bash(npm run arch:report:*)",
       "Bash(start reports/architecture/index.html)",
-      "mcp__playwright__browser_press_key"
+      "mcp__playwright__browser_press_key",
+      "Bash(npm run lint:*)",
+      "Bash(npm run lint:duplicates:*)",
+      "Bash(npx commitlint)"
     ],
     "deny": [],
     "ask": []
