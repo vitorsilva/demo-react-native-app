@@ -47,6 +47,57 @@ Mutation testing introduces small changes (mutations) to your codebase and check
 
 ---
 
+## LLM Context Management Protocol
+
+### Problem
+
+When executing long implementation sessions, LLM quality degrades significantly when:
+1. **Auto-compact triggers** (~80% context) - summarization loses important details
+2. **Session ends** - new session starts without prior context
+
+### Solution: Checkpoint Before Compact
+
+**Rule:** At ~75% context usage, STOP execution, mark progress in this plan, and start fresh session.
+
+**Why this works:**
+- This plan document IS the context - it contains everything needed
+- Each task is self-contained with full context inline
+- Fresh session reads plan → continues from marked progress
+- Zero quality degradation (never reaches auto-compact)
+
+### Execution Cycle
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│  1. READ this plan → find next pending task (marked [ ])    │
+│  2. EXECUTE task (all context is already in the task)       │
+│  3. MARK complete ([ ] → [x]) and commit                    │
+│  4. CHECK context usage                                      │
+│     └─ If < 75%: continue to next task                      │
+│     └─ If ≥ 75%: update progress below, then /clear         │
+│  5. NEW SESSION reads plan → continues from step 1          │
+└─────────────────────────────────────────────────────────────┘
+```
+
+### Current Progress
+
+**Last checkpoint:** Not started
+**Next action:** Begin Phase 8.1, Step 1 (Install Stryker packages)
+**Blockers:** None
+
+### Self-Contained Task Requirements
+
+Each task in this plan includes:
+- ✅ **What to do** - Clear, actionable steps
+- ✅ **Full code** - Complete code blocks, not snippets
+- ✅ **File paths** - Exact locations for all files
+- ✅ **Dependencies** - What must exist before this task
+- ✅ **Verification** - How to confirm task is complete
+
+A fresh LLM session should be able to execute ANY task by reading only that task's section.
+
+---
+
 ## Technical Configuration
 
 ### Packages to Install
