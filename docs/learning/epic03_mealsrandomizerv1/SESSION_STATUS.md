@@ -4,7 +4,7 @@
 
 **Started:** 2025-01-21
 
-**Current Status:** Phase 7 PLANNING 📋
+**Current Status:** Phases 7, 8, 9 PLANS COMPLETE 📋 | Ready for Implementation
 
 ---
 
@@ -18,8 +18,8 @@
 - ✅ **Phase 5:** Telemetry Expansion - COMPLETE (100%)
 - ⏸️ **Phase 6:** Validation & Iteration - Not started
 - 📋 **Phase 7:** Internationalization (i18n) - PLAN DRAFTED
-- ⏸️ **Phase 8:** Mutation Testing - Planned (placeholder)
-- ⏸️ **Phase 9:** Architecture Testing - Planned (placeholder)
+- 📋 **Phase 8:** Mutation Testing - PLAN COMPLETE
+- 📋 **Phase 9:** Architecture Testing - PLAN COMPLETE
 
 **Estimated Total Time:** 19-27 hours (development) + 3-4 weeks (validation)
 
@@ -152,17 +152,38 @@ See `docs/learning/epic04_feature_enhancement/` for details.
 
 **Reference:** [PHASE7_I18N.md](./PHASE7_I18N.md)
 
-### Phase 8: Mutation Testing (TBD)
-**Status:** Planned (Placeholder)
+### Phase 8: Mutation Testing (9-16 hours)
+**Status:** 📋 PLAN COMPLETE - Ready for Implementation
 
 **Goal:** Validate test suite effectiveness using mutation testing
 
+**Plan Completed:**
+- [x] Research completed (StrykerJS v9.x, 2026 best practices)
+- [x] Tool selected: StrykerJS (only mature option for JS/TS)
+- [x] Scope analyzed (4 waves: core logic, validation, database, telemetry)
+- [x] Configuration designed (Jest runner, TypeScript checker, incremental mode)
+- [x] Implementation plan created (5 sub-phases)
+- [x] Git strategy defined (feature/phase8-mutation-testing branch)
+- [x] Success criteria defined (>75% overall mutation score)
+- [ ] Implementation started
+
 **Reference:** [PHASE8_MUTATION_TESTING.md](./PHASE8_MUTATION_TESTING.md)
 
-### Phase 9: Architecture Testing (TBD)
-**Status:** Planned (Placeholder)
+### Phase 9: Architecture Testing (6-11 hours)
+**Status:** 📋 PLAN COMPLETE - Ready for Implementation
 
 **Goal:** Enforce architectural rules and prevent code structure degradation
+
+**Plan Completed:**
+- [x] Research completed (dependency-cruiser v17.x, eslint-plugin-boundaries v4.x)
+- [x] Tools selected: Dual approach (dep-cruiser + ESLint boundaries)
+- [x] Current architecture analyzed (clean, no violations)
+- [x] Layer boundaries defined (7 rules)
+- [x] Configuration designed (both tools)
+- [x] Implementation plan created (5 sub-phases)
+- [x] Git strategy defined (feature/phase9-architecture-testing branch)
+- [x] Success criteria defined (0 violations, CI integration)
+- [ ] Implementation started
 
 **Reference:** [PHASE9_ARCHITECTURE_TESTING.md](./PHASE9_ARCHITECTURE_TESTING.md)
 
@@ -170,32 +191,34 @@ See `docs/learning/epic04_feature_enhancement/` for details.
 
 ## 🎯 Next Session Plan
 
-**Resume from:** Phase 8 & 9 Planning
+**Resume from:** Implementation of Phase 7, 8, or 9
 
 **Branch:** `main`
 
 **Completed This Session:**
-- ✅ Epic restructuring (Phases 7, 8, 9 added to Epic 03)
-- ✅ Created Epic 04: Feature Enhancement
-- ✅ Moved Phase 4 to Epic 04
-- ✅ Phase 7 i18n plan COMPLETE (detailed, with UI wireframes)
-- ✅ Committed all changes
+- ✅ Phase 8 Mutation Testing plan COMPLETE
+- ✅ Phase 9 Architecture Testing plan COMPLETE
 
-**Next Session Tasks:**
-1. **Enhance Phase 8 (Mutation Testing)** - expand placeholder into detailed plan
-   - Research Stryker Mutator for TypeScript/Jest
-   - Define scope (which modules to test)
-   - Create implementation steps
-2. **Enhance Phase 9 (Architecture Testing)** - expand placeholder into detailed plan
-   - Research dependency-cruiser for JS/TS
-   - Define architectural rules to enforce
-   - Create implementation steps
-3. Review Phase 7 i18n plan when ready to implement
+**All Plans Ready for Implementation:**
+1. **Phase 7 (i18n)** - Multi-language support (7-12 days)
+   - English + Portuguese pt-PT
+   - i18next + react-i18next + expo-localization
+2. **Phase 8 (Mutation Testing)** - Test suite validation (9-16 hours)
+   - StrykerJS v9.x with Jest runner
+   - 4 waves: core logic → validation → database → telemetry
+3. **Phase 9 (Architecture Testing)** - Layer boundary enforcement (6-11 hours)
+   - dependency-cruiser + eslint-plugin-boundaries
+   - 10+ architectural rules
+
+**Recommended Order:** Phase 9 → Phase 8 → Phase 7
+- Phase 9 is quickest and provides immediate value (prevents future violations)
+- Phase 8 validates test quality before adding new features
+- Phase 7 is the largest feature addition
 
 **References:**
 - [PHASE7_I18N.md](./PHASE7_I18N.md) - Complete plan ✅
-- [PHASE8_MUTATION_TESTING.md](./PHASE8_MUTATION_TESTING.md) - Placeholder (enhance next)
-- [PHASE9_ARCHITECTURE_TESTING.md](./PHASE9_ARCHITECTURE_TESTING.md) - Placeholder (enhance next)
+- [PHASE8_MUTATION_TESTING.md](./PHASE8_MUTATION_TESTING.md) - Complete plan ✅
+- [PHASE9_ARCHITECTURE_TESTING.md](./PHASE9_ARCHITECTURE_TESTING.md) - Complete plan ✅
 
 ---
 
@@ -220,6 +243,45 @@ See `docs/learning/epic04_feature_enhancement/` for details.
 ---
 
 ## 🔄 Change Log
+
+### 2026-01-22 (Session 18 - Phase 8 & 9 Planning Complete)
+- **Phase 9 Architecture Testing Plan COMPLETE:**
+  - Explored Saberloop's architecture testing (dependency-cruiser v17.3.5)
+  - Analyzed SaborSpin's folder structure and import patterns
+  - Confirmed: NO circular dependencies, clean layer separation
+  - Web research: dependency-cruiser, ts-arch, ArchUnitTS, eslint-plugin-boundaries
+  - **Tool Selection:** Dual approach (dependency-cruiser + eslint-plugin-boundaries)
+    - dependency-cruiser: CI validation + visualization
+    - eslint-plugin-boundaries: Real-time IDE feedback
+  - **Layer Boundaries Defined:**
+    - app/ → store, telemetry, components, types (NOT database, business-logic)
+    - components/ → telemetry, types, hooks (NOT store, database)
+    - store/ → database, business-logic, telemetry, types
+    - business-logic/ → types, telemetry only (pure functions)
+    - database/ → types, telemetry, adapters (independent)
+    - telemetry/ → external only (cross-cutting)
+  - **10+ Rules:** no-circular, screens-through-store, components-presentational, etc.
+  - **Implementation Plan:** 5 sub-phases (Setup, Core Rules, Visualization, CI, Docs)
+  - **Estimated Effort:** 6-11 hours
+- **Phase 8 Mutation Testing Plan COMPLETE:**
+  - Researched Saberloop's mutation testing implementation (Stryker v9.4.0 + Vitest)
+  - Explored SaborSpin's test structure (139 tests, 13 test suites)
+  - Web research: StrykerJS 2026 best practices, Jest runner config, incremental mode
+  - **Tool Selection:** StrykerJS v9.x (only mature option for JS/TS)
+  - **Key Configuration:**
+    - Jest runner with `projectType: "custom"` (for jest-expo)
+    - TypeScript checker for type-safe mutations
+    - `coverageAnalysis: "perTest"` (fastest mode)
+    - Incremental mode for faster CI runs
+  - **Scope Analysis (4 Waves):**
+    - Wave 1: Core business logic (combinationGenerator, varietyEngine) - 134 lines
+    - Wave 2: Validation logic - 333 lines
+    - Wave 3: Database operations - ~500 lines
+    - Wave 4: Telemetry (optional) - ~330 lines
+  - **Implementation Plan:** 5 sub-phases (Setup, Wave 1-3, Documentation)
+  - **Success Criteria:** >75% overall mutation score
+  - **Estimated Effort:** 9-16 hours
+- **Status:** Plan ready for implementation
 
 ### 2026-01-22 (Session 17 - Epic Planning & i18n Research)
 - **Epic Structure Reorganization:**
@@ -589,4 +651,4 @@ See `docs/learning/epic04_feature_enhancement/` for details.
 ---
 
 **Last Updated:** 2026-01-22
-**Next Session:** Enhance Phase 8 (Mutation Testing) and Phase 9 (Architecture Testing) plans
+**Next Session:** Implementation of Phase 7, 8, or 9 (all plans complete)
