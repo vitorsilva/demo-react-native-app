@@ -25,7 +25,7 @@ appId: com.vitorsilvavmrs.saborspin
     id: "language-option-pt-PT"
 
 # Verify settings is now in Portuguese
-- assertVisible: "Configurações"
+- assertVisible: "Definições"
 - assertVisible: "Idioma"
 - assertVisible: "Preferências Globais"
 
@@ -45,7 +45,7 @@ appId: com.vitorsilvavmrs.saborspin
     optional: false
 
 # Navigate back to Settings
-- tapOn: "Configurações"
+- tapOn: "Definições"
 
 # Switch back to English
 - tapOn:
