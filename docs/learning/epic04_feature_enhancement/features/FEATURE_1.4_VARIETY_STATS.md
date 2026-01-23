@@ -8,6 +8,77 @@
 
 ---
 
+## Branching Strategy
+
+**Branch Name:** `FEATURE_1.4_VARIETY_STATS`
+
+**Approach:**
+- Create feature branch from `main` (or from Phase 1 branch if in progress)
+- Small, focused commits per task
+- Commit format: `feat(1.4): <description>` or `test(1.4): <description>`
+
+---
+
+## Tool Instructions
+
+```bash
+cd demo-react-native-app
+
+# Unit tests
+npm test
+
+# E2E tests (Playwright)
+npm run test:e2e
+
+# Maestro tests
+maestro test e2e/maestro/
+
+# Linting
+npm run lint
+```
+
+---
+
+## I18N Considerations
+
+### New Translation Keys
+
+**English (`lib/i18n/locales/en/stats.json`):**
+```json
+{
+  "varietyStats": {
+    "title": "Your Variety This Month",
+    "uniqueCombinations": "You've tried {{count}} different {{mealType}} combinations this month!",
+    "mostCommon": "Your most common {{mealType}} is {{combination}} ({{count}} times)",
+    "ingredientsUsed": "You've used {{used}} of your {{total}} ingredients this week",
+    "varietyScore": "Variety score: {{score}}%",
+    "expand": "Show more",
+    "collapse": "Show less"
+  }
+}
+```
+
+**Portuguese (`lib/i18n/locales/pt-PT/stats.json`):**
+```json
+{
+  "varietyStats": {
+    "title": "A Tua Variedade Este Mês",
+    "uniqueCombinations": "Experimentaste {{count}} combinações diferentes de {{mealType}} este mês!",
+    "mostCommon": "O teu {{mealType}} mais comum é {{combination}} ({{count}} vezes)",
+    "ingredientsUsed": "Usaste {{used}} dos teus {{total}} ingredientes esta semana",
+    "varietyScore": "Pontuação de variedade: {{score}}%",
+    "expand": "Mostrar mais",
+    "collapse": "Mostrar menos"
+  }
+}
+```
+
+### Notes
+- Use interpolation for dynamic values (count, mealType, etc.)
+- Pluralization may be needed for "combinations" and "times"
+
+---
+
 ## Overview
 
 Personalization stats showing user's variety patterns over time.
