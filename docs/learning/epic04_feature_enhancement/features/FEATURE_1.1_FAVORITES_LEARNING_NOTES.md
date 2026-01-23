@@ -157,3 +157,72 @@ isFavorite: boolean  // true or false
 **Testing:**
 - All 220 unit tests pass
 - Linting: 0 errors, 5 pre-existing warnings
+
+## Unit Tests for Favorites
+
+### Task 5 - CREATE unit tests for favorites
+
+**Implementation Details:**
+- Created two test files to cover database and store layers
+- Followed existing test patterns from `mealLogs.test.ts` and `index.test.ts`
+- Tests cover all three acceptance criteria from the spec
+
+**Test Structure:**
+
+**Database Tests (`lib/database/__tests__/favorites.test.ts`):**
+```typescript
+// 11 tests covering:
+describe('logMeal with favorite status')
+  - isFavorite defaults to false
+  - isFavorite can be set to true
+  - isFavorite can be explicitly set to false
+
+describe('toggleMealLogFavorite')
+  - toggle false → true
+  - toggle true → false
+  - multiple toggles work correctly
+  - persistence verified via database fetch
+  - error handling for non-existent meal
+
+describe('getRecentMealLogs includes isFavorite status')
+  - correct status returned for each meal
+  - filtering by favorite status works
+```
+
+**Store Tests (`lib/store/__tests__/favorites.test.ts`):**
+```typescript
+// 7 tests covering:
+describe('toggleMealLogFavorite')
+  - toggle false → true updates state
+  - toggle true → false updates state
+  - only targeted meal log updated
+  - error handling for non-existent meal
+  - loading state managed correctly
+
+describe('logMeal with favorite')
+  - defaults to false
+  - can be set to true
+
+describe('filtering favorites in state')
+  - can filter mealLogs by favorite status
+```
+
+**Key Learnings:**
+- **Test Pattern Consistency:** Used same `beforeEach` setup as existing tests (resetTestDatabase, resetDatabase, initDatabase)
+- **Mock Configuration:** Both test files use appropriate Jest mocks for database
+- **State Isolation:** Each test properly resets store state to prevent test pollution
+- **Error Cases:** Included tests for error handling to ensure graceful failure
+
+**Algorithm Boost Not Implemented:**
+- The spec mentioned a `favoriteBonus` scoring in suggestions (line 143-148)
+- This was NOT implemented in the actual code - only mentioned as a future enhancement
+- Tests focus on what was actually implemented (toggle, persistence, filtering)
+
+**No Issues Encountered:**
+- Test patterns were well-established and easy to follow
+- All 238 tests pass (220 existing + 18 new)
+- No linting errors
+
+**Testing:**
+- 238 unit tests pass
+- Linting: 0 errors, 5 pre-existing warnings

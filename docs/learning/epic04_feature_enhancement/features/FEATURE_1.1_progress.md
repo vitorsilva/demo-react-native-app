@@ -101,3 +101,25 @@
 - Linting passed (5 pre-existing warnings, 0 errors)
 
 **Status:** COMPLETE
+
+### Task 5: CREATE unit tests for favorites ✅
+
+**Implementation:**
+- Created `lib/database/__tests__/favorites.test.ts` with 11 tests:
+  - `logMeal with favorite status`: 3 tests for default, explicit true, and explicit false
+  - `toggleMealLogFavorite`: 5 tests for toggle false→true, true→false, multiple toggles, persistence, and error handling
+  - `getRecentMealLogs includes isFavorite status`: 2 tests for correct status retrieval and filtering
+- Created `lib/store/__tests__/favorites.test.ts` with 7 tests:
+  - `toggleMealLogFavorite`: 5 tests for toggle operations, state isolation, error handling, and loading state
+  - `logMeal with favorite`: 2 tests for default and explicit favorite values
+  - `filtering favorites in state`: 1 test for filtering mealLogs by favorite status
+
+**Files Created:**
+- `demo-react-native-app/lib/database/__tests__/favorites.test.ts` - Database-level favorites tests (11 tests)
+- `demo-react-native-app/lib/store/__tests__/favorites.test.ts` - Store-level favorites tests (7 tests)
+
+**Testing:**
+- All 238 unit tests pass (220 original + 18 new favorites tests)
+- Linting passed (5 pre-existing warnings, 0 errors)
+
+**Status:** COMPLETE
