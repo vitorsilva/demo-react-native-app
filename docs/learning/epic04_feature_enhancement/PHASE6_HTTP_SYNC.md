@@ -167,6 +167,29 @@ Sync States:
 
 ---
 
+## Screenshot Capture
+
+### Required Screenshots
+
+| Screenshot | When to Capture | Filename |
+|------------|-----------------|----------|
+| Header BEFORE | Before sync indicator | `screenshot_before_header_sync.png` |
+| Header AFTER - Synced | With ☁️ ✓ indicator | `screenshot_after_header_synced.png` |
+| Header AFTER - Syncing | With ☁️ 🔄 indicator | `screenshot_header_syncing.png` |
+| Header AFTER - Pending | With ☁️ 3 indicator | `screenshot_header_pending.png` |
+| Header AFTER - Offline | With ☁️ ⚠️ indicator | `screenshot_header_offline.png` |
+| Sync Status Detail | Bottom sheet with full status | `screenshot_sync_status_detail.png` |
+| Settings - Sync | New Sync section | `screenshot_settings_sync.png` |
+| Family History - Synced | With ☁️ icons on synced items | `screenshot_history_synced.png` |
+
+### Capture Instructions
+1. For sync states: Trigger each state (synced, syncing, pending, offline)
+2. For synced items: Show meals from multiple devices with sync indicator
+3. Capture status detail while sync is in progress if possible
+4. Save screenshots in `docs/learning/epic04_feature_enhancement/screenshots/`
+
+---
+
 ## Architecture
 
 ```
@@ -547,6 +570,8 @@ async function trackChange(
 | 25 | Integration testing with 2+ devices | ~4 hours | Real device sync verification | not started |
 | 26 | Document learning notes | ~30 min | Capture unexpected errors, workarounds, fixes | not started |
 | 27 | Run all existing unit tests, Playwright tests and Maestro Tests | Quality | ~0.5 hours | not started |
+| 28 | 📸 Capture BEFORE screenshots | Documentation | ~10 min | not started |
+| 29 | 📸 Capture AFTER screenshots | Documentation | ~20 min | not started |
 
 **Total Estimated Effort:** ~52.5 hours (including unit + Playwright + Maestro tests + quality checks)
 

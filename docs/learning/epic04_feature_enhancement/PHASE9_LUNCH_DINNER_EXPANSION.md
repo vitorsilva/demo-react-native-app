@@ -348,6 +348,31 @@ variety score is lower (yellow instead of green).
 
 ---
 
+## Screenshot Capture
+
+### Required Screenshots
+
+| Screenshot | When to Capture | Filename |
+|------------|-----------------|----------|
+| Suggestion Card - Simple (BEFORE) | Current breakfast/snack style | `screenshot_before_suggestion_simple.png` |
+| Suggestion Card - Main+Sides | Lunch/dinner structured layout | `screenshot_after_suggestion_structured.png` |
+| Home Screen BEFORE | Before lunch/dinner meal types | `screenshot_before_home_mealtypes.png` |
+| Home Screen AFTER | After lunch/dinner meal types | `screenshot_after_home_mealtypes.png` |
+| Meal Type Settings - Rotation | Rotation settings for dinner | `screenshot_mealtype_rotation.png` |
+| Ingredient Management - Filters | New category/meal type filters | `screenshot_ingredients_filters.png` |
+| Add Ingredient - Rotation Fields | Protein/base ingredient settings | `screenshot_ingredient_rotation.png` |
+| Meal Logging - Main+Sides | Selecting main and sides | `screenshot_meal_logging_structured.png` |
+| History - Main+Sides Display | History showing structured meal | `screenshot_history_structured.png` |
+| Variety Warning - Rotation | Warning showing rotation violation | `screenshot_variety_rotation_warning.png` |
+
+### Capture Instructions
+1. For structured suggestions: Generate lunch/dinner with protein + base + vegetable
+2. For rotation warnings: Log same protein/base multiple times to trigger warning
+3. For ingredient management: Add sample proteins and bases with categories
+4. Save screenshots in `docs/learning/epic04_feature_enhancement/screenshots/`
+
+---
+
 ## Features
 
 ### 9.1 Meal Type-Specific Variety Rules
@@ -730,6 +755,8 @@ Add filters for:
 | 26 | ▶️ RUN quality checks and compare | Quality | ~30 min | Compare to baseline; create remediation plan if worse | not started |
 | 27 | Document learning notes | Documentation | ~30 min | Capture unexpected errors, workarounds, fixes | not started |
 | 28 | Run all existing unit tests, Playwright tests and Maestro Tests | Quality | ~0.5 hours | not started |
+| 29 | 📸 Capture BEFORE screenshots | Documentation | ~10 min | not started |
+| 30 | 📸 Capture AFTER screenshots | Documentation | ~25 min | not started |
 
 **Total Estimated Effort:** ~55.5 hours (including unit + Playwright + Maestro tests + quality checks)
 
@@ -737,6 +764,7 @@ Add filters for:
 - 🧪 CREATE = Writing new tests
 - 🔄 UPDATE = Modifying existing tests
 - ▶️ RUN = Executing tests (baseline/verification)
+- 📸 = Screenshot capture for documentation
 
 ---
 

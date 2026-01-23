@@ -85,6 +85,26 @@ Personalization stats showing user's variety patterns over time.
 
 ---
 
+## Screenshot Capture
+
+### Required Screenshots
+
+| Screenshot | When to Capture | Filename |
+|------------|-----------------|----------|
+| Home Screen BEFORE | Before implementation starts | `screenshot_before_home_stats.png` |
+| Home Screen with Stats | After stats card is implemented | `screenshot_after_home_stats.png` |
+| Stats Card Expanded | With all metrics visible | `screenshot_stats_expanded.png` |
+| Stats Card Collapsed | With card minimized | `screenshot_stats_collapsed.png` |
+
+### Capture Instructions
+1. Navigate to Home screen
+2. For BEFORE: capture current Home screen without stats card
+3. For AFTER: capture with stats card visible, showing actual computed metrics
+4. Capture both expanded and collapsed states
+5. Save screenshots in `docs/learning/epic04_feature_enhancement/features/screenshots/`
+
+---
+
 ## Implementation
 
 ### Type Definition
@@ -189,11 +209,14 @@ function calculateVarietyStats(history: MealLog[], ingredients: Ingredient[]): V
 | 5 | 🧪 CREATE Playwright E2E test | Testing | ~1 hour | not started |
 | 6 | 🧪 CREATE Maestro test | Testing | ~1 hour | not started |
 | 7 | Run all existing unit tests, Playwright tests and Maestro Tests | Quality | ~0.5 hours | not started |
+| 8 | 📸 Capture BEFORE screenshot of Home screen | Documentation | ~5 min | not started |
+| 9 | 📸 Capture AFTER screenshots with stats card | Documentation | ~10 min | not started |
 
 **Legend:**
 - 🧪 CREATE = Writing new tests
 - 🔄 UPDATE = Modifying existing tests
 - ▶️ RUN = Executing tests (baseline/verification)
+- 📸 = Screenshot capture for documentation
 
 ---
 

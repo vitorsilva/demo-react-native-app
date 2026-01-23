@@ -46,6 +46,31 @@ Legend:
 
 ---
 
+## Screenshot Capture
+
+### Required Screenshots
+
+| Screenshot | When to Capture | Filename |
+|------------|-----------------|----------|
+| Suggestion Card BEFORE | Before implementation starts | `screenshot_before_color_coding.png` |
+| Suggestion Card - Green | After implementation, with green indicator | `screenshot_after_color_green.png` |
+| Suggestion Card - Yellow | After implementation, with yellow indicator | `screenshot_after_color_yellow.png` |
+| Suggestion Card - Red | After implementation, with red indicator (if testable) | `screenshot_after_color_red.png` |
+
+### Capture Instructions
+1. Navigate to any meal type suggestions screen
+2. For BEFORE: capture current suggestion card without color indicators
+3. For AFTER: manipulate meal log dates to show each color state
+4. Save screenshots in `docs/learning/epic04_feature_enhancement/features/screenshots/`
+
+### Capturing BEFORE screenshots after implementation
+If the feature is already implemented, you can still capture BEFORE screenshots:
+- **Option A**: `git checkout <commit-before-feature>`, run app, screenshot, then `git checkout -`
+- **Option B**: Use the ASCII wireframe in this document as the "before" reference
+- **Option C**: Skip BEFORE if not critical, document changes in AFTER caption
+
+---
+
 ## Implementation
 
 ### Utility Function
@@ -128,11 +153,14 @@ Colors should not be the only indicator. Consider adding:
 | 4 | 🧪 CREATE unit tests for `getVarietyColor()` | Testing | ~30 min | not started |
 | 5 | 🧪 CREATE E2E test for color visibility | Testing | ~30 min | not started |
 | 6 | Run all existing unit tests, Playwright tests and Maestro Tests | Quality | ~0.5 hours | not started |
+| 7 | 📸 Capture BEFORE screenshot of suggestion card | Documentation | ~5 min | not started |
+| 8 | 📸 Capture AFTER screenshots showing color states | Documentation | ~10 min | not started |
 
 **Legend:**
 - 🧪 CREATE = Writing new tests
 - 🔄 UPDATE = Modifying existing tests
 - ▶️ RUN = Executing tests (baseline/verification)
+- 📸 = Screenshot capture for documentation
 
 ---
 

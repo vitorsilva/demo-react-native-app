@@ -159,6 +159,28 @@ Most cards won't show this.
 
 ---
 
+## Screenshot Capture
+
+### Required Screenshots
+
+| Screenshot | When to Capture | Filename |
+|------------|-----------------|----------|
+| Suggestion Card BEFORE | Before ingredient warning added | `screenshot_before_suggestion_variety.png` |
+| Suggestion Card AFTER | After ingredient frequency warning added | `screenshot_after_suggestion_warning.png` |
+| Pairing Rules - Good Pairs | New screen - Good Pairs tab | `screenshot_pairing_rules_good.png` |
+| Pairing Rules - Avoid | New screen - Avoid tab | `screenshot_pairing_rules_avoid.png` |
+| Add Pairing Rule Modal | New modal component | `screenshot_add_pairing_modal.png` |
+| Settings BEFORE | Before Pairing Rules link | `screenshot_before_settings_pairing.png` |
+| Settings AFTER | After Pairing Rules link added | `screenshot_after_settings_pairing.png` |
+
+### Capture Instructions
+1. For BEFORE screenshots: capture existing UI before any implementation
+2. For ingredient warning: log same ingredient multiple times to trigger warning
+3. For pairing rules: create sample rules to show populated UI
+4. Save screenshots in `docs/learning/epic04_feature_enhancement/screenshots/`
+
+---
+
 ## Features
 
 ### 3.1 Ingredient Frequency Tracking
@@ -479,6 +501,8 @@ function generateSuggestions(
 | 20 | ▶️ RUN quality checks and compare | Quality | ~30 min | Compare to baseline; create remediation plan if worse | not started |
 | 21 | Document learning notes | Documentation | ~30 min | Capture unexpected errors, workarounds, fixes | not started |
 | 22 | Run all existing unit tests, Playwright tests and Maestro Tests | Quality | ~0.5 hours | not started |
+| 23 | 📸 Capture BEFORE screenshots | Documentation | ~10 min | not started |
+| 24 | 📸 Capture AFTER screenshots | Documentation | ~15 min | not started |
 
 **Total Estimated Effort:** ~27.5 hours (including unit + Playwright + Maestro tests + quality checks)
 
@@ -486,6 +510,7 @@ function generateSuggestions(
 - 🧪 CREATE = Writing new tests
 - 🔄 UPDATE = Modifying existing tests
 - ▶️ RUN = Executing tests (baseline/verification)
+- 📸 = Screenshot capture for documentation
 
 ---
 

@@ -40,6 +40,29 @@ Legend:
 
 ---
 
+## Screenshot Capture
+
+### Required Screenshots
+
+| Screenshot | When to Capture | Filename |
+|------------|-----------------|----------|
+| Suggestion Card BEFORE | Before implementation starts | `screenshot_before_suggestion_card.png` |
+| Suggestion Card AFTER | After New! badge is implemented | `screenshot_after_new_badge.png` |
+
+### Capture Instructions
+1. Navigate to any meal type suggestions screen
+2. Ensure there are suggestion cards visible
+3. Capture the suggestion card area showing the badge (or its absence)
+4. Save screenshots in `docs/learning/epic04_feature_enhancement/features/screenshots/`
+
+### Capturing BEFORE screenshots after implementation
+If the feature is already implemented, you can still capture BEFORE screenshots:
+- **Option A**: `git checkout <commit-before-feature>`, run app, screenshot, then `git checkout -`
+- **Option B**: Use the ASCII wireframe in this document as the "before" reference
+- **Option C**: Skip BEFORE if not critical, document changes in AFTER caption
+
+---
+
 ## Implementation
 
 ### Utility Function
@@ -112,11 +135,14 @@ function isNewCombination(ingredients: string[], history: MealLog[]): boolean {
 | 4 | 🧪 CREATE unit tests for `isNewCombination()` | Testing | ~30 min | not started |
 | 5 | 🧪 CREATE E2E test for badge visibility | Testing | ~30 min | not started |
 | 6 | Run all existing unit tests, Playwright tests and Maestro Tests | Quality | ~0.5 hours | not started |
+| 7 | 📸 Capture BEFORE screenshot of suggestion card | Documentation | ~5 min | not started |
+| 8 | 📸 Capture AFTER screenshot with New! badge | Documentation | ~5 min | not started |
 
 **Legend:**
 - 🧪 CREATE = Writing new tests
 - 🔄 UPDATE = Modifying existing tests
 - ▶️ RUN = Executing tests (baseline/verification)
+- 📸 = Screenshot capture for documentation
 
 ---
 

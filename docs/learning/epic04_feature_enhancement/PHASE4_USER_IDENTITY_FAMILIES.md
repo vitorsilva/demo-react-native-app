@@ -283,6 +283,31 @@ Dropdown when tapped:
 
 ---
 
+## Screenshot Capture
+
+### Required Screenshots
+
+| Screenshot | When to Capture | Filename |
+|------------|-----------------|----------|
+| First Launch/Onboarding | New onboarding screen | `screenshot_onboarding.png` |
+| Settings BEFORE | Before Profile/Families sections | `screenshot_before_settings_families.png` |
+| Settings AFTER | After Profile/Families sections added | `screenshot_after_settings_families.png` |
+| Family List Screen | New screen with families | `screenshot_family_list.png` |
+| Create Family Flow | Family creation screen | `screenshot_create_family.png` |
+| Invite Screen | QR code and invite code display | `screenshot_family_invite.png` |
+| Join Family - Code Entry | Manual code entry modal | `screenshot_join_family_code.png` |
+| Join Family - QR Scanner | QR scanner view | `screenshot_join_family_qr.png` |
+| Family Detail Screen | Member list with roles | `screenshot_family_detail.png` |
+| Family Selector | Header dropdown component | `screenshot_family_selector.png` |
+
+### Capture Instructions
+1. For onboarding: Use fresh app install or clear app data
+2. For family screens: Create test family with multiple members
+3. For invite screen: Show both QR code and text code
+4. Save screenshots in `docs/learning/epic04_feature_enhancement/screenshots/`
+
+---
+
 ## Features
 
 ### 4.1 Local User Identity
@@ -703,6 +728,8 @@ async function promoteToAdmin(familyId: string, userId: string): Promise<void> {
 | 33 | ▶️ RUN quality checks and compare | Quality | ~30 min | Compare to baseline; create remediation plan if worse | not started |
 | 34 | Document learning notes | Documentation | ~30 min | Capture unexpected errors, workarounds, fixes | not started |
 | 35 | Run all existing unit tests, Playwright tests and Maestro Tests | Quality | ~0.5 hours | not started |
+| 36 | 📸 Capture BEFORE screenshots | Documentation | ~10 min | not started |
+| 37 | 📸 Capture AFTER screenshots | Documentation | ~25 min | not started |
 
 **Total Estimated Effort:** ~49.5 hours (including unit + Playwright + Maestro tests + quality checks)
 
@@ -710,6 +737,7 @@ async function promoteToAdmin(familyId: string, userId: string): Promise<void> {
 - 🧪 CREATE = Writing new tests
 - 🔄 UPDATE = Modifying existing tests
 - ▶️ RUN = Executing tests (baseline/verification)
+- 📸 = Screenshot capture for documentation
 
 ---
 

@@ -71,6 +71,23 @@ Subtle vibration feedback for key interactions, enhancing the tactile experience
 
 ---
 
+## Screenshot Capture
+
+### Required Screenshots
+
+| Screenshot | When to Capture | Filename |
+|------------|-----------------|----------|
+| Settings Screen BEFORE | Before implementation starts | `screenshot_before_settings_haptic.png` |
+| Settings Screen AFTER | After haptic toggle is added | `screenshot_after_settings_haptic.png` |
+
+### Capture Instructions
+1. Navigate to Settings screen
+2. For BEFORE: capture current Settings screen without "Experience" section
+3. For AFTER: capture with new "Experience" section and haptic toggle visible
+4. Save screenshots in `docs/learning/epic04_feature_enhancement/features/screenshots/`
+
+---
+
 ## Implementation
 
 ### Utility Module
@@ -171,11 +188,14 @@ const handleConfirm = () => {
 | 4 | Integrate haptics into components | Implementation | ~30 min | not started |
 | 5 | 🧪 CREATE unit tests for haptics utility | Testing | ~30 min | not started |
 | 6 | Run all existing unit tests, Playwright tests and Maestro Tests | Quality | ~0.5 hours | not started |
+| 7 | 📸 Capture BEFORE screenshot of Settings screen | Documentation | ~5 min | not started |
+| 8 | 📸 Capture AFTER screenshot with haptic toggle | Documentation | ~5 min | not started |
 
 **Legend:**
 - 🧪 CREATE = Writing new tests
 - 🔄 UPDATE = Modifying existing tests
 - ▶️ RUN = Executing tests (baseline/verification)
+- 📸 = Screenshot capture for documentation
 
 ---
 

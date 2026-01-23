@@ -270,6 +270,33 @@ awaiting user's vote.
 
 ---
 
+## Screenshot Capture
+
+### Required Screenshots
+
+| Screenshot | When to Capture | Filename |
+|------------|-----------------|----------|
+| Suggestion Screen BEFORE | Before "Propose" button | `screenshot_before_suggestion_propose.png` |
+| Suggestion Screen AFTER | After "Propose" button added | `screenshot_after_suggestion_propose.png` |
+| Create Proposal Modal | New proposal creation screen | `screenshot_create_proposal.png` |
+| Tab Bar BEFORE | Before Proposals tab | `screenshot_before_tab_proposals.png` |
+| Tab Bar AFTER | After Proposals tab with badge | `screenshot_after_tab_proposals.png` |
+| Proposals Feed - Open | Open proposals tab | `screenshot_proposals_open.png` |
+| Proposals Feed - Decided | Decided proposals tab | `screenshot_proposals_decided.png` |
+| Proposal Card - Voted | Card showing user's vote | `screenshot_proposal_voted.png` |
+| Proposal Card - Accepted | Card showing accepted state | `screenshot_proposal_accepted.png` |
+| Proposal Card - Rejected | Card showing rejected state | `screenshot_proposal_rejected.png` |
+| Push Notification - New | New proposal notification | `screenshot_notification_new.png` |
+| Push Notification - Accepted | Proposal accepted notification | `screenshot_notification_accepted.png` |
+
+### Capture Instructions
+1. For proposal states: Create test proposals and simulate different vote counts
+2. For notifications: Trigger actual notifications on device
+3. For badge: Ensure there are open proposals awaiting vote
+4. Save screenshots in `docs/learning/epic04_feature_enhancement/screenshots/`
+
+---
+
 ## Features
 
 ### 7.1 Proposal Data Model
@@ -652,6 +679,8 @@ async function sendProposalNotification(
 | 25 | Run quality checks and compare | ~30 min | Compare to baseline; create remediation plan if worse | not started |
 | 26 | Document learning notes | ~30 min | Capture unexpected errors, workarounds, fixes | not started |
 | 27 | Run all existing unit tests, Playwright tests and Maestro Tests | Quality | ~0.5 hours | not started | not started |
+| 28 | 📸 Capture BEFORE screenshots | Documentation | ~10 min | not started |
+| 29 | 📸 Capture AFTER screenshots | Documentation | ~25 min | not started |
 
 **Total Estimated Effort:** ~43.5 hours (including unit + Playwright + Maestro tests + quality checks)
 

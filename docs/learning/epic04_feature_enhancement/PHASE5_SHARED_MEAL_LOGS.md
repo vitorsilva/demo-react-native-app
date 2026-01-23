@@ -194,6 +194,29 @@ No sync yet - that's Phase 6. Data is local but structured for future sync.
 
 ---
 
+## Screenshot Capture
+
+### Required Screenshots
+
+| Screenshot | When to Capture | Filename |
+|------------|-----------------|----------|
+| Meal Logging BEFORE | Before privacy toggle added | `screenshot_before_meal_logging_privacy.png` |
+| Meal Logging AFTER | After privacy toggle added | `screenshot_after_meal_logging_privacy.png` |
+| History Screen BEFORE | Before Family tab | `screenshot_before_history_family.png` |
+| History Screen - My Meals | My Meals tab selected | `screenshot_history_my_meals.png` |
+| History Screen - Family | Family tab with multiple members | `screenshot_history_family.png` |
+| Home Screen BEFORE | Before family summary | `screenshot_before_home_family_summary.png` |
+| Home Screen AFTER | After family day summary added | `screenshot_after_home_family_summary.png` |
+| Settings - Default Visibility | New Family Sharing section | `screenshot_settings_sharing.png` |
+
+### Capture Instructions
+1. For family history: Log meals from multiple family members
+2. For day summary: Ensure varied meal states (completed, pending)
+3. Show both personal and family visibility states
+4. Save screenshots in `docs/learning/epic04_feature_enhancement/screenshots/`
+
+---
+
 ## Features
 
 ### 5.1 Extend Meal Logs Schema
@@ -539,6 +562,8 @@ interface UserPreferences {
 | 25 | ▶️ RUN quality checks and compare | Quality | ~30 min | Compare to baseline; create remediation plan if worse | not started |
 | 26 | Document learning notes | Documentation | ~30 min | Capture unexpected errors, workarounds, fixes | not started |
 | 27 | Run all existing unit tests, Playwright tests and Maestro Tests | Quality | ~0.5 hours | not started |
+| 28 | 📸 Capture BEFORE screenshots | Documentation | ~10 min | not started |
+| 29 | 📸 Capture AFTER screenshots | Documentation | ~20 min | not started |
 
 **Total Estimated Effort:** ~32.5 hours (including unit + Playwright + Maestro tests + quality checks)
 
@@ -546,6 +571,7 @@ interface UserPreferences {
 - 🧪 CREATE = Writing new tests
 - 🔄 UPDATE = Modifying existing tests
 - ▶️ RUN = Executing tests (baseline/verification)
+- 📸 = Screenshot capture for documentation
 
 ---
 

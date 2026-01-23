@@ -155,6 +155,34 @@ OR (unnamed meal):
 
 ---
 
+## Screenshot Capture
+
+### Required Screenshots
+
+| Screenshot | When to Capture | Filename |
+|------------|-----------------|----------|
+| Meal Logging BEFORE | Before implementation starts | `screenshot_before_meal_logging.png` |
+| Meal Logging AFTER | After prep method selector added | `screenshot_after_meal_logging.png` |
+| Preparation Method Picker | New modal component | `screenshot_prep_method_picker.png` |
+| History Item BEFORE | Before named meals support | `screenshot_before_history_item.png` |
+| History Item - Named | After implementation with named meal | `screenshot_after_history_named.png` |
+| History Item - Unnamed | After implementation with prep methods | `screenshot_after_history_prep.png` |
+| Prep Methods Settings | New management screen | `screenshot_prep_methods_settings.png` |
+
+### Capture Instructions
+1. For BEFORE screenshots: capture existing UI before any implementation
+2. For AFTER screenshots: capture with actual data showing new features
+3. Include both iOS and Android variants if significantly different
+4. Save screenshots in `docs/learning/epic04_feature_enhancement/screenshots/`
+
+### Capturing BEFORE screenshots after implementation
+If the feature is already implemented, you can still capture BEFORE screenshots:
+- **Option A**: `git checkout <commit-before-feature>`, run app, screenshot, then `git checkout -`
+- **Option B**: Use the ASCII wireframe in this document as the "before" reference
+- **Option C**: Skip BEFORE if not critical, document changes in AFTER caption
+
+---
+
 ## Current vs Target Data Model
 
 ### Current Model
@@ -528,6 +556,8 @@ function formatMealDisplay(meal: MealLog, components: MealComponent[], ingredien
 | 23 | ▶️ RUN quality checks and compare | Quality | ~30 min | Compare to baseline; create remediation plan if worse | not started |
 | 24 | Document learning notes | Documentation | ~30 min | Capture unexpected errors, workarounds, fixes | not started |
 | 25 | Run all existing unit tests, Playwright tests and Maestro Tests | Quality | ~0.5 hours | not started |
+| 26 | 📸 Capture BEFORE screenshots | Documentation | ~15 min | not started |
+| 27 | 📸 Capture AFTER screenshots | Documentation | ~20 min | not started |
 
 **Total Estimated Effort:** ~29.5 hours (including unit + Playwright + Maestro tests + quality checks)
 
@@ -535,6 +565,7 @@ function formatMealDisplay(meal: MealLog, components: MealComponent[], ingredien
 - 🧪 CREATE = Writing new tests
 - 🔄 UPDATE = Modifying existing tests
 - ▶️ RUN = Executing tests (baseline/verification)
+- 📸 = Screenshot capture for documentation
 
 ---
 
