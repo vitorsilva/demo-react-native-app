@@ -97,6 +97,24 @@ Epic 3 established the production-ready foundation. Epic 4 enhances the app with
 
 ---
 
+### Phase 3.5: Server Infrastructure
+**Goal:** Set up server-side infrastructure needed for family sharing features
+
+**Features:**
+- Local Docker development environment (PHP + MySQL)
+- PHP API structure (extending Saberloop's php-api/)
+- VPS deployment pipeline
+- Telemetry analysis tools (Grafana + Loki)
+- Database schema for families and sync
+
+**Dependencies:** None (can run in parallel with Phases 1-3)
+
+**Blocks:** Phase 6 (HTTP Sync), Phase 7 (Proposals), Phase 8 (P2P Sync)
+
+**[Phase 3.5 Details →](./PHASE3.5_SERVER_INFRASTRUCTURE.md)**
+
+---
+
 ### Phase 4: User Identity & Families
 **Goal:** Foundation for family sharing - local identity and family management
 
@@ -196,21 +214,24 @@ Epic 3 established the production-ready foundation. Epic 4 enhances the app with
 ```
 Phase 0 (Landing)
     ↓
-Phase 1 (Quick Wins) ──────────────────────────────┐
-    ↓                                              │
-Phase 2 (Data Model) ─────────────────────────┐    │
-    ↓                                         │    │
-Phase 3 (Enhanced Variety) ───────────────────┼────┤
-                                              │    │
-Phase 4 (User Identity) ──────────────────────┼────┤
-    ↓                                         │    │
-Phase 5 (Shared Meals) ───────────────────────┼────┤
-    ↓                                         │    │
-Phase 6 (HTTP Sync) ──────────────────────────┼────┤
-    ↓                    ↓                    │    │
-Phase 7 (Proposals)   Phase 8 (P2P) [Optional]│    │
-                                              ↓    ↓
-                              Phase 9 (Lunch/Dinner Expansion)
+Phase 1 (Quick Wins) ──────────────────────────────────────────┐
+    ↓                                                          │
+Phase 2 (Data Model) ─────────────────────────────────────┐    │
+    ↓                                                     │    │
+Phase 3 (Enhanced Variety) ───────────────────────────────┼────┤
+                                                          │    │
+Phase 3.5 (Server Infrastructure) ────────────────────┐   │    │
+    (can run parallel with 1-3)                       │   │    │
+                                                      │   │    │
+Phase 4 (User Identity) ──────────────────────────────┼───┼────┤
+    ↓                                                 │   │    │
+Phase 5 (Shared Meals) ───────────────────────────────┼───┼────┤
+    ↓                                                 │   │    │
+Phase 6 (HTTP Sync) ◄─────────────────────────────────┘   │    │
+    ↓                    ↓                                │    │
+Phase 7 (Proposals)   Phase 8 (P2P) [Optional]            │    │
+                                                          ↓    ↓
+                                          Phase 9 (Lunch/Dinner Expansion)
 ```
 
 ---
@@ -223,13 +244,14 @@ Phase 7 (Proposals)   Phase 8 (P2P) [Optional]│    │
 | 1 | Quick Wins (Polish) | ~24.5 hours |
 | 2 | Data Model Evolution | ~29.5 hours |
 | 3 | Enhanced Variety | ~27.5 hours |
+| 3.5 | Server Infrastructure | ~16.5 hours |
 | 4 | User Identity & Families | ~49.5 hours |
 | 5 | Shared Meal Logs | ~32.5 hours |
 | 6 | HTTP Sync | ~52.5 hours |
 | 7 | Proposals & Voting | ~43.5 hours |
 | 8 | P2P Sync (Optional) | ~43.5 hours |
 | 9 | Lunch/Dinner Expansion | ~55.5 hours |
-| | **Total** | **~362.5 hours** |
+| | **Total** | **~379 hours** |
 
 **Note:** Each phase includes:
 - Running existing test suites at the start (unit + Playwright E2E + Maestro for baseline validation)
@@ -252,6 +274,7 @@ Phase 7 (Proposals)   Phase 8 (P2P) [Optional]│    │
 - [ ] Phase 1: All quick wins implemented
 - [ ] Phase 2: Data model supports prep methods and naming
 - [ ] Phase 3: Ingredient-level variety tracking works
+- [ ] Phase 3.5: Server infrastructure deployed and accessible
 - [ ] Phase 4: Users can create/join families
 - [ ] Phase 5: Meals can be shared within families
 - [ ] Phase 6: Family data syncs across devices
