@@ -4,7 +4,42 @@
 
 **Goal:** Sync family data across devices via server
 
-**Dependencies:** Phase 5 (Shared Meal Logs)
+**Dependencies:**
+- Phase 3.5 (Server Infrastructure) - Server endpoints must be deployed
+- Phase 5 (Shared Meal Logs) - Meal data structure with family context
+
+---
+
+## Development Prerequisites
+
+Before starting this phase, ensure:
+
+### 1. Server Infrastructure Ready (from Phase 3.5)
+```bash
+# Verify Docker stack is running
+cd C:\Users\omeue\source\repos\demo-react-native-app
+docker-compose -f docker-compose.dev.yml ps
+
+# If not running, start it
+docker-compose -f docker-compose.dev.yml up -d
+
+# Verify API is accessible
+curl http://localhost:8080/endpoints/health.php
+```
+
+### 2. Database Migrations Run
+```bash
+# Run migrations if not already done
+docker-compose -f docker-compose.dev.yml exec php-api php /var/www/html/migrate.php
+```
+
+### 3. Environment Variables Set
+```bash
+# .env should have:
+EXPO_PUBLIC_API_ENABLED=true
+EXPO_PUBLIC_API_ENDPOINT=http://localhost:8080  # Local dev
+# EXPO_PUBLIC_API_ENDPOINT=https://saborspin.com/api  # Production
+```
 
 ---
 
@@ -518,13 +553,32 @@ async function trackChange(
 
 ## Testing Strategy
 
+### Local Development Testing (with Docker)
+```bash
+# 1. Start the local PHP + MySQL stack
+docker-compose -f docker-compose.dev.yml up -d
+
+# 2. Run React Native app pointing to local server
+# .env: EXPO_PUBLIC_API_ENDPOINT=http://localhost:8080
+npm start
+
+# 3. Test sync manually:
+#    - Create family on one device/emulator
+#    - Join on another
+#    - Log meal, trigger sync
+#    - Verify data appears on both
+
+# 4. View server logs
+docker-compose -f docker-compose.dev.yml logs -f php-api
+```
+
 ### Unit Tests
 - [ ] Encryption/decryption roundtrip
 - [ ] Signature generation/verification
 - [ ] Merge logic (LWW)
 - [ ] Change tracking captures all changes
 
-### Integration Tests
+### Integration Tests (require Docker running)
 - [ ] Push syncs to server
 - [ ] Pull retrieves from server
 - [ ] Two devices see same data after sync
@@ -549,21 +603,19 @@ async function trackChange(
 
 ### Server Deployment
 ```bash
-# On VPS (same as telemetry server)
-cd /var/www/saborspin-api
+# Deploy PHP files to VPS via FTP
+npm run deploy:api
 
-# 1. Deploy new sync endpoints
-git pull origin main
+# On VPS (SSH)
+ssh user@vps
 
-# 2. Run migrations (if any)
-npm run migrate
+# Run migrations
+cd /var/www/saborspin.com/api
+php migrate.php
 
-# 3. Restart service
-pm2 restart saborspin-api
-
-# 4. Verify endpoints
-curl https://api.saborspin.com/health
-curl https://api.saborspin.com/sync/health
+# Verify endpoints
+curl https://saborspin.com/api/endpoints/health.php
+curl https://saborspin.com/api/endpoints/sync.php
 ```
 
 ### Pre-Deployment Checklist

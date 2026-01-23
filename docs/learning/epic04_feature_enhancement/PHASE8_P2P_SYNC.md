@@ -4,9 +4,31 @@
 
 **Goal:** Direct device-to-device sync when on same network
 
-**Dependencies:** Phase 6 (HTTP Sync)
+**Dependencies:**
+- Phase 3.5 (Server Infrastructure) - Signaling endpoints for WebRTC setup
+- Phase 6 (HTTP Sync) - HTTP fallback when P2P unavailable
 
 **Note:** This phase is optional. HTTP sync (Phase 6) covers most use cases. P2P is an enhancement for faster sync and reduced server dependency.
+
+---
+
+## Development Prerequisites
+
+Before starting this phase, ensure Docker stack is running with signaling endpoints (see [Phase 3.5](./PHASE3.5_SERVER_INFRASTRUCTURE.md)):
+
+```bash
+# Verify server is running (includes signaling endpoints)
+docker-compose -f docker-compose.dev.yml ps
+curl http://localhost:8080/endpoints/health.php
+
+# Test signaling endpoint is available
+curl http://localhost:8080/endpoints/signal.php
+
+# Environment configured for local server
+# .env: EXPO_PUBLIC_API_ENDPOINT=http://localhost:8080
+```
+
+**Note:** P2P testing requires multiple devices/emulators on the same network.
 
 ---
 

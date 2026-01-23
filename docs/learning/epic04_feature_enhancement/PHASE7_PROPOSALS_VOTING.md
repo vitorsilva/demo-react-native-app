@@ -4,7 +4,24 @@
 
 **Goal:** Collaborative meal planning within families
 
-**Dependencies:** Phase 6 (HTTP Sync)
+**Dependencies:**
+- Phase 3.5 (Server Infrastructure) - Server must support proposals API
+- Phase 6 (HTTP Sync) - Sync infrastructure must be working
+
+---
+
+## Development Prerequisites
+
+Before starting this phase, ensure Docker stack is running (see [Phase 3.5](./PHASE3.5_SERVER_INFRASTRUCTURE.md)):
+
+```bash
+# Verify server is running
+docker-compose -f docker-compose.dev.yml ps
+curl http://localhost:8080/endpoints/health.php
+
+# Environment configured for local server
+# .env: EXPO_PUBLIC_API_ENDPOINT=http://localhost:8080
+```
 
 ---
 
