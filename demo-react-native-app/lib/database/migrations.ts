@@ -174,7 +174,16 @@
         )
       `);
     },
-  },          
+  },
+  {
+    version: 4,
+    up: async (db: DatabaseAdapter) => {
+      // Add is_favorite column to meal_logs (idempotent)
+      if (!(await columnExists(db, 'meal_logs', 'is_favorite'))) {
+        await db.runAsync(`ALTER TABLE meal_logs ADD COLUMN is_favorite INTEGER DEFAULT 0`);
+      }
+    },
+  },
   ];
 
   // Main function to run pending migrations
