@@ -1,0 +1,81 @@
+# Maestro E2E test for Favorites empty state
+# Verifies empty favorites state displays correctly
+#
+# Prerequisites:
+#   - Android emulator running: adb devices
+#   - App installed with fresh data (or clear app data)
+#
+# Run with: maestro test e2e/maestro/favorites-empty-state.yaml
+
+appId: com.vitorsilvavmrs.saborspin
+---
+# Launch app with cleared state
+- clearState
+- launchApp
+
+# Wait for app to load
+- extendedWaitUntil:
+    visible: "SaborSpin"
+    timeout: 30000
+
+# First, log a meal without favoriting it
+- tapOn:
+    text: "Breakfast"
+    optional: false
+
+# Wait for suggestions
+- extendedWaitUntil:
+    visible: "Pick one:"
+    timeout: 15000
+
+# Select first meal (don't favorite it)
+- tapOn:
+    id: "select-button-0"
+
+# Wait for confirmation and dismiss
+- extendedWaitUntil:
+    visible: "Logged"
+    timeout: 10000
+
+- tapOn:
+    id: "done-button"
+
+# Navigate to History
+- tapOn: "History"
+
+# Wait for history to load
+- extendedWaitUntil:
+    visible: "Today"
+    timeout: 10000
+
+# Take screenshot of history with meal
+- takeScreenshot: favorites-empty-01-history-with-meal
+
+# Tap Favorites filter
+- tapOn:
+    id: "filter-favorites"
+
+# Wait for filter to apply
+- waitForAnimationToEnd
+
+# Verify empty favorites state is shown
+- assertVisible:
+    id: "history-empty-favorites"
+
+# Take screenshot of empty favorites state
+- takeScreenshot: favorites-empty-02-no-favorites
+
+# Tap All filter to go back
+- tapOn:
+    id: "filter-all"
+
+# Wait for filter to apply
+- waitForAnimationToEnd
+
+# Verify meal is back
+- assertVisible: "Today"
+
+# Take final screenshot
+- takeScreenshot: favorites-empty-03-back-to-all
+
+# Test passed - empty favorites state displays correctly

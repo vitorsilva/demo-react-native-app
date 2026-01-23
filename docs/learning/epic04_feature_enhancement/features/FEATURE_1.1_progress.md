@@ -151,3 +151,40 @@
 - Linting passed (5 pre-existing warnings, 0 errors)
 
 **Status:** COMPLETE
+
+### Task 7: CREATE Maestro tests for favorites ✅
+
+**Implementation:**
+- Created `e2e/maestro/favorites-flow.yaml` with comprehensive Maestro E2E tests:
+  - Launch app and navigate to breakfast suggestions
+  - Mark first suggestion as favorite (tap ☆ icon)
+  - Verify star changes to filled (⭐)
+  - Log meal and navigate to History
+  - Verify favorite indicator in history items
+  - Test favorites filter tab functionality
+  - Toggle favorite off from history screen
+  - Verify meal still appears in All filter
+- Created `e2e/maestro/favorites-empty-state.yaml` for empty favorites state:
+  - Launch app with cleared state
+  - Log meal without favoriting
+  - Navigate to History and activate Favorites filter
+  - Verify empty favorites state displays correctly
+  - Verify switching back to All filter shows the meal
+
+**Files Created:**
+- `demo-react-native-app/e2e/maestro/favorites-flow.yaml` - Main favorites flow test
+- `demo-react-native-app/e2e/maestro/favorites-empty-state.yaml` - Empty favorites state test
+
+**Test Coverage:**
+- ✅ Can mark a combination as favorite on mobile
+- ✅ Favorites filter works on mobile
+- ✅ Favorite status persists and displays correctly
+- ✅ Empty favorites state displays correctly
+- ✅ Toggle favorite on/off works from history screen
+
+**Testing:**
+- All 238 unit tests pass
+- Linting passed (5 pre-existing warnings, 0 errors)
+- Maestro test files created and ready for execution
+
+**Status:** COMPLETE

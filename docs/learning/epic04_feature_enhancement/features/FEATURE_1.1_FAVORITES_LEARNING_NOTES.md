@@ -277,3 +277,68 @@ describe('Favorites Feature')
 - 238 unit tests pass
 - Linting: 0 errors, 5 pre-existing warnings
 - E2E test file created and ready for execution
+
+## Maestro E2E Tests for Favorites
+
+### Task 7 - CREATE Maestro tests
+
+**Implementation Details:**
+- Created `e2e/maestro/favorites-flow.yaml` with comprehensive favorites flow test
+- Created `e2e/maestro/favorites-empty-state.yaml` for empty favorites state testing
+- Followed existing Maestro patterns from `telemetry-flow.yaml` and i18n tests
+
+**Test Structure:**
+
+**favorites-flow.yaml:**
+```yaml
+# Tests covering:
+- Launch app and navigate to suggestions
+- Mark suggestion as favorite (tap ☆ → ⭐)
+- Log meal with favorite status
+- Navigate to History and verify favorite indicator
+- Test favorites filter tab functionality
+- Toggle favorite off from history screen
+- Verify meal still exists after unfavoriting
+```
+
+**favorites-empty-state.yaml:**
+```yaml
+# Tests covering:
+- Launch app with cleared state
+- Log a meal WITHOUT favoriting it
+- Navigate to History and tap Favorites filter
+- Verify empty favorites state is displayed
+- Verify meal still appears in All filter
+```
+
+**Key Maestro Patterns Used:**
+- `extendedWaitUntil` for async operations with timeout
+- `assertVisible` for verifying UI elements
+- `tapOn` with `id` parameter for testID targeting
+- `takeScreenshot` at key states for visual verification
+- `clearState` for testing fresh app state
+- `waitForAnimationToEnd` for UI transitions
+
+**Test Coverage:**
+- ✅ Can mark a combination as favorite on mobile
+- ✅ Favorites filter works on mobile
+- ✅ Favorite status persists and displays correctly
+- ✅ Empty favorites state displays correctly
+- ✅ Toggle favorite on/off works from history screen
+
+**Key Learnings:**
+- **TestID Usage:** Maestro supports `id` parameter for matching React Native `testID` props
+- **State Management:** Use `clearState` directive to test fresh app scenarios
+- **Regex Matching:** For dynamic IDs, use regex patterns like `id: ".*favorite-button.*"`
+- **Screenshot Strategy:** Capture screenshots at key states for visual regression testing
+
+**No Issues Encountered:**
+- Test patterns were well-established from existing Maestro tests
+- Test IDs were already in place from previous implementation tasks
+- All 238 unit tests continue to pass
+- No linting errors
+
+**Testing:**
+- 238 unit tests pass
+- Linting: 0 errors, 5 pre-existing warnings
+- Maestro test files created and ready for execution
