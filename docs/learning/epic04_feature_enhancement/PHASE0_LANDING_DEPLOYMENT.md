@@ -3,7 +3,7 @@
 **Epic:** 4 - Feature Enhancement
 **Status:** Not Started
 **Estimated Time:** 2-4 hours
-**Prerequisites:** VPS access via cPanel, domain ownership (saborspin.com)
+**Prerequisites:** cPanel access (mdemaria account), domain ownership (saborspin.com)
 
 ---
 
@@ -28,28 +28,37 @@ Deploy the SaborSpin landing page to production at saborspin.com. This follows t
 
 ---
 
-## Infrastructure (Same as Saberloop)
+## Infrastructure (Shared Hosting)
+
+**Hosting Model:** Shared VPS with a single cPanel account (`mdemaria`). Both saberloop.com and saborspin.com are **addon domains** under this account.
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│                    VPS (cPanel)                              │
+│              Shared VPS - cPanel Account: mdemaria          │
 ├─────────────────────────────────────────────────────────────┤
+│  Home Directory: /home/mdemaria/                            │
 │                                                              │
-│  Domain: saberloop.com (existing)                           │
-│  └── /              Landing Page                            │
-│  └── /app           Frontend PWA                            │
-│  └── /party         Party Backend (PHP)                     │
-│  └── /telemetry     Telemetry (PHP)                         │
+│  Addon Domain: saberloop.com (existing)                     │
+│  └── /home/mdemaria/saberloop.com/                          │
+│      ├── /              Landing Page                        │
+│      ├── /app           Frontend PWA                        │
+│      ├── /party         Party Backend (PHP)                 │
+│      └── /telemetry     Telemetry (PHP)                     │
 │                                                              │
-│  Domain: saborspin.com (NEW)                                │
-│  └── /              Landing Page (this phase)               │
-│  └── /api           Backend API (Phase 3.5)                 │
-│  └── /downloads     APK hosting                             │
+│  Addon Domain: saborspin.com (NEW)                          │
+│  └── /home/mdemaria/saborspin.com/                          │
+│      ├── /              Landing Page (this phase)           │
+│      ├── /api           Backend API (Phase 3.5)             │
+│      └── /downloads     APK hosting                         │
 │                                                              │
-│  MySQL: saberloop (existing), saborspin (Phase 3.5)         │
+│  MySQL Databases (under mdemaria account):                  │
+│  └── mdemaria_saberloop (existing)                          │
+│  └── mdemaria_saborspin (Phase 3.5)                         │
 │                                                              │
 └─────────────────────────────────────────────────────────────┘
 ```
+
+**Note:** On shared hosting, MySQL database names are prefixed with the cPanel username (e.g., `mdemaria_saborspin`).
 
 ---
 
@@ -91,53 +100,59 @@ ping saborspin.com
 
 ### Step 0.2: Add Domain in cPanel (Addon Domain)
 
-**Goal:** Configure cPanel to serve saborspin.com
+**Goal:** Configure cPanel to serve saborspin.com as an addon domain under the mdemaria account
 
-**Where:** cPanel on your VPS
+**Where:** cPanel (log in as `mdemaria`)
 
 **Tasks:**
-1. Log into cPanel
+1. Log into cPanel as the `mdemaria` account
 2. Go to **Domains** → **Addon Domains** (or **Domains** in newer cPanel)
 3. Add new addon domain:
    - **New Domain Name:** `saborspin.com`
    - **Subdomain:** `saborspin` (auto-filled)
-   - **Document Root:** `public_html/saborspin.com` (or just `saborspin.com`)
+   - **Document Root:** `saborspin.com` (cPanel will create `/home/mdemaria/saborspin.com/`)
 4. Click **Add Domain**
 
 **Result:** cPanel creates:
-- Directory: `~/public_html/saborspin.com/` (or `~/saborspin.com/`)
+- Directory: `/home/mdemaria/saborspin.com/`
 - This is where landing page files will be uploaded
+- The domain is now an addon domain under the `mdemaria` account (same as saberloop.com)
 
 **Note:** Wait for DNS propagation before SSL setup (next step).
 
 ---
 
-### Step 0.3: Create FTP User in cPanel
+### Step 0.3: Create Dedicated FTP User in cPanel
 
-**Goal:** Create FTP credentials for deployment
+**Goal:** Create a dedicated FTP user for SaborSpin deployment (same pattern as Saberloop)
 
-**Where:** cPanel on your VPS
+**Where:** cPanel (log in as `mdemaria`)
 
 **Tasks:**
-1. Log into cPanel
+1. Log into cPanel as `mdemaria`
 2. Go to **Files** → **FTP Accounts**
 3. Create new FTP account:
-   - **Log In:** `saborspin` (or similar)
-   - **Domain:** Select `saborspin.com`
-   - **Password:** Generate strong password
-   - **Directory:** Leave as default (should point to saborspin.com folder)
+   - **Log In:** `saborspin`
+   - **Domain:** Select the server hostname (or `saborspin.com` if available)
+   - **Password:** Generate strong password (save this!)
+   - **Directory:** `/home/mdemaria/saborspin.com` (restrict to this folder only)
    - **Quota:** Unlimited (or set a limit)
 4. Click **Create FTP Account**
 
-**Note credentials:**
+**Note your credentials:**
 ```
-FTP Host: ftp.saborspin.com (or your VPS hostname)
-FTP User: saborspin@saborspin.com (full username)
+FTP Host: (your VPS hostname - same as Saberloop)
+FTP User: saborspin@[hostname] (full username shown in cPanel)
 FTP Password: (the password you created)
 FTP Port: 21
 ```
 
-**Alternative:** You can also use your main cPanel FTP account if preferred.
+**Why a dedicated FTP user?**
+- **Security:** User can only access `/home/mdemaria/saborspin.com/`, not other domains
+- **Simplicity:** Deploy script uses `remoteRoot: '/'` which maps to the domain folder
+- **Consistency:** Same pattern used for Saberloop
+
+**Important:** The FTP user's root directory is `/home/mdemaria/saborspin.com/`, so when the deploy script uses `remoteRoot: '/'`, files upload to the correct location.
 
 ---
 
@@ -145,7 +160,7 @@ FTP Port: 21
 
 **Goal:** Enable HTTPS for saborspin.com
 
-**Where:** cPanel on your VPS
+**Where:** cPanel (log in as `mdemaria`)
 
 **Prerequisites:** DNS must be propagated (Step 0.1 complete)
 
@@ -237,8 +252,8 @@ npm run deploy:landing
 ```
 
 **What gets deployed:**
-- `landing/index.html` → `~/saborspin.com/index.html`
-- `landing/images/*` → `~/saborspin.com/images/*`
+- `landing/index.html` → `/home/mdemaria/saborspin.com/index.html`
+- `landing/images/*` → `/home/mdemaria/saborspin.com/images/*`
 
 **Troubleshooting:**
 - If FTP fails, verify credentials in `.env`
@@ -251,7 +266,7 @@ npm run deploy:landing
 
 **Goal:** Configure Apache for HTTPS redirect and caching
 
-**Where:** Upload to `~/saborspin.com/.htaccess` via FTP or cPanel File Manager
+**Where:** Upload to `/home/mdemaria/saborspin.com/.htaccess` via FTP or cPanel File Manager
 
 **Content:**
 ```apache
@@ -290,12 +305,12 @@ Header set X-XSS-Protection "1; mode=block"
 
 **Tasks:**
 1. Create downloads directory via cPanel File Manager:
-   - Navigate to `saborspin.com/`
+   - Navigate to `/home/mdemaria/saborspin.com/`
    - Create new folder: `downloads`
 
 2. Upload APK:
-   - Via cPanel File Manager: Upload to `saborspin.com/downloads/`
-   - Or via FTP: Upload to `~/saborspin.com/downloads/`
+   - Via cPanel File Manager: Upload to `/home/mdemaria/saborspin.com/downloads/`
+   - Or via FTP: Upload to `/downloads/` (if using dedicated FTP user)
    - Name it: `saborspin-latest.apk` (or with version number)
 
 3. Update landing page (if needed):
@@ -338,21 +353,43 @@ npm run deploy:landing
 **Script:** `scripts/deploy-landing.cjs`
 
 ```javascript
-// Same pattern as Saberloop's deploy-landing.cjs
+require('dotenv').config();
+const FtpDeploy = require('ftp-deploy');
+const ftpDeploy = new FtpDeploy();
+
+// FTP configuration for saborspin.com landing page
+// Uses dedicated FTP user restricted to /home/mdemaria/saborspin.com/
 const config = {
     user: process.env.FTP_USER,
     password: process.env.FTP_PASSWORD,
     host: process.env.FTP_HOST,
     port: 21,
-    forcePasv: true,
-    secure: true,
-    secureOptions: { rejectUnauthorized: false },
+    forcePasv: true,                              // Use passive mode
+    secure: true,                                 // REQUIRED: Enable FTPS
+    secureOptions: { rejectUnauthorized: false }, // Accept self-signed certs
     localRoot: './landing',
-    remoteRoot: '/',  // Root of saborspin.com domain
+    remoteRoot: '/',  // FTP user's root = /home/mdemaria/saborspin.com/
     include: ['*', '**/*'],
-    deleteRemote: false
+    exclude: [],
+    deleteRemote: false  // Don't delete existing files
 };
+
+async function deploy() {
+    try {
+        console.log('📦 Deploying landing page to saborspin.com/...');
+        await ftpDeploy.deploy(config);
+        console.log('✅ Landing page deployed!');
+        console.log('🌐 Visit: https://saborspin.com/');
+    } catch (err) {
+        console.error('❌ Deployment failed:', err);
+        process.exit(1);
+    }
+}
+
+deploy();
 ```
+
+**Dependencies:** `ftp-deploy`, `dotenv`
 
 **npm scripts:**
 - `npm run deploy:landing` - Deploy to production
@@ -365,13 +402,74 @@ const config = {
 | Aspect | Saberloop | SaborSpin |
 |--------|-----------|-----------|
 | Domain | saberloop.com | saborspin.com |
-| VPS | Same cPanel VPS | Same cPanel VPS |
-| Landing | `landing/` → `/` | `landing/` → `/` |
+| cPanel Account | mdemaria (addon domain) | mdemaria (addon domain) |
+| Document Root | `/home/mdemaria/saberloop.com/` | `/home/mdemaria/saborspin.com/` |
+| Landing | `landing/` → document root | `landing/` → document root |
 | FTP Script | `deploy-landing.cjs` | `deploy-landing.cjs` (same pattern) |
 | SSL | Let's Encrypt via cPanel | Let's Encrypt via cPanel |
 | DNS | A records at registrar | A records at registrar |
 
+**Key Point:** Both domains are **addon domains** under the same `mdemaria` cPanel account on the shared VPS. They share the same server resources but have separate document roots.
+
 **Reference:** Saberloop's deployment docs at `demo-pwa-app/docs/architecture/DEPLOYMENT.md`
+
+---
+
+## Known Issues from Saberloop
+
+These issues were encountered during Saberloop deployment. Anticipate and avoid them for SaborSpin.
+
+### Issue 1: FTP Authentication Fails
+
+**Problem:** `npm run deploy:landing` fails with "Login authentication failed"
+
+**Cause:** The server requires **FTPS** (FTP over TLS), not plain FTP.
+
+**Solution:** The deploy script must include these settings:
+```javascript
+const config = {
+    // ... other settings
+    secure: true,  // REQUIRED: Enable FTPS
+    secureOptions: { rejectUnauthorized: false },  // Accept self-signed certs
+    forcePasv: true,  // Use passive mode
+};
+```
+
+**Reference:** Saberloop's `scripts/deploy-ftp.cjs` already has this configured.
+
+### Issue 2: FTP Deploy to Wrong Directory
+
+**Problem:** Files deploy to wrong location on server.
+
+**Cause:** `remoteRoot` doesn't match FTP user's directory structure.
+
+**Solution:**
+- With dedicated FTP user restricted to `/home/mdemaria/saborspin.com/`: use `remoteRoot: '/'`
+- The FTP user's root IS the domain folder, so `/` = `/home/mdemaria/saborspin.com/`
+
+### Issue 3: .env Not Found After Git Clone
+
+**Problem:** Deploy script fails because `.env` file is missing.
+
+**Cause:** `.env` is gitignored (correctly), so it doesn't exist after fresh clone.
+
+**Solution:** Create `.env` manually with FTP credentials before deploying:
+```bash
+# In demo-react-native-app/
+echo "FTP_HOST=your-host" > .env
+echo "FTP_USER=saborspin@hostname" >> .env
+echo "FTP_PASSWORD=your-password" >> .env
+```
+
+### Issue 4: ES Module vs CommonJS
+
+**Problem:** Deploy script fails with "require is not defined" or similar.
+
+**Cause:** Project uses ES modules (`"type": "module"` in package.json), but deploy script uses `require()`.
+
+**Solution:** Name the deploy script with `.cjs` extension to force CommonJS mode:
+- ✅ `scripts/deploy-landing.cjs`
+- ❌ `scripts/deploy-landing.js`
 
 ---
 
