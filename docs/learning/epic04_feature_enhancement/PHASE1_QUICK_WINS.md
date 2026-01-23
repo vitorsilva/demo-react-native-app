@@ -424,7 +424,7 @@ const haptics = {
 
 | Order | Task | Effort | Notes |
 |-------|------|--------|-------|
-| 1 | Run existing test suite | ~5 min | Baseline: ensure all tests pass before changes |
+| 1 | Run existing test suites | ~10 min | Baseline: run unit tests (101+) and E2E tests (12) |
 | 2 | Haptic Feedback | ~1 hour | Add utility, sprinkle in components |
 | 3 | Write unit tests for haptics utility | ~30 min | Test haptic function calls |
 | 4 | Variety Color Coding | ~2 hours | Suggestion card, utility function |
@@ -433,11 +433,13 @@ const haptics = {
 | 7 | Write unit tests for `isNewCombination()` | ~30 min | Test edge cases (never logged, 7+ days) |
 | 8 | Favorite Combinations | ~4 hours | DB migration, store, UI components |
 | 9 | Write unit tests for favorites | ~1 hour | Test toggle, filter, algorithm boost |
-| 10 | Variety Stats | ~4 hours | New component, calculation logic |
-| 11 | Write unit tests for `calculateVarietyStats()` | ~1 hour | Test all stat calculations |
-| 12 | Run full test suite | ~10 min | Verify no regressions, all new tests pass |
+| 10 | Write E2E tests for favorites flow | ~1.5 hours | Test mark favorite, filter history |
+| 11 | Variety Stats | ~4 hours | New component, calculation logic |
+| 12 | Write unit tests for `calculateVarietyStats()` | ~1 hour | Test all stat calculations |
+| 13 | Write E2E test for stats display | ~1 hour | Test stats visible on home screen |
+| 14 | Run full test suites | ~15 min | Run all unit + E2E tests, verify no regressions |
 
-**Total Estimated Effort:** ~17 hours (including tests)
+**Total Estimated Effort:** ~20 hours (including unit + E2E tests)
 
 ---
 

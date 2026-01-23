@@ -415,7 +415,7 @@ function formatMealDisplay(meal: MealLog, components: MealComponent[], ingredien
 
 | Order | Task | Effort | Notes |
 |-------|------|--------|-------|
-| 1 | Run existing test suite | ~5 min | Baseline: ensure all 101+ tests pass |
+| 1 | Run existing test suites | ~10 min | Baseline: run unit tests (101+) and E2E tests (12) |
 | 2 | Add preparation_methods table + seed | ~1 hour | Migration |
 | 3 | Add meal_components table | ~1 hour | Migration |
 | 4 | Add name column to meal_logs | ~30 min | Migration |
@@ -427,11 +427,14 @@ function formatMealDisplay(meal: MealLog, components: MealComponent[], ingredien
 | 10 | Write unit tests for data migration | ~1 hour | Test legacy data converts correctly |
 | 11 | Update meal logging flow UI | ~4 hours | New components |
 | 12 | Write unit tests for `formatMealDisplay()` | ~30 min | Test named/unnamed meal display |
-| 13 | Update history/display to use components | ~2 hours | UI updates |
-| 14 | Add prep method management UI | ~2 hours | Settings screen |
-| 15 | Run full test suite | ~10 min | Verify no regressions, all new tests pass |
+| 13 | Write E2E tests for meal logging with prep methods | ~2 hours | Test full logging flow with prep selection |
+| 14 | Update history/display to use components | ~2 hours | UI updates |
+| 15 | Write E2E test for history display | ~1 hour | Test named meals show correctly |
+| 16 | Add prep method management UI | ~2 hours | Settings screen |
+| 17 | Write E2E test for prep method management | ~1 hour | Test add/delete custom prep methods |
+| 18 | Run full test suites | ~15 min | Run all unit + E2E tests, verify no regressions |
 
-**Total Estimated Effort:** ~20 hours (including tests)
+**Total Estimated Effort:** ~24 hours (including unit + E2E tests)
 
 ---
 

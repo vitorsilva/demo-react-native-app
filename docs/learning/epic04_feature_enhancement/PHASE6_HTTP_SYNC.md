@@ -485,7 +485,7 @@ async function trackChange(
 
 | Order | Task | Effort | Notes |
 |-------|------|--------|-------|
-| 1 | Run existing test suite | ~5 min | Baseline: ensure all tests pass |
+| 1 | Run existing test suites | ~10 min | Baseline: run unit tests and E2E tests |
 | 2 | Design server API spec | ~2 hours | OpenAPI/docs |
 | 3 | Implement server endpoints | ~8 hours | Backend work |
 | 4 | Write unit tests for server endpoints | ~3 hours | Test API responses, validation |
@@ -502,10 +502,12 @@ async function trackChange(
 | 15 | Add sync-on-app-open | ~2 hours | App lifecycle |
 | 16 | Add manual sync trigger | ~1 hour | UI button |
 | 17 | Add sync status indicator | ~3 hours | Component |
-| 18 | Run full test suite | ~10 min | Verify no regressions, all new tests pass |
-| 19 | Integration testing with 2+ devices | ~4 hours | Real device testing |
+| 18 | Write E2E test for manual sync | ~1.5 hours | Test sync button, status indicator |
+| 19 | Write E2E test for sync status display | ~1 hour | Test pending changes, last sync time |
+| 20 | Run full test suites | ~15 min | Run all unit + E2E tests, verify no regressions |
+| 21 | Integration testing with 2+ devices | ~4 hours | Real device sync verification |
 
-**Total Estimated Effort:** ~45 hours (including tests)
+**Total Estimated Effort:** ~48 hours (including unit + E2E tests)
 
 ---
 

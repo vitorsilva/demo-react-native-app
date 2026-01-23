@@ -409,7 +409,7 @@ function generateSuggestions(
 
 | Order | Task | Effort | Notes |
 |-------|------|--------|-------|
-| 1 | Run existing test suite | ~5 min | Baseline: ensure all tests pass |
+| 1 | Run existing test suites | ~10 min | Baseline: run unit tests and E2E tests |
 | 2 | Add ingredient frequency calculation | ~2 hours | Utility function |
 | 3 | Write unit tests for `getIngredientFrequency()` | ~45 min | Test counting logic |
 | 4 | Update variety scoring with frequency | ~2 hours | Algorithm update |
@@ -421,10 +421,12 @@ function generateSuggestions(
 | 10 | Add pairing rules to suggestion algorithm | ~2 hours | Algorithm |
 | 11 | Write unit tests for `applyPairingRules()` | ~1 hour | Test positive/negative rules |
 | 12 | Create Pairing Rules UI | ~4 hours | New screen |
-| 13 | Update suggestion generation | ~2 hours | Integration |
-| 14 | Run full test suite | ~10 min | Verify no regressions, all new tests pass |
+| 13 | Write E2E tests for pairing rules management | ~1.5 hours | Test add/delete rules via UI |
+| 14 | Update suggestion generation | ~2 hours | Integration |
+| 15 | Write E2E test for suggestions with rules | ~1.5 hours | Test negative pairs excluded |
+| 16 | Run full test suites | ~15 min | Run all unit + E2E tests, verify no regressions |
 
-**Total Estimated Effort:** ~20 hours (including tests)
+**Total Estimated Effort:** ~23 hours (including unit + E2E tests)
 
 ---
 

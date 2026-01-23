@@ -220,21 +220,22 @@ Phase 7 (Proposals)   Phase 8 (P2P) [Optional]│    │
 | Phase | Description | Effort (with tests) |
 |-------|-------------|---------------------|
 | 0 | Landing Page Deployment | ~4 hours |
-| 1 | Quick Wins (Polish) | ~17 hours |
-| 2 | Data Model Evolution | ~20 hours |
-| 3 | Enhanced Variety | ~20 hours |
-| 4 | User Identity & Families | ~34 hours |
-| 5 | Shared Meal Logs | ~23 hours |
-| 6 | HTTP Sync | ~45 hours |
-| 7 | Proposals & Voting | ~32 hours |
-| 8 | P2P Sync (Optional) | ~38 hours |
-| 9 | Lunch/Dinner Expansion | ~42 hours |
-| | **Total** | **~275 hours** |
+| 1 | Quick Wins (Polish) | ~20 hours |
+| 2 | Data Model Evolution | ~24 hours |
+| 3 | Enhanced Variety | ~23 hours |
+| 4 | User Identity & Families | ~41 hours |
+| 5 | Shared Meal Logs | ~27 hours |
+| 6 | HTTP Sync | ~48 hours |
+| 7 | Proposals & Voting | ~37 hours |
+| 8 | P2P Sync (Optional) | ~40 hours |
+| 9 | Lunch/Dinner Expansion | ~48 hours |
+| | **Total** | **~312 hours** |
 
 **Note:** Each phase includes:
-- Running the existing test suite at the start (baseline validation)
-- Writing unit tests for new functionality
-- Running the full test suite at the end (regression testing)
+- Running existing test suites at the start (unit tests + E2E tests for baseline validation)
+- Writing unit tests for new business logic and utilities
+- Writing E2E tests for new user flows and UI interactions
+- Running full test suites at the end (all unit + E2E tests for regression testing)
 
 ---
 

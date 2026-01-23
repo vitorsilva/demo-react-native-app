@@ -653,7 +653,7 @@ Add filters for:
 
 | Order | Task | Effort | Notes |
 |-------|------|--------|-------|
-| 1 | Run existing test suite | ~5 min | Baseline: ensure all tests pass |
+| 1 | Run existing test suites | ~10 min | Baseline: run unit tests and E2E tests |
 | 2 | Add ingredient classification columns | ~2 hours | Migration |
 | 3 | Write unit tests for migration | ~30 min | Test column additions |
 | 4 | Classify existing ingredients | ~2 hours | Data work |
@@ -668,12 +668,14 @@ Add filters for:
 | 13 | Update suggestion generator | ~6 hours | Major rewrite |
 | 14 | Write unit tests for `generateLunchDinnerSuggestion()` | ~2 hours | Test main + sides structure |
 | 15 | Update suggestion card UI | ~4 hours | New layout |
-| 16 | Add lunch/dinner ingredients | ~2 hours | Seed data |
-| 17 | Update ingredient management | ~3 hours | Filters, categories |
-| 18 | Run full test suite | ~10 min | Verify no regressions, all new tests pass |
-| 19 | E2E testing and refinement | ~4 hours | Full flow testing |
+| 16 | Write E2E test for lunch/dinner suggestions | ~2 hours | Test main + sides display |
+| 17 | Add lunch/dinner ingredients | ~2 hours | Seed data |
+| 18 | Update ingredient management | ~3 hours | Filters, categories |
+| 19 | Write E2E test for ingredient classification UI | ~1.5 hours | Test protein/base filters |
+| 20 | Write E2E test for full lunch/dinner flow | ~2 hours | Test select → log → history |
+| 21 | Run full test suites | ~15 min | Run all unit + E2E tests, verify no regressions |
 
-**Total Estimated Effort:** ~42 hours (including tests)
+**Total Estimated Effort:** ~48 hours (including unit + E2E tests)
 
 ---
 

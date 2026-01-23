@@ -608,7 +608,7 @@ async function sendProposalNotification(
 
 | Order | Task | Effort | Notes |
 |-------|------|--------|-------|
-| 1 | Run existing test suite | ~5 min | Baseline: ensure all tests pass |
+| 1 | Run existing test suites | ~10 min | Baseline: run unit tests and E2E tests |
 | 2 | Add meal_proposals table | ~1 hour | Migration |
 | 3 | Add proposal_votes table | ~1 hour | Migration |
 | 4 | Write unit tests for migrations | ~30 min | Test table creation |
@@ -616,17 +616,20 @@ async function sendProposalNotification(
 | 6 | Write unit tests for `createProposal()` | ~1 hour | Test creation, auto-vote |
 | 7 | Write unit tests for `voteOnProposal()` | ~1 hour | Test vote, update existing vote |
 | 8 | Create proposal flow UI | ~4 hours | Modal/screen |
-| 9 | Create voting UI | ~3 hours | Component |
-| 10 | Implement resolution logic | ~2 hours | Business logic |
-| 11 | Write unit tests for `checkProposalResolution()` | ~1.5 hours | Test majority, expiration |
-| 12 | Create proposals feed screen | ~4 hours | New tab |
-| 13 | Set up push notifications | ~4 hours | Expo notifications |
-| 14 | Write unit tests for notification triggers | ~1 hour | Test event → notification |
-| 15 | Integrate with sync | ~3 hours | Sync proposals/votes |
-| 16 | Write unit tests for proposal sync | ~1 hour | Test sync payload |
-| 17 | Run full test suite | ~10 min | Verify no regressions, all new tests pass |
+| 9 | Write E2E test for creating proposal | ~1.5 hours | Test propose meal, select date |
+| 10 | Create voting UI | ~3 hours | Component |
+| 11 | Write E2E test for voting | ~1.5 hours | Test vote yes/no, see updated count |
+| 12 | Implement resolution logic | ~2 hours | Business logic |
+| 13 | Write unit tests for `checkProposalResolution()` | ~1.5 hours | Test majority, expiration |
+| 14 | Create proposals feed screen | ~4 hours | New tab |
+| 15 | Write E2E test for proposals feed | ~1.5 hours | Test view open/decided proposals |
+| 16 | Set up push notifications | ~4 hours | Expo notifications |
+| 17 | Write unit tests for notification triggers | ~1 hour | Test event → notification |
+| 18 | Integrate with sync | ~3 hours | Sync proposals/votes |
+| 19 | Write unit tests for proposal sync | ~1 hour | Test sync payload |
+| 20 | Run full test suites | ~15 min | Run all unit + E2E tests, verify no regressions |
 
-**Total Estimated Effort:** ~32 hours (including tests)
+**Total Estimated Effort:** ~37 hours (including unit + E2E tests)
 
 ---
 
