@@ -226,3 +226,54 @@ describe('filtering favorites in state')
 **Testing:**
 - 238 unit tests pass
 - Linting: 0 errors, 5 pre-existing warnings
+
+## Playwright E2E Tests for Favorites
+
+### Task 6 - CREATE Playwright E2E tests
+
+**Implementation Details:**
+- Created `e2e/favorites.spec.ts` with 8 comprehensive E2E tests
+- Followed existing Playwright patterns from `meal-logging.spec.ts`
+- Tests cover all E2E acceptance criteria from the spec
+
+**Test Structure:**
+```typescript
+// 8 tests covering:
+describe('Favorites Feature')
+  - mark a suggestion as favorite from suggestions screen
+  - toggle favorite off from suggestions screen
+  - show favorite indicator in history screen
+  - filter history to show only favorites
+  - show empty state when favorites filter active with no favorites
+  - toggle favorite from history screen
+  - persist favorite status after page reload
+```
+
+**Key Test Patterns Used:**
+- **waitForFunction:** Used to wait for async database/UI state changes
+- **getByTestId:** Primary selector strategy using existing test IDs
+- **waitForTimeout:** Used sparingly for animations and state transitions
+- **Screenshots:** Captured at key states for visual verification
+
+**Test IDs Leveraged:**
+- `favorite-button-{id}` - Favorite buttons on suggestion cards and history items
+- `filter-all` - All filter tab in history
+- `filter-favorites` - Favorites filter tab in history
+- `history-empty-favorites` - Empty favorites state
+
+**Key Learnings:**
+- **Star Icon Detection:** Used `toContainText('⭐')` and `toContainText('☆')` to verify favorite state
+- **Filter Testing:** Need to verify both filtering works AND empty state displays correctly
+- **Persistence Testing:** Reload page with `waitUntil: 'networkidle'` and verify state survived
+- **Multiple Meals:** Log different meal types (breakfast vs snack) to properly test filtering
+
+**No Issues Encountered:**
+- Test patterns were well-established from existing E2E tests
+- Test IDs were already in place from previous implementation tasks
+- All unit tests continue to pass
+- No linting errors
+
+**Testing:**
+- 238 unit tests pass
+- Linting: 0 errors, 5 pre-existing warnings
+- E2E test file created and ready for execution
