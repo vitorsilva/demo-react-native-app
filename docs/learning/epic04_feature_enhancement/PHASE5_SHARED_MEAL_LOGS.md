@@ -459,17 +459,25 @@ interface UserPreferences {
 
 | Order | Task | Effort | Notes |
 |-------|------|--------|-------|
-| 1 | Add columns to meal_logs | ~1 hour | Migration |
-| 2 | Migrate existing logs | ~1 hour | Migration script |
-| 3 | Update meal logging with user_id | ~2 hours | Store |
-| 4 | Add privacy toggle to logging flow | ~2 hours | UI |
-| 5 | Add default visibility preference | ~1 hour | Settings |
-| 6 | Create family history query | ~2 hours | Database |
-| 7 | Add family tab to history screen | ~3 hours | UI |
-| 8 | Create family day summary component | ~4 hours | Dashboard |
-| 9 | Update home screen with dashboard | ~2 hours | UI |
+| 1 | Run existing test suite | ~5 min | Baseline: ensure all tests pass |
+| 2 | Add columns to meal_logs | ~1 hour | Migration |
+| 3 | Write unit tests for migration | ~30 min | Test column additions |
+| 4 | Migrate existing logs | ~1 hour | Migration script |
+| 5 | Write unit tests for data migration | ~30 min | Test user_id/family_id assignment |
+| 6 | Update meal logging with user_id | ~2 hours | Store |
+| 7 | Write unit tests for updated logging | ~1 hour | Test user/family context |
+| 8 | Add privacy toggle to logging flow | ~2 hours | UI |
+| 9 | Add default visibility preference | ~1 hour | Settings |
+| 10 | Write unit tests for visibility logic | ~30 min | Test default, toggle behavior |
+| 11 | Create family history query | ~2 hours | Database |
+| 12 | Write unit tests for family query | ~1 hour | Test filtering, privacy respect |
+| 13 | Add family tab to history screen | ~3 hours | UI |
+| 14 | Create family day summary component | ~4 hours | Dashboard |
+| 15 | Write unit tests for `getFamilyDaySummary()` | ~45 min | Test aggregation logic |
+| 16 | Update home screen with dashboard | ~2 hours | UI |
+| 17 | Run full test suite | ~10 min | Verify no regressions, all new tests pass |
 
-**Total Estimated Effort:** ~18 hours
+**Total Estimated Effort:** ~23 hours (including tests)
 
 ---
 

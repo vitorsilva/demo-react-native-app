@@ -485,19 +485,27 @@ async function trackChange(
 
 | Order | Task | Effort | Notes |
 |-------|------|--------|-------|
-| 1 | Design server API spec | ~2 hours | OpenAPI/docs |
-| 2 | Implement server endpoints | ~8 hours | Backend work |
-| 3 | Add encryption utilities | ~4 hours | Client crypto |
-| 4 | Add sync_queue table | ~1 hour | Migration |
-| 5 | Implement change tracking | ~3 hours | Store hooks |
-| 6 | Implement sync pull logic | ~4 hours | Client |
-| 7 | Implement sync push logic | ~4 hours | Client |
-| 8 | Add sync-on-app-open | ~2 hours | App lifecycle |
-| 9 | Add manual sync trigger | ~1 hour | UI button |
-| 10 | Add sync status indicator | ~3 hours | Component |
-| 11 | Testing with 2+ devices | ~4 hours | Integration |
+| 1 | Run existing test suite | ~5 min | Baseline: ensure all tests pass |
+| 2 | Design server API spec | ~2 hours | OpenAPI/docs |
+| 3 | Implement server endpoints | ~8 hours | Backend work |
+| 4 | Write unit tests for server endpoints | ~3 hours | Test API responses, validation |
+| 5 | Add encryption utilities | ~4 hours | Client crypto |
+| 6 | Write unit tests for encryption | ~1.5 hours | Test encrypt/decrypt roundtrip |
+| 7 | Add sync_queue table | ~1 hour | Migration |
+| 8 | Write unit tests for sync_queue migration | ~30 min | Test table creation |
+| 9 | Implement change tracking | ~3 hours | Store hooks |
+| 10 | Write unit tests for `trackChange()` | ~1 hour | Test change capture logic |
+| 11 | Implement sync pull logic | ~4 hours | Client |
+| 12 | Write unit tests for pull + merge | ~1.5 hours | Test merge logic (LWW) |
+| 13 | Implement sync push logic | ~4 hours | Client |
+| 14 | Write unit tests for push logic | ~1 hour | Test payload creation, signature |
+| 15 | Add sync-on-app-open | ~2 hours | App lifecycle |
+| 16 | Add manual sync trigger | ~1 hour | UI button |
+| 17 | Add sync status indicator | ~3 hours | Component |
+| 18 | Run full test suite | ~10 min | Verify no regressions, all new tests pass |
+| 19 | Integration testing with 2+ devices | ~4 hours | Real device testing |
 
-**Total Estimated Effort:** ~36 hours
+**Total Estimated Effort:** ~45 hours (including tests)
 
 ---
 

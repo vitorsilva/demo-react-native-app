@@ -215,6 +215,29 @@ Phase 7 (Proposals)   Phase 8 (P2P) [Optional]│    │
 
 ---
 
+## Effort Summary
+
+| Phase | Description | Effort (with tests) |
+|-------|-------------|---------------------|
+| 0 | Landing Page Deployment | ~4 hours |
+| 1 | Quick Wins (Polish) | ~17 hours |
+| 2 | Data Model Evolution | ~20 hours |
+| 3 | Enhanced Variety | ~20 hours |
+| 4 | User Identity & Families | ~34 hours |
+| 5 | Shared Meal Logs | ~23 hours |
+| 6 | HTTP Sync | ~45 hours |
+| 7 | Proposals & Voting | ~32 hours |
+| 8 | P2P Sync (Optional) | ~38 hours |
+| 9 | Lunch/Dinner Expansion | ~42 hours |
+| | **Total** | **~275 hours** |
+
+**Note:** Each phase includes:
+- Running the existing test suite at the start (baseline validation)
+- Writing unit tests for new functionality
+- Running the full test suite at the end (regression testing)
+
+---
+
 ## Success Criteria
 
 ### Epic 4 Complete When:

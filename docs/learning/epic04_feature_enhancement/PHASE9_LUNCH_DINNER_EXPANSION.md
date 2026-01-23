@@ -653,19 +653,27 @@ Add filters for:
 
 | Order | Task | Effort | Notes |
 |-------|------|--------|-------|
-| 1 | Add ingredient classification columns | ~2 hours | Migration |
-| 2 | Classify existing ingredients | ~2 hours | Data work |
-| 3 | Update meal type configuration | ~2 hours | Settings |
-| 4 | Implement building-block rotation | ~4 hours | Algorithm |
-| 5 | Implement protein rotation | ~4 hours | Algorithm |
-| 6 | Add component roles (main/side) | ~2 hours | Migration |
-| 7 | Update suggestion generator | ~6 hours | Major rewrite |
-| 8 | Update suggestion card UI | ~4 hours | New layout |
-| 9 | Add lunch/dinner ingredients | ~2 hours | Seed data |
-| 10 | Update ingredient management | ~3 hours | Filters, categories |
-| 11 | Testing and refinement | ~4 hours | E2E tests |
+| 1 | Run existing test suite | ~5 min | Baseline: ensure all tests pass |
+| 2 | Add ingredient classification columns | ~2 hours | Migration |
+| 3 | Write unit tests for migration | ~30 min | Test column additions |
+| 4 | Classify existing ingredients | ~2 hours | Data work |
+| 5 | Update meal type configuration | ~2 hours | Settings |
+| 6 | Write unit tests for meal type config | ~30 min | Test rotation toggles |
+| 7 | Implement building-block rotation | ~4 hours | Algorithm |
+| 8 | Write unit tests for `getBaseIngredientPenalty()` | ~1.5 hours | Test rotation penalties |
+| 9 | Implement protein rotation | ~4 hours | Algorithm |
+| 10 | Write unit tests for `getProteinPenalty()` | ~1.5 hours | Test category rotation |
+| 11 | Add component roles (main/side) | ~2 hours | Migration |
+| 12 | Write unit tests for role assignment | ~30 min | Test main/side classification |
+| 13 | Update suggestion generator | ~6 hours | Major rewrite |
+| 14 | Write unit tests for `generateLunchDinnerSuggestion()` | ~2 hours | Test main + sides structure |
+| 15 | Update suggestion card UI | ~4 hours | New layout |
+| 16 | Add lunch/dinner ingredients | ~2 hours | Seed data |
+| 17 | Update ingredient management | ~3 hours | Filters, categories |
+| 18 | Run full test suite | ~10 min | Verify no regressions, all new tests pass |
+| 19 | E2E testing and refinement | ~4 hours | Full flow testing |
 
-**Total Estimated Effort:** ~35 hours
+**Total Estimated Effort:** ~42 hours (including tests)
 
 ---
 

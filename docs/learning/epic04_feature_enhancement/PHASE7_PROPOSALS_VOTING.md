@@ -608,18 +608,25 @@ async function sendProposalNotification(
 
 | Order | Task | Effort | Notes |
 |-------|------|--------|-------|
-| 1 | Add meal_proposals table | ~1 hour | Migration |
-| 2 | Add proposal_votes table | ~1 hour | Migration |
-| 3 | Create proposal store actions | ~3 hours | Store |
-| 4 | Create proposal flow UI | ~4 hours | Modal/screen |
-| 5 | Create voting UI | ~3 hours | Component |
-| 6 | Implement resolution logic | ~2 hours | Business logic |
-| 7 | Create proposals feed screen | ~4 hours | New tab |
-| 8 | Set up push notifications | ~4 hours | Expo notifications |
-| 9 | Integrate with sync | ~3 hours | Sync proposals/votes |
-| 10 | Add notification triggers | ~2 hours | Events → notifications |
+| 1 | Run existing test suite | ~5 min | Baseline: ensure all tests pass |
+| 2 | Add meal_proposals table | ~1 hour | Migration |
+| 3 | Add proposal_votes table | ~1 hour | Migration |
+| 4 | Write unit tests for migrations | ~30 min | Test table creation |
+| 5 | Create proposal store actions | ~3 hours | Store |
+| 6 | Write unit tests for `createProposal()` | ~1 hour | Test creation, auto-vote |
+| 7 | Write unit tests for `voteOnProposal()` | ~1 hour | Test vote, update existing vote |
+| 8 | Create proposal flow UI | ~4 hours | Modal/screen |
+| 9 | Create voting UI | ~3 hours | Component |
+| 10 | Implement resolution logic | ~2 hours | Business logic |
+| 11 | Write unit tests for `checkProposalResolution()` | ~1.5 hours | Test majority, expiration |
+| 12 | Create proposals feed screen | ~4 hours | New tab |
+| 13 | Set up push notifications | ~4 hours | Expo notifications |
+| 14 | Write unit tests for notification triggers | ~1 hour | Test event → notification |
+| 15 | Integrate with sync | ~3 hours | Sync proposals/votes |
+| 16 | Write unit tests for proposal sync | ~1 hour | Test sync payload |
+| 17 | Run full test suite | ~10 min | Verify no regressions, all new tests pass |
 
-**Total Estimated Effort:** ~27 hours
+**Total Estimated Effort:** ~32 hours (including tests)
 
 ---
 

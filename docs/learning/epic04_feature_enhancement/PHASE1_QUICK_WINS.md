@@ -422,15 +422,22 @@ const haptics = {
 
 ## Implementation Order
 
-| Order | Feature | Effort | Files to Modify |
-|-------|---------|--------|-----------------|
-| 1 | Haptic Feedback | ~1 hour | Add utility, sprinkle in components |
-| 2 | Variety Color Coding | ~2 hours | Suggestion card, utility function |
-| 3 | "New!" Badge | ~2 hours | Suggestion card, utility function |
-| 4 | Favorite Combinations | ~4 hours | DB migration, store, UI components |
-| 5 | Variety Stats | ~4 hours | New component, calculation logic |
+| Order | Task | Effort | Notes |
+|-------|------|--------|-------|
+| 1 | Run existing test suite | ~5 min | Baseline: ensure all tests pass before changes |
+| 2 | Haptic Feedback | ~1 hour | Add utility, sprinkle in components |
+| 3 | Write unit tests for haptics utility | ~30 min | Test haptic function calls |
+| 4 | Variety Color Coding | ~2 hours | Suggestion card, utility function |
+| 5 | Write unit tests for `getVarietyColor()` | ~30 min | Test all color thresholds |
+| 6 | "New!" Badge | ~2 hours | Suggestion card, utility function |
+| 7 | Write unit tests for `isNewCombination()` | ~30 min | Test edge cases (never logged, 7+ days) |
+| 8 | Favorite Combinations | ~4 hours | DB migration, store, UI components |
+| 9 | Write unit tests for favorites | ~1 hour | Test toggle, filter, algorithm boost |
+| 10 | Variety Stats | ~4 hours | New component, calculation logic |
+| 11 | Write unit tests for `calculateVarietyStats()` | ~1 hour | Test all stat calculations |
+| 12 | Run full test suite | ~10 min | Verify no regressions, all new tests pass |
 
-**Total Estimated Effort:** ~13 hours
+**Total Estimated Effort:** ~17 hours (including tests)
 
 ---
 

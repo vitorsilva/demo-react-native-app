@@ -482,17 +482,24 @@ zeroconf.scan('saborspin', 'tcp', 'local.');
 
 | Order | Task | Effort | Notes |
 |-------|------|--------|-------|
-| 1 | Set up WebRTC library | ~2 hours | Installation, config |
-| 2 | Implement signaling server | ~4 hours | WebSocket server |
-| 3 | Implement P2P connection class | ~4 hours | WebRTC wrapper |
-| 4 | Implement signaling client | ~3 hours | Connect, register |
-| 5 | Implement P2P sync manager | ~4 hours | Connection management |
-| 6 | Integrate with existing sync | ~3 hours | Hybrid logic |
-| 7 | Add connection status UI | ~2 hours | "Connected to 2 devices" |
-| 8 | Testing with multiple devices | ~4 hours | Real device testing |
-| 9 | (Optional) mDNS discovery | ~4 hours | Local network |
+| 1 | Run existing test suite | ~5 min | Baseline: ensure all tests pass |
+| 2 | Set up WebRTC library | ~2 hours | Installation, config |
+| 3 | Implement signaling server | ~4 hours | WebSocket server |
+| 4 | Write unit tests for signaling server | ~1.5 hours | Test message routing |
+| 5 | Implement P2P connection class | ~4 hours | WebRTC wrapper |
+| 6 | Write unit tests for P2P connection | ~1.5 hours | Test offer/answer flow |
+| 7 | Implement signaling client | ~3 hours | Connect, register |
+| 8 | Write unit tests for signaling client | ~1 hour | Test connection states |
+| 9 | Implement P2P sync manager | ~4 hours | Connection management |
+| 10 | Write unit tests for P2PSyncManager | ~1.5 hours | Test sync via P2P |
+| 11 | Integrate with existing sync | ~3 hours | Hybrid logic |
+| 12 | Write unit tests for hybrid fallback | ~1 hour | Test P2P → HTTP fallback |
+| 13 | Add connection status UI | ~2 hours | "Connected to 2 devices" |
+| 14 | Run full test suite | ~10 min | Verify no regressions, all new tests pass |
+| 15 | Integration testing with multiple devices | ~4 hours | Real device testing |
+| 16 | (Optional) mDNS discovery | ~4 hours | Local network |
 
-**Total Estimated Effort:** ~30 hours
+**Total Estimated Effort:** ~38 hours (including tests)
 
 ---
 

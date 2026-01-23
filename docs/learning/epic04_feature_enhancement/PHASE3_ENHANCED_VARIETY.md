@@ -409,15 +409,22 @@ function generateSuggestions(
 
 | Order | Task | Effort | Notes |
 |-------|------|--------|-------|
-| 1 | Add ingredient frequency calculation | ~2 hours | Utility function |
-| 2 | Update variety scoring with frequency | ~2 hours | Algorithm update |
-| 3 | Add pairing_rules table | ~1 hour | Migration |
-| 4 | Add pairing rules store actions | ~2 hours | Store |
-| 5 | Add pairing rules to suggestion algorithm | ~2 hours | Algorithm |
-| 6 | Create Pairing Rules UI | ~4 hours | New screen |
-| 7 | Update suggestion generation | ~2 hours | Integration |
+| 1 | Run existing test suite | ~5 min | Baseline: ensure all tests pass |
+| 2 | Add ingredient frequency calculation | ~2 hours | Utility function |
+| 3 | Write unit tests for `getIngredientFrequency()` | ~45 min | Test counting logic |
+| 4 | Update variety scoring with frequency | ~2 hours | Algorithm update |
+| 5 | Write unit tests for frequency penalties | ~45 min | Test penalty thresholds |
+| 6 | Add pairing_rules table | ~1 hour | Migration |
+| 7 | Write unit tests for pairing rules migration | ~30 min | Test table creation |
+| 8 | Add pairing rules store actions | ~2 hours | Store |
+| 9 | Write unit tests for pairing rules CRUD | ~1 hour | Test add/delete/query |
+| 10 | Add pairing rules to suggestion algorithm | ~2 hours | Algorithm |
+| 11 | Write unit tests for `applyPairingRules()` | ~1 hour | Test positive/negative rules |
+| 12 | Create Pairing Rules UI | ~4 hours | New screen |
+| 13 | Update suggestion generation | ~2 hours | Integration |
+| 14 | Run full test suite | ~10 min | Verify no regressions, all new tests pass |
 
-**Total Estimated Effort:** ~15 hours
+**Total Estimated Effort:** ~20 hours (including tests)
 
 ---
 

@@ -415,17 +415,23 @@ function formatMealDisplay(meal: MealLog, components: MealComponent[], ingredien
 
 | Order | Task | Effort | Notes |
 |-------|------|--------|-------|
-| 1 | Add preparation_methods table + seed | ~1 hour | Migration |
-| 2 | Add meal_components table | ~1 hour | Migration |
-| 3 | Add name column to meal_logs | ~30 min | Migration |
-| 4 | Update TypeScript types | ~1 hour | Types file |
-| 5 | Update store with new actions | ~2 hours | Store |
-| 6 | Migrate existing data | ~2 hours | Migration script |
-| 7 | Update meal logging flow UI | ~4 hours | New components |
-| 8 | Update history/display to use components | ~2 hours | UI updates |
-| 9 | Add prep method management UI | ~2 hours | Settings screen |
+| 1 | Run existing test suite | ~5 min | Baseline: ensure all 101+ tests pass |
+| 2 | Add preparation_methods table + seed | ~1 hour | Migration |
+| 3 | Add meal_components table | ~1 hour | Migration |
+| 4 | Add name column to meal_logs | ~30 min | Migration |
+| 5 | Write unit tests for new migrations | ~1 hour | Test table creation, seeding |
+| 6 | Update TypeScript types | ~1 hour | Types file |
+| 7 | Update store with new actions | ~2 hours | Store |
+| 8 | Write unit tests for store actions | ~1.5 hours | Test CRUD for prep methods, components |
+| 9 | Migrate existing data | ~2 hours | Migration script |
+| 10 | Write unit tests for data migration | ~1 hour | Test legacy data converts correctly |
+| 11 | Update meal logging flow UI | ~4 hours | New components |
+| 12 | Write unit tests for `formatMealDisplay()` | ~30 min | Test named/unnamed meal display |
+| 13 | Update history/display to use components | ~2 hours | UI updates |
+| 14 | Add prep method management UI | ~2 hours | Settings screen |
+| 15 | Run full test suite | ~10 min | Verify no regressions, all new tests pass |
 
-**Total Estimated Effort:** ~16 hours
+**Total Estimated Effort:** ~20 hours (including tests)
 
 ---
 

@@ -595,19 +595,29 @@ async function promoteToAdmin(familyId: string, userId: string): Promise<void> {
 
 | Order | Task | Effort | Notes |
 |-------|------|--------|-------|
-| 1 | Add users table + identity generation | ~3 hours | Migration + crypto |
-| 2 | First launch flow (name prompt) | ~2 hours | UI |
-| 3 | Add families + family_members tables | ~1 hour | Migration |
-| 4 | Family creation flow | ~3 hours | Store + UI |
-| 5 | QR code generation | ~2 hours | Library integration |
-| 6 | Join family flow (code entry) | ~3 hours | UI + store |
-| 7 | Deep link handling | ~2 hours | Expo linking |
-| 8 | Family list screen | ~3 hours | New screen |
-| 9 | Family detail screen | ~4 hours | New screen |
-| 10 | Role management | ~2 hours | Admin actions |
-| 11 | Family selector component | ~2 hours | Header component |
+| 1 | Run existing test suite | ~5 min | Baseline: ensure all tests pass |
+| 2 | Add users table + identity generation | ~3 hours | Migration + crypto |
+| 3 | Write unit tests for identity generation | ~1 hour | Test key pair creation, UUID, storage |
+| 4 | First launch flow (name prompt) | ~2 hours | UI |
+| 5 | Add families + family_members tables | ~1 hour | Migration |
+| 6 | Write unit tests for family migrations | ~30 min | Test table creation, constraints |
+| 7 | Family creation flow | ~3 hours | Store + UI |
+| 8 | Write unit tests for `createFamily()` | ~1 hour | Test family + admin membership creation |
+| 9 | Write unit tests for `generateInviteCode()` | ~30 min | Test code format, uniqueness |
+| 10 | QR code generation | ~2 hours | Library integration |
+| 11 | Join family flow (code entry) | ~3 hours | UI + store |
+| 12 | Write unit tests for `joinFamily()` | ~1 hour | Test code validation, member addition |
+| 13 | Deep link handling | ~2 hours | Expo linking |
+| 14 | Write unit tests for deep link parsing | ~30 min | Test URL extraction, edge cases |
+| 15 | Family list screen | ~3 hours | New screen |
+| 16 | Family detail screen | ~4 hours | New screen |
+| 17 | Role management | ~2 hours | Admin actions |
+| 18 | Write unit tests for role checks | ~45 min | Test admin vs member permissions |
+| 19 | Family selector component | ~2 hours | Header component |
+| 20 | Write unit tests for context switching | ~30 min | Test family context isolation |
+| 21 | Run full test suite | ~10 min | Verify no regressions, all new tests pass |
 
-**Total Estimated Effort:** ~27 hours
+**Total Estimated Effort:** ~34 hours (including tests)
 
 ---
 
