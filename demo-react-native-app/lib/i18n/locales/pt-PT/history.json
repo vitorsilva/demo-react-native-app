@@ -4,8 +4,16 @@
     "title": "Ainda não registou refeições",
     "subtitle": "Registe a sua primeira refeição a partir do ecrã Início"
   },
+  "emptyFavorites": {
+    "title": "Ainda não tem favoritos",
+    "subtitle": "Marque refeições como favoritas para as ver aqui"
+  },
   "date": {
     "today": "Hoje",
     "yesterday": "Ontem"
+  },
+  "filter": {
+    "all": "Todas",
+    "favorites": "Favoritas"
   }
 }

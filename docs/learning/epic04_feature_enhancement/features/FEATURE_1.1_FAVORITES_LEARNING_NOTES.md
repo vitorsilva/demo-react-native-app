@@ -111,3 +111,49 @@ isFavorite: boolean  // true or false
   - Tapping toggles favorite status correctly
   - Status persists across page navigations
   - Haptic feedback works on favorite toggle
+
+## History Screen Favorites Filter
+
+### Task 4 - Add favorites filter to History screen
+
+**Implementation Details:**
+- Modified `app/(tabs)/history.tsx` to add filtering and favorite toggle capability
+- Added state management with `useState` for active filter ('all' | 'favorites')
+- Used `useMemo` for filtered meal logs to optimize performance
+- Added filter tabs component at top of screen
+- Enhanced meal item rendering with favorite toggle button
+
+**Key Learnings:**
+- **Memoization Pattern:** Used `useMemo` to avoid re-filtering on every render
+  ```typescript
+  const filteredMealLogs = useMemo(() => {
+    if (activeFilter === 'favorites') {
+      return mealLogs.filter((log) => log.isFavorite);
+    }
+    return mealLogs;
+  }, [mealLogs, activeFilter]);
+  ```
+- **Multiple Empty States:** Need to handle both "no meals" and "no favorites" scenarios
+- **Color Constants:** Added `textOnPrimary` for text on primary-colored backgrounds
+- **UI Layout:** Used `justifyContent: 'space-between'` to position meal info and favorite button
+
+**i18n Implementation:**
+- Added new translation keys for filter tabs and empty favorites state
+- Both English and Portuguese translations added
+- Used existing translation pattern from the project
+
+**UI Implementation:**
+- Filter tabs use pill-shaped buttons with active/inactive states
+- Active tab uses primary color background with white text
+- Inactive tab uses card background with muted text
+- Favorite icon positioned at right edge of each history item
+- Haptic feedback on favorite toggle (native platforms only)
+
+**No Issues Encountered:**
+- Implementation was straightforward
+- All 220 existing tests pass without modification
+- No linting errors (only 5 pre-existing warnings)
+
+**Testing:**
+- All 220 unit tests pass
+- Linting: 0 errors, 5 pre-existing warnings

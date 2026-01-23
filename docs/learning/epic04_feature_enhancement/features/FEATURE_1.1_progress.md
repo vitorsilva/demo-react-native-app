@@ -69,3 +69,35 @@
 - Linting passed (5 pre-existing warnings, 0 errors)
 
 **Status:** COMPLETE
+
+### Task 4: Add favorites filter to History screen ✅
+
+**Implementation:**
+- Modified `app/(tabs)/history.tsx` to add favorites filtering:
+  - Added `activeFilter` state to toggle between 'all' and 'favorites' views
+  - Added `toggleMealLogFavorite` store selector
+  - Created `filteredMealLogs` memoized value that filters by favorite status
+  - Added `handleToggleFavorite()` function with haptic feedback
+  - Added filter tabs UI with "All" and "⭐ Favorites" options
+  - Added favorite indicator (⭐/☆) to each history item
+  - Created empty state for when favorites filter is active but no favorites exist
+- Added translations for filter tabs and empty favorites state
+- Added `textOnPrimary` color constant for button text
+
+**Files Modified:**
+- `demo-react-native-app/app/(tabs)/history.tsx` - Added filter tabs and favorite toggle
+- `demo-react-native-app/lib/i18n/locales/en/history.json` - Added filter and emptyFavorites translations
+- `demo-react-native-app/lib/i18n/locales/pt-PT/history.json` - Added Portuguese translations
+- `demo-react-native-app/constants/colors.ts` - Added textOnPrimary color
+
+**UI Changes:**
+- Filter tabs appear at top of history screen ("All" | "⭐ Favorites")
+- Each history item shows favorite icon (⭐ favorited, ☆ unfavorited)
+- Tapping favorite icon toggles favorite status with haptic feedback
+- Empty state when favorites filter active but no favorites exist
+
+**Testing:**
+- All 220 unit tests pass
+- Linting passed (5 pre-existing warnings, 0 errors)
+
+**Status:** COMPLETE
