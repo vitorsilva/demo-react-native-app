@@ -596,38 +596,40 @@ async function promoteToAdmin(familyId: string, userId: string): Promise<void> {
 | Order | Task | Effort | Notes |
 |-------|------|--------|-------|
 | 1 | Run existing test suites | ~15 min | Baseline: unit, Playwright E2E, Maestro |
-| 2 | Add users table + identity generation | ~3 hours | Migration + crypto |
-| 3 | Write unit tests for identity generation | ~1 hour | Test key pair creation, UUID, storage |
-| 4 | First launch flow (name prompt) | ~2 hours | UI |
-| 5 | Write Playwright E2E test for first launch | ~1 hour | Test name prompt appears, saves identity |
-| 6 | Write Maestro test for first launch | ~1 hour | Mirror Playwright test for mobile |
-| 7 | Add families + family_members tables | ~1 hour | Migration |
-| 8 | Write unit tests for family migrations | ~30 min | Test table creation, constraints |
-| 9 | Family creation flow | ~3 hours | Store + UI |
-| 10 | Write unit tests for `createFamily()` | ~1 hour | Test family + admin membership creation |
-| 11 | Write unit tests for `generateInviteCode()` | ~30 min | Test code format, uniqueness |
-| 12 | Write Playwright E2E test for family creation | ~1.5 hours | Test create family, see invite code |
-| 13 | Write Maestro test for family creation | ~1.5 hours | Mirror Playwright test for mobile |
-| 14 | QR code generation | ~2 hours | Library integration |
-| 15 | Join family flow (code entry) | ~3 hours | UI + store |
-| 16 | Write unit tests for `joinFamily()` | ~1 hour | Test code validation, member addition |
-| 17 | Write Playwright E2E test for join family | ~1.5 hours | Test enter code, join family |
-| 18 | Write Maestro test for join family | ~1.5 hours | Mirror Playwright test for mobile |
-| 19 | Deep link handling | ~2 hours | Expo linking |
-| 20 | Write unit tests for deep link parsing | ~30 min | Test URL extraction, edge cases |
-| 21 | Family list screen | ~3 hours | New screen |
-| 22 | Family detail screen | ~4 hours | New screen |
-| 23 | Write Playwright E2E test for family screens | ~1.5 hours | Test navigation, member list |
-| 24 | Write Maestro test for family screens | ~1.5 hours | Mirror Playwright test for mobile |
-| 25 | Role management | ~2 hours | Admin actions |
-| 26 | Write unit tests for role checks | ~45 min | Test admin vs member permissions |
-| 27 | Family selector component | ~2 hours | Header component |
-| 28 | Write unit tests for context switching | ~30 min | Test family context isolation |
-| 29 | Write Playwright E2E test for family switching | ~1 hour | Test switch between families |
-| 30 | Write Maestro test for family switching | ~1 hour | Mirror Playwright test for mobile |
-| 31 | Run full test suites | ~20 min | Unit + Playwright + Maestro, verify no regressions |
+| 2 | Run quality baseline | ~30 min | test:mutation, arch:test, lint:dead-code, lint:duplicates, security:scan |
+| 3 | Add users table + identity generation | ~3 hours | Migration + crypto |
+| 4 | Write unit tests for identity generation | ~1 hour | Test key pair creation, UUID, storage |
+| 5 | First launch flow (name prompt) | ~2 hours | UI |
+| 6 | Write Playwright E2E test for first launch | ~1 hour | Test name prompt appears, saves identity |
+| 7 | Write Maestro test for first launch | ~1 hour | Mirror Playwright test for mobile |
+| 8 | Add families + family_members tables | ~1 hour | Migration |
+| 9 | Write unit tests for family migrations | ~30 min | Test table creation, constraints |
+| 10 | Family creation flow | ~3 hours | Store + UI |
+| 11 | Write unit tests for `createFamily()` | ~1 hour | Test family + admin membership creation |
+| 12 | Write unit tests for `generateInviteCode()` | ~30 min | Test code format, uniqueness |
+| 13 | Write Playwright E2E test for family creation | ~1.5 hours | Test create family, see invite code |
+| 14 | Write Maestro test for family creation | ~1.5 hours | Mirror Playwright test for mobile |
+| 15 | QR code generation | ~2 hours | Library integration |
+| 16 | Join family flow (code entry) | ~3 hours | UI + store |
+| 17 | Write unit tests for `joinFamily()` | ~1 hour | Test code validation, member addition |
+| 18 | Write Playwright E2E test for join family | ~1.5 hours | Test enter code, join family |
+| 19 | Write Maestro test for join family | ~1.5 hours | Mirror Playwright test for mobile |
+| 20 | Deep link handling | ~2 hours | Expo linking |
+| 21 | Write unit tests for deep link parsing | ~30 min | Test URL extraction, edge cases |
+| 22 | Family list screen | ~3 hours | New screen |
+| 23 | Family detail screen | ~4 hours | New screen |
+| 24 | Write Playwright E2E test for family screens | ~1.5 hours | Test navigation, member list |
+| 25 | Write Maestro test for family screens | ~1.5 hours | Mirror Playwright test for mobile |
+| 26 | Role management | ~2 hours | Admin actions |
+| 27 | Write unit tests for role checks | ~45 min | Test admin vs member permissions |
+| 28 | Family selector component | ~2 hours | Header component |
+| 29 | Write unit tests for context switching | ~30 min | Test family context isolation |
+| 30 | Write Playwright E2E test for family switching | ~1 hour | Test switch between families |
+| 31 | Write Maestro test for family switching | ~1 hour | Mirror Playwright test for mobile |
+| 32 | Run full test suites | ~20 min | Unit + Playwright + Maestro, verify no regressions |
+| 33 | Run quality checks and compare | ~30 min | Compare to baseline; create remediation plan if worse |
 
-**Total Estimated Effort:** ~48 hours (including unit + Playwright + Maestro tests)
+**Total Estimated Effort:** ~49 hours (including unit + Playwright + Maestro tests + quality checks)
 
 ---
 

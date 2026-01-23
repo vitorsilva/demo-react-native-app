@@ -654,31 +654,33 @@ Add filters for:
 | Order | Task | Effort | Notes |
 |-------|------|--------|-------|
 | 1 | Run existing test suites | ~15 min | Baseline: unit, Playwright E2E, Maestro |
-| 2 | Add ingredient classification columns | ~2 hours | Migration |
-| 3 | Write unit tests for migration | ~30 min | Test column additions |
-| 4 | Classify existing ingredients | ~2 hours | Data work |
-| 5 | Update meal type configuration | ~2 hours | Settings |
-| 6 | Write unit tests for meal type config | ~30 min | Test rotation toggles |
-| 7 | Implement building-block rotation | ~4 hours | Algorithm |
-| 8 | Write unit tests for `getBaseIngredientPenalty()` | ~1.5 hours | Test rotation penalties |
-| 9 | Implement protein rotation | ~4 hours | Algorithm |
-| 10 | Write unit tests for `getProteinPenalty()` | ~1.5 hours | Test category rotation |
-| 11 | Add component roles (main/side) | ~2 hours | Migration |
-| 12 | Write unit tests for role assignment | ~30 min | Test main/side classification |
-| 13 | Update suggestion generator | ~6 hours | Major rewrite |
-| 14 | Write unit tests for `generateLunchDinnerSuggestion()` | ~2 hours | Test main + sides structure |
-| 15 | Update suggestion card UI | ~4 hours | New layout |
-| 16 | Write Playwright E2E test for lunch/dinner suggestions | ~2 hours | Test main + sides display |
-| 17 | Write Maestro test for lunch/dinner suggestions | ~2 hours | Mirror Playwright test for mobile |
-| 18 | Add lunch/dinner ingredients | ~2 hours | Seed data |
-| 19 | Update ingredient management | ~3 hours | Filters, categories |
-| 20 | Write Playwright E2E test for ingredient classification UI | ~1.5 hours | Test protein/base filters |
-| 21 | Write Maestro test for ingredient classification UI | ~1.5 hours | Mirror Playwright test for mobile |
-| 22 | Write Playwright E2E test for full lunch/dinner flow | ~2 hours | Test select → log → history |
-| 23 | Write Maestro test for full lunch/dinner flow | ~2 hours | Mirror Playwright test for mobile |
-| 24 | Run full test suites | ~20 min | Unit + Playwright + Maestro, verify no regressions |
+| 2 | Run quality baseline | ~30 min | test:mutation, arch:test, lint:dead-code, lint:duplicates, security:scan |
+| 3 | Add ingredient classification columns | ~2 hours | Migration |
+| 4 | Write unit tests for migration | ~30 min | Test column additions |
+| 5 | Classify existing ingredients | ~2 hours | Data work |
+| 6 | Update meal type configuration | ~2 hours | Settings |
+| 7 | Write unit tests for meal type config | ~30 min | Test rotation toggles |
+| 8 | Implement building-block rotation | ~4 hours | Algorithm |
+| 9 | Write unit tests for `getBaseIngredientPenalty()` | ~1.5 hours | Test rotation penalties |
+| 10 | Implement protein rotation | ~4 hours | Algorithm |
+| 11 | Write unit tests for `getProteinPenalty()` | ~1.5 hours | Test category rotation |
+| 12 | Add component roles (main/side) | ~2 hours | Migration |
+| 13 | Write unit tests for role assignment | ~30 min | Test main/side classification |
+| 14 | Update suggestion generator | ~6 hours | Major rewrite |
+| 15 | Write unit tests for `generateLunchDinnerSuggestion()` | ~2 hours | Test main + sides structure |
+| 16 | Update suggestion card UI | ~4 hours | New layout |
+| 17 | Write Playwright E2E test for lunch/dinner suggestions | ~2 hours | Test main + sides display |
+| 18 | Write Maestro test for lunch/dinner suggestions | ~2 hours | Mirror Playwright test for mobile |
+| 19 | Add lunch/dinner ingredients | ~2 hours | Seed data |
+| 20 | Update ingredient management | ~3 hours | Filters, categories |
+| 21 | Write Playwright E2E test for ingredient classification UI | ~1.5 hours | Test protein/base filters |
+| 22 | Write Maestro test for ingredient classification UI | ~1.5 hours | Mirror Playwright test for mobile |
+| 23 | Write Playwright E2E test for full lunch/dinner flow | ~2 hours | Test select → log → history |
+| 24 | Write Maestro test for full lunch/dinner flow | ~2 hours | Mirror Playwright test for mobile |
+| 25 | Run full test suites | ~20 min | Unit + Playwright + Maestro, verify no regressions |
+| 26 | Run quality checks and compare | ~30 min | Compare to baseline; create remediation plan if worse |
 
-**Total Estimated Effort:** ~54 hours (including unit + Playwright + Maestro tests)
+**Total Estimated Effort:** ~55 hours (including unit + Playwright + Maestro tests + quality checks)
 
 ---
 

@@ -425,23 +425,25 @@ const haptics = {
 | Order | Task | Effort | Notes |
 |-------|------|--------|-------|
 | 1 | Run existing test suites | ~15 min | Baseline: unit (101+), Playwright E2E (12), Maestro |
-| 2 | Haptic Feedback | ~1 hour | Add utility, sprinkle in components |
-| 3 | Write unit tests for haptics utility | ~30 min | Test haptic function calls |
-| 4 | Variety Color Coding | ~2 hours | Suggestion card, utility function |
-| 5 | Write unit tests for `getVarietyColor()` | ~30 min | Test all color thresholds |
-| 6 | "New!" Badge | ~2 hours | Suggestion card, utility function |
-| 7 | Write unit tests for `isNewCombination()` | ~30 min | Test edge cases (never logged, 7+ days) |
-| 8 | Favorite Combinations | ~4 hours | DB migration, store, UI components |
-| 9 | Write unit tests for favorites | ~1 hour | Test toggle, filter, algorithm boost |
-| 10 | Write Playwright E2E tests for favorites | ~1.5 hours | Test mark favorite, filter history |
-| 11 | Write Maestro tests for favorites | ~1.5 hours | Mirror Playwright tests for mobile |
-| 12 | Variety Stats | ~4 hours | New component, calculation logic |
-| 13 | Write unit tests for `calculateVarietyStats()` | ~1 hour | Test all stat calculations |
-| 14 | Write Playwright E2E test for stats | ~1 hour | Test stats visible on home screen |
-| 15 | Write Maestro test for stats | ~1 hour | Mirror Playwright test for mobile |
-| 16 | Run full test suites | ~20 min | Unit + Playwright + Maestro, verify no regressions |
+| 2 | Run quality baseline | ~30 min | test:mutation, arch:test, lint:dead-code, lint:duplicates, security:scan |
+| 3 | Haptic Feedback | ~1 hour | Add utility, sprinkle in components |
+| 4 | Write unit tests for haptics utility | ~30 min | Test haptic function calls |
+| 5 | Variety Color Coding | ~2 hours | Suggestion card, utility function |
+| 6 | Write unit tests for `getVarietyColor()` | ~30 min | Test all color thresholds |
+| 7 | "New!" Badge | ~2 hours | Suggestion card, utility function |
+| 8 | Write unit tests for `isNewCombination()` | ~30 min | Test edge cases (never logged, 7+ days) |
+| 9 | Favorite Combinations | ~4 hours | DB migration, store, UI components |
+| 10 | Write unit tests for favorites | ~1 hour | Test toggle, filter, algorithm boost |
+| 11 | Write Playwright E2E tests for favorites | ~1.5 hours | Test mark favorite, filter history |
+| 12 | Write Maestro tests for favorites | ~1.5 hours | Mirror Playwright tests for mobile |
+| 13 | Variety Stats | ~4 hours | New component, calculation logic |
+| 14 | Write unit tests for `calculateVarietyStats()` | ~1 hour | Test all stat calculations |
+| 15 | Write Playwright E2E test for stats | ~1 hour | Test stats visible on home screen |
+| 16 | Write Maestro test for stats | ~1 hour | Mirror Playwright test for mobile |
+| 17 | Run full test suites | ~20 min | Unit + Playwright + Maestro, verify no regressions |
+| 18 | Run quality checks and compare | ~30 min | Compare to baseline; create remediation plan if worse |
 
-**Total Estimated Effort:** ~23 hours (including unit + Playwright + Maestro tests)
+**Total Estimated Effort:** ~24 hours (including unit + Playwright + Maestro tests + quality checks)
 
 ---
 

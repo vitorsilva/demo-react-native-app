@@ -410,25 +410,27 @@ function generateSuggestions(
 | Order | Task | Effort | Notes |
 |-------|------|--------|-------|
 | 1 | Run existing test suites | ~15 min | Baseline: unit, Playwright E2E, Maestro |
-| 2 | Add ingredient frequency calculation | ~2 hours | Utility function |
-| 3 | Write unit tests for `getIngredientFrequency()` | ~45 min | Test counting logic |
-| 4 | Update variety scoring with frequency | ~2 hours | Algorithm update |
-| 5 | Write unit tests for frequency penalties | ~45 min | Test penalty thresholds |
-| 6 | Add pairing_rules table | ~1 hour | Migration |
-| 7 | Write unit tests for pairing rules migration | ~30 min | Test table creation |
-| 8 | Add pairing rules store actions | ~2 hours | Store |
-| 9 | Write unit tests for pairing rules CRUD | ~1 hour | Test add/delete/query |
-| 10 | Add pairing rules to suggestion algorithm | ~2 hours | Algorithm |
-| 11 | Write unit tests for `applyPairingRules()` | ~1 hour | Test positive/negative rules |
-| 12 | Create Pairing Rules UI | ~4 hours | New screen |
-| 13 | Write Playwright E2E tests for pairing rules | ~1.5 hours | Test add/delete rules via UI |
-| 14 | Write Maestro tests for pairing rules | ~1.5 hours | Mirror Playwright tests for mobile |
-| 15 | Update suggestion generation | ~2 hours | Integration |
-| 16 | Write Playwright E2E test for suggestions | ~1.5 hours | Test negative pairs excluded |
-| 17 | Write Maestro test for suggestions | ~1.5 hours | Mirror Playwright test for mobile |
-| 18 | Run full test suites | ~20 min | Unit + Playwright + Maestro, verify no regressions |
+| 2 | Run quality baseline | ~30 min | test:mutation, arch:test, lint:dead-code, lint:duplicates, security:scan |
+| 3 | Add ingredient frequency calculation | ~2 hours | Utility function |
+| 4 | Write unit tests for `getIngredientFrequency()` | ~45 min | Test counting logic |
+| 5 | Update variety scoring with frequency | ~2 hours | Algorithm update |
+| 6 | Write unit tests for frequency penalties | ~45 min | Test penalty thresholds |
+| 7 | Add pairing_rules table | ~1 hour | Migration |
+| 8 | Write unit tests for pairing rules migration | ~30 min | Test table creation |
+| 9 | Add pairing rules store actions | ~2 hours | Store |
+| 10 | Write unit tests for pairing rules CRUD | ~1 hour | Test add/delete/query |
+| 11 | Add pairing rules to suggestion algorithm | ~2 hours | Algorithm |
+| 12 | Write unit tests for `applyPairingRules()` | ~1 hour | Test positive/negative rules |
+| 13 | Create Pairing Rules UI | ~4 hours | New screen |
+| 14 | Write Playwright E2E tests for pairing rules | ~1.5 hours | Test add/delete rules via UI |
+| 15 | Write Maestro tests for pairing rules | ~1.5 hours | Mirror Playwright tests for mobile |
+| 16 | Update suggestion generation | ~2 hours | Integration |
+| 17 | Write Playwright E2E test for suggestions | ~1.5 hours | Test negative pairs excluded |
+| 18 | Write Maestro test for suggestions | ~1.5 hours | Mirror Playwright test for mobile |
+| 19 | Run full test suites | ~20 min | Unit + Playwright + Maestro, verify no regressions |
+| 20 | Run quality checks and compare | ~30 min | Compare to baseline; create remediation plan if worse |
 
-**Total Estimated Effort:** ~26 hours (including unit + Playwright + Maestro tests)
+**Total Estimated Effort:** ~27 hours (including unit + Playwright + Maestro tests + quality checks)
 
 ---
 

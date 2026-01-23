@@ -609,30 +609,32 @@ async function sendProposalNotification(
 | Order | Task | Effort | Notes |
 |-------|------|--------|-------|
 | 1 | Run existing test suites | ~15 min | Baseline: unit, Playwright E2E, Maestro |
-| 2 | Add meal_proposals table | ~1 hour | Migration |
-| 3 | Add proposal_votes table | ~1 hour | Migration |
-| 4 | Write unit tests for migrations | ~30 min | Test table creation |
-| 5 | Create proposal store actions | ~3 hours | Store |
-| 6 | Write unit tests for `createProposal()` | ~1 hour | Test creation, auto-vote |
-| 7 | Write unit tests for `voteOnProposal()` | ~1 hour | Test vote, update existing vote |
-| 8 | Create proposal flow UI | ~4 hours | Modal/screen |
-| 9 | Write Playwright E2E test for creating proposal | ~1.5 hours | Test propose meal, select date |
-| 10 | Write Maestro test for creating proposal | ~1.5 hours | Mirror Playwright test for mobile |
-| 11 | Create voting UI | ~3 hours | Component |
-| 12 | Write Playwright E2E test for voting | ~1.5 hours | Test vote yes/no, see updated count |
-| 13 | Write Maestro test for voting | ~1.5 hours | Mirror Playwright test for mobile |
-| 14 | Implement resolution logic | ~2 hours | Business logic |
-| 15 | Write unit tests for `checkProposalResolution()` | ~1.5 hours | Test majority, expiration |
-| 16 | Create proposals feed screen | ~4 hours | New tab |
-| 17 | Write Playwright E2E test for proposals feed | ~1.5 hours | Test view open/decided proposals |
-| 18 | Write Maestro test for proposals feed | ~1.5 hours | Mirror Playwright test for mobile |
-| 19 | Set up push notifications | ~4 hours | Expo notifications |
-| 20 | Write unit tests for notification triggers | ~1 hour | Test event → notification |
-| 21 | Integrate with sync | ~3 hours | Sync proposals/votes |
-| 22 | Write unit tests for proposal sync | ~1 hour | Test sync payload |
-| 23 | Run full test suites | ~20 min | Unit + Playwright + Maestro, verify no regressions |
+| 2 | Run quality baseline | ~30 min | test:mutation, arch:test, lint:dead-code, lint:duplicates, security:scan |
+| 3 | Add meal_proposals table | ~1 hour | Migration |
+| 4 | Add proposal_votes table | ~1 hour | Migration |
+| 5 | Write unit tests for migrations | ~30 min | Test table creation |
+| 6 | Create proposal store actions | ~3 hours | Store |
+| 7 | Write unit tests for `createProposal()` | ~1 hour | Test creation, auto-vote |
+| 8 | Write unit tests for `voteOnProposal()` | ~1 hour | Test vote, update existing vote |
+| 9 | Create proposal flow UI | ~4 hours | Modal/screen |
+| 10 | Write Playwright E2E test for creating proposal | ~1.5 hours | Test propose meal, select date |
+| 11 | Write Maestro test for creating proposal | ~1.5 hours | Mirror Playwright test for mobile |
+| 12 | Create voting UI | ~3 hours | Component |
+| 13 | Write Playwright E2E test for voting | ~1.5 hours | Test vote yes/no, see updated count |
+| 14 | Write Maestro test for voting | ~1.5 hours | Mirror Playwright test for mobile |
+| 15 | Implement resolution logic | ~2 hours | Business logic |
+| 16 | Write unit tests for `checkProposalResolution()` | ~1.5 hours | Test majority, expiration |
+| 17 | Create proposals feed screen | ~4 hours | New tab |
+| 18 | Write Playwright E2E test for proposals feed | ~1.5 hours | Test view open/decided proposals |
+| 19 | Write Maestro test for proposals feed | ~1.5 hours | Mirror Playwright test for mobile |
+| 20 | Set up push notifications | ~4 hours | Expo notifications |
+| 21 | Write unit tests for notification triggers | ~1 hour | Test event → notification |
+| 22 | Integrate with sync | ~3 hours | Sync proposals/votes |
+| 23 | Write unit tests for proposal sync | ~1 hour | Test sync payload |
+| 24 | Run full test suites | ~20 min | Unit + Playwright + Maestro, verify no regressions |
+| 25 | Run quality checks and compare | ~30 min | Compare to baseline; create remediation plan if worse |
 
-**Total Estimated Effort:** ~42 hours (including unit + Playwright + Maestro tests)
+**Total Estimated Effort:** ~43 hours (including unit + Playwright + Maestro tests + quality checks)
 
 ---
 
