@@ -94,6 +94,8 @@ interface StoreState {
   loadMealLogs: (days?: number) => Promise<void>;
   /** Records a new meal log entry */
   logMeal: (mealLog: Omit<MealLog, 'id' | 'createdAt'>) => Promise<void>;
+  /** Toggles the favorite status of a meal log */
+  toggleMealLogFavorite: (id: string) => Promise<void>;
 
   // ─── Other Actions ─────────────────────────────────────────────────────────
   /** Loads user preferences from the database */
@@ -209,6 +211,24 @@ export const useStore = create<StoreState>((set, get) => ({
     } catch (error) {
       set({
         error: error instanceof Error ? error.message : 'Failed to log meal',
+        isLoading: false,
+      });
+    }
+  },
+
+  // Action: Toggle meal log favorite status
+  toggleMealLogFavorite: async (id) => {
+    set({ isLoading: true, error: null });
+    try {
+      const db = getDatabase();
+      const updatedLog = await mealLogsDb.toggleMealLogFavorite(db, id);
+      set((state) => ({
+        mealLogs: state.mealLogs.map((log) => (log.id === id ? updatedLog : log)),
+        isLoading: false,
+      }));
+    } catch (error) {
+      set({
+        error: error instanceof Error ? error.message : 'Failed to toggle favorite',
         isLoading: false,
       });
     }

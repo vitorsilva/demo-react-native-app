@@ -8,6 +8,90 @@
 
 ---
 
+## Branching Strategy
+
+**Branch Name:** `FEATURE_3.0_ENHANCED_VARIETY`
+
+**Approach:**
+- Create feature branch from `main`
+- Make small, focused commits for each task
+- Commit message format: `feat(phase3): <description>` or `test(phase3): <description>`
+- Run tests before each commit
+- Squash merge to `main` when complete
+
+---
+
+## Tool Instructions
+
+### Running Tests
+```bash
+cd demo-react-native-app
+
+# Unit tests
+npm test
+
+# E2E tests (Playwright)
+npm run test:e2e
+
+# Linting
+npm run lint
+
+# TypeScript check
+npx tsc --noEmit
+```
+
+### Running Maestro Tests
+```bash
+# Start the app on emulator/device first
+npm start
+
+# Run Maestro tests
+maestro test e2e/maestro/
+```
+
+### Quality Checks
+```bash
+npm run arch:test
+npm run lint:dead-code
+npm run lint:duplicates
+npm run security:scan
+```
+
+---
+
+## I18N Considerations
+
+### New Translation Keys
+
+**English (`lib/i18n/locales/en/`):**
+```json
+// suggestions.json
+{
+  "ingredientWarning": {
+    "frequent": "{{ingredient}} used {{count}} times this week",
+    "tooltip": "This ingredient has been used frequently"
+  }
+}
+
+// settings.json
+{
+  "pairingRules": {
+    "title": "Pairing Rules",
+    "goodPairs": "Good Pairs",
+    "avoid": "Avoid Together",
+    "addRule": "+ Add Rule",
+    "deleteRule": "Delete",
+    "emptyGood": "No good pairs defined",
+    "emptyAvoid": "No avoid rules defined"
+  }
+}
+```
+
+**Portuguese (`lib/i18n/locales/pt-PT/`):**
+- Same structure with Portuguese translations
+
+---
+
 ## Overview
 
 Currently, variety is enforced at the **combination level** - if you had "milk + cereals" yesterday, you won't get that exact combination today. But you might still get "milk + cookies" repeatedly.
@@ -156,6 +240,28 @@ Most cards won't show this.
 │  └─ Pairing Rules               [→] │  ← NEW link
 └─────────────────────────────────────┘
 ```
+
+---
+
+## Screenshot Capture
+
+### Required Screenshots
+
+| Screenshot | When to Capture | Filename |
+|------------|-----------------|----------|
+| Suggestion Card BEFORE | Before ingredient warning added | `screenshot_before_suggestion_variety.png` |
+| Suggestion Card AFTER | After ingredient frequency warning added | `screenshot_after_suggestion_warning.png` |
+| Pairing Rules - Good Pairs | New screen - Good Pairs tab | `screenshot_pairing_rules_good.png` |
+| Pairing Rules - Avoid | New screen - Avoid tab | `screenshot_pairing_rules_avoid.png` |
+| Add Pairing Rule Modal | New modal component | `screenshot_add_pairing_modal.png` |
+| Settings BEFORE | Before Pairing Rules link | `screenshot_before_settings_pairing.png` |
+| Settings AFTER | After Pairing Rules link added | `screenshot_after_settings_pairing.png` |
+
+### Capture Instructions
+1. For BEFORE screenshots: capture existing UI before any implementation
+2. For ingredient warning: log same ingredient multiple times to trigger warning
+3. For pairing rules: create sample rules to show populated UI
+4. Save screenshots in `docs/learning/epic04_feature_enhancement/screenshots/`
 
 ---
 
@@ -479,6 +585,8 @@ function generateSuggestions(
 | 20 | ▶️ RUN quality checks and compare | Quality | ~30 min | Compare to baseline; create remediation plan if worse | not started |
 | 21 | Document learning notes | Documentation | ~30 min | Capture unexpected errors, workarounds, fixes | not started |
 | 22 | Run all existing unit tests, Playwright tests and Maestro Tests | Quality | ~0.5 hours | not started |
+| 23 | 📸 Capture BEFORE screenshots | Documentation | ~10 min | not started |
+| 24 | 📸 Capture AFTER screenshots | Documentation | ~15 min | not started |
 
 **Total Estimated Effort:** ~27.5 hours (including unit + Playwright + Maestro tests + quality checks)
 
@@ -486,6 +594,7 @@ function generateSuggestions(
 - 🧪 CREATE = Writing new tests
 - 🔄 UPDATE = Modifying existing tests
 - ▶️ RUN = Executing tests (baseline/verification)
+- 📸 = Screenshot capture for documentation
 
 ---
 

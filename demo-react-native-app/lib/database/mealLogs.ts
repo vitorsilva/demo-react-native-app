@@ -14,11 +14,12 @@ export async function logMeal(
 ): Promise<MealLog> {
   const id = Crypto.randomUUID();
   const createdAt = new Date().toISOString();
+  const isFavorite = mealLog.isFavorite ?? false;
 
   await db.runAsync(
-    `INSERT INTO meal_logs (id, date, meal_type, ingredients, created_at)
-       VALUES (?, ?, ?, ?, ?)`,
-    [id, mealLog.date, mealLog.mealType, JSON.stringify(mealLog.ingredients), createdAt]
+    `INSERT INTO meal_logs (id, date, meal_type, ingredients, created_at, is_favorite)
+       VALUES (?, ?, ?, ?, ?, ?)`,
+    [id, mealLog.date, mealLog.mealType, JSON.stringify(mealLog.ingredients), createdAt, isFavorite ? 1 : 0]
   );
 
   return {
@@ -27,6 +28,7 @@ export async function logMeal(
     mealType: mealLog.mealType,
     ingredients: mealLog.ingredients,
     createdAt,
+    isFavorite,
   };
 }
 
@@ -47,8 +49,9 @@ export async function getRecentMealLogs(db: DatabaseAdapter, days: number = 7): 
     meal_type: string;
     ingredients: string;
     created_at: string;
+    is_favorite: number;
   }>(
-    `SELECT id, date, meal_type, ingredients, created_at
+    `SELECT id, date, meal_type, ingredients, created_at, is_favorite
        FROM meal_logs
        WHERE date >= ?
        ORDER BY date DESC`,
@@ -61,6 +64,7 @@ export async function getRecentMealLogs(db: DatabaseAdapter, days: number = 7): 
     mealType: row.meal_type as MealLog['mealType'],
     ingredients: JSON.parse(row.ingredients),
     createdAt: row.created_at,
+    isFavorite: row.is_favorite === 1,
   }));
 }
 
@@ -87,8 +91,9 @@ export async function getMealLogsByDateRange(
     meal_type: string;
     ingredients: string;
     created_at: string;
+    is_favorite: number;
   }>(
-    `SELECT id, date, meal_type, ingredients, created_at
+    `SELECT id, date, meal_type, ingredients, created_at, is_favorite
        FROM meal_logs
        WHERE date >= ? AND date <= ?
        ORDER BY date DESC`,
@@ -101,6 +106,7 @@ export async function getMealLogsByDateRange(
     mealType: row.meal_type as MealLog['mealType'],
     ingredients: JSON.parse(row.ingredients),
     createdAt: row.created_at,
+    isFavorite: row.is_favorite === 1,
   }));
 }
 
@@ -111,4 +117,49 @@ export async function getMealLogsByDateRange(
  */
 export async function deleteMealLog(db: DatabaseAdapter, id: string): Promise<void> {
   await db.runAsync('DELETE FROM meal_logs WHERE id = ?', [id]);
+}
+
+/**
+ * Toggles the favorite status of a meal log.
+ * @param db - Database adapter instance
+ * @param id - Meal log UUID
+ * @returns The updated meal log
+ * @throws Error if meal log is not found
+ */
+export async function toggleMealLogFavorite(db: DatabaseAdapter, id: string): Promise<MealLog> {
+  // First, get the current meal log
+  const row = await db.getFirstAsync<{
+    id: string;
+    date: string;
+    meal_type: string;
+    ingredients: string;
+    created_at: string;
+    is_favorite: number;
+  }>(
+    `SELECT id, date, meal_type, ingredients, created_at, is_favorite
+       FROM meal_logs
+       WHERE id = ?`,
+    [id]
+  );
+
+  if (!row) {
+    throw new Error(`Meal log with id ${id} not found`);
+  }
+
+  // Toggle the favorite status
+  const newFavoriteStatus = row.is_favorite === 1 ? 0 : 1;
+
+  await db.runAsync(
+    `UPDATE meal_logs SET is_favorite = ? WHERE id = ?`,
+    [newFavoriteStatus, id]
+  );
+
+  return {
+    id: row.id,
+    date: row.date,
+    mealType: row.meal_type as MealLog['mealType'],
+    ingredients: JSON.parse(row.ingredients),
+    createdAt: row.created_at,
+    isFavorite: newFavoriteStatus === 1,
+  };
 }

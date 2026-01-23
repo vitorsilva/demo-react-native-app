@@ -52,6 +52,38 @@ Epic 3 established the production-ready foundation. Epic 4 enhances the app with
 
 ---
 
+### Phase 0.1: Tool & Resource Validation
+**Goal:** Validate all tools and resources needed for Epic 04 are installed and configured
+
+**Validates:**
+- Node.js, npm, Expo CLI
+- Jest, Playwright, Maestro
+- Docker (installed and configured)
+- Quality tools (arch:test, lint:dead-code, lint:duplicates, security:scan)
+- TypeScript, ESLint, EAS CLI, Git
+
+**Dependencies:** Phase 0
+
+**[Phase 0.1 Details →](./PHASE0.1_TOOL_VALIDATION.md)**
+
+---
+
+### Phase 0.2: Quality Baseline Report
+**Goal:** Establish quality baseline metrics before starting feature development
+
+**Creates:** `EPIC04_QUALITY_BASELINE.md` with:
+- Architecture test results
+- Dead code detection results
+- Duplicate detection results
+- Security scan results
+- Test coverage metrics
+
+**Dependencies:** Phase 0.1
+
+**[Phase 0.2 Details →](./PHASE0.2_QUALITY_BASELINE.md)**
+
+---
+
 ### Phase 1: Quick Wins (Polish)
 **Goal:** Low-effort, high-impact improvements with no architectural changes
 
@@ -209,19 +241,50 @@ Epic 3 established the production-ready foundation. Epic 4 enhances the app with
 
 ---
 
-### Phase 10: Landing Page Update
-**Goal:** Update landing page to showcase all Epic 04 features
+### Phase 10: Quality Validation & Comparison
+**Goal:** Validate quality metrics against baseline and ensure no degradation
 
-**Features:**
-- Screenshot capture for new features (Playwright)
-- Image processing and optimization (sharp)
-- Landing page HTML updates (family section, feature cards)
-- Meta tags and SEO updates
-- Deployment to saborspin.com
+**Creates:** `EPIC04_QUALITY_FINAL.md` comparing:
+- Architecture test results vs baseline
+- Dead code vs baseline
+- Duplicate detection vs baseline
+- Security scan vs baseline
+- Test coverage vs baseline
 
 **Dependencies:** Phase 9 (all features complete)
 
-**[Phase 10 Details →](./PHASE10_LANDING_PAGE_UPDATE.md)**
+**[Phase 10 Details →](./PHASE10_QUALITY_VALIDATION.md)**
+
+---
+
+### Phase 11: Marketing & Landing Page Update
+**Goal:** Create marketing materials and update landing page for Epic 04
+
+**Features:**
+- Marketing documentation (feature highlights, app store descriptions)
+- Screenshot capture (Playwright)
+- Landing page HTML updates (family section, feature cards)
+- Landing page deployment to saborspin.com
+
+**Dependencies:** Phase 10 (quality validated)
+
+**[Phase 11 Details →](./PHASE11_MARKETING_LANDING_PAGE.md)**
+
+---
+
+### Phase 12: Staging & Production Deployment
+**Goal:** Deploy Epic 04 app to staging, test, and release to production
+
+**Features:**
+- Version bump and CHANGELOG update
+- Build staging APK and smoke test
+- Build production AAB
+- Submit to Play Store
+- Tag release in git
+
+**Dependencies:** Phase 11 (marketing ready)
+
+**[Phase 12 Details →](./PHASE12_STAGING_PRODUCTION_DEPLOYMENT.md)**
 
 ---
 
@@ -230,7 +293,11 @@ Epic 3 established the production-ready foundation. Epic 4 enhances the app with
 ```
 Phase 0 (Landing)
     ↓
-Phase 1 (Quick Wins) ──────────────────────────────────────────┐
+Phase 0.1 (Tool Validation)
+    ↓
+Phase 0.2 (Quality Baseline) ──────────────────────────────────┐
+    ↓                                                          │
+Phase 1 (Quick Wins) ──────────────────────────────────────────┤
     ↓                                                          │
 Phase 2 (Data Model) ─────────────────────────────────────┐    │
     ↓                                                     │    │
@@ -249,7 +316,11 @@ Phase 7 (Proposals)   Phase 8 (P2P) [Optional]            │    │
                                                           ↓    ↓
                                           Phase 9 (Lunch/Dinner Expansion)
                                                           ↓
-                                          Phase 10 (Landing Page Update)
+                                          Phase 10 (Quality Validation) ◄──┘
+                                                          ↓              compares
+                                          Phase 11 (Marketing & Landing)
+                                                          ↓
+                                          Phase 12 (Staging & Production)
 ```
 
 ---
@@ -259,6 +330,8 @@ Phase 7 (Proposals)   Phase 8 (P2P) [Optional]            │    │
 | Phase | Description | Effort (with tests) |
 |-------|-------------|---------------------|
 | 0 | Landing Page Deployment | ~4 hours |
+| 0.1 | Tool & Resource Validation | ~1 hour |
+| 0.2 | Quality Baseline Report | ~1 hour |
 | 1 | Quick Wins (Polish) | ~24.5 hours |
 | 2 | Data Model Evolution | ~29.5 hours |
 | 3 | Enhanced Variety | ~27.5 hours |
@@ -269,8 +342,10 @@ Phase 7 (Proposals)   Phase 8 (P2P) [Optional]            │    │
 | 7 | Proposals & Voting | ~43.5 hours |
 | 8 | P2P Sync (Optional) | ~43.5 hours |
 | 9 | Lunch/Dinner Expansion | ~55.5 hours |
-| 10 | Landing Page Update | ~8 hours |
-| | **Total** | **~387 hours** |
+| 10 | Quality Validation | ~2.5 hours |
+| 11 | Marketing & Landing Page | ~10 hours |
+| 12 | Staging & Production Deployment | ~4 hours |
+| | **Total** | **~397.5 hours** |
 
 **Note:** Each phase includes:
 - Running existing test suites at the start (unit + Playwright E2E + Maestro for baseline validation)
@@ -290,6 +365,8 @@ Phase 7 (Proposals)   Phase 8 (P2P) [Optional]            │    │
 
 **Phase Completion:**
 - [ ] Phase 0: Landing page live at saborspin.com
+- [ ] Phase 0.1: All tools validated and configured
+- [ ] Phase 0.2: Quality baseline report created
 - [ ] Phase 1: All quick wins implemented
 - [ ] Phase 2: Data model supports prep methods and naming
 - [ ] Phase 3: Ingredient-level variety tracking works
@@ -300,13 +377,16 @@ Phase 7 (Proposals)   Phase 8 (P2P) [Optional]            │    │
 - [ ] Phase 7: Families can propose and vote on meals
 - [ ] Phase 8: (Optional) P2P sync works on local network
 - [ ] Phase 9: Lunch/dinner meals fully supported
-- [ ] Phase 10: Landing page updated with all Epic 04 features
+- [ ] Phase 10: Quality validated against baseline
+- [ ] Phase 11: Marketing docs created and landing page updated
+- [ ] Phase 12: App deployed to Play Store
 
 **Quality:**
 - [ ] All tests pass (unit + E2E)
 - [ ] TypeScript and ESLint pass
 - [ ] No regressions in existing features
 - [ ] Telemetry captures new feature usage
+- [ ] Quality metrics equal or better than baseline
 
 ---
 
@@ -322,7 +402,10 @@ Phase 7 (Proposals)   Phase 8 (P2P) [Optional]            │    │
 
 **Begin with [Phase 0: Landing Page Deployment](./PHASE0_LANDING_DEPLOYMENT.md)** if not done.
 
-Then proceed to **[Phase 1: Quick Wins](./PHASE1_QUICK_WINS.md)** for immediate user value.
+Then proceed to:
+1. **[Phase 0.1: Tool Validation](./PHASE0.1_TOOL_VALIDATION.md)** - Ensure all tools are ready
+2. **[Phase 0.2: Quality Baseline](./PHASE0.2_QUALITY_BASELINE.md)** - Establish quality metrics
+3. **[Phase 1: Quick Wins](./PHASE1_QUICK_WINS.md)** - Start feature development
 
 ---
 

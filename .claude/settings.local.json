@@ -3,6 +3,7 @@
     "allow": [
       "Read(//c/Users/vitor410rodrigues/source/repos/demo-pwa-app/**)",
       "Read(//c/Users/vitor410rodrigues/source/repos/my-mindmap/**)",
+      "Edit(//c/Users/vitor410rodrigues/source/repos/demo-react-native-app/**)",
       "WebSearch",
       "Bash(mkdir:*)",
       "Bash(git mv:*)",
@@ -99,7 +100,8 @@
       "Bash(timeout:*)",
       "Bash(npm run security:scan:*)",
       "Bash(nslookup:*)",
-      "Bash(npm run deploy:landing:*)"
+      "Bash(npm run deploy:landing:*)",
+      "Bash(gh pr:*)"
     ],
     "deny": [],
     "ask": []

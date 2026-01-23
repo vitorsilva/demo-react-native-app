@@ -8,6 +8,133 @@
 
 ---
 
+## Branching Strategy
+
+**Branch Name:** `FEATURE_2.0_DATA_MODEL_EVOLUTION`
+
+**Approach:**
+- Create feature branch from `main`
+- Make small, focused commits for each task
+- Commit message format: `feat(phase2): <description>` or `test(phase2): <description>`
+- Run tests before each commit
+- Squash merge to `main` when complete
+
+**Example commits:**
+```
+feat(phase2): add preparation_methods table migration
+feat(phase2): add meal_components table migration
+test(phase2): add unit tests for migrations
+feat(phase2): add PreparationMethodPicker component
+```
+
+---
+
+## Tool Instructions
+
+### Running Tests
+```bash
+cd demo-react-native-app
+
+# Unit tests
+npm test
+
+# E2E tests (Playwright) - requires app running
+npm run test:e2e
+
+# Linting
+npm run lint
+
+# TypeScript check
+npx tsc --noEmit
+```
+
+### Running Maestro Tests
+```bash
+# Install Maestro CLI (if not installed)
+curl -Ls "https://get.maestro.mobile.dev" | bash
+
+# Start the app on emulator/device first
+npm start
+
+# Run Maestro tests
+maestro test e2e/maestro/
+```
+
+### Quality Checks
+```bash
+# Architecture tests
+npm run arch:test
+
+# Dead code detection
+npm run lint:dead-code
+
+# Duplicate detection
+npm run lint:duplicates
+
+# Security scan
+npm run security:scan
+```
+
+---
+
+## I18N Considerations
+
+### New Translation Keys Required
+
+**English (`lib/i18n/locales/en/`):**
+```json
+// meals.json (or new file)
+{
+  "mealName": {
+    "placeholder": "Name this meal (optional)",
+    "example": "e.g., \"Mom's special\""
+  },
+  "preparation": {
+    "title": "Preparation for \"{{ingredient}}\"",
+    "none": "None (as is)",
+    "addCustom": "+ Add custom...",
+    "cancel": "Cancel",
+    "apply": "Apply"
+  },
+  "prepMethods": {
+    "fried": "fried",
+    "grilled": "grilled",
+    "roasted": "roasted",
+    "boiled": "boiled",
+    "baked": "baked",
+    "raw": "raw",
+    "steamed": "steamed",
+    "sauteed": "sautéed",
+    "stewed": "stewed",
+    "smoked": "smoked",
+    "poached": "poached",
+    "braised": "braised"
+  }
+}
+
+// settings.json
+{
+  "preparationMethods": {
+    "title": "Preparation Methods",
+    "system": "System (cannot delete)",
+    "custom": "Custom",
+    "addCustom": "+ Add Custom Method",
+    "delete": "Delete"
+  }
+}
+```
+
+**Portuguese (`lib/i18n/locales/pt-PT/`):**
+- Same structure with Portuguese translations
+- Note: Some prep methods may need cultural adaptation
+
+### Implementation Notes
+- All user-facing strings must use `t()` function
+- Prep method names stored in DB are keys, display via i18n
+- Custom user-added prep methods stored as entered (not translated)
+
+---
+
 ## Overview
 
 Currently, meals are simple ingredient combinations (`milk + bread + jam`). To support lunch/dinner and named meals like "Mom's chicken", we need to evolve the data model to:
@@ -152,6 +279,34 @@ OR (unnamed meal):
 │                                     │
 └─────────────────────────────────────┘
 ```
+
+---
+
+## Screenshot Capture
+
+### Required Screenshots
+
+| Screenshot | When to Capture | Filename |
+|------------|-----------------|----------|
+| Meal Logging BEFORE | Before implementation starts | `screenshot_before_meal_logging.png` |
+| Meal Logging AFTER | After prep method selector added | `screenshot_after_meal_logging.png` |
+| Preparation Method Picker | New modal component | `screenshot_prep_method_picker.png` |
+| History Item BEFORE | Before named meals support | `screenshot_before_history_item.png` |
+| History Item - Named | After implementation with named meal | `screenshot_after_history_named.png` |
+| History Item - Unnamed | After implementation with prep methods | `screenshot_after_history_prep.png` |
+| Prep Methods Settings | New management screen | `screenshot_prep_methods_settings.png` |
+
+### Capture Instructions
+1. For BEFORE screenshots: capture existing UI before any implementation
+2. For AFTER screenshots: capture with actual data showing new features
+3. Include both iOS and Android variants if significantly different
+4. Save screenshots in `docs/learning/epic04_feature_enhancement/screenshots/`
+
+### Capturing BEFORE screenshots after implementation
+If the feature is already implemented, you can still capture BEFORE screenshots:
+- **Option A**: `git checkout <commit-before-feature>`, run app, screenshot, then `git checkout -`
+- **Option B**: Use the ASCII wireframe in this document as the "before" reference
+- **Option C**: Skip BEFORE if not critical, document changes in AFTER caption
 
 ---
 
@@ -528,6 +683,8 @@ function formatMealDisplay(meal: MealLog, components: MealComponent[], ingredien
 | 23 | ▶️ RUN quality checks and compare | Quality | ~30 min | Compare to baseline; create remediation plan if worse | not started |
 | 24 | Document learning notes | Documentation | ~30 min | Capture unexpected errors, workarounds, fixes | not started |
 | 25 | Run all existing unit tests, Playwright tests and Maestro Tests | Quality | ~0.5 hours | not started |
+| 26 | 📸 Capture BEFORE screenshots | Documentation | ~15 min | not started |
+| 27 | 📸 Capture AFTER screenshots | Documentation | ~20 min | not started |
 
 **Total Estimated Effort:** ~29.5 hours (including unit + Playwright + Maestro tests + quality checks)
 
@@ -535,6 +692,7 @@ function formatMealDisplay(meal: MealLog, components: MealComponent[], ingredien
 - 🧪 CREATE = Writing new tests
 - 🔄 UPDATE = Modifying existing tests
 - ▶️ RUN = Executing tests (baseline/verification)
+- 📸 = Screenshot capture for documentation
 
 ---
 

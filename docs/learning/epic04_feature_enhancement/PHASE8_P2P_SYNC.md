@@ -12,6 +12,113 @@
 
 ---
 
+## Branching Strategy
+
+**Branch Name:** `FEATURE_8.0_P2P_SYNC`
+
+**Approach:**
+- Create feature branch from `main`
+- Make small, focused commits for each task
+- Commit message format: `feat(phase8): <description>` or `test(phase8): <description>`
+- Run tests before each commit
+- Squash merge to `main` when complete
+
+---
+
+## Tool Instructions
+
+### Running Tests
+```bash
+cd demo-react-native-app
+
+# Unit tests
+npm test
+
+# E2E tests (Playwright)
+npm run test:e2e
+
+# Linting
+npm run lint
+```
+
+### Running Maestro Tests
+```bash
+npm start
+maestro test e2e/maestro/
+```
+
+### Quality Checks
+```bash
+npm run arch:test
+npm run lint:dead-code
+npm run lint:duplicates
+npm run security:scan
+```
+
+### Docker (Server Infrastructure)
+```bash
+# Start server stack (includes signaling server)
+docker-compose -f docker-compose.dev.yml up -d
+
+# View signaling server logs
+docker-compose -f docker-compose.dev.yml logs -f signaling
+```
+
+### P2P Testing Setup
+```bash
+# Requires multiple devices/emulators on same network
+# 1. Start app on Device A
+# 2. Start app on Device B (same WiFi)
+# 3. Both devices should discover each other
+```
+
+---
+
+## I18N Considerations
+
+### New Translation Keys
+
+**English (`lib/i18n/locales/en/`):**
+```json
+// sync.json (additions to Phase 6 keys)
+{
+  "p2p": {
+    "active": "P2P Active",
+    "connecting": "P2P Connecting...",
+    "unavailable": "P2P unavailable",
+    "devicesConnected": "{{count}} devices connected",
+    "deviceStatus": {
+      "connected": "Connected",
+      "connecting": "Connecting",
+      "offline": "Offline",
+      "searching": "Searching"
+    },
+    "noDevices": "No family devices on network",
+    "usingServer": "Using server sync",
+    "syncedViaP2P": "Synced via P2P"
+  }
+}
+
+// settings.json (additions)
+{
+  "sync": {
+    "p2pSync": "P2P sync (same network)",
+    "connectionStatus": "Connection Status",
+    "p2pStatus": "P2P",
+    "httpStatus": "HTTP"
+  }
+}
+```
+
+**Portuguese (`lib/i18n/locales/pt-PT/`):**
+- Same structure with Portuguese translations
+
+### Notes
+- Device names are user-entered (from profile), displayed as-is
+- P2P status indicators are mostly icons with accessible labels
+
+---
+
 ## Development Prerequisites
 
 Before starting this phase, ensure Docker stack is running with signaling endpoints (see [Phase 3.5](./PHASE3.5_SERVER_INFRASTRUCTURE.md)):
@@ -209,6 +316,29 @@ Sync States:
 │  └─────────────────────────────────┘│
 └─────────────────────────────────────┘
 ```
+
+---
+
+## Screenshot Capture
+
+### Required Screenshots
+
+| Screenshot | When to Capture | Filename |
+|------------|-----------------|----------|
+| Sync Indicator - HTTP only (BEFORE) | Before P2P implementation | `screenshot_before_sync_http.png` |
+| Sync Indicator - P2P Active | After P2P with connected devices | `screenshot_after_sync_p2p.png` |
+| Sync Status Detail - HTTP | HTTP-only sync status sheet | `screenshot_sync_status_http.png` |
+| Sync Status Detail - P2P | P2P sync status with device list | `screenshot_sync_status_p2p.png` |
+| Settings - Sync (BEFORE) | Before P2P toggle added | `screenshot_before_settings_p2p.png` |
+| Settings - Sync (AFTER) | After P2P toggle and status | `screenshot_after_settings_p2p.png` |
+| P2P Connecting State | During P2P connection setup | `screenshot_p2p_connecting.png` |
+| P2P Unavailable State | When P2P not available (HTTP fallback) | `screenshot_p2p_unavailable.png` |
+
+### Capture Instructions
+1. For P2P states: Test with multiple devices on same WiFi network
+2. For HTTP fallback: Disconnect one device from WiFi
+3. For connecting state: Capture during initial P2P handshake
+4. Save screenshots in `docs/learning/epic04_feature_enhancement/screenshots/`
 
 ---
 
@@ -528,6 +658,8 @@ zeroconf.scan('saborspin', 'tcp', 'local.');
 | 22 | (Optional) mDNS discovery | ~4 hours | Local network | not started |
 | 23 | Document learning notes | ~30 min | Capture unexpected errors, workarounds, fixes | not started |
 | 24 | Run all existing unit tests, Playwright tests and Maestro Tests | Quality | ~0.5 hours | not started | not started |
+| 25 | 📸 Capture BEFORE screenshots | Documentation | ~10 min | not started |
+| 26 | 📸 Capture AFTER screenshots | Documentation | ~15 min | not started |
 
 **Total Estimated Effort:** ~43.5 hours (including unit + Playwright + Maestro tests + quality checks)
 

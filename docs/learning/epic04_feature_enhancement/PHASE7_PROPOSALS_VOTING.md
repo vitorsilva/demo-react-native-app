@@ -10,6 +10,119 @@
 
 ---
 
+## Branching Strategy
+
+**Branch Name:** `FEATURE_7.0_PROPOSALS_VOTING`
+
+**Approach:**
+- Create feature branch from `main`
+- Make small, focused commits for each task
+- Commit message format: `feat(phase7): <description>` or `test(phase7): <description>`
+- Run tests before each commit
+- Squash merge to `main` when complete
+
+---
+
+## Tool Instructions
+
+### Running Tests
+```bash
+cd demo-react-native-app
+
+# Unit tests
+npm test
+
+# E2E tests (Playwright)
+npm run test:e2e
+
+# Linting
+npm run lint
+```
+
+### Running Maestro Tests
+```bash
+npm start
+maestro test e2e/maestro/
+```
+
+### Quality Checks
+```bash
+npm run arch:test
+npm run lint:dead-code
+npm run lint:duplicates
+npm run security:scan
+```
+
+### Docker (Server Infrastructure)
+```bash
+# Start server stack
+docker-compose -f docker-compose.dev.yml up -d
+
+# View logs
+docker-compose -f docker-compose.dev.yml logs -f
+
+# Stop server stack
+docker-compose -f docker-compose.dev.yml down
+```
+
+---
+
+## I18N Considerations
+
+### New Translation Keys
+
+**English (`lib/i18n/locales/en/`):**
+```json
+// proposals.json (new file)
+{
+  "tabs": {
+    "open": "Open",
+    "decided": "Decided"
+  },
+  "card": {
+    "proposedBy": "Proposed by {{name}}",
+    "forMealType": "for {{mealType}}",
+    "votes": "{{count}} votes",
+    "timeLeft": "{{time}} left to vote",
+    "expired": "Voting ended",
+    "accepted": "Accepted",
+    "rejected": "Rejected"
+  },
+  "actions": {
+    "propose": "Propose",
+    "vote": "Vote",
+    "approve": "Approve",
+    "reject": "Reject",
+    "changeVote": "Change Vote"
+  },
+  "create": {
+    "title": "Propose Meal",
+    "note": "Add a note (optional)",
+    "notePlaceholder": "e.g., Special dinner for João's birthday",
+    "submit": "Send Proposal"
+  },
+  "empty": {
+    "open": "No open proposals",
+    "decided": "No decided proposals yet"
+  },
+  "notifications": {
+    "newProposal": "{{name}} proposed {{meal}} for {{mealType}}",
+    "proposalAccepted": "Your proposal was accepted!",
+    "proposalRejected": "Your proposal was not accepted"
+  }
+}
+```
+
+**Portuguese (`lib/i18n/locales/pt-PT/`):**
+- Same structure with Portuguese translations
+
+### Notes
+- User names and meal names are user-entered, displayed as-is
+- Time remaining should use locale-aware relative time formatting
+- Push notification text needs translation
+
+---
+
 ## Development Prerequisites
 
 Before starting this phase, ensure Docker stack is running (see [Phase 3.5](./PHASE3.5_SERVER_INFRASTRUCTURE.md)):
@@ -267,6 +380,33 @@ awaiting user's vote.
 │ [View]               [Dismiss]      │
 └─────────────────────────────────────┘
 ```
+
+---
+
+## Screenshot Capture
+
+### Required Screenshots
+
+| Screenshot | When to Capture | Filename |
+|------------|-----------------|----------|
+| Suggestion Screen BEFORE | Before "Propose" button | `screenshot_before_suggestion_propose.png` |
+| Suggestion Screen AFTER | After "Propose" button added | `screenshot_after_suggestion_propose.png` |
+| Create Proposal Modal | New proposal creation screen | `screenshot_create_proposal.png` |
+| Tab Bar BEFORE | Before Proposals tab | `screenshot_before_tab_proposals.png` |
+| Tab Bar AFTER | After Proposals tab with badge | `screenshot_after_tab_proposals.png` |
+| Proposals Feed - Open | Open proposals tab | `screenshot_proposals_open.png` |
+| Proposals Feed - Decided | Decided proposals tab | `screenshot_proposals_decided.png` |
+| Proposal Card - Voted | Card showing user's vote | `screenshot_proposal_voted.png` |
+| Proposal Card - Accepted | Card showing accepted state | `screenshot_proposal_accepted.png` |
+| Proposal Card - Rejected | Card showing rejected state | `screenshot_proposal_rejected.png` |
+| Push Notification - New | New proposal notification | `screenshot_notification_new.png` |
+| Push Notification - Accepted | Proposal accepted notification | `screenshot_notification_accepted.png` |
+
+### Capture Instructions
+1. For proposal states: Create test proposals and simulate different vote counts
+2. For notifications: Trigger actual notifications on device
+3. For badge: Ensure there are open proposals awaiting vote
+4. Save screenshots in `docs/learning/epic04_feature_enhancement/screenshots/`
 
 ---
 
@@ -652,6 +792,8 @@ async function sendProposalNotification(
 | 25 | Run quality checks and compare | ~30 min | Compare to baseline; create remediation plan if worse | not started |
 | 26 | Document learning notes | ~30 min | Capture unexpected errors, workarounds, fixes | not started |
 | 27 | Run all existing unit tests, Playwright tests and Maestro Tests | Quality | ~0.5 hours | not started | not started |
+| 28 | 📸 Capture BEFORE screenshots | Documentation | ~10 min | not started |
+| 29 | 📸 Capture AFTER screenshots | Documentation | ~25 min | not started |
 
 **Total Estimated Effort:** ~43.5 hours (including unit + Playwright + Maestro tests + quality checks)
 

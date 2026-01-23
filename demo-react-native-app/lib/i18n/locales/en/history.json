@@ -4,8 +4,16 @@
     "title": "No meals logged yet",
     "subtitle": "Log your first meal from the Home screen"
   },
+  "emptyFavorites": {
+    "title": "No favorites yet",
+    "subtitle": "Mark meals as favorites to see them here"
+  },
   "date": {
     "today": "Today",
     "yesterday": "Yesterday"
+  },
+  "filter": {
+    "all": "All",
+    "favorites": "Favorites"
   }
 }

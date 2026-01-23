@@ -8,6 +8,110 @@
 
 ---
 
+## Branching Strategy
+
+**Branch Name:** `FEATURE_5.0_SHARED_MEAL_LOGS`
+
+**Approach:**
+- Create feature branch from `main`
+- Make small, focused commits for each task
+- Commit message format: `feat(phase5): <description>` or `test(phase5): <description>`
+- Run tests before each commit
+- Squash merge to `main` when complete
+
+---
+
+## Tool Instructions
+
+### Running Tests
+```bash
+cd demo-react-native-app
+
+# Unit tests
+npm test
+
+# E2E tests (Playwright)
+npm run test:e2e
+
+# Linting
+npm run lint
+```
+
+### Running Maestro Tests
+```bash
+npm start
+maestro test e2e/maestro/
+```
+
+### Quality Checks
+```bash
+npm run arch:test
+npm run lint:dead-code
+npm run lint:duplicates
+npm run security:scan
+```
+
+---
+
+## I18N Considerations
+
+### New Translation Keys
+
+**English (`lib/i18n/locales/en/`):**
+```json
+// meals.json (additions)
+{
+  "privacy": {
+    "label": "Share with family",
+    "private": "Just me",
+    "family": "Share with {{familyName}}"
+  }
+}
+
+// history.json (additions)
+{
+  "tabs": {
+    "myMeals": "My Meals",
+    "family": "Family"
+  },
+  "familyHistory": {
+    "todaySummary": "Today's Meals",
+    "memberMeals": "{{name}}'s meals",
+    "noMeals": "No meals logged today",
+    "sharedBy": "Shared by {{name}}"
+  }
+}
+
+// home.json (additions)
+{
+  "familySummary": {
+    "title": "Family Today",
+    "whoAteWhat": "{{name}} had {{mealType}}",
+    "noActivity": "No family meals logged today"
+  }
+}
+
+// settings.json (additions)
+{
+  "familySharing": {
+    "title": "Family Sharing",
+    "defaultVisibility": "Default meal visibility",
+    "alwaysAsk": "Always ask",
+    "alwaysPrivate": "Always private",
+    "alwaysShare": "Always share"
+  }
+}
+```
+
+**Portuguese (`lib/i18n/locales/pt-PT/`):**
+- Same structure with Portuguese translations
+
+### Notes
+- Family member names are user-entered, displayed as-is
+- Meal type names should use existing translated meal type keys
+
+---
+
 ## Overview
 
 With families established in Phase 4, this phase enables:
@@ -191,6 +295,29 @@ No sync yet - that's Phase 6. Data is local but structured for future sync.
 │  ...                                │
 └─────────────────────────────────────┘
 ```
+
+---
+
+## Screenshot Capture
+
+### Required Screenshots
+
+| Screenshot | When to Capture | Filename |
+|------------|-----------------|----------|
+| Meal Logging BEFORE | Before privacy toggle added | `screenshot_before_meal_logging_privacy.png` |
+| Meal Logging AFTER | After privacy toggle added | `screenshot_after_meal_logging_privacy.png` |
+| History Screen BEFORE | Before Family tab | `screenshot_before_history_family.png` |
+| History Screen - My Meals | My Meals tab selected | `screenshot_history_my_meals.png` |
+| History Screen - Family | Family tab with multiple members | `screenshot_history_family.png` |
+| Home Screen BEFORE | Before family summary | `screenshot_before_home_family_summary.png` |
+| Home Screen AFTER | After family day summary added | `screenshot_after_home_family_summary.png` |
+| Settings - Default Visibility | New Family Sharing section | `screenshot_settings_sharing.png` |
+
+### Capture Instructions
+1. For family history: Log meals from multiple family members
+2. For day summary: Ensure varied meal states (completed, pending)
+3. Show both personal and family visibility states
+4. Save screenshots in `docs/learning/epic04_feature_enhancement/screenshots/`
 
 ---
 
@@ -539,6 +666,8 @@ interface UserPreferences {
 | 25 | ▶️ RUN quality checks and compare | Quality | ~30 min | Compare to baseline; create remediation plan if worse | not started |
 | 26 | Document learning notes | Documentation | ~30 min | Capture unexpected errors, workarounds, fixes | not started |
 | 27 | Run all existing unit tests, Playwright tests and Maestro Tests | Quality | ~0.5 hours | not started |
+| 28 | 📸 Capture BEFORE screenshots | Documentation | ~10 min | not started |
+| 29 | 📸 Capture AFTER screenshots | Documentation | ~20 min | not started |
 
 **Total Estimated Effort:** ~32.5 hours (including unit + Playwright + Maestro tests + quality checks)
 
@@ -546,6 +675,7 @@ interface UserPreferences {
 - 🧪 CREATE = Writing new tests
 - 🔄 UPDATE = Modifying existing tests
 - ▶️ RUN = Executing tests (baseline/verification)
+- 📸 = Screenshot capture for documentation
 
 ---
 

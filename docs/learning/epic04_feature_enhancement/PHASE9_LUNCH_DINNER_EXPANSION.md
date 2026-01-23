@@ -8,6 +8,155 @@
 
 ---
 
+## Branching Strategy
+
+**Branch Name:** `FEATURE_9.0_LUNCH_DINNER_EXPANSION`
+
+**Approach:**
+- Create feature branch from `main`
+- Make small, focused commits for each task
+- Commit message format: `feat(phase9): <description>` or `test(phase9): <description>`
+- Run tests before each commit
+- Squash merge to `main` when complete
+
+---
+
+## Tool Instructions
+
+### Running Tests
+```bash
+cd demo-react-native-app
+
+# Unit tests
+npm test
+
+# E2E tests (Playwright)
+npm run test:e2e
+
+# Linting
+npm run lint
+
+# TypeScript check
+npx tsc --noEmit
+```
+
+### Running Maestro Tests
+```bash
+npm start
+maestro test e2e/maestro/
+```
+
+### Quality Checks
+```bash
+npm run arch:test
+npm run lint:dead-code
+npm run lint:duplicates
+npm run security:scan
+```
+
+---
+
+## I18N Considerations
+
+### New Translation Keys
+
+**English (`lib/i18n/locales/en/`):**
+```json
+// mealTypes.json (new/updated)
+{
+  "lunch": "Lunch",
+  "dinner": "Dinner",
+  "types": {
+    "breakfast": "Breakfast",
+    "lunch": "Lunch",
+    "dinner": "Dinner",
+    "snack": "Snack"
+  }
+}
+
+// suggestions.json (additions)
+{
+  "structure": {
+    "main": "Main",
+    "sides": "Sides",
+    "addSide": "+ Add Side"
+  },
+  "rotationWarning": {
+    "protein": "{{category}} {{count}}x this week",
+    "base": "{{category}} {{count}} days in a row"
+  }
+}
+
+// ingredients.json (additions)
+{
+  "filters": {
+    "mealType": "Meal Type",
+    "category": "Category",
+    "all": "All"
+  },
+  "categories": {
+    "protein": "Proteins",
+    "carb": "Carbs/Bases",
+    "vegetable": "Vegetables",
+    "sauce": "Sauces",
+    "seasoning": "Seasonings"
+  },
+  "rotationSettings": {
+    "title": "Rotation Settings",
+    "isProtein": "Is protein source?",
+    "proteinType": "Protein type",
+    "isBase": "Is base ingredient?",
+    "baseHint": "Carb that provides meal base"
+  },
+  "proteinTypes": {
+    "poultry": "Poultry",
+    "beef": "Beef",
+    "pork": "Pork",
+    "fish": "Fish",
+    "seafood": "Seafood",
+    "vegetarian": "Vegetarian"
+  }
+}
+
+// settings.json (additions)
+{
+  "mealTypeConfig": {
+    "rotationSettings": "Rotation Settings",
+    "baseRotation": "Base rotation",
+    "proteinRotation": "Protein rotation",
+    "rotationHint": "Rotation ensures you don't have {{item}} multiple days in a row"
+  }
+}
+
+// meals.json (additions)
+{
+  "logging": {
+    "selectMain": "Main (select 1)",
+    "selectSides": "Sides (select 1-3)",
+    "confirmMeal": "Confirm Meal"
+  }
+}
+
+// history.json (additions)
+{
+  "structured": {
+    "main": "Main",
+    "sides": "Sides"
+  }
+}
+```
+
+**Portuguese (`lib/i18n/locales/pt-PT/`):**
+- Same structure with Portuguese translations
+- Protein types and categories need cultural consideration
+
+### Notes
+- Ingredient names are user-entered, not translated
+- Meal type names (Lunch, Dinner) are system-defined and translated
+- Rotation warnings use interpolation for dynamic values
+
+---
+
 ## Overview
 
 This phase extends SaborSpin to handle lunch and dinner:
@@ -345,6 +494,31 @@ Note: Breakfast/snacks keep flat format.
 Note: Warnings help user understand why
 variety score is lower (yellow instead of green).
 ```
+
+---
+
+## Screenshot Capture
+
+### Required Screenshots
+
+| Screenshot | When to Capture | Filename |
+|------------|-----------------|----------|
+| Suggestion Card - Simple (BEFORE) | Current breakfast/snack style | `screenshot_before_suggestion_simple.png` |
+| Suggestion Card - Main+Sides | Lunch/dinner structured layout | `screenshot_after_suggestion_structured.png` |
+| Home Screen BEFORE | Before lunch/dinner meal types | `screenshot_before_home_mealtypes.png` |
+| Home Screen AFTER | After lunch/dinner meal types | `screenshot_after_home_mealtypes.png` |
+| Meal Type Settings - Rotation | Rotation settings for dinner | `screenshot_mealtype_rotation.png` |
+| Ingredient Management - Filters | New category/meal type filters | `screenshot_ingredients_filters.png` |
+| Add Ingredient - Rotation Fields | Protein/base ingredient settings | `screenshot_ingredient_rotation.png` |
+| Meal Logging - Main+Sides | Selecting main and sides | `screenshot_meal_logging_structured.png` |
+| History - Main+Sides Display | History showing structured meal | `screenshot_history_structured.png` |
+| Variety Warning - Rotation | Warning showing rotation violation | `screenshot_variety_rotation_warning.png` |
+
+### Capture Instructions
+1. For structured suggestions: Generate lunch/dinner with protein + base + vegetable
+2. For rotation warnings: Log same protein/base multiple times to trigger warning
+3. For ingredient management: Add sample proteins and bases with categories
+4. Save screenshots in `docs/learning/epic04_feature_enhancement/screenshots/`
 
 ---
 
@@ -730,6 +904,8 @@ Add filters for:
 | 26 | ▶️ RUN quality checks and compare | Quality | ~30 min | Compare to baseline; create remediation plan if worse | not started |
 | 27 | Document learning notes | Documentation | ~30 min | Capture unexpected errors, workarounds, fixes | not started |
 | 28 | Run all existing unit tests, Playwright tests and Maestro Tests | Quality | ~0.5 hours | not started |
+| 29 | 📸 Capture BEFORE screenshots | Documentation | ~10 min | not started |
+| 30 | 📸 Capture AFTER screenshots | Documentation | ~25 min | not started |
 
 **Total Estimated Effort:** ~55.5 hours (including unit + Playwright + Maestro tests + quality checks)
 
@@ -737,6 +913,7 @@ Add filters for:
 - 🧪 CREATE = Writing new tests
 - 🔄 UPDATE = Modifying existing tests
 - ▶️ RUN = Executing tests (baseline/verification)
+- 📸 = Screenshot capture for documentation
 
 ---
 

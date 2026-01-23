@@ -1,0 +1,123 @@
+# Maestro E2E test for Favorites functionality
+# Verifies favorites can be marked and filtered on mobile
+#
+# Prerequisites:
+#   - Android emulator running: adb devices
+#   - App installed (see MAESTRO_TESTING.md for options)
+#
+# Run with: maestro test e2e/maestro/favorites-flow.yaml
+
+appId: com.vitorsilvavmrs.saborspin
+---
+# Launch app
+- launchApp
+
+# Verify home screen loads
+- extendedWaitUntil:
+    visible: "SaborSpin"
+    timeout: 30000
+
+# Take screenshot of initial home screen
+- takeScreenshot: favorites-01-home-initial
+
+# Navigate to breakfast suggestions
+- tapOn:
+    text: "Breakfast"
+    optional: false
+
+# Wait for suggestions screen to load
+- extendedWaitUntil:
+    visible: "Pick one:"
+    timeout: 15000
+
+# Take screenshot of suggestions screen before favoriting
+- takeScreenshot: favorites-02-suggestions-before
+
+# Mark first suggestion as favorite by tapping the star icon (☆)
+# The favorite button has testID="favorite-button-0"
+- tapOn:
+    id: "favorite-button-0"
+
+# Wait for UI to update (favorite state change)
+- waitForAnimationToEnd
+
+# Verify the star changed to filled (⭐)
+- assertVisible: "⭐"
+
+# Take screenshot showing favorited suggestion
+- takeScreenshot: favorites-03-suggestion-favorited
+
+# Now select the first suggestion to log the meal
+- tapOn:
+    id: "select-button-0"
+
+# Wait for confirmation modal
+- extendedWaitUntil:
+    visible: "Logged"
+    timeout: 10000
+
+# Take screenshot of confirmation
+- takeScreenshot: favorites-04-meal-logged
+
+# Dismiss modal
+- tapOn:
+    id: "done-button"
+
+# Wait to return to home screen
+- extendedWaitUntil:
+    visible: "Recent Meals"
+    timeout: 10000
+
+# Navigate to History tab
+- tapOn: "History"
+
+# Wait for history screen to load
+- extendedWaitUntil:
+    visible: "Today"
+    timeout: 10000
+
+# Take screenshot of history with favorited meal
+- takeScreenshot: favorites-05-history-with-favorite
+
+# Verify favorite indicator is visible in history
+- assertVisible: "⭐"
+
+# Tap on Favorites filter tab
+- tapOn:
+    id: "filter-favorites"
+
+# Wait for filter to apply
+- waitForAnimationToEnd
+
+# Verify the favorites filter is working - should still show the favorited meal
+- assertVisible: "Today"
+- assertVisible: "⭐"
+
+# Take screenshot of favorites filter view
+- takeScreenshot: favorites-06-favorites-filter
+
+# Toggle the favorite off from history screen
+- tapOn:
+    id: ".*favorite-button.*"
+    optional: false
+
+# Wait for UI update
+- waitForAnimationToEnd
+
+# Take screenshot after unfavoriting
+- takeScreenshot: favorites-07-after-unfavorite
+
+# Navigate back to All filter to verify the meal still exists
+- tapOn:
+    id: "filter-all"
+
+# Wait for filter to apply
+- waitForAnimationToEnd
+
+# Verify meal is still in history (just not favorited)
+- assertVisible: "Today"
+
+# Take final screenshot
+- takeScreenshot: favorites-08-complete
+
+# Test passed - favorites functionality works on mobile
