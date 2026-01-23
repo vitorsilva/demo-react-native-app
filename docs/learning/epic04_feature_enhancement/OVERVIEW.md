@@ -43,6 +43,24 @@ Epic 3 established the production-ready foundation. Epic 4 focuses on enhancing 
 
 ## 🗺️ Phase Overview
 
+### Phase 0: Landing Page Deployment (2-4 hours) ⬅️ START HERE
+**Goal:** Deploy saborspin.com landing page to production
+
+**Status:** Ready to implement
+
+This is the first phase of Epic 04. The landing page is already built - this phase focuses on:
+- DNS configuration (point domain to VPS)
+- SSL certificate setup (HTTPS)
+- FTP credentials configuration
+- Landing page deployment
+- APK hosting setup (direct download, no app store)
+
+**Why first:** Establishes web presence before user validation begins.
+
+**[Start Phase 0 →](./PHASE0_LANDING_DEPLOYMENT.md)**
+
+---
+
 ### Phase 6: Validation & Iteration (3-4 weeks, ongoing)
 **Goal:** Deploy to real users and iterate based on feedback
 
