@@ -302,6 +302,79 @@ CREATE TABLE users (
 );
 ```
 
+---
+
+### Database Migration Pattern
+
+This project uses a **versioned migration system** in `lib/database/migrations.ts`. Each migration has a version number and an idempotent `up` function.
+
+**Add migrations for users and families tables:**
+
+```typescript
+// In lib/database/migrations.ts - add to migrations array
+// Version number depends on which phases are implemented first
+
+{
+  version: 8,  // Adjust based on current version
+  up: async (db: DatabaseAdapter) => {
+    // 1. Create users table (idempotent)
+    await db.runAsync(`
+      CREATE TABLE IF NOT EXISTS users (
+        id TEXT PRIMARY KEY,
+        display_name TEXT NOT NULL,
+        public_key TEXT NOT NULL,
+        private_key_encrypted TEXT NOT NULL,
+        created_at TEXT NOT NULL,
+        updated_at TEXT NOT NULL
+      )
+    `);
+
+    // 2. Create families table (idempotent)
+    await db.runAsync(`
+      CREATE TABLE IF NOT EXISTS families (
+        id TEXT PRIMARY KEY,
+        name TEXT NOT NULL,
+        invite_code TEXT NOT NULL UNIQUE,
+        created_by TEXT NOT NULL,
+        created_at TEXT NOT NULL,
+        updated_at TEXT NOT NULL,
+        FOREIGN KEY (created_by) REFERENCES users(id)
+      )
+    `);
+
+    // 3. Create family_members table (idempotent)
+    await db.runAsync(`
+      CREATE TABLE IF NOT EXISTS family_members (
+        id TEXT PRIMARY KEY,
+        family_id TEXT NOT NULL,
+        user_id TEXT NOT NULL,
+        user_display_name TEXT NOT NULL,
+        user_public_key TEXT NOT NULL,
+        role TEXT NOT NULL DEFAULT 'member',
+        joined_at TEXT NOT NULL,
+        FOREIGN KEY (family_id) REFERENCES families(id) ON DELETE CASCADE,
+        UNIQUE(family_id, user_id)
+      )
+    `);
+  },
+}
+```
+
+**How the migration system works:**
+1. `migrations` table tracks applied versions
+2. `runMigrations(db)` runs on app startup
+3. Only migrations with `version > currentVersion` are executed
+4. `CREATE TABLE IF NOT EXISTS` ensures idempotency
+5. Each migration is recorded after success
+
+**Why this is safe:**
+- New tables don't affect existing data
+- `IF NOT EXISTS` prevents errors if migration runs twice
+- Old app versions ignore the new tables
+- Foreign keys reference existing users table created in same migration
+
+---
+
 **Key Generation:**
 
 ```typescript

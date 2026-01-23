@@ -267,29 +267,117 @@ ALTER TABLE meal_logs ADD COLUMN name TEXT;  -- Optional meal name
 
 ### 2.4 Migration Strategy
 
+This project uses a **versioned migration system** in `lib/database/migrations.ts`. Each migration has a version number and an idempotent `up` function.
+
+**Current schema version:** 3 (or 4 if Phase 1 Favorites is done first)
+
 **Approach:** Keep `ingredients` column for backward compatibility during migration, then deprecate.
 
-**Migration Steps:**
+**Add migration version 5 (or next available):**
 
-1. Add new columns and tables (non-breaking)
-2. Migrate existing data:
-   ```sql
-   -- For each existing meal_log
-   -- Create meal_components from ingredients JSON
-   INSERT INTO meal_components (id, meal_log_id, ingredient_id, preparation_method_id, created_at)
-   SELECT
-     uuid(),
-     ml.id,
-     json_each.value,
-     NULL,  -- No preparation for legacy data
-     ml.created_at
-   FROM meal_logs ml, json_each(ml.ingredients);
-   ```
-3. Update app to read from `meal_components`
-4. Update app to write to `meal_components`
-5. (Future) Remove `ingredients` column
+```typescript
+// In lib/database/migrations.ts - add to migrations array
 
-**Migration Version:** Increment to next version in `migrations.ts`
+{
+  version: 5,  // Adjust based on current version
+  up: async (db: DatabaseAdapter) => {
+    // 1. Create preparation_methods table (idempotent)
+    await db.runAsync(`
+      CREATE TABLE IF NOT EXISTS preparation_methods (
+        id TEXT PRIMARY KEY,
+        name TEXT NOT NULL UNIQUE,
+        is_predefined INTEGER DEFAULT 1,
+        created_at TEXT NOT NULL
+      )
+    `);
+
+    // 2. Seed predefined methods (idempotent via INSERT OR IGNORE)
+    const now = new Date().toISOString();
+    const predefinedMethods = [
+      ['prep-fried', 'fried'], ['prep-grilled', 'grilled'],
+      ['prep-roasted', 'roasted'], ['prep-boiled', 'boiled'],
+      ['prep-baked', 'baked'], ['prep-raw', 'raw'],
+      ['prep-steamed', 'steamed'], ['prep-sauteed', 'sautéed'],
+      ['prep-stewed', 'stewed'], ['prep-smoked', 'smoked'],
+      ['prep-poached', 'poached'], ['prep-braised', 'braised'],
+    ];
+
+    for (const [id, name] of predefinedMethods) {
+      if (!(await recordExists(db, 'preparation_methods', 'id = ?', [id]))) {
+        await db.runAsync(
+          `INSERT INTO preparation_methods (id, name, is_predefined, created_at) VALUES (?, ?, 1, ?)`,
+          [id, name, now]
+        );
+      }
+    }
+
+    // 3. Create meal_components table (idempotent)
+    await db.runAsync(`
+      CREATE TABLE IF NOT EXISTS meal_components (
+        id TEXT PRIMARY KEY,
+        meal_log_id TEXT NOT NULL,
+        ingredient_id TEXT NOT NULL,
+        preparation_method_id TEXT,
+        created_at TEXT NOT NULL,
+        FOREIGN KEY (meal_log_id) REFERENCES meal_logs(id) ON DELETE CASCADE,
+        FOREIGN KEY (ingredient_id) REFERENCES ingredients(id),
+        FOREIGN KEY (preparation_method_id) REFERENCES preparation_methods(id)
+      )
+    `);
+
+    // 4. Add name column to meal_logs (idempotent)
+    if (!(await columnExists(db, 'meal_logs', 'name'))) {
+      await db.runAsync(`ALTER TABLE meal_logs ADD COLUMN name TEXT`);
+    }
+  },
+},
+
+{
+  version: 6,  // Data migration in separate version for safety
+  up: async (db: DatabaseAdapter) => {
+    // Migrate existing meal_logs to meal_components
+    // Only migrate logs that don't have components yet
+    const logsToMigrate = await db.getAllAsync<{ id: string; ingredients: string; logged_at: string }>(
+      `SELECT ml.id, ml.ingredients, ml.logged_at
+       FROM meal_logs ml
+       LEFT JOIN meal_components mc ON mc.meal_log_id = ml.id
+       WHERE mc.id IS NULL AND ml.ingredients IS NOT NULL`
+    );
+
+    for (const log of logsToMigrate) {
+      try {
+        const ingredientIds = JSON.parse(log.ingredients);
+        for (const ingredientId of ingredientIds) {
+          await db.runAsync(
+            `INSERT INTO meal_components (id, meal_log_id, ingredient_id, preparation_method_id, created_at)
+             VALUES (?, ?, ?, NULL, ?)`,
+            [Crypto.randomUUID(), log.id, ingredientId, log.logged_at]
+          );
+        }
+      } catch (e) {
+        // Skip malformed JSON - log but don't fail migration
+        console.warn(`Skipping migration for meal_log ${log.id}: invalid ingredients JSON`);
+      }
+    }
+  },
+}
+```
+
+**How the migration system works:**
+1. `migrations` table tracks applied versions
+2. `runMigrations(db)` runs on app startup
+3. Only migrations with `version > currentVersion` are executed
+4. Helper functions (`columnExists`, `recordExists`) ensure idempotency
+5. Each migration is recorded after success
+
+**Why split into two versions:**
+- Version 5: Schema changes (tables, columns) - safe to retry
+- Version 6: Data migration - separate so schema is guaranteed first
+
+**Backward Compatibility:**
+- Old `ingredients` column kept for backward compat
+- App reads from `meal_components` if available, falls back to `ingredients`
+- New meals written with `meal_components`
 
 ---
 

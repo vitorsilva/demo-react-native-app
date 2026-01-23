@@ -454,6 +454,8 @@ ALTER TABLE ingredients ADD COLUMN is_base_ingredient INTEGER DEFAULT 0;
 ALTER TABLE ingredients ADD COLUMN base_category TEXT;  -- 'pasta', 'rice', 'potato', etc.
 ```
 
+> **Note:** See the [Database Migration Pattern](#database-migration-pattern) section below for implementation details.
+
 ---
 
 ### 9.3 Protein Rotation
@@ -509,6 +511,53 @@ function getProteinPenalty(
 ALTER TABLE ingredients ADD COLUMN is_protein INTEGER DEFAULT 0;
 ALTER TABLE ingredients ADD COLUMN protein_category TEXT;  -- 'poultry', 'beef', 'pork', etc.
 ```
+
+---
+
+### Database Migration Pattern
+
+This project uses a **versioned migration system** in `lib/database/migrations.ts`. Each migration has a version number and an idempotent `up` function.
+
+**Add migration for lunch/dinner ingredient columns:**
+
+```typescript
+// In lib/database/migrations.ts - add to migrations array
+// Version number depends on which phases are implemented first
+
+{
+  version: 11,  // Adjust based on current version
+  up: async (db: DatabaseAdapter) => {
+    // 1. Add base ingredient columns (idempotent)
+    if (!(await columnExists(db, 'ingredients', 'is_base_ingredient'))) {
+      await db.runAsync(`ALTER TABLE ingredients ADD COLUMN is_base_ingredient INTEGER DEFAULT 0`);
+    }
+    if (!(await columnExists(db, 'ingredients', 'base_category'))) {
+      await db.runAsync(`ALTER TABLE ingredients ADD COLUMN base_category TEXT`);
+    }
+
+    // 2. Add protein columns (idempotent)
+    if (!(await columnExists(db, 'ingredients', 'is_protein'))) {
+      await db.runAsync(`ALTER TABLE ingredients ADD COLUMN is_protein INTEGER DEFAULT 0`);
+    }
+    if (!(await columnExists(db, 'ingredients', 'protein_category'))) {
+      await db.runAsync(`ALTER TABLE ingredients ADD COLUMN protein_category TEXT`);
+    }
+  },
+}
+```
+
+**How the migration system works:**
+1. `migrations` table tracks applied versions
+2. `runMigrations(db)` runs on app startup
+3. Only migrations with `version > currentVersion` are executed
+4. `columnExists()` helper ensures idempotency
+5. Each migration is recorded after success
+
+**Why this is safe:**
+- New columns have `DEFAULT 0` or allow NULL
+- `columnExists()` check prevents errors if migration runs twice
+- No data loss - purely additive changes
+- Existing ingredients continue to work without these columns set
 
 ---
 

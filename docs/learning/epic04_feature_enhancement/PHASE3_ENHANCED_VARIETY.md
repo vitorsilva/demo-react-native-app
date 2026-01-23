@@ -210,6 +210,8 @@ CREATE INDEX idx_ingredient_usage_date ON ingredient_usage(ingredient_id, date);
 
 **Recommendation:** Option A for simplicity. Switch to Option B if performance becomes an issue with large history.
 
+> **Note:** If Option B is chosen, see the [Database Migration Pattern](#database-migration-pattern) section below for implementation details.
+
 ---
 
 **Updated Variety Scoring:**
@@ -268,6 +270,52 @@ CREATE TABLE pairing_rules (
   UNIQUE(ingredient_a_id, ingredient_b_id)  -- One rule per pair
 );
 ```
+
+---
+
+### Database Migration Pattern
+
+This project uses a **versioned migration system** in `lib/database/migrations.ts`. Each migration has a version number and an idempotent `up` function.
+
+**Add migration for pairing_rules table:**
+
+```typescript
+// In lib/database/migrations.ts - add to migrations array
+// Version number depends on which phases are implemented first
+
+{
+  version: 7,  // Adjust based on current version
+  up: async (db: DatabaseAdapter) => {
+    // Create pairing_rules table (idempotent with IF NOT EXISTS)
+    await db.runAsync(`
+      CREATE TABLE IF NOT EXISTS pairing_rules (
+        id TEXT PRIMARY KEY,
+        ingredient_a_id TEXT NOT NULL,
+        ingredient_b_id TEXT NOT NULL,
+        rule_type TEXT NOT NULL,
+        created_at TEXT NOT NULL,
+        FOREIGN KEY (ingredient_a_id) REFERENCES ingredients(id) ON DELETE CASCADE,
+        FOREIGN KEY (ingredient_b_id) REFERENCES ingredients(id) ON DELETE CASCADE,
+        UNIQUE(ingredient_a_id, ingredient_b_id)
+      )
+    `);
+  },
+}
+```
+
+**How the migration system works:**
+1. `migrations` table tracks applied versions
+2. `runMigrations(db)` runs on app startup
+3. Only migrations with `version > currentVersion` are executed
+4. `CREATE TABLE IF NOT EXISTS` ensures idempotency
+5. Each migration is recorded after success
+
+**Why this is safe:**
+- New table doesn't affect existing data
+- `IF NOT EXISTS` prevents errors if migration runs twice
+- Old app versions ignore the new table
+
+---
 
 **Store Actions:**
 

@@ -211,20 +211,73 @@ ALTER TABLE meal_logs ADD COLUMN visibility TEXT DEFAULT 'personal';
 -- family_id REFERENCES families(id)
 ```
 
-**Migration:**
+---
+
+### Database Migration Pattern
+
+This project uses a **versioned migration system** in `lib/database/migrations.ts`. Each migration has a version number and an idempotent `up` function.
+
+**Add migration for meal sharing columns:**
 
 ```typescript
-// Migrate existing logs to current user
-async function migrateExistingLogs() {
-  const user = await getCurrentUser();
-  if (user) {
-    await db.run(
-      'UPDATE meal_logs SET user_id = ? WHERE user_id IS NULL',
-      [user.id]
-    );
-  }
+// In lib/database/migrations.ts - add to migrations array
+// Version number depends on which phases are implemented first
+// This migration MUST come after Phase 4 (users table exists)
+
+{
+  version: 9,  // Adjust based on current version
+  up: async (db: DatabaseAdapter) => {
+    // 1. Add user_id column to meal_logs (idempotent)
+    if (!(await columnExists(db, 'meal_logs', 'user_id'))) {
+      await db.runAsync(`ALTER TABLE meal_logs ADD COLUMN user_id TEXT`);
+    }
+
+    // 2. Add family_id column to meal_logs (idempotent)
+    if (!(await columnExists(db, 'meal_logs', 'family_id'))) {
+      await db.runAsync(`ALTER TABLE meal_logs ADD COLUMN family_id TEXT`);
+    }
+
+    // 3. Add visibility column to meal_logs (idempotent)
+    if (!(await columnExists(db, 'meal_logs', 'visibility'))) {
+      await db.runAsync(`ALTER TABLE meal_logs ADD COLUMN visibility TEXT DEFAULT 'personal'`);
+    }
+  },
+},
+
+{
+  version: 10,  // Data migration in separate version
+  up: async (db: DatabaseAdapter) => {
+    // Migrate existing logs to current user
+    // Get the first (and typically only) user
+    const user = await db.getFirstAsync<{ id: string }>('SELECT id FROM users LIMIT 1');
+
+    if (user) {
+      // Update logs that don't have a user_id yet
+      await db.runAsync(
+        'UPDATE meal_logs SET user_id = ? WHERE user_id IS NULL',
+        [user.id]
+      );
+    }
+    // Note: Logs without a user_id will remain personal-only
+    // This is safe - they'll still display for the device owner
+  },
 }
 ```
+
+**How the migration system works:**
+1. `migrations` table tracks applied versions
+2. `runMigrations(db)` runs on app startup
+3. Only migrations with `version > currentVersion` are executed
+4. `columnExists()` helper ensures idempotency
+5. Each migration is recorded after success
+
+**Why split into two versions:**
+- Version 9: Schema changes (columns) - safe to retry
+- Version 10: Data migration - assigns existing logs to user
+
+**Dependency:** Phase 4 must be implemented first (users table must exist)
+
+---
 
 **Updated Type:**
 
