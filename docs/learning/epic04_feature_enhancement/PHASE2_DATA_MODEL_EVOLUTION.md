@@ -20,6 +20,141 @@ This follows **Approach C: Flexible Meals** from the exploration document.
 
 ---
 
+## UI Wireframes: Before & After
+
+### Meal Logging Flow
+
+**BEFORE:**
+```
+┌─────────────────────────────────────┐
+│  Log Breakfast                      │
+├─────────────────────────────────────┤
+│                                     │
+│  Your selection:                    │
+│                                     │
+│  • milk                             │
+│  • bread                            │
+│  • jam                              │
+│                                     │
+│  ┌─────────────────────────────────┐│
+│  │         Confirm Meal            ││
+│  └─────────────────────────────────┘│
+│                                     │
+└─────────────────────────────────────┘
+```
+
+**AFTER:**
+```
+┌─────────────────────────────────────┐
+│  Log Breakfast                      │
+├─────────────────────────────────────┤
+│                                     │
+│  Name this meal (optional):         │  ← NEW
+│  ┌─────────────────────────────────┐│
+│  │ e.g., "Mom's special"           ││
+│  └─────────────────────────────────┘│
+│                                     │
+│  Your selection:                    │
+│                                     │
+│  ┌─────────────────────────────────┐│
+│  │ milk                    [None ▼]││  ← Prep method selector
+│  └─────────────────────────────────┘│
+│  ┌─────────────────────────────────┐│
+│  │ bread               [Toasted ▼]││  ← Prep method selector
+│  └─────────────────────────────────┘│
+│  ┌─────────────────────────────────┐│
+│  │ jam                     [None ▼]││
+│  └─────────────────────────────────┘│
+│                                     │
+│  ┌─────────────────────────────────┐│
+│  │         Confirm Meal            ││
+│  └─────────────────────────────────┘│
+│                                     │
+└─────────────────────────────────────┘
+```
+
+### Preparation Method Picker (Modal)
+
+**NEW COMPONENT:**
+```
+┌─────────────────────────────────────┐
+│  Preparation for "bread"            │
+├─────────────────────────────────────┤
+│                                     │
+│  ○ None (as is)                     │
+│  ○ Toasted                          │
+│  ● Grilled                          │  ← Selected
+│  ○ Fried                            │
+│  ○ Baked                            │
+│  ○ Steamed                          │
+│  ─────────────────────────────────  │
+│  ○ + Add custom...                  │  ← User can add
+│                                     │
+│  [Cancel]              [Apply]      │
+│                                     │
+└─────────────────────────────────────┘
+```
+
+### History Item Display
+
+**BEFORE:**
+```
+┌─────────────────────────────────────┐
+│ milk + bread + jam                  │
+│ Breakfast • 8:30 AM                 │
+└─────────────────────────────────────┘
+```
+
+**AFTER:**
+```
+┌─────────────────────────────────────┐
+│ "Mom's special"                     │  ← Named meal shown first
+│ milk + toasted bread + jam          │  ← Prep methods inline
+│ Breakfast • 8:30 AM                 │
+└─────────────────────────────────────┘
+
+OR (unnamed meal):
+
+┌─────────────────────────────────────┐
+│ milk + toasted bread + jam          │  ← No name, show components
+│ Breakfast • 8:30 AM                 │
+└─────────────────────────────────────┘
+```
+
+### Settings: Manage Preparation Methods
+
+**NEW SCREEN:**
+```
+┌─────────────────────────────────────┐
+│  ← Preparation Methods              │
+├─────────────────────────────────────┤
+│                                     │
+│  System (cannot delete):            │
+│  ┌─────────────────────────────────┐│
+│  │ fried                           ││
+│  │ grilled                         ││
+│  │ roasted                         ││
+│  │ boiled                          ││
+│  │ baked                           ││
+│  │ raw                             ││
+│  │ steamed                         ││
+│  │ sautéed                         ││
+│  │ ...                             ││
+│  └─────────────────────────────────┘│
+│                                     │
+│  Custom:                            │
+│  ┌─────────────────────────────────┐│
+│  │ air-fried              [Delete] ││  ← User-added
+│  │ smashed                [Delete] ││
+│  └─────────────────────────────────┘│
+│                                     │
+│  [+ Add Custom Method]              │
+│                                     │
+└─────────────────────────────────────┘
+```
+
+---
+
 ## Current vs Target Data Model
 
 ### Current Model
