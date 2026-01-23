@@ -409,7 +409,7 @@ function generateSuggestions(
 
 | Order | Task | Effort | Notes |
 |-------|------|--------|-------|
-| 1 | Run existing test suites | ~10 min | Baseline: run unit tests and E2E tests |
+| 1 | Run existing test suites | ~15 min | Baseline: unit, Playwright E2E, Maestro |
 | 2 | Add ingredient frequency calculation | ~2 hours | Utility function |
 | 3 | Write unit tests for `getIngredientFrequency()` | ~45 min | Test counting logic |
 | 4 | Update variety scoring with frequency | ~2 hours | Algorithm update |
@@ -421,12 +421,14 @@ function generateSuggestions(
 | 10 | Add pairing rules to suggestion algorithm | ~2 hours | Algorithm |
 | 11 | Write unit tests for `applyPairingRules()` | ~1 hour | Test positive/negative rules |
 | 12 | Create Pairing Rules UI | ~4 hours | New screen |
-| 13 | Write E2E tests for pairing rules management | ~1.5 hours | Test add/delete rules via UI |
-| 14 | Update suggestion generation | ~2 hours | Integration |
-| 15 | Write E2E test for suggestions with rules | ~1.5 hours | Test negative pairs excluded |
-| 16 | Run full test suites | ~15 min | Run all unit + E2E tests, verify no regressions |
+| 13 | Write Playwright E2E tests for pairing rules | ~1.5 hours | Test add/delete rules via UI |
+| 14 | Write Maestro tests for pairing rules | ~1.5 hours | Mirror Playwright tests for mobile |
+| 15 | Update suggestion generation | ~2 hours | Integration |
+| 16 | Write Playwright E2E test for suggestions | ~1.5 hours | Test negative pairs excluded |
+| 17 | Write Maestro test for suggestions | ~1.5 hours | Mirror Playwright test for mobile |
+| 18 | Run full test suites | ~20 min | Unit + Playwright + Maestro, verify no regressions |
 
-**Total Estimated Effort:** ~23 hours (including unit + E2E tests)
+**Total Estimated Effort:** ~26 hours (including unit + Playwright + Maestro tests)
 
 ---
 

@@ -220,22 +220,23 @@ Phase 7 (Proposals)   Phase 8 (P2P) [Optional]│    │
 | Phase | Description | Effort (with tests) |
 |-------|-------------|---------------------|
 | 0 | Landing Page Deployment | ~4 hours |
-| 1 | Quick Wins (Polish) | ~20 hours |
-| 2 | Data Model Evolution | ~24 hours |
-| 3 | Enhanced Variety | ~23 hours |
-| 4 | User Identity & Families | ~41 hours |
-| 5 | Shared Meal Logs | ~27 hours |
-| 6 | HTTP Sync | ~48 hours |
-| 7 | Proposals & Voting | ~37 hours |
-| 8 | P2P Sync (Optional) | ~40 hours |
-| 9 | Lunch/Dinner Expansion | ~48 hours |
-| | **Total** | **~312 hours** |
+| 1 | Quick Wins (Polish) | ~23 hours |
+| 2 | Data Model Evolution | ~28 hours |
+| 3 | Enhanced Variety | ~26 hours |
+| 4 | User Identity & Families | ~48 hours |
+| 5 | Shared Meal Logs | ~31 hours |
+| 6 | HTTP Sync | ~51 hours |
+| 7 | Proposals & Voting | ~42 hours |
+| 8 | P2P Sync (Optional) | ~42 hours |
+| 9 | Lunch/Dinner Expansion | ~54 hours |
+| | **Total** | **~349 hours** |
 
 **Note:** Each phase includes:
-- Running existing test suites at the start (unit tests + E2E tests for baseline validation)
+- Running existing test suites at the start (unit + Playwright E2E + Maestro for baseline validation)
 - Writing unit tests for new business logic and utilities
-- Writing E2E tests for new user flows and UI interactions
-- Running full test suites at the end (all unit + E2E tests for regression testing)
+- Writing Playwright E2E tests for new user flows and UI interactions
+- Writing Maestro tests that mirror Playwright tests for mobile coverage
+- Running full test suites at the end (unit + Playwright + Maestro for regression testing)
 
 ---
 

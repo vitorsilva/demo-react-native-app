@@ -653,7 +653,7 @@ Add filters for:
 
 | Order | Task | Effort | Notes |
 |-------|------|--------|-------|
-| 1 | Run existing test suites | ~10 min | Baseline: run unit tests and E2E tests |
+| 1 | Run existing test suites | ~15 min | Baseline: unit, Playwright E2E, Maestro |
 | 2 | Add ingredient classification columns | ~2 hours | Migration |
 | 3 | Write unit tests for migration | ~30 min | Test column additions |
 | 4 | Classify existing ingredients | ~2 hours | Data work |
@@ -668,14 +668,17 @@ Add filters for:
 | 13 | Update suggestion generator | ~6 hours | Major rewrite |
 | 14 | Write unit tests for `generateLunchDinnerSuggestion()` | ~2 hours | Test main + sides structure |
 | 15 | Update suggestion card UI | ~4 hours | New layout |
-| 16 | Write E2E test for lunch/dinner suggestions | ~2 hours | Test main + sides display |
-| 17 | Add lunch/dinner ingredients | ~2 hours | Seed data |
-| 18 | Update ingredient management | ~3 hours | Filters, categories |
-| 19 | Write E2E test for ingredient classification UI | ~1.5 hours | Test protein/base filters |
-| 20 | Write E2E test for full lunch/dinner flow | ~2 hours | Test select → log → history |
-| 21 | Run full test suites | ~15 min | Run all unit + E2E tests, verify no regressions |
+| 16 | Write Playwright E2E test for lunch/dinner suggestions | ~2 hours | Test main + sides display |
+| 17 | Write Maestro test for lunch/dinner suggestions | ~2 hours | Mirror Playwright test for mobile |
+| 18 | Add lunch/dinner ingredients | ~2 hours | Seed data |
+| 19 | Update ingredient management | ~3 hours | Filters, categories |
+| 20 | Write Playwright E2E test for ingredient classification UI | ~1.5 hours | Test protein/base filters |
+| 21 | Write Maestro test for ingredient classification UI | ~1.5 hours | Mirror Playwright test for mobile |
+| 22 | Write Playwright E2E test for full lunch/dinner flow | ~2 hours | Test select → log → history |
+| 23 | Write Maestro test for full lunch/dinner flow | ~2 hours | Mirror Playwright test for mobile |
+| 24 | Run full test suites | ~20 min | Unit + Playwright + Maestro, verify no regressions |
 
-**Total Estimated Effort:** ~48 hours (including unit + E2E tests)
+**Total Estimated Effort:** ~54 hours (including unit + Playwright + Maestro tests)
 
 ---
 

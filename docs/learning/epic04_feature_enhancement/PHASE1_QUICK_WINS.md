@@ -424,7 +424,7 @@ const haptics = {
 
 | Order | Task | Effort | Notes |
 |-------|------|--------|-------|
-| 1 | Run existing test suites | ~10 min | Baseline: run unit tests (101+) and E2E tests (12) |
+| 1 | Run existing test suites | ~15 min | Baseline: unit (101+), Playwright E2E (12), Maestro |
 | 2 | Haptic Feedback | ~1 hour | Add utility, sprinkle in components |
 | 3 | Write unit tests for haptics utility | ~30 min | Test haptic function calls |
 | 4 | Variety Color Coding | ~2 hours | Suggestion card, utility function |
@@ -433,13 +433,15 @@ const haptics = {
 | 7 | Write unit tests for `isNewCombination()` | ~30 min | Test edge cases (never logged, 7+ days) |
 | 8 | Favorite Combinations | ~4 hours | DB migration, store, UI components |
 | 9 | Write unit tests for favorites | ~1 hour | Test toggle, filter, algorithm boost |
-| 10 | Write E2E tests for favorites flow | ~1.5 hours | Test mark favorite, filter history |
-| 11 | Variety Stats | ~4 hours | New component, calculation logic |
-| 12 | Write unit tests for `calculateVarietyStats()` | ~1 hour | Test all stat calculations |
-| 13 | Write E2E test for stats display | ~1 hour | Test stats visible on home screen |
-| 14 | Run full test suites | ~15 min | Run all unit + E2E tests, verify no regressions |
+| 10 | Write Playwright E2E tests for favorites | ~1.5 hours | Test mark favorite, filter history |
+| 11 | Write Maestro tests for favorites | ~1.5 hours | Mirror Playwright tests for mobile |
+| 12 | Variety Stats | ~4 hours | New component, calculation logic |
+| 13 | Write unit tests for `calculateVarietyStats()` | ~1 hour | Test all stat calculations |
+| 14 | Write Playwright E2E test for stats | ~1 hour | Test stats visible on home screen |
+| 15 | Write Maestro test for stats | ~1 hour | Mirror Playwright test for mobile |
+| 16 | Run full test suites | ~20 min | Unit + Playwright + Maestro, verify no regressions |
 
-**Total Estimated Effort:** ~20 hours (including unit + E2E tests)
+**Total Estimated Effort:** ~23 hours (including unit + Playwright + Maestro tests)
 
 ---
 

@@ -482,7 +482,7 @@ zeroconf.scan('saborspin', 'tcp', 'local.');
 
 | Order | Task | Effort | Notes |
 |-------|------|--------|-------|
-| 1 | Run existing test suites | ~10 min | Baseline: run unit tests and E2E tests |
+| 1 | Run existing test suites | ~15 min | Baseline: unit, Playwright E2E, Maestro |
 | 2 | Set up WebRTC library | ~2 hours | Installation, config |
 | 3 | Implement signaling server | ~4 hours | WebSocket server |
 | 4 | Write unit tests for signaling server | ~1.5 hours | Test message routing |
@@ -495,13 +495,15 @@ zeroconf.scan('saborspin', 'tcp', 'local.');
 | 11 | Integrate with existing sync | ~3 hours | Hybrid logic |
 | 12 | Write unit tests for hybrid fallback | ~1 hour | Test P2P → HTTP fallback |
 | 13 | Add connection status UI | ~2 hours | "Connected to 2 devices" |
-| 14 | Write E2E test for P2P status display | ~1 hour | Test connection indicator UI |
-| 15 | Write E2E test for P2P toggle in settings | ~1 hour | Test enable/disable P2P |
-| 16 | Run full test suites | ~15 min | Run all unit + E2E tests, verify no regressions |
-| 17 | Integration testing with multiple devices | ~4 hours | Real device P2P testing |
-| 18 | (Optional) mDNS discovery | ~4 hours | Local network |
+| 14 | Write Playwright E2E test for P2P status display | ~1 hour | Test connection indicator UI |
+| 15 | Write Maestro test for P2P status display | ~1 hour | Mirror Playwright test for mobile |
+| 16 | Write Playwright E2E test for P2P toggle in settings | ~1 hour | Test enable/disable P2P |
+| 17 | Write Maestro test for P2P toggle in settings | ~1 hour | Mirror Playwright test for mobile |
+| 18 | Run full test suites | ~20 min | Unit + Playwright + Maestro, verify no regressions |
+| 19 | Integration testing with multiple devices | ~4 hours | Real device P2P testing |
+| 20 | (Optional) mDNS discovery | ~4 hours | Local network |
 
-**Total Estimated Effort:** ~40 hours (including unit + E2E tests)
+**Total Estimated Effort:** ~42 hours (including unit + Playwright + Maestro tests)
 
 ---
 

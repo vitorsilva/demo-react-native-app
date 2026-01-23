@@ -459,7 +459,7 @@ interface UserPreferences {
 
 | Order | Task | Effort | Notes |
 |-------|------|--------|-------|
-| 1 | Run existing test suites | ~10 min | Baseline: run unit tests and E2E tests |
+| 1 | Run existing test suites | ~15 min | Baseline: unit, Playwright E2E, Maestro |
 | 2 | Add columns to meal_logs | ~1 hour | Migration |
 | 3 | Write unit tests for migration | ~30 min | Test column additions |
 | 4 | Migrate existing logs | ~1 hour | Migration script |
@@ -467,20 +467,23 @@ interface UserPreferences {
 | 6 | Update meal logging with user_id | ~2 hours | Store |
 | 7 | Write unit tests for updated logging | ~1 hour | Test user/family context |
 | 8 | Add privacy toggle to logging flow | ~2 hours | UI |
-| 9 | Write E2E test for privacy toggle | ~1 hour | Test toggle personal/family visibility |
-| 10 | Add default visibility preference | ~1 hour | Settings |
-| 11 | Write unit tests for visibility logic | ~30 min | Test default, toggle behavior |
-| 12 | Create family history query | ~2 hours | Database |
-| 13 | Write unit tests for family query | ~1 hour | Test filtering, privacy respect |
-| 14 | Add family tab to history screen | ~3 hours | UI |
-| 15 | Write E2E test for family history tab | ~1.5 hours | Test view family meals, filter |
-| 16 | Create family day summary component | ~4 hours | Dashboard |
-| 17 | Write unit tests for `getFamilyDaySummary()` | ~45 min | Test aggregation logic |
-| 18 | Update home screen with dashboard | ~2 hours | UI |
-| 19 | Write E2E test for family dashboard | ~1 hour | Test summary displays on home |
-| 20 | Run full test suites | ~15 min | Run all unit + E2E tests, verify no regressions |
+| 9 | Write Playwright E2E test for privacy toggle | ~1 hour | Test toggle personal/family visibility |
+| 10 | Write Maestro test for privacy toggle | ~1 hour | Mirror Playwright test for mobile |
+| 11 | Add default visibility preference | ~1 hour | Settings |
+| 12 | Write unit tests for visibility logic | ~30 min | Test default, toggle behavior |
+| 13 | Create family history query | ~2 hours | Database |
+| 14 | Write unit tests for family query | ~1 hour | Test filtering, privacy respect |
+| 15 | Add family tab to history screen | ~3 hours | UI |
+| 16 | Write Playwright E2E test for family history | ~1.5 hours | Test view family meals, filter |
+| 17 | Write Maestro test for family history | ~1.5 hours | Mirror Playwright test for mobile |
+| 18 | Create family day summary component | ~4 hours | Dashboard |
+| 19 | Write unit tests for `getFamilyDaySummary()` | ~45 min | Test aggregation logic |
+| 20 | Update home screen with dashboard | ~2 hours | UI |
+| 21 | Write Playwright E2E test for dashboard | ~1 hour | Test summary displays on home |
+| 22 | Write Maestro test for dashboard | ~1 hour | Mirror Playwright test for mobile |
+| 23 | Run full test suites | ~20 min | Unit + Playwright + Maestro, verify no regressions |
 
-**Total Estimated Effort:** ~27 hours (including unit + E2E tests)
+**Total Estimated Effort:** ~31 hours (including unit + Playwright + Maestro tests)
 
 ---
 
