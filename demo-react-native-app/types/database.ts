@@ -16,6 +16,7 @@ export interface MealLog {
   mealType: string; // Dynamic meal type name (e.g., 'breakfast', 'snack', 'lunch')
   ingredients: string[]; // Array of ingredient IDs
   createdAt: string;
+  isFavorite: boolean; // Whether this combination is marked as favorite
 }
 
 export interface Preferences {
