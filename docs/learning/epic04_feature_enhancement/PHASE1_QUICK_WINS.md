@@ -442,8 +442,9 @@ const haptics = {
 | 16 | Write Maestro test for stats | ~1 hour | Mirror Playwright test for mobile |
 | 17 | Run full test suites | ~20 min | Unit + Playwright + Maestro, verify no regressions |
 | 18 | Run quality checks and compare | ~30 min | Compare to baseline; create remediation plan if worse |
+| 19 | Document learning notes | ~30 min | Capture unexpected errors, workarounds, fixes |
 
-**Total Estimated Effort:** ~24 hours (including unit + Playwright + Maestro tests + quality checks)
+**Total Estimated Effort:** ~24.5 hours (including unit + Playwright + Maestro tests + quality checks)
 
 ---
 
@@ -470,6 +471,7 @@ const haptics = {
 - `lib/utils/variety.ts` - Variety color and stats calculations
 - `components/NewBadge.tsx` - "New!" badge component
 - `components/VarietyStats.tsx` - Stats display component
+- `docs/learning/epic04_feature_enhancement/PHASE1_LEARNING_NOTES.md` - Learning notes
 
 **Modified Files:**
 - `lib/database/migrations.ts` - Add `is_favorite` column
@@ -489,6 +491,14 @@ Phase 1 is complete when:
 - [ ] E2E tests pass for user flows
 - [ ] No regressions in existing functionality
 - [ ] Features feel polished and integrated
+
+---
+
+## Learning Notes
+
+Document unexpected errors, workarounds, and fixes encountered during implementation:
+
+**[Phase 1 Learning Notes →](./PHASE1_LEARNING_NOTES.md)**
 
 ---
 

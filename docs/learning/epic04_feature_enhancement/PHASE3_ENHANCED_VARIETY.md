@@ -429,8 +429,9 @@ function generateSuggestions(
 | 18 | Write Maestro test for suggestions | ~1.5 hours | Mirror Playwright test for mobile |
 | 19 | Run full test suites | ~20 min | Unit + Playwright + Maestro, verify no regressions |
 | 20 | Run quality checks and compare | ~30 min | Compare to baseline; create remediation plan if worse |
+| 21 | Document learning notes | ~30 min | Capture unexpected errors, workarounds, fixes |
 
-**Total Estimated Effort:** ~27 hours (including unit + Playwright + Maestro tests + quality checks)
+**Total Estimated Effort:** ~27.5 hours (including unit + Playwright + Maestro tests + quality checks)
 
 ---
 
@@ -458,6 +459,7 @@ function generateSuggestions(
 - `app/(tabs)/pairing-rules.tsx` - Pairing rules management screen
 - `components/PairingRuleItem.tsx` - List item component
 - `components/AddPairingRuleModal.tsx` - Modal for adding rules
+- `docs/learning/epic04_feature_enhancement/PHASE3_LEARNING_NOTES.md` - Learning notes
 
 **Modified Files:**
 - `lib/database/migrations.ts` - Add pairing_rules table
@@ -479,6 +481,14 @@ Phase 3 is complete when:
 - [ ] Negative pairs are filtered from suggestions
 - [ ] Positive pairs get score bonus
 - [ ] All tests pass
+
+---
+
+## Learning Notes
+
+Document unexpected errors, workarounds, and fixes encountered during implementation:
+
+**[Phase 3 Learning Notes →](./PHASE3_LEARNING_NOTES.md)**
 
 ---
 

@@ -679,8 +679,9 @@ Add filters for:
 | 24 | Write Maestro test for full lunch/dinner flow | ~2 hours | Mirror Playwright test for mobile |
 | 25 | Run full test suites | ~20 min | Unit + Playwright + Maestro, verify no regressions |
 | 26 | Run quality checks and compare | ~30 min | Compare to baseline; create remediation plan if worse |
+| 27 | Document learning notes | ~30 min | Capture unexpected errors, workarounds, fixes |
 
-**Total Estimated Effort:** ~55 hours (including unit + Playwright + Maestro tests + quality checks)
+**Total Estimated Effort:** ~55.5 hours (including unit + Playwright + Maestro tests + quality checks)
 
 ---
 
@@ -702,6 +703,9 @@ Add filters for:
 ---
 
 ## Files to Create/Modify
+
+**New Files:**
+- `docs/learning/epic04_feature_enhancement/PHASE9_LEARNING_NOTES.md` - Learning notes
 
 **Modified Files:**
 - `lib/database/migrations.ts` - New columns
@@ -726,6 +730,14 @@ Phase 9 is complete when:
 - [ ] Different cooldown periods per meal type
 - [ ] Named meals work for lunch/dinner
 - [ ] All tests pass
+
+---
+
+## Learning Notes
+
+Document unexpected errors, workarounds, and fixes encountered during implementation:
+
+**[Phase 9 Learning Notes →](./PHASE9_LEARNING_NOTES.md)**
 
 ---
 

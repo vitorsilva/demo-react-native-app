@@ -504,8 +504,9 @@ zeroconf.scan('saborspin', 'tcp', 'local.');
 | 20 | Run quality checks and compare | ~30 min | Compare to baseline; create remediation plan if worse |
 | 21 | Integration testing with multiple devices | ~4 hours | Real device P2P testing |
 | 22 | (Optional) mDNS discovery | ~4 hours | Local network |
+| 23 | Document learning notes | ~30 min | Capture unexpected errors, workarounds, fixes |
 
-**Total Estimated Effort:** ~43 hours (including unit + Playwright + Maestro tests + quality checks)
+**Total Estimated Effort:** ~43.5 hours (including unit + Playwright + Maestro tests + quality checks)
 
 ---
 
@@ -555,6 +556,7 @@ zeroconf.scan('saborspin', 'tcp', 'local.');
 - `lib/p2p/signalingClient.ts` - Signaling server client
 - `server/signaling.ts` - Signaling server (WebSocket)
 - `components/P2PStatusIndicator.tsx` - Connection status
+- `docs/learning/epic04_feature_enhancement/PHASE8_LEARNING_NOTES.md` - Learning notes
 
 **Modified Files:**
 - `lib/sync/syncManager.ts` - Add P2P integration
@@ -586,6 +588,14 @@ Phase 8 is complete when:
 - Reduce server dependency
 - Better offline/local experience
 - Learning opportunity (WebRTC)
+
+---
+
+## Learning Notes
+
+Document unexpected errors, workarounds, and fixes encountered during implementation:
+
+**[Phase 8 Learning Notes →](./PHASE8_LEARNING_NOTES.md)**
 
 ---
 

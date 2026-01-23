@@ -484,8 +484,9 @@ interface UserPreferences {
 | 23 | Write Maestro test for dashboard | ~1 hour | Mirror Playwright test for mobile |
 | 24 | Run full test suites | ~20 min | Unit + Playwright + Maestro, verify no regressions |
 | 25 | Run quality checks and compare | ~30 min | Compare to baseline; create remediation plan if worse |
+| 26 | Document learning notes | ~30 min | Capture unexpected errors, workarounds, fixes |
 
-**Total Estimated Effort:** ~32 hours (including unit + Playwright + Maestro tests + quality checks)
+**Total Estimated Effort:** ~32.5 hours (including unit + Playwright + Maestro tests + quality checks)
 
 ---
 
@@ -546,6 +547,7 @@ interface UserPreferences {
 - `components/FamilyHistoryList.tsx` - Family meal history
 - `components/FamilyDaySummary.tsx` - Who ate what today
 - `components/PrivacyToggle.tsx` - Visibility selector
+- `docs/learning/epic04_feature_enhancement/PHASE5_LEARNING_NOTES.md` - Learning notes
 
 **Modified Files:**
 - `lib/database/migrations.ts` - Add columns
@@ -569,6 +571,14 @@ Phase 5 is complete when:
 - [ ] Personal meals stay private
 - [ ] Default visibility preference works
 - [ ] All tests pass
+
+---
+
+## Learning Notes
+
+Document unexpected errors, workarounds, and fixes encountered during implementation:
+
+**[Phase 5 Learning Notes →](./PHASE5_LEARNING_NOTES.md)**
 
 ---
 

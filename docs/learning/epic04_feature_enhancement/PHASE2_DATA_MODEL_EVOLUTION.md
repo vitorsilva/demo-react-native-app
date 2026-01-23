@@ -438,8 +438,9 @@ function formatMealDisplay(meal: MealLog, components: MealComponent[], ingredien
 | 21 | Write Maestro test for prep management | ~1 hour | Mirror Playwright test for mobile |
 | 22 | Run full test suites | ~20 min | Unit + Playwright + Maestro, verify no regressions |
 | 23 | Run quality checks and compare | ~30 min | Compare to baseline; create remediation plan if worse |
+| 24 | Document learning notes | ~30 min | Capture unexpected errors, workarounds, fixes |
 
-**Total Estimated Effort:** ~29 hours (including unit + Playwright + Maestro tests + quality checks)
+**Total Estimated Effort:** ~29.5 hours (including unit + Playwright + Maestro tests + quality checks)
 
 ---
 
@@ -480,6 +481,7 @@ function formatMealDisplay(meal: MealLog, components: MealComponent[], ingredien
 - `components/PreparationMethodPicker.tsx`
 - `components/MealNameInput.tsx`
 - `components/MealComponentRow.tsx`
+- `docs/learning/epic04_feature_enhancement/PHASE2_LEARNING_NOTES.md` - Learning notes
 
 **Modified Files:**
 - `lib/database/migrations.ts` - New migration
@@ -504,6 +506,14 @@ Phase 2 is complete when:
 - [ ] Named meals display their name, unnamed show components
 - [ ] Existing meals continue to work
 - [ ] All tests pass
+
+---
+
+## Learning Notes
+
+Document unexpected errors, workarounds, and fixes encountered during implementation:
+
+**[Phase 2 Learning Notes →](./PHASE2_LEARNING_NOTES.md)**
 
 ---
 

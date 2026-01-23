@@ -633,8 +633,9 @@ async function sendProposalNotification(
 | 23 | Write unit tests for proposal sync | ~1 hour | Test sync payload |
 | 24 | Run full test suites | ~20 min | Unit + Playwright + Maestro, verify no regressions |
 | 25 | Run quality checks and compare | ~30 min | Compare to baseline; create remediation plan if worse |
+| 26 | Document learning notes | ~30 min | Capture unexpected errors, workarounds, fixes |
 
-**Total Estimated Effort:** ~43 hours (including unit + Playwright + Maestro tests + quality checks)
+**Total Estimated Effort:** ~43.5 hours (including unit + Playwright + Maestro tests + quality checks)
 
 ---
 
@@ -665,6 +666,7 @@ async function sendProposalNotification(
 - `components/VotingButtons.tsx` - Yes/No buttons
 - `components/CreateProposalModal.tsx` - New proposal flow
 - `lib/notifications/proposalNotifications.ts` - Notification helpers
+- `docs/learning/epic04_feature_enhancement/PHASE7_LEARNING_NOTES.md` - Learning notes
 
 **Modified Files:**
 - `lib/database/migrations.ts` - New tables
@@ -686,6 +688,14 @@ Phase 7 is complete when:
 - [ ] Push notifications work
 - [ ] Proposals sync across devices
 - [ ] All tests pass
+
+---
+
+## Learning Notes
+
+Document unexpected errors, workarounds, and fixes encountered during implementation:
+
+**[Phase 7 Learning Notes →](./PHASE7_LEARNING_NOTES.md)**
 
 ---
 

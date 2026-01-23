@@ -510,8 +510,9 @@ async function trackChange(
 | 23 | Run full test suites | ~20 min | Unit + Playwright + Maestro, verify no regressions |
 | 24 | Run quality checks and compare | ~30 min | Compare to baseline; create remediation plan if worse |
 | 25 | Integration testing with 2+ devices | ~4 hours | Real device sync verification |
+| 26 | Document learning notes | ~30 min | Capture unexpected errors, workarounds, fixes |
 
-**Total Estimated Effort:** ~52 hours (including unit + Playwright + Maestro tests + quality checks)
+**Total Estimated Effort:** ~52.5 hours (including unit + Playwright + Maestro tests + quality checks)
 
 ---
 
@@ -550,6 +551,7 @@ async function trackChange(
 - `lib/sync/changeTracker.ts` - Change tracking
 - `lib/sync/api.ts` - Server API client
 - `components/SyncStatusIndicator.tsx` - Status UI
+- `docs/learning/epic04_feature_enhancement/PHASE6_LEARNING_NOTES.md` - Learning notes
 
 **Modified Files:**
 - `lib/database/migrations.ts` - sync_queue table
@@ -568,6 +570,14 @@ Phase 6 is complete when:
 - [ ] Sync status visible to user
 - [ ] Offline changes sync when online
 - [ ] All tests pass
+
+---
+
+## Learning Notes
+
+Document unexpected errors, workarounds, and fixes encountered during implementation:
+
+**[Phase 6 Learning Notes →](./PHASE6_LEARNING_NOTES.md)**
 
 ---
 

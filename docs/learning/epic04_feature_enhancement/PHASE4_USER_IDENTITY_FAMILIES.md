@@ -628,8 +628,9 @@ async function promoteToAdmin(familyId: string, userId: string): Promise<void> {
 | 31 | Write Maestro test for family switching | ~1 hour | Mirror Playwright test for mobile |
 | 32 | Run full test suites | ~20 min | Unit + Playwright + Maestro, verify no regressions |
 | 33 | Run quality checks and compare | ~30 min | Compare to baseline; create remediation plan if worse |
+| 34 | Document learning notes | ~30 min | Capture unexpected errors, workarounds, fixes |
 
-**Total Estimated Effort:** ~49 hours (including unit + Playwright + Maestro tests + quality checks)
+**Total Estimated Effort:** ~49.5 hours (including unit + Playwright + Maestro tests + quality checks)
 
 ---
 
@@ -662,6 +663,7 @@ async function promoteToAdmin(familyId: string, userId: string): Promise<void> {
 - `components/QRCodeDisplay.tsx` - QR code component
 - `components/JoinFamilyModal.tsx` - Join flow
 - `lib/crypto/keys.ts` - Key generation utilities
+- `docs/learning/epic04_feature_enhancement/PHASE4_LEARNING_NOTES.md` - Learning notes
 
 **Modified Files:**
 - `lib/database/migrations.ts` - New tables
@@ -703,6 +705,14 @@ Phase 4 is complete when:
 - [ ] Users can switch between families
 - [ ] Admins can manage members
 - [ ] All tests pass
+
+---
+
+## Learning Notes
+
+Document unexpected errors, workarounds, and fixes encountered during implementation:
+
+**[Phase 4 Learning Notes →](./PHASE4_LEARNING_NOTES.md)**
 
 ---
 
