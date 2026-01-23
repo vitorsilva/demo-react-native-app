@@ -100,7 +100,8 @@
       "Bash(timeout:*)",
       "Bash(npm run security:scan:*)",
       "Bash(nslookup:*)",
-      "Bash(npm run deploy:landing:*)"
+      "Bash(npm run deploy:landing:*)",
+      "Bash(gh pr:*)"
     ],
     "deny": [],
     "ask": []

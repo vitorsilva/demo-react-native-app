@@ -21,7 +21,7 @@ for ((i=1; i<=ITERATIONS; i++)); do
       - Append learning notes with errors / problems / fixes / workarounds to @docs\learning\epic04_feature_enhancement\features\FEATURE_1.1_FAVORITES_LEARNING_NOTES.md
       - Append a summary of what you did to @docs\learning\epic04_feature_enhancement\features\FEATURE_1.1_progress.md.
       - Commit the changes with a clear message.
-    7. If all tasks in FEATURE_1.1_FAVORITES.md are done, output exactly: <promise>COMPLETE</promise>  
+    7. Only after ALL tasks in FEATURE_1.1_FAVORITES.md are marked done, output exactly: <promise>COMPLETE</promise>  
   " 2>&1 | tee -a last_output.log
 
   # Stop the loop if Claude says it's finished
