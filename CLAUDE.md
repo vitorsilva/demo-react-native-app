@@ -19,10 +19,10 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - Expo-managed workflow with React Native 0.81.4
 - TypeScript-based
 - File-based routing with Expo Router
-- Full observability stack (OpenTelemetry, Jaeger, Prometheus, Sentry)
+- OpenTelemetry observability (custom backend export)
 - Zustand for global state management
 - SQLite for local data persistence (with cross-platform adapters)
-- 101+ unit tests, 12 E2E tests
+- 220 unit tests, 23 E2E tests
 
 ## Finding Current Session Information
 
@@ -98,8 +98,8 @@ npm start              # Start Expo dev server
 npm run web            # Web version (sql.js)
 
 # Testing
-npm test               # Unit tests (101+)
-npm run test:e2e       # E2E tests (12)
+npm test               # Unit tests (220)
+npm run test:e2e       # E2E tests (23)
 
 # Code Quality
 npm run lint           # ESLint
@@ -138,8 +138,8 @@ Store in `lib/store/index.ts` with:
 
 ## Testing
 
-- **Unit tests:** 101+ tests (Jest)
-- **E2E tests:** 12 tests (Playwright)
+- **Unit tests:** 220 tests (Jest)
+- **E2E tests:** 23 tests (Playwright)
 - Coverage: Database, business logic, store, UI flows
 
 ## Session End Protocol

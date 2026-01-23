@@ -3,8 +3,8 @@
 ## Overview
 
 SaborSpin has comprehensive test coverage:
-- **101+ unit tests** (Jest)
-- **12 E2E tests** (Playwright)
+- **220 unit tests** (Jest)
+- **23 E2E tests** (Playwright)
 
 ## Unit Tests (Jest)
 
@@ -111,8 +111,9 @@ npm run test:e2e:ui
 ```
 demo-react-native-app/
 └── e2e/
-    ├── meal-logging.spec.ts
-    ├── customization.spec.ts
+    ├── meal-logging.spec.ts    # Core meal flows
+    ├── i18n.spec.ts            # Language switching
+    ├── telemetry.spec.ts       # Observability
     └── screenshots/
         └── ...
 ```
