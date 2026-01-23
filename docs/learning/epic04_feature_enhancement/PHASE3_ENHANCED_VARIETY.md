@@ -495,3 +495,11 @@ Document unexpected errors, workarounds, and fixes encountered during implementa
 ## Reference
 
 See [Potential Enhancements - Ingredient Frequency Tracking](../../product_info/meals-randomizer-exploration.md#6-ingredient-frequency-tracking) and [Pairing Rules](../../product_info/meals-randomizer-exploration.md#7-pairing-rules) in the exploration document.
+
+### Developer Guides
+
+- [Testing Guide](../../developer-guide/TESTING.md) - Unit testing patterns
+- [Maestro Testing](../../developer-guide/MAESTRO_TESTING.md) - Mobile E2E testing
+- [Architecture Rules](../../developer-guide/ARCHITECTURE_RULES.md) - Architecture testing
+- [Database Schema](../../architecture/DATABASE_SCHEMA.md) - Frequency tracking schema
+- [State Management](../../architecture/STATE_MANAGEMENT.md) - Zustand store patterns

@@ -719,3 +719,11 @@ Document unexpected errors, workarounds, and fixes encountered during implementa
 ## Reference
 
 See [Approach 2: Family Kitchen - Section 2.2](../../product_info/meals-randomizer-exploration.md#22-family-structure--roles) for family structure design.
+
+### Developer Guides
+
+- [Testing Guide](../../developer-guide/TESTING.md) - Unit testing patterns
+- [Maestro Testing](../../developer-guide/MAESTRO_TESTING.md) - Mobile E2E testing
+- [Architecture Rules](../../developer-guide/ARCHITECTURE_RULES.md) - Architecture testing
+- [Database Schema](../../architecture/DATABASE_SCHEMA.md) - User/family table design
+- [State Management](../../architecture/STATE_MANAGEMENT.md) - Family store patterns

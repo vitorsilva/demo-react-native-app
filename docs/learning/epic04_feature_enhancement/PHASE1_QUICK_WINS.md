@@ -505,3 +505,11 @@ Document unexpected errors, workarounds, and fixes encountered during implementa
 ## Reference
 
 See [Potential Enhancements](../../product_info/meals-randomizer-exploration.md#potential-enhancements-post-v1) in the exploration document for original feature descriptions.
+
+### Developer Guides
+
+- [Testing Guide](../../developer-guide/TESTING.md) - Unit testing patterns
+- [Maestro Testing](../../developer-guide/MAESTRO_TESTING.md) - Mobile E2E testing
+- [Architecture Rules](../../developer-guide/ARCHITECTURE_RULES.md) - Architecture testing
+- [Database Schema](../../architecture/DATABASE_SCHEMA.md) - Schema design patterns
+- [State Management](../../architecture/STATE_MANAGEMENT.md) - Zustand store patterns

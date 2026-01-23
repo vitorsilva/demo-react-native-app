@@ -602,3 +602,11 @@ Document unexpected errors, workarounds, and fixes encountered during implementa
 ## Reference
 
 See [Approach 2: Family Kitchen - Section 2.4](../../product_info/meals-randomizer-exploration.md#24-technical-architecture-pear-lite-hybrid) for P2P architecture design.
+
+### Developer Guides
+
+- [Testing Guide](../../developer-guide/TESTING.md) - Unit testing patterns
+- [Maestro Testing](../../developer-guide/MAESTRO_TESTING.md) - Mobile E2E testing
+- [Architecture Rules](../../developer-guide/ARCHITECTURE_RULES.md) - Architecture testing
+- [Telemetry Guide](../../developer-guide/TELEMETRY.md) - P2P observability
+- [Troubleshooting](../../developer-guide/TROUBLESHOOTING.md) - Network/WebRTC issues
