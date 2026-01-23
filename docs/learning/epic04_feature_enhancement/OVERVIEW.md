@@ -1,6 +1,6 @@
 # Epic 4: Feature Enhancement & Family Sharing
 
-**Status:** 🔄 PLANNING
+**Status:** 🚀 IN PROGRESS (Phase 0 Complete)
 
 ## What This Epic Is About
 
@@ -41,14 +41,14 @@ Epic 3 established the production-ready foundation. Epic 4 enhances the app with
 ### Phase 0: Landing Page Deployment ✅
 **Goal:** Deploy saborspin.com landing page to production
 
-**Status:** Ready to implement
+**Status:** ✅ COMPLETE (2026-01-23)
 
-- DNS configuration
-- SSL certificate setup
-- Landing page deployment
-- APK hosting setup
+- ✅ DNS configuration (dominios.pt)
+- ✅ SSL certificate (AutoSSL/Let's Encrypt)
+- ✅ Landing page deployed (https://saborspin.com/)
+- ✅ APK hosting (https://saborspin.com/downloads/saborspin-latest.apk)
 
-**[Phase 0 Details →](./PHASE0_LANDING_DEPLOYMENT.md)**
+**[Phase 0 Details →](./PHASE0_LANDING_DEPLOYMENT.md)** | **[Learning Notes →](./PHASE0_LEARNING_NOTES.md)**
 
 ---
 

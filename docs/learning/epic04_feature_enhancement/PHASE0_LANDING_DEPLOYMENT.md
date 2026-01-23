@@ -1,9 +1,26 @@
 # Phase 0: Landing Page Deployment
 
 **Epic:** 4 - Feature Enhancement
-**Status:** Not Started
-**Estimated Time:** 2-4 hours
+**Status:** ✅ Complete
+**Started:** 2026-01-23
+**Completed:** 2026-01-23
+**Actual Time:** ~1 hour
 **Prerequisites:** cPanel access (mdemaria account), domain ownership (saborspin.com)
+
+---
+
+## Progress Checklist
+
+- [x] **Step 0.1:** DNS Configuration - A records created at dominios.pt
+- [x] **Step 0.2:** Addon Domain - saborspin.com added in cPanel (document root: /home/mdemaria/saborspin.com)
+- [x] **Step 0.3:** FTP User - Created `saborspin@saborspin.com` restricted to domain folder
+- [x] **Step 0.4:** SSL Certificate - AutoSSL validated (expires 2026-04-23, auto-renews)
+- [x] **Step 0.5:** Configure .env - FTP credentials configured
+- [x] **Step 0.6:** Local Preview - Verified at localhost:3333
+- [x] **Step 0.7:** Deploy Landing Page - Successfully deployed via FTP
+- [x] **Step 0.8:** Create .htaccess - Added security headers, caching, compression
+- [x] **Step 0.9:** APK Hosting - Uploaded saborspin-latest.apk via cPanel File Manager
+- [x] **Step 0.10:** Post-Deployment Verification - All checks passed
 
 ---
 
