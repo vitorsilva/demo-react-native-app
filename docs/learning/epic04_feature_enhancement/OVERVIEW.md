@@ -209,6 +209,22 @@ Epic 3 established the production-ready foundation. Epic 4 enhances the app with
 
 ---
 
+### Phase 10: Landing Page Update
+**Goal:** Update landing page to showcase all Epic 04 features
+
+**Features:**
+- Screenshot capture for new features (Playwright)
+- Image processing and optimization (sharp)
+- Landing page HTML updates (family section, feature cards)
+- Meta tags and SEO updates
+- Deployment to saborspin.com
+
+**Dependencies:** Phase 9 (all features complete)
+
+**[Phase 10 Details →](./PHASE10_LANDING_PAGE_UPDATE.md)**
+
+---
+
 ## Phase Dependency Graph
 
 ```
@@ -232,6 +248,8 @@ Phase 6 (HTTP Sync) ◄───────────────────
 Phase 7 (Proposals)   Phase 8 (P2P) [Optional]            │    │
                                                           ↓    ↓
                                           Phase 9 (Lunch/Dinner Expansion)
+                                                          ↓
+                                          Phase 10 (Landing Page Update)
 ```
 
 ---
@@ -251,7 +269,8 @@ Phase 7 (Proposals)   Phase 8 (P2P) [Optional]            │    │
 | 7 | Proposals & Voting | ~43.5 hours |
 | 8 | P2P Sync (Optional) | ~43.5 hours |
 | 9 | Lunch/Dinner Expansion | ~55.5 hours |
-| | **Total** | **~379 hours** |
+| 10 | Landing Page Update | ~8 hours |
+| | **Total** | **~387 hours** |
 
 **Note:** Each phase includes:
 - Running existing test suites at the start (unit + Playwright E2E + Maestro for baseline validation)
@@ -281,6 +300,7 @@ Phase 7 (Proposals)   Phase 8 (P2P) [Optional]            │    │
 - [ ] Phase 7: Families can propose and vote on meals
 - [ ] Phase 8: (Optional) P2P sync works on local network
 - [ ] Phase 9: Lunch/dinner meals fully supported
+- [ ] Phase 10: Landing page updated with all Epic 04 features
 
 **Quality:**
 - [ ] All tests pass (unit + E2E)
