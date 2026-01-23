@@ -1307,6 +1307,708 @@ Once breakfast/snack generator is validated:
 
 ---
 
+## Approach 2: Family Kitchen (Collaborative Meal Sharing)
+
+*Note: The content above represents "Approach 1" - the individual meal randomizer. This section explores expanding to family/household collaboration.*
+
+### 2.1 Vision: Beyond Individual → Family Coordination
+
+**The expanded problem:**
+- Individual: "What should I have for breakfast?" ✅ (Approach 1 solves this)
+- Family: "What should WE have for dinner?" 🆕
+- Coordination: "Who's cooking tonight? What ingredients do we have?"
+
+**Core insight:** Families don't just need individual variety - they need:
+1. **Shared visibility** - what did everyone eat today?
+2. **Coordinated planning** - "let's have tacos tomorrow"
+3. **Collective favorites** - meals the whole family loves
+4. **Resource awareness** - ingredient inventory at home
+
+**Target use case:** Households sharing a kitchen (families, couples, roommates)
+
+---
+
+### 2.2 Family Structure & Roles
+
+**Connection Methods (all supported):**
+
+| Method | Use Case | Flow |
+|--------|----------|------|
+| QR Code | In-person pairing | Admin shows QR → member scans → joined |
+| Invite Link | Remote family | Admin shares link → member clicks → joined |
+| Family Code | Simple sharing | Admin reads code → member enters → joined |
+
+**Roles:**
+- **Admin (1-2 per family)**: Can invite/remove members, manage family settings
+- **Member**: Can contribute meals, vote on proposals, see shared data
+
+**Multi-family Support:**
+- User can belong to multiple families (e.g., household + extended family group)
+- Each family has separate meal logs and preferences
+- User switches context in app (family selector)
+
+---
+
+### 2.3 What Gets Shared
+
+| Data Type | Individual | Family Shared |
+|-----------|------------|---------------|
+| Meal logs | "I had X" (private optional) | "Family member Y had Z" |
+| Ingredients | My personal inventory | Shared kitchen inventory |
+| Favorites | My starred meals | Family starred meals |
+| Proposals | - | "Let's have this tomorrow" + voting |
+| History | My history | Family meal timeline |
+
+**Privacy Controls:**
+- Each meal can be: `personal` (only me) or `family` (shared)
+- Default visibility configurable per user
+- Personal meals don't appear in family history
+
+---
+
+### 2.4 Technical Architecture: "Pear Lite" Hybrid
+
+Based on decentralization research (Saberloop patterns), adapted for React Native's capabilities:
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                    FAMILY MEMBER DEVICES                     │
+│  ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌──────────┐    │
+│  │ Device A │  │ Device B │  │ Device C │  │ Device D │    │
+│  │ (Admin)  │  │ (Member) │  │ (Member) │  │ (Admin)  │    │
+│  └────┬─────┘  └────┬─────┘  └────┬─────┘  └────┬─────┘    │
+│       │             │             │             │           │
+│       └─────────────┴──────┬──────┴─────────────┘           │
+│                            │                                 │
+│              ┌─────────────▼─────────────┐                  │
+│              │   P2P SYNC (WebRTC)       │                  │
+│              │   - Direct device-to-device│                  │
+│              │   - Works on same network  │                  │
+│              │   - No server needed       │                  │
+│              └─────────────┬─────────────┘                  │
+│                            │                                 │
+│                   (if P2P fails)                            │
+│                            │                                 │
+│              ┌─────────────▼─────────────┐                  │
+│              │   HTTP FALLBACK (VPS)     │                  │
+│              │   - Small coordination     │                  │
+│              │   - Stores encrypted blobs │                  │
+│              │   - Discovery & signaling  │                  │
+│              └───────────────────────────┘                  │
+└─────────────────────────────────────────────────────────────┘
+```
+
+**Key Principles:**
+
+1. **Local-first**: All data lives in device SQLite, sync is secondary
+2. **P2P preferred**: Try direct sync between family devices first
+3. **HTTP fallback**: Small VPS for when P2P unavailable (devices offline)
+4. **Sync on demand**: Not always-on; sync when app opens or user requests
+5. **Digital signatures**: Admin signs family data for trust verification
+
+---
+
+### 2.5 React Native Advantages over PWA
+
+| Capability | PWA | React Native (SaborSpin) |
+|------------|-----|--------------------------|
+| Background sync | Limited by browser | Native background fetch |
+| Push notifications | Web Push (limited) | Native push (full control) |
+| P2P connections | WebRTC only | WebRTC + native libraries |
+| Crypto operations | WebCrypto | Native crypto (faster) |
+| Offline storage | IndexedDB (limited) | SQLite (unlimited) |
+| App lifecycle | Tab must be open | Runs in background |
+
+**React Native libraries to consider:**
+- `react-native-webrtc` - P2P connections
+- `expo-crypto` - Already using for UUIDs, can do signatures
+- `@react-native-async-storage/async-storage` - Already using for queue
+- `expo-background-fetch` - Periodic sync
+- `expo-notifications` - Push for proposals
+
+---
+
+### 2.6 Data Model Extensions
+
+**Existing infrastructure we can leverage:**
+- SQLite with cross-platform adapter pattern ✅
+- UUID-based IDs (no conflicts in distributed systems) ✅
+- Zustand state management (async-ready) ✅
+- Timestamps on all records (conflict detection) ✅
+- AsyncStorage integration ✅
+- TypeScript for safe data transformations ✅
+
+**Gaps to fill:**
+- No user/account system
+- No network layer (HTTP client)
+- No multi-device sync
+- No conflict resolution
+- No data ownership model
+
+**New tables needed:**
+
+```sql
+-- User identity (local device)
+CREATE TABLE users (
+  id TEXT PRIMARY KEY,           -- UUID
+  display_name TEXT,
+  public_key TEXT,               -- For signature verification
+  private_key_encrypted TEXT,    -- Encrypted, stays on device
+  created_at TEXT
+);
+
+-- Families
+CREATE TABLE families (
+  id TEXT PRIMARY KEY,           -- Content-addressed hash
+  name TEXT,
+  created_by TEXT,               -- user_id
+  invite_code TEXT,              -- For joining
+  created_at TEXT
+);
+
+-- Family membership
+CREATE TABLE family_members (
+  family_id TEXT,
+  user_id TEXT,
+  role TEXT,                     -- 'admin' | 'member'
+  joined_at TEXT,
+  PRIMARY KEY (family_id, user_id)
+);
+
+-- Extended meal_logs (add columns to existing table)
+-- meal_logs (
+--   ...existing columns...,
+--   user_id TEXT,              -- Who logged this
+--   family_id TEXT,            -- NULL = personal only
+--   visibility TEXT,           -- 'personal' | 'family'
+--   signature TEXT             -- Admin signature for family content
+-- );
+
+-- Meal proposals
+CREATE TABLE meal_proposals (
+  id TEXT PRIMARY KEY,
+  family_id TEXT,
+  proposed_by TEXT,              -- user_id
+  meal_description TEXT,
+  proposed_date TEXT,
+  status TEXT,                   -- 'open' | 'accepted' | 'rejected'
+  created_at TEXT
+);
+
+-- Votes on proposals
+CREATE TABLE proposal_votes (
+  proposal_id TEXT,
+  user_id TEXT,
+  vote TEXT,                     -- 'yes' | 'no'
+  voted_at TEXT,
+  PRIMARY KEY (proposal_id, user_id)
+);
+
+-- Sync tracking
+CREATE TABLE sync_log (
+  id TEXT PRIMARY KEY,
+  family_id TEXT,
+  last_sync_at TEXT,
+  sync_type TEXT,                -- 'p2p' | 'http'
+  records_synced INTEGER
+);
+```
+
+---
+
+### 2.7 User Flows
+
+**Flow 1: Create Family**
+1. User taps "Create Family"
+2. Enters family name (e.g., "Silva Household")
+3. App generates family ID, invite code, user becomes admin
+4. Shows QR code + invite link + code for sharing
+
+**Flow 2: Join Family**
+1. User receives invite (QR/link/code)
+2. Scans/clicks/enters → app validates
+3. User added as member
+4. Initial sync downloads family data
+
+**Flow 3: Propose Meal**
+1. User generates suggestions (existing flow)
+2. Instead of logging, taps "Propose to Family"
+3. Selects date, adds optional note
+4. Family members get notification
+5. Members vote yes/no
+6. After threshold/time, proposal accepted or declined
+
+**Flow 4: Log Family Meal**
+1. User logs meal (existing flow)
+2. Toggle: "Share with family?"
+3. If yes, meal appears in family history
+4. Other members see "[Name] had [meal] for [type]"
+
+**Flow 5: Sync on App Open**
+1. App opens, checks last sync time
+2. If >5 min ago, attempts sync:
+   - Try P2P first (discover family devices on network)
+   - If P2P fails, fall back to HTTP server
+3. Merge incoming changes (last-write-wins or conflict UI)
+4. Push local changes to others
+
+---
+
+### 2.8 Server Components (VPS)
+
+Minimal server role (could share VPS with telemetry):
+
+| Endpoint | Purpose |
+|----------|---------|
+| `POST /families/register` | Store family metadata for discovery |
+| `GET /families/{code}` | Look up family by invite code |
+| `POST /sync/{family_id}` | Upload encrypted family data blob |
+| `GET /sync/{family_id}` | Download family data blob |
+| `POST /signal` | WebRTC signaling for P2P connection setup |
+
+**Privacy note:** Server stores encrypted blobs only. Cannot read meal data.
+
+---
+
+### 2.9 Digital Signatures for Trust
+
+Following decentralized curation patterns:
+
+1. Family admin has a key pair (public/private)
+2. When admin approves family content, they sign it
+3. Other devices verify signature before accepting
+4. Prevents tampering and fake family data
+
+```javascript
+// Signing (admin device)
+const signature = await Crypto.sign(
+  privateKey,
+  JSON.stringify(mealLog)
+);
+mealLog.signature = signature;
+
+// Verification (any device)
+const isValid = await Crypto.verify(
+  adminPublicKey,
+  mealLog.signature,
+  JSON.stringify(mealLog)
+);
+```
+
+---
+
+### 2.10 Implementation Phases (Future Reference)
+
+**Phase A: User Identity & Families (Foundation)**
+- Add user table and local identity
+- Family creation and joining
+- Basic family UI
+
+**Phase B: Shared Meal Logs**
+- Extend meal_logs with user_id, family_id, visibility
+- Family meal history view
+- Privacy toggle on logging
+
+**Phase C: HTTP Sync**
+- VPS endpoints for family sync
+- Encrypted blob storage
+- Sync on app open
+
+**Phase D: P2P Sync**
+- WebRTC integration
+- Local network discovery
+- P2P-first, HTTP-fallback logic
+
+**Phase E: Proposals & Voting**
+- Proposal creation flow
+- Voting mechanism
+- Push notifications
+
+---
+
+### 2.11 Key Design Decisions Summary
+
+| Decision | Choice | Rationale |
+|----------|--------|-----------|
+| Sync model | On-demand (not always-on) | Simpler, battery-friendly, sufficient for meal planning |
+| Server role | Coordination only | Privacy-preserving, encrypted blobs, minimal infrastructure |
+| Connection methods | QR + Link + Code | Cover all use cases (in-person, remote, simple) |
+| Family structure | 1-2 admins + peers | Balance control with simplicity |
+| Privacy | Per-meal visibility toggle | Respect individual autonomy within family context |
+| Multi-family | Supported | Real-world need (household vs extended family) |
+
+---
+
+## Data Model Evolution: From Ingredients to Meals
+
+### The Complexity Gap
+
+**Current model (breakfast/snacks)** works with simple ingredient combinations:
+- `milk + bread + jam`
+- Ingredients ARE the meal
+- No preparation method needed
+- Easy to track variety at ingredient level
+
+**Future model (lunch/dinner)** introduces complexity:
+- `roasted potatoes + fried chicken` → ingredient + HOW it's cooked
+- Often has a friendly name: "Mom's chicken"
+- Sometimes unnamed: just described by components
+- Preparation method affects variety (fried chicken ≠ grilled chicken)
+
+### The Core Question
+
+When someone logs "Mom's chicken", what are we actually tracking?
+- The **name** (for display and family sharing)?
+- The **components** (for variety enforcement)?
+- Both?
+
+### Modeling Approaches
+
+#### Approach A: Add Preparation Method to Ingredients
+
+Treat "fried chicken" as a single prepared ingredient.
+
+```
+prepared_ingredients (
+  id TEXT PRIMARY KEY,
+  base_ingredient TEXT,      -- "chicken"
+  preparation_method TEXT,   -- "fried", "grilled", "roasted", "raw"
+  display_name TEXT          -- "fried chicken"
+)
+```
+
+**Meal = collection of prepared ingredients**
+
+Example: `["fried chicken", "roasted potatoes", "salad (raw)"]`
+
+| Pros | Cons |
+|------|------|
+| Simple extension of current model | Explosion of combinations (chicken × 5 prep methods = 5 entries) |
+| Easy to implement | Harder to answer "when did I last have chicken?" (any prep) |
+| Clear variety tracking | Ingredient list grows large |
+
+---
+
+#### Approach B: Two-Tier System (Ingredients + Dishes)
+
+Separate ingredients from named dishes/recipes.
+
+```
+ingredients (
+  id, name, category
+)
+
+preparation_methods (
+  id, name   -- fried, grilled, roasted, boiled, raw, baked
+)
+
+dishes (
+  id TEXT PRIMARY KEY,
+  name TEXT,                 -- "Mom's chicken"
+  description TEXT
+)
+
+dish_components (
+  dish_id TEXT,
+  ingredient_id TEXT,
+  preparation_method_id TEXT,
+  PRIMARY KEY (dish_id, ingredient_id)
+)
+```
+
+**Meal = either a dish reference OR ad-hoc components**
+
+| Pros | Cons |
+|------|------|
+| Clean separation of concerns | More complex to build and maintain |
+| Named dishes are first-class | Two ways to log a meal (dish vs components) |
+| Can query "all dishes with chicken" | Requires upfront dish creation |
+| Good for family sharing ("Mom's chicken") | Overhead for simple meals |
+
+---
+
+#### Approach C: Flexible Meals (Recommended)
+
+A meal has optional name + required components. Best of both worlds.
+
+```
+meals (
+  id TEXT PRIMARY KEY,
+  name TEXT NULL,            -- optional: "Mom's chicken"
+  created_at TEXT
+)
+
+meal_components (
+  meal_id TEXT,
+  ingredient TEXT,           -- "chicken"
+  preparation TEXT,          -- "fried"
+  PRIMARY KEY (meal_id, ingredient, preparation)
+)
+```
+
+**Example meal:**
+```json
+{
+  "id": "meal-123",
+  "name": "Mom's chicken",      // optional friendly name
+  "components": [
+    { "ingredient": "chicken", "preparation": "fried" },
+    { "ingredient": "potatoes", "preparation": "roasted" },
+    { "ingredient": "salad", "preparation": "raw" }
+  ]
+}
+```
+
+**Display logic:**
+- If `name` exists → show "Mom's chicken"
+- If `name` is null → show "fried chicken + roasted potatoes + salad"
+
+**Variety tracking:**
+- Track at **component level**: "haven't had fried chicken in 3 days"
+- Can also track at **ingredient level**: "haven't had any chicken in 5 days"
+- Display at **meal name level** when available for UX
+
+| Pros | Cons |
+|------|------|
+| Flexible: works for breakfast AND dinner | Slightly more complex than Approach A |
+| Optional naming reduces friction | Need good UX for "name this meal?" flow |
+| Variety tracking at multiple levels | Components need consistent naming |
+| Easy family sharing with meaningful names | - |
+| Backward compatible with current model | - |
+
+---
+
+#### Approach D: Free Text Descriptions
+
+Just use text descriptions, no structure.
+
+```
+meals (
+  id TEXT PRIMARY KEY,
+  description TEXT,   -- "Mom's chicken (fried chicken + roasted potatoes)"
+  meal_type TEXT,
+  logged_at TEXT
+)
+```
+
+| Pros | Cons |
+|------|------|
+| Simplest to implement | Loses structure for variety tracking |
+| Maximum flexibility | Can't query "when did I last have chicken?" |
+| No data model changes needed | No ingredient-level analysis |
+| Good for quick logging | Family sharing less meaningful |
+
+---
+
+### Recommendation: Approach C (Flexible Meals)
+
+**Why Approach C is most interesting:**
+
+1. **Scales naturally**: Works for simple breakfast (just components) AND complex dinner (named + components)
+
+2. **Variety tracking at multiple levels**:
+   - Component level: "fried chicken" vs "grilled chicken" are different
+   - Ingredient level: "any chicken" for broader rotation
+   - Meal level: "Mom's chicken" as a unit
+
+3. **Family sharing benefits**:
+   - Share "Mom's chicken" (meaningful name)
+   - Others see what's actually in it (components)
+   - Can propose meals by name OR by description
+
+4. **Backward compatible**:
+   - Current breakfast logging = meal with no name, just components
+   - No migration needed, just enhancement
+
+5. **Progressive complexity**:
+   - V1: Log components only (current behavior)
+   - V2: Add optional naming
+   - V3: Suggest names based on common combinations
+
+### Migration Path
+
+**Phase 1 (Current):** Ingredients only
+```
+meal_logs: { ingredients: ["milk", "bread", "jam"] }
+```
+
+**Phase 2:** Add preparation method
+```
+meal_logs: {
+  components: [
+    { ingredient: "milk", preparation: null },
+    { ingredient: "bread", preparation: "toasted" }
+  ]
+}
+```
+
+**Phase 3:** Add optional naming
+```
+meal_logs: {
+  name: "Mom's chicken",  // optional
+  components: [
+    { ingredient: "chicken", preparation: "fried" },
+    { ingredient: "potatoes", preparation: "roasted" }
+  ]
+}
+```
+
+### Design Decisions
+
+| Question | Decision | Rationale |
+|----------|----------|-----------|
+| **Preparation method vocabulary** | Hybrid: predefined list + custom additions | Predefined ensures consistency for common methods (fried, grilled, roasted, boiled, baked, raw, steamed, sautéed), custom allows flexibility for edge cases |
+| **When to prompt for naming** | Never auto-prompt (user-initiated only) | Least friction. User taps "name this meal" when they want. No interruptions |
+| **Ingredient granularity** | Fine-grained (chicken breast ≠ chicken thigh) | More precise variety tracking. User controls how specific they want to be |
+| **Preparation inheritance** | Strict - named meal must match exactly | "Mom's chicken" = fried chicken + roasted potatoes, always. If prep changes, log as different meal |
+| **AI role in naming** | No AI for naming | Keep it simple. User names things themselves or leaves unnamed |
+
+**Preparation methods (initial predefined list):**
+- fried, grilled, roasted, boiled, baked, raw, steamed, sautéed, stewed, smoked, poached, braised
+
+---
+
+## Potential Enhancements (Post-V1)
+
+Ideas from the original exploration that weren't in V1 scope but could be added to improve the experience.
+
+### Low-Hanging Fruit
+
+#### 1. Favorite Combinations
+Mark certain combinations as favorites to prioritize them in suggestions.
+
+- User taps ⭐ on a combination after logging
+- Favorites appear more frequently in suggestions
+- Separate "Favorites" view to see all starred combos
+- Still respects cooldown (favorite eaten yesterday won't appear today)
+
+#### 2. "New!" Badge
+Visual indicator on combinations the user hasn't tried recently (or ever).
+
+- Badge appears on suggestion cards
+- Encourages discovery and experimentation
+- "New!" = never logged OR not logged in 7+ days
+- Helps users break out of repetitive patterns
+
+#### 3. Variety Color Coding
+Color-coded visual indicators showing recency of each suggestion.
+
+| Color | Meaning |
+|-------|---------|
+| 🟢 Green | Haven't had in 3+ days (fresh choice) |
+| 🟡 Yellow | Had 1-2 days ago (recent) |
+| 🔴 Red | Had today (shouldn't appear, but visual fallback) |
+
+- Applied to suggestion cards
+- Quick visual scan to pick "freshest" option
+- Optional: can be toggled off in settings
+
+#### 4. Variety Stats
+Personalization stats showing user's variety patterns over time.
+
+**Examples:**
+- "You've tried 15 different breakfast combinations this month!"
+- "Your most common breakfast is milk + cereals (8 times)"
+- "You've used 12 of your 18 ingredients this week"
+- "Variety score: 78% (good!)"
+
+**Where to show:**
+- Home screen summary card
+- Dedicated "Stats" tab or section in History
+- Weekly summary notification (optional)
+
+#### 5. Haptic Feedback
+Subtle vibration feedback for key interactions.
+
+| Action | Haptic Type |
+|--------|-------------|
+| Select suggestion | Light tap |
+| Confirm meal logged | Success vibration |
+| Generate new ideas | Soft pulse |
+| Add to favorites | Medium tap |
+
+- Improves tactile feel of the app
+- Can be disabled in settings for accessibility
+
+#### 6. Ingredient Frequency Tracking
+Track how often individual ingredients are used, not just combinations.
+
+**Current:** Only tracks exact combination repetition
+**Enhanced:** Also tracks ingredient-level frequency
+
+**Benefits:**
+- "You've had milk 5 days in a row - try yogurt?"
+- Encourage rotation at ingredient level, not just combo level
+- Identify over-relied-on ingredients
+- Smarter suggestions that rotate base ingredients
+
+**Implementation:**
+- Add `ingredient_usage` table or aggregate from meal_logs
+- Variety scoring includes ingredient frequency penalty
+- Optional: "Ingredient rotation mode" that prioritizes unused ingredients
+
+---
+
+### Medium Effort
+
+#### 7. Pairing Rules
+Define which ingredients pair well together (or should be avoided).
+
+**Positive pairings (suggestions):**
+- milk → pairs well with: cereals, cookies
+- bread → pairs well with: butter, cheese, jam
+
+**Negative pairings (avoid):**
+- butter → avoid with: yogurt (maybe?)
+- milk → avoid with: cheese (same meal)
+
+**Implementation approaches:**
+1. **User-defined rules**: User marks "these go well" or "avoid together"
+2. **Learned from history**: System notices user never picks certain combos
+3. **Predefined cultural rules**: Portuguese breakfast conventions
+
+**V1 approach was:** Trust randomness, let user reject bad combos
+**Enhanced:** Use rules to filter before showing suggestions
+
+#### 8. Smooth Animations
+Polish the UX with meaningful animations.
+
+| Animation | Purpose |
+|-----------|---------|
+| Card slide-in | Suggestions load with staggered entrance |
+| Checkmark animation | Satisfying confirmation when meal logged |
+| Swipe to dismiss | Reject a suggestion with gesture |
+| Pull to refresh | Generate new suggestions |
+| Star burst | When adding to favorites |
+
+**Libraries:** React Native Reanimated, Lottie for complex animations
+
+#### 9. Preparation Details
+Track how ingredients are prepared (toast vs fresh, etc.) - *See "Data Model Evolution" section for full design.*
+
+This is already documented in the Data Model Evolution section with:
+- Approach C: Flexible Meals (recommended)
+- Hybrid preparation method list
+- Migration path from current model
+
+---
+
+### Implementation Priority Suggestion
+
+| Priority | Enhancement | Effort | Impact |
+|----------|-------------|--------|--------|
+| 1 | Favorite combinations | Low | High - users want to save what works |
+| 2 | Variety color coding | Low | Medium - quick visual feedback |
+| 3 | "New!" badge | Low | Medium - encourages exploration |
+| 4 | Ingredient frequency tracking | Medium | High - smarter variety |
+| 5 | Variety stats | Low | Medium - engagement/delight |
+| 6 | Haptic feedback | Low | Low - polish |
+| 7 | Pairing rules | Medium | Medium - better suggestions |
+| 8 | Smooth animations | Medium | Low - polish |
+| 9 | Preparation details | High | High - enables lunch/dinner |
+
+---
+
 ## Final Thoughts
 
 This idea has legs because:
