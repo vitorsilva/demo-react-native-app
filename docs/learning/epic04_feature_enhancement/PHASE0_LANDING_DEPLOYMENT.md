@@ -3,119 +3,257 @@
 **Epic:** 4 - Feature Enhancement
 **Status:** Not Started
 **Estimated Time:** 2-4 hours
-**Prerequisites:** VPS access, domain ownership (saborspin.com)
+**Prerequisites:** VPS access via cPanel, domain ownership (saborspin.com)
 
 ---
 
 ## Overview
 
-Deploy the SaborSpin landing page to production at saborspin.com. The landing page is already built and the deployment script exists - this phase focuses on infrastructure setup and execution.
+Deploy the SaborSpin landing page to production at saborspin.com. This follows the same model used for Saberloop (saberloop.com).
 
 **What already exists:**
 - Landing page: `landing/index.html` (complete, production-ready)
-- Deployment script: `scripts/deploy-landing.cjs` (FTP-based)
+- Deployment script: `scripts/deploy-landing.cjs` (FTP-based, same pattern as Saberloop)
 - npm scripts: `deploy:landing`, `preview:landing`
 - Images: `landing/images/` (icon, favicon, screenshots)
 
 **What needs to be done:**
-- Configure DNS to point to VPS
-- Set up SSL certificate (HTTPS)
-- Configure FTP credentials
-- Deploy landing page
-- Set up APK hosting (direct download)
-- Verify everything works
+1. Configure DNS at domain registrar (point to VPS)
+2. Add domain in cPanel (addon domain)
+3. Create FTP user in cPanel
+4. Set up SSL certificate via cPanel
+5. Configure `.env` with FTP credentials
+6. Deploy landing page
+7. Set up APK hosting
 
 ---
 
-## Infrastructure Requirements
+## Infrastructure (Same as Saberloop)
 
-### VPS Requirements
-- Apache or Nginx web server
-- PHP support (optional, for future backend)
-- FTP/SFTP access
-- SSL certificate support (Let's Encrypt)
-- cPanel or similar management (recommended)
-
-### Domain Requirements
-- saborspin.com registered and accessible
-- DNS management access
+```
+┌─────────────────────────────────────────────────────────────┐
+│                    VPS (cPanel)                              │
+├─────────────────────────────────────────────────────────────┤
+│                                                              │
+│  Domain: saberloop.com (existing)                           │
+│  └── /              Landing Page                            │
+│  └── /app           Frontend PWA                            │
+│  └── /party         Party Backend (PHP)                     │
+│  └── /telemetry     Telemetry (PHP)                         │
+│                                                              │
+│  Domain: saborspin.com (NEW)                                │
+│  └── /              Landing Page (this phase)               │
+│  └── /api           Backend API (Phase 3.5)                 │
+│  └── /downloads     APK hosting                             │
+│                                                              │
+│  MySQL: saberloop (existing), saborspin (Phase 3.5)         │
+│                                                              │
+└─────────────────────────────────────────────────────────────┘
+```
 
 ---
 
 ## Step-by-Step Plan
 
-### Step 0.1: DNS Configuration
+### Step 0.1: DNS Configuration at Domain Registrar
 
 **Goal:** Point saborspin.com to the VPS
 
+**Where:** Domain registrar where you bought saborspin.com (NOT cPanel)
+
 **Tasks:**
-1. Get VPS IP address from hosting provider
-2. Log into domain registrar DNS management
-3. Create/update DNS records:
-   ```
-   Type    Host    Value               TTL
-   A       @       YOUR_VPS_IP         3600
-   A       www     YOUR_VPS_IP         3600
-   ```
-4. Wait for DNS propagation (5 min - 48 hours)
+1. Log into your domain registrar
+2. Go to DNS management for saborspin.com
+3. Get your VPS IP address (same as saberloop.com)
+4. Create/update DNS records:
+
+```
+Type    Host    Value               TTL
+A       @       YOUR_VPS_IP         3600
+A       www     YOUR_VPS_IP         3600
+```
+
+**Note:** You only need to configure the A records. The VPS (cPanel) handles everything else.
 
 **Verification:**
 ```bash
-# Check DNS resolution
+# Check DNS resolution (may take 5 min - 48 hours)
 nslookup saborspin.com
 ping saborspin.com
+
+# Should return your VPS IP address
 ```
 
-**Notes:**
-- DNS propagation can take time; be patient
-- Use [dnschecker.org](https://dnschecker.org) to verify global propagation
+**Tools:**
+- [dnschecker.org](https://dnschecker.org) - Check global DNS propagation
 
 ---
 
-### Step 0.2: SSL Certificate Setup
+### Step 0.2: Add Domain in cPanel (Addon Domain)
+
+**Goal:** Configure cPanel to serve saborspin.com
+
+**Where:** cPanel on your VPS
+
+**Tasks:**
+1. Log into cPanel
+2. Go to **Domains** → **Addon Domains** (or **Domains** in newer cPanel)
+3. Add new addon domain:
+   - **New Domain Name:** `saborspin.com`
+   - **Subdomain:** `saborspin` (auto-filled)
+   - **Document Root:** `public_html/saborspin.com` (or just `saborspin.com`)
+4. Click **Add Domain**
+
+**Result:** cPanel creates:
+- Directory: `~/public_html/saborspin.com/` (or `~/saborspin.com/`)
+- This is where landing page files will be uploaded
+
+**Note:** Wait for DNS propagation before SSL setup (next step).
+
+---
+
+### Step 0.3: Create FTP User in cPanel
+
+**Goal:** Create FTP credentials for deployment
+
+**Where:** cPanel on your VPS
+
+**Tasks:**
+1. Log into cPanel
+2. Go to **Files** → **FTP Accounts**
+3. Create new FTP account:
+   - **Log In:** `saborspin` (or similar)
+   - **Domain:** Select `saborspin.com`
+   - **Password:** Generate strong password
+   - **Directory:** Leave as default (should point to saborspin.com folder)
+   - **Quota:** Unlimited (or set a limit)
+4. Click **Create FTP Account**
+
+**Note credentials:**
+```
+FTP Host: ftp.saborspin.com (or your VPS hostname)
+FTP User: saborspin@saborspin.com (full username)
+FTP Password: (the password you created)
+FTP Port: 21
+```
+
+**Alternative:** You can also use your main cPanel FTP account if preferred.
+
+---
+
+### Step 0.4: SSL Certificate Setup (Let's Encrypt)
 
 **Goal:** Enable HTTPS for saborspin.com
 
-**Option A: cPanel with Let's Encrypt (Recommended)**
+**Where:** cPanel on your VPS
+
+**Prerequisites:** DNS must be propagated (Step 0.1 complete)
+
+**Tasks:**
 1. Log into cPanel
-2. Go to "SSL/TLS Status" or "Let's Encrypt SSL"
-3. Select saborspin.com domain
-4. Click "Issue" or "Install"
-5. Enable AutoSSL for automatic renewal
+2. Go to **Security** → **SSL/TLS Status**
+3. Find `saborspin.com` in the list
+4. Click **Run AutoSSL** or **Issue Certificate**
+5. Wait for certificate to be issued (usually < 5 minutes)
 
-**Option B: Certbot (Manual)**
-```bash
-# SSH into VPS
-ssh user@your-vps-ip
-
-# Install certbot if not present
-sudo apt install certbot python3-certbot-apache  # For Apache
-# OR
-sudo apt install certbot python3-certbot-nginx   # For Nginx
-
-# Obtain certificate
-sudo certbot --apache -d saborspin.com -d www.saborspin.com
-# OR
-sudo certbot --nginx -d saborspin.com -d www.saborspin.com
-
-# Verify auto-renewal
-sudo certbot renew --dry-run
-```
+**Alternative path:**
+1. Go to **Security** → **Let's Encrypt SSL**
+2. Select `saborspin.com`
+3. Click **Issue**
 
 **Verification:**
 - Visit https://saborspin.com in browser
-- Check for padlock icon
-- Use [SSL Labs](https://www.ssllabs.com/ssltest/) to verify
+- Check for padlock icon (may show error until files are uploaded)
+- Use [SSL Labs](https://www.ssllabs.com/ssltest/) to verify certificate
+
+**Note:** AutoSSL will auto-renew the certificate.
 
 ---
 
-### Step 0.3: Web Server Configuration
+### Step 0.5: Configure Local Environment
 
-**Goal:** Configure web server to serve static files
+**Goal:** Set up FTP credentials for deployment
 
-**For Apache (with cPanel):**
+**Where:** Local machine, in the `demo-react-native-app` folder
 
-Create/edit `.htaccess` in the domain's root directory:
+**Tasks:**
+1. Create or update `.env` file in project root:
+
+```bash
+# SaborSpin Landing Page Deployment
+FTP_HOST=ftp.saborspin.com
+FTP_USER=saborspin@saborspin.com
+FTP_PASSWORD=your-password-here
+```
+
+2. Verify `.env` is in `.gitignore`:
+```bash
+# Check if .env is ignored
+git status
+# .env should NOT appear in the list
+```
+
+**Security:** Never commit `.env` files to git!
+
+---
+
+### Step 0.6: Local Preview & Validation
+
+**Goal:** Verify landing page before deployment
+
+**Tasks:**
+1. Preview locally:
+```bash
+cd demo-react-native-app
+npm run preview:landing
+# Opens at http://localhost:3333
+```
+
+2. Checklist:
+- [ ] All sections render correctly
+- [ ] Images load properly
+- [ ] Links work (navigation, social)
+- [ ] Mobile responsive (test at different widths)
+- [ ] Download button present
+- [ ] No console errors
+
+---
+
+### Step 0.7: Deploy Landing Page
+
+**Goal:** Upload landing page to production
+
+**Command:**
+```bash
+cd demo-react-native-app
+npm run deploy:landing
+```
+
+**Expected output:**
+```
+📦 Deploying landing page to saborspin.com/...
+✅ Landing page deployed!
+🌐 Visit: https://saborspin.com/
+```
+
+**What gets deployed:**
+- `landing/index.html` → `~/saborspin.com/index.html`
+- `landing/images/*` → `~/saborspin.com/images/*`
+
+**Troubleshooting:**
+- If FTP fails, verify credentials in `.env`
+- Check that cPanel FTP account has access to the domain folder
+- Try connecting with FileZilla to test credentials manually
+
+---
+
+### Step 0.8: Create .htaccess
+
+**Goal:** Configure Apache for HTTPS redirect and caching
+
+**Where:** Upload to `~/saborspin.com/.htaccess` via FTP or cPanel File Manager
+
+**Content:**
 ```apache
 # Force HTTPS
 RewriteEngine On
@@ -142,208 +280,78 @@ Header set X-XSS-Protection "1; mode=block"
 </IfModule>
 ```
 
-**For Nginx:**
-
-```nginx
-server {
-    listen 443 ssl http2;
-    server_name saborspin.com www.saborspin.com;
-
-    ssl_certificate /etc/letsencrypt/live/saborspin.com/fullchain.pem;
-    ssl_certificate_key /etc/letsencrypt/live/saborspin.com/privkey.pem;
-
-    root /var/www/saborspin.com;
-    index index.html;
-
-    # Security headers
-    add_header X-Content-Type-Options "nosniff" always;
-    add_header X-Frame-Options "SAMEORIGIN" always;
-    add_header X-XSS-Protection "1; mode=block" always;
-
-    # Cache static assets
-    location ~* \.(png|jpg|jpeg|gif|ico|css|js)$ {
-        expires 30d;
-        add_header Cache-Control "public, immutable";
-    }
-
-    # Gzip
-    gzip on;
-    gzip_types text/plain text/css application/javascript;
-}
-
-# Redirect HTTP to HTTPS
-server {
-    listen 80;
-    server_name saborspin.com www.saborspin.com;
-    return 301 https://$server_name$request_uri;
-}
-```
+**Option:** Add `.htaccess` to `landing/` folder so it deploys automatically with `deploy:landing`.
 
 ---
 
-### Step 0.4: FTP Credentials Configuration
-
-**Goal:** Set up deployment credentials
-
-**Tasks:**
-1. Get FTP credentials from hosting provider:
-   - FTP Host (e.g., `ftp.saborspin.com` or VPS IP)
-   - FTP Username
-   - FTP Password
-   - FTP Port (usually 21)
-
-2. Create `.env` file in project root (if not exists):
-   ```env
-   # Landing page deployment
-   FTP_HOST=ftp.saborspin.com
-   FTP_USER=your-ftp-username
-   FTP_PASSWORD=your-ftp-password
-   ```
-
-3. Verify `.env` is in `.gitignore` (should already be)
-
-**Security Note:** Never commit `.env` files to git!
-
----
-
-### Step 0.5: Local Preview & Validation
-
-**Goal:** Verify landing page before deployment
-
-**Tasks:**
-1. Preview locally:
-   ```bash
-   cd demo-react-native-app
-   npm run preview:landing
-   # Opens at http://localhost:3333
-   ```
-
-2. Checklist:
-   - [ ] All sections render correctly
-   - [ ] Images load properly
-   - [ ] Links work (navigation, social)
-   - [ ] Mobile responsive (test at different widths)
-   - [ ] Download button present (will link to APK)
-   - [ ] Contact/email links correct
-   - [ ] No console errors
-
-3. Fix any issues before deploying
-
----
-
-### Step 0.6: Deploy Landing Page
-
-**Goal:** Upload landing page to production
-
-**Command:**
-```bash
-cd demo-react-native-app
-npm run deploy:landing
-```
-
-**Expected output:**
-```
-📦 Deploying landing page to saborspin.com/...
-✅ Landing page deployed!
-🌐 Visit: https://saborspin.com/
-```
-
-**What gets deployed:**
-- `landing/index.html` → `/index.html`
-- `landing/images/*` → `/images/*`
-
----
-
-### Step 0.7: APK Hosting Setup
+### Step 0.9: APK Hosting Setup
 
 **Goal:** Make the Android APK downloadable from the landing page
 
-**Option A: Direct hosting on VPS (Recommended)**
-1. Create `/downloads` directory on VPS
-2. Upload APK file:
-   ```bash
-   # Via FTP or SCP
-   scp saborspin-v1.0.0.apk user@vps:/path/to/public_html/downloads/
-   ```
-3. Update landing page download link to:
-   ```html
-   <a href="/downloads/saborspin-v1.0.0.apk" download>Download for Android</a>
-   ```
+**Tasks:**
+1. Create downloads directory via cPanel File Manager:
+   - Navigate to `saborspin.com/`
+   - Create new folder: `downloads`
 
-**Option B: Use EAS Build URL**
-1. Get the APK URL from EAS Build dashboard
-2. Link directly to EAS-hosted APK
-3. Note: URLs may expire
+2. Upload APK:
+   - Via cPanel File Manager: Upload to `saborspin.com/downloads/`
+   - Or via FTP: Upload to `~/saborspin.com/downloads/`
+   - Name it: `saborspin-latest.apk` (or with version number)
 
-**Option C: GitHub Releases**
-1. Create a release on GitHub
-2. Upload APK as release asset
-3. Link to GitHub release page
-
-**Recommended approach:** Option A (direct hosting) for reliability and branding.
-
-**Update landing page:**
-Edit `landing/index.html` to include actual download link:
+3. Update landing page (if needed):
 ```html
-<!-- Find the download button and update href -->
 <a href="/downloads/saborspin-latest.apk" class="btn btn-primary" download>
     Download for Android
 </a>
 ```
 
+4. Re-deploy if HTML was changed:
+```bash
+npm run deploy:landing
+```
+
 ---
 
-### Step 0.8: Post-Deployment Verification
+### Step 0.10: Post-Deployment Verification
 
 **Goal:** Verify everything works in production
 
 **Checklist:**
 - [ ] https://saborspin.com loads correctly
 - [ ] SSL certificate valid (padlock icon)
+- [ ] HTTP redirects to HTTPS
 - [ ] All images load
 - [ ] Navigation links work
-- [ ] Download button works (downloads APK)
+- [ ] Download button downloads APK
 - [ ] Mobile version looks good
-- [ ] Page speed acceptable (use [PageSpeed Insights](https://pagespeed.web.dev/))
-- [ ] Open Graph works (test with [Facebook Debugger](https://developers.facebook.com/tools/debug/))
+- [ ] No console errors in browser
 
-**Test on multiple devices:**
-- Desktop browser (Chrome, Firefox)
-- Mobile browser (Android Chrome, iOS Safari)
-- Different screen sizes
-
----
-
-### Step 0.9: Documentation Update
-
-**Goal:** Document the deployment for future reference
-
-**Tasks:**
-1. Update `docs/developer-guide/` with deployment instructions
-2. Document FTP credentials location (not the actual credentials!)
-3. Add deployment checklist for future updates
-4. Update README.md if needed
+**Test tools:**
+- [PageSpeed Insights](https://pagespeed.web.dev/) - Performance check
+- [Facebook Debugger](https://developers.facebook.com/tools/debug/) - Open Graph preview
+- [SSL Labs](https://www.ssllabs.com/ssltest/) - SSL verification
 
 ---
 
 ## Deployment Script Reference
 
-**Existing script:** `scripts/deploy-landing.cjs`
+**Script:** `scripts/deploy-landing.cjs`
 
 ```javascript
-// Configuration used:
-{
-    host: process.env.FTP_HOST,
+// Same pattern as Saberloop's deploy-landing.cjs
+const config = {
     user: process.env.FTP_USER,
     password: process.env.FTP_PASSWORD,
+    host: process.env.FTP_HOST,
     port: 21,
     forcePasv: true,
     secure: true,
+    secureOptions: { rejectUnauthorized: false },
     localRoot: './landing',
-    remoteRoot: '/',
+    remoteRoot: '/',  // Root of saborspin.com domain
     include: ['*', '**/*'],
     deleteRemote: false
-}
+};
 ```
 
 **npm scripts:**
@@ -352,28 +360,48 @@ Edit `landing/index.html` to include actual download link:
 
 ---
 
+## Comparison with Saberloop Setup
+
+| Aspect | Saberloop | SaborSpin |
+|--------|-----------|-----------|
+| Domain | saberloop.com | saborspin.com |
+| VPS | Same cPanel VPS | Same cPanel VPS |
+| Landing | `landing/` → `/` | `landing/` → `/` |
+| FTP Script | `deploy-landing.cjs` | `deploy-landing.cjs` (same pattern) |
+| SSL | Let's Encrypt via cPanel | Let's Encrypt via cPanel |
+| DNS | A records at registrar | A records at registrar |
+
+**Reference:** Saberloop's deployment docs at `demo-pwa-app/docs/architecture/DEPLOYMENT.md`
+
+---
+
 ## Troubleshooting
+
+### DNS Not Propagating
+- Wait up to 48 hours (usually faster)
+- Check with [dnschecker.org](https://dnschecker.org)
+- Verify A records are correct at registrar
 
 ### FTP Connection Failed
 - Verify credentials in `.env`
-- Check if FTP is enabled on hosting
-- Try passive mode (already enabled in script)
-- Check firewall/port 21 access
+- Check FTP account exists in cPanel
+- Try connecting with FileZilla to test
+- Ensure FTP directory points to saborspin.com folder
 
 ### SSL Certificate Issues
-- Ensure DNS is fully propagated before requesting cert
-- Check certificate paths in web server config
-- Verify domain ownership
+- DNS must be propagated first
+- Run AutoSSL again in cPanel
+- Check domain is added as addon domain
 
 ### 404 Errors After Deploy
-- Check `remoteRoot` in deploy script matches domain's document root
-- Verify files were uploaded (check via FTP client)
-- Check web server configuration
+- Verify files uploaded to correct folder
+- Check `remoteRoot` in deploy script
+- Look at folder in cPanel File Manager
 
 ### Images Not Loading
-- Verify `landing/images/` directory uploaded
-- Check image paths in HTML (should be relative: `images/icon.png`)
-- Check file permissions on server
+- Check `landing/images/` was uploaded
+- Verify paths in HTML are relative (`images/icon.png`)
+- Check file permissions (should be 644)
 
 ---
 
@@ -389,18 +417,24 @@ Edit `landing/index.html` to include actual download link:
 
 ---
 
-## Future Improvements (Parking Lot)
+## Learning Notes
 
-- Analytics integration (Google Analytics, Plausible)
-- Email signup functionality (Mailchimp, ConvertKit)
-- Blog section for updates
-- PWA manifest for installability
-- Automated deployment via GitHub Actions
+Document unexpected errors, workarounds, and fixes encountered during implementation:
+
+**[Phase 0 Learning Notes →](./PHASE0_LEARNING_NOTES.md)**
 
 ---
 
-## Related Documentation
+## Reference
 
-- Saberloop deployment reference: `C:\Users\omeue\source\repos\demo-pwa-app\docs\architecture\DEPLOYMENT.md`
-- Landing page source: `landing/index.html`
-- Deployment script: `scripts/deploy-landing.cjs`
+### Saberloop Reference
+- [Saberloop DEPLOYMENT.md](C:\Users\omeue\source\repos\demo-pwa-app\docs\architecture\DEPLOYMENT.md)
+- [Saberloop deploy-landing.cjs](C:\Users\omeue\source\repos\demo-pwa-app\scripts\deploy-landing.cjs)
+
+### Developer Guides
+- [Testing Guide](../../developer-guide/TESTING.md)
+- [Telemetry Guide](../../developer-guide/TELEMETRY.md)
+
+---
+
+*Phase 0: The First Step to Going Live*
