@@ -512,32 +512,33 @@ interface UserPreferences {
 
 | Order | Task | Type | Effort | Notes |
 |-------|------|------|--------|-------|
-| 1 | ▶️ RUN existing test suites | Testing | ~15 min | Baseline: unit, Playwright E2E, Maestro |
-| 2 | ▶️ RUN quality baseline | Quality | ~30 min | test:mutation, arch:test, lint:dead-code, lint:duplicates, security:scan |
-| 3 | Add columns to meal_logs | Implementation | ~1 hour | Migration |
-| 4 | 🧪 CREATE unit tests for migration | Testing | ~30 min | Test column additions |
-| 5 | Migrate existing logs | Implementation | ~1 hour | Migration script |
-| 6 | 🧪 CREATE unit tests for data migration | Testing | ~30 min | Test user_id/family_id assignment |
-| 7 | Update meal logging with user_id | Implementation | ~2 hours | Store |
-| 8 | 🧪 CREATE unit tests for updated logging | Testing | ~1 hour | Test user/family context |
-| 9 | Add privacy toggle to logging flow | Implementation | ~2 hours | UI |
-| 10 | 🧪 CREATE Playwright E2E test for privacy toggle | Testing | ~1 hour | Test toggle personal/family visibility |
-| 11 | 🧪 CREATE Maestro test for privacy toggle | Testing | ~1 hour | Mirror Playwright test for mobile |
-| 12 | Add default visibility preference | Implementation | ~1 hour | Settings |
-| 13 | 🧪 CREATE unit tests for visibility logic | Testing | ~30 min | Test default, toggle behavior |
-| 14 | Create family history query | Implementation | ~2 hours | Database |
-| 15 | 🧪 CREATE unit tests for family query | Testing | ~1 hour | Test filtering, privacy respect |
-| 16 | Add family tab to history screen | Implementation | ~3 hours | UI |
-| 17 | 🧪 CREATE Playwright E2E test for family history | Testing | ~1.5 hours | Test view family meals, filter |
-| 18 | 🧪 CREATE Maestro test for family history | Testing | ~1.5 hours | Mirror Playwright test for mobile |
-| 19 | Create family day summary component | Implementation | ~4 hours | Dashboard |
-| 20 | 🧪 CREATE unit tests for `getFamilyDaySummary()` | Testing | ~45 min | Test aggregation logic |
-| 21 | Update home screen with dashboard | Implementation | ~2 hours | UI |
-| 22 | 🧪 CREATE Playwright E2E test for dashboard | Testing | ~1 hour | Test summary displays on home |
-| 23 | 🧪 CREATE Maestro test for dashboard | Testing | ~1 hour | Mirror Playwright test for mobile |
-| 24 | ▶️ RUN full test suites | Testing | ~20 min | Unit + Playwright + Maestro, verify no regressions |
-| 25 | ▶️ RUN quality checks and compare | Quality | ~30 min | Compare to baseline; create remediation plan if worse |
-| 26 | Document learning notes | Documentation | ~30 min | Capture unexpected errors, workarounds, fixes |
+| 1 | ▶️ RUN existing test suites | Testing | ~15 min | Baseline: unit, Playwright E2E, Maestro | not started |
+| 2 | ▶️ RUN quality baseline | Quality | ~30 min | arch:test, lint:dead-code, lint:duplicates, security:scan | not started |
+| 3 | Add columns to meal_logs | Implementation | ~1 hour | Migration | not started |
+| 4 | 🧪 CREATE unit tests for migration | Testing | ~30 min | Test column additions | not started |
+| 5 | Migrate existing logs | Implementation | ~1 hour | Migration script | not started |
+| 6 | 🧪 CREATE unit tests for data migration | Testing | ~30 min | Test user_id/family_id assignment | not started |
+| 7 | Update meal logging with user_id | Implementation | ~2 hours | Store | not started |
+| 8 | 🧪 CREATE unit tests for updated logging | Testing | ~1 hour | Test user/family context | not started |
+| 9 | Add privacy toggle to logging flow | Implementation | ~2 hours | UI | not started |
+| 10 | 🧪 CREATE Playwright E2E test for privacy toggle | Testing | ~1 hour | Test toggle personal/family visibility | not started |
+| 11 | 🧪 CREATE Maestro test for privacy toggle | Testing | ~1 hour | Mirror Playwright test for mobile | not started |
+| 12 | Add default visibility preference | Implementation | ~1 hour | Settings | not started |
+| 13 | 🧪 CREATE unit tests for visibility logic | Testing | ~30 min | Test default, toggle behavior | not started |
+| 14 | Create family history query | Implementation | ~2 hours | Database | not started |
+| 15 | 🧪 CREATE unit tests for family query | Testing | ~1 hour | Test filtering, privacy respect | not started |
+| 16 | Add family tab to history screen | Implementation | ~3 hours | UI | not started |
+| 17 | 🧪 CREATE Playwright E2E test for family history | Testing | ~1.5 hours | Test view family meals, filter | not started |
+| 18 | 🧪 CREATE Maestro test for family history | Testing | ~1.5 hours | Mirror Playwright test for mobile | not started |
+| 19 | Create family day summary component | Implementation | ~4 hours | Dashboard | not started |
+| 20 | 🧪 CREATE unit tests for `getFamilyDaySummary()` | Testing | ~45 min | Test aggregation logic | not started |
+| 21 | Update home screen with dashboard | Implementation | ~2 hours | UI | not started |
+| 22 | 🧪 CREATE Playwright E2E test for dashboard | Testing | ~1 hour | Test summary displays on home | not started |
+| 23 | 🧪 CREATE Maestro test for dashboard | Testing | ~1 hour | Mirror Playwright test for mobile | not started |
+| 24 | ▶️ RUN full test suites | Testing | ~20 min | Unit + Playwright + Maestro, verify no regressions | not started |
+| 25 | ▶️ RUN quality checks and compare | Quality | ~30 min | Compare to baseline; create remediation plan if worse | not started |
+| 26 | Document learning notes | Documentation | ~30 min | Capture unexpected errors, workarounds, fixes | not started |
+| 27 | Run all existing unit tests, Playwright tests and Maestro Tests | Quality | ~0.5 hours | not started |
 
 **Total Estimated Effort:** ~32.5 hours (including unit + Playwright + Maestro tests + quality checks)
 

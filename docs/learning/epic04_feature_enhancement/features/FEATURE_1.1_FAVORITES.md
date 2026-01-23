@@ -196,15 +196,16 @@ score += favoriteBonus;
 
 ## Implementation Order
 
-| Order | Task | Type | Effort |
-|-------|------|------|--------|
-| 1 | Database migration for `is_favorite` column | Implementation | ~30 min |
-| 2 | Add favorite actions to Zustand store | Implementation | ~1 hour |
-| 3 | Add favorite icon to SuggestionCard | Implementation | ~1 hour |
-| 4 | Add favorites filter to History screen | Implementation | ~1.5 hours |
-| 5 | 🧪 CREATE unit tests for favorites | Testing | ~1 hour |
-| 6 | 🧪 CREATE Playwright E2E tests | Testing | ~1.5 hours |
-| 7 | 🧪 CREATE Maestro tests | Testing | ~1.5 hours |
+| Order | Task | Type | Effort | Status |
+|-------|------|------|--------|--------|
+| 1 | Database migration for `is_favorite` column | Implementation | ~30 min | not started |
+| 2 | Add favorite actions to Zustand store | Implementation | ~1 hour | not started |
+| 3 | Add favorite icon to SuggestionCard | Implementation | ~1 hour | not started |
+| 4 | Add favorites filter to History screen | Implementation | ~1.5 hours | not started |
+| 5 | 🧪 CREATE unit tests for favorites | Testing | ~1 hour | not started |
+| 6 | 🧪 CREATE Playwright E2E tests | Testing | ~1.5 hours | not started |
+| 7 | 🧪 CREATE Maestro tests | Testing | ~1.5 hours | not started |
+| 8 | Run all existing unit tests, Playwright tests and Maestro Tests | Quality | ~0.5 hours | not started |
 
 **Legend:**
 - 🧪 CREATE = Writing new tests

@@ -520,32 +520,33 @@ async function trackChange(
 
 | Order | Task | Effort | Notes |
 |-------|------|--------|-------|
-| 1 | Run existing test suites | ~15 min | Baseline: unit, Playwright E2E, Maestro |
-| 2 | Run quality baseline | ~30 min | test:mutation, arch:test, lint:dead-code, lint:duplicates, security:scan |
-| 3 | Design server API spec | ~2 hours | OpenAPI/docs |
-| 4 | Implement server endpoints | ~8 hours | Backend work |
-| 5 | Write unit tests for server endpoints | ~3 hours | Test API responses, validation |
-| 6 | Add encryption utilities | ~4 hours | Client crypto |
-| 7 | Write unit tests for encryption | ~1.5 hours | Test encrypt/decrypt roundtrip |
-| 8 | Add sync_queue table | ~1 hour | Migration |
-| 9 | Write unit tests for sync_queue migration | ~30 min | Test table creation |
-| 10 | Implement change tracking | ~3 hours | Store hooks |
-| 11 | Write unit tests for `trackChange()` | ~1 hour | Test change capture logic |
-| 12 | Implement sync pull logic | ~4 hours | Client |
-| 13 | Write unit tests for pull + merge | ~1.5 hours | Test merge logic (LWW) |
-| 14 | Implement sync push logic | ~4 hours | Client |
-| 15 | Write unit tests for push logic | ~1 hour | Test payload creation, signature |
-| 16 | Add sync-on-app-open | ~2 hours | App lifecycle |
-| 17 | Add manual sync trigger | ~1 hour | UI button |
-| 18 | Add sync status indicator | ~3 hours | Component |
-| 19 | Write Playwright E2E test for manual sync | ~1.5 hours | Test sync button, status indicator |
-| 20 | Write Maestro test for manual sync | ~1.5 hours | Mirror Playwright test for mobile |
-| 21 | Write Playwright E2E test for sync status | ~1 hour | Test pending changes, last sync time |
-| 22 | Write Maestro test for sync status | ~1 hour | Mirror Playwright test for mobile |
-| 23 | Run full test suites | ~20 min | Unit + Playwright + Maestro, verify no regressions |
-| 24 | Run quality checks and compare | ~30 min | Compare to baseline; create remediation plan if worse |
-| 25 | Integration testing with 2+ devices | ~4 hours | Real device sync verification |
-| 26 | Document learning notes | ~30 min | Capture unexpected errors, workarounds, fixes |
+| 1 | Run existing test suites | ~15 min | Baseline: unit, Playwright E2E, Maestro | not started |
+| 2 | Run quality baseline | ~30 min | arch:test, lint:dead-code, lint:duplicates, security:scan | not started |
+| 3 | Design server API spec | ~2 hours | OpenAPI/docs | not started |
+| 4 | Implement server endpoints | ~8 hours | Backend work | not started |
+| 5 | Write unit tests for server endpoints | ~3 hours | Test API responses, validation | not started |
+| 6 | Add encryption utilities | ~4 hours | Client crypto | not started |
+| 7 | Write unit tests for encryption | ~1.5 hours | Test encrypt/decrypt roundtrip | not started |
+| 8 | Add sync_queue table | ~1 hour | Migration | not started |
+| 9 | Write unit tests for sync_queue migration | ~30 min | Test table creation | not started |
+| 10 | Implement change tracking | ~3 hours | Store hooks | not started |
+| 11 | Write unit tests for `trackChange()` | ~1 hour | Test change capture logic | not started |
+| 12 | Implement sync pull logic | ~4 hours | Client | not started |
+| 13 | Write unit tests for pull + merge | ~1.5 hours | Test merge logic (LWW) | not started |
+| 14 | Implement sync push logic | ~4 hours | Client | not started |
+| 15 | Write unit tests for push logic | ~1 hour | Test payload creation, signature | not started |
+| 16 | Add sync-on-app-open | ~2 hours | App lifecycle | not started |
+| 17 | Add manual sync trigger | ~1 hour | UI button | not started |
+| 18 | Add sync status indicator | ~3 hours | Component | not started |
+| 19 | Write Playwright E2E test for manual sync | ~1.5 hours | Test sync button, status indicator | not started |
+| 20 | Write Maestro test for manual sync | ~1.5 hours | Mirror Playwright test for mobile | not started |
+| 21 | Write Playwright E2E test for sync status | ~1 hour | Test pending changes, last sync time | not started |
+| 22 | Write Maestro test for sync status | ~1 hour | Mirror Playwright test for mobile | not started |
+| 23 | Run full test suites | ~20 min | Unit + Playwright + Maestro, verify no regressions | not started |
+| 24 | Run quality checks and compare | ~30 min | Compare to baseline; create remediation plan if worse | not started |
+| 25 | Integration testing with 2+ devices | ~4 hours | Real device sync verification | not started |
+| 26 | Document learning notes | ~30 min | Capture unexpected errors, workarounds, fixes | not started |
+| 27 | Run all existing unit tests, Playwright tests and Maestro Tests | Quality | ~0.5 hours | not started |
 
 **Total Estimated Effort:** ~52.5 hours (including unit + Playwright + Maestro tests + quality checks)
 

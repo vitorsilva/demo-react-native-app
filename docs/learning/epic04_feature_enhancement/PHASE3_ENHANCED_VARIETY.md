@@ -457,27 +457,28 @@ function generateSuggestions(
 
 | Order | Task | Type | Effort | Notes |
 |-------|------|------|--------|-------|
-| 1 | ▶️ RUN existing test suites | Testing | ~15 min | Baseline: unit, Playwright E2E, Maestro |
-| 2 | ▶️ RUN quality baseline | Quality | ~30 min | test:mutation, arch:test, lint:dead-code, lint:duplicates, security:scan |
-| 3 | Add ingredient frequency calculation | Implementation | ~2 hours | Utility function |
-| 4 | 🧪 CREATE unit tests for `getIngredientFrequency()` | Testing | ~45 min | Test counting logic |
-| 5 | Update variety scoring with frequency | Implementation | ~2 hours | Algorithm update |
-| 6 | 🧪 CREATE unit tests for frequency penalties | Testing | ~45 min | Test penalty thresholds |
-| 7 | Add pairing_rules table | Implementation | ~1 hour | Migration |
-| 8 | 🧪 CREATE unit tests for pairing rules migration | Testing | ~30 min | Test table creation |
-| 9 | Add pairing rules store actions | Implementation | ~2 hours | Store |
-| 10 | 🧪 CREATE unit tests for pairing rules CRUD | Testing | ~1 hour | Test add/delete/query |
-| 11 | Add pairing rules to suggestion algorithm | Implementation | ~2 hours | Algorithm |
-| 12 | 🧪 CREATE unit tests for `applyPairingRules()` | Testing | ~1 hour | Test positive/negative rules |
-| 13 | Create Pairing Rules UI | Implementation | ~4 hours | New screen |
-| 14 | 🧪 CREATE Playwright E2E tests for pairing rules | Testing | ~1.5 hours | Test add/delete rules via UI |
-| 15 | 🧪 CREATE Maestro tests for pairing rules | Testing | ~1.5 hours | Mirror Playwright tests for mobile |
-| 16 | Update suggestion generation | Implementation | ~2 hours | Integration |
-| 17 | 🧪 CREATE Playwright E2E test for suggestions | Testing | ~1.5 hours | Test negative pairs excluded |
-| 18 | 🧪 CREATE Maestro test for suggestions | Testing | ~1.5 hours | Mirror Playwright test for mobile |
-| 19 | ▶️ RUN full test suites | Testing | ~20 min | Unit + Playwright + Maestro, verify no regressions |
-| 20 | ▶️ RUN quality checks and compare | Quality | ~30 min | Compare to baseline; create remediation plan if worse |
-| 21 | Document learning notes | Documentation | ~30 min | Capture unexpected errors, workarounds, fixes |
+| 1 | ▶️ RUN existing test suites | Testing | ~15 min | Baseline: unit, Playwright E2E, Maestro | not started |
+| 2 | ▶️ RUN quality baseline | Quality | ~30 min | arch:test, lint:dead-code, lint:duplicates, security:scan | not started |
+| 3 | Add ingredient frequency calculation | Implementation | ~2 hours | Utility function | not started |
+| 4 | 🧪 CREATE unit tests for `getIngredientFrequency()` | Testing | ~45 min | Test counting logic | not started |
+| 5 | Update variety scoring with frequency | Implementation | ~2 hours | Algorithm update | not started |
+| 6 | 🧪 CREATE unit tests for frequency penalties | Testing | ~45 min | Test penalty thresholds | not started |
+| 7 | Add pairing_rules table | Implementation | ~1 hour | Migration | not started |
+| 8 | 🧪 CREATE unit tests for pairing rules migration | Testing | ~30 min | Test table creation | not started |
+| 9 | Add pairing rules store actions | Implementation | ~2 hours | Store | not started |
+| 10 | 🧪 CREATE unit tests for pairing rules CRUD | Testing | ~1 hour | Test add/delete/query | not started |
+| 11 | Add pairing rules to suggestion algorithm | Implementation | ~2 hours | Algorithm | not started |
+| 12 | 🧪 CREATE unit tests for `applyPairingRules()` | Testing | ~1 hour | Test positive/negative rules | not started |
+| 13 | Create Pairing Rules UI | Implementation | ~4 hours | New screen | not started |
+| 14 | 🧪 CREATE Playwright E2E tests for pairing rules | Testing | ~1.5 hours | Test add/delete rules via UI | not started |
+| 15 | 🧪 CREATE Maestro tests for pairing rules | Testing | ~1.5 hours | Mirror Playwright tests for mobile | not started |
+| 16 | Update suggestion generation | Implementation | ~2 hours | Integration | not started |
+| 17 | 🧪 CREATE Playwright E2E test for suggestions | Testing | ~1.5 hours | Test negative pairs excluded | not started |
+| 18 | 🧪 CREATE Maestro test for suggestions | Testing | ~1.5 hours | Mirror Playwright test for mobile | not started |
+| 19 | ▶️ RUN full test suites | Testing | ~20 min | Unit + Playwright + Maestro, verify no regressions | not started |
+| 20 | ▶️ RUN quality checks and compare | Quality | ~30 min | Compare to baseline; create remediation plan if worse | not started |
+| 21 | Document learning notes | Documentation | ~30 min | Capture unexpected errors, workarounds, fixes | not started |
+| 22 | Run all existing unit tests, Playwright tests and Maestro Tests | Quality | ~0.5 hours | not started |
 
 **Total Estimated Effort:** ~27.5 hours (including unit + Playwright + Maestro tests + quality checks)
 

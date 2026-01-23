@@ -625,32 +625,33 @@ async function sendProposalNotification(
 
 | Order | Task | Effort | Notes |
 |-------|------|--------|-------|
-| 1 | Run existing test suites | ~15 min | Baseline: unit, Playwright E2E, Maestro |
-| 2 | Run quality baseline | ~30 min | test:mutation, arch:test, lint:dead-code, lint:duplicates, security:scan |
-| 3 | Add meal_proposals table | ~1 hour | Migration |
-| 4 | Add proposal_votes table | ~1 hour | Migration |
-| 5 | Write unit tests for migrations | ~30 min | Test table creation |
-| 6 | Create proposal store actions | ~3 hours | Store |
-| 7 | Write unit tests for `createProposal()` | ~1 hour | Test creation, auto-vote |
-| 8 | Write unit tests for `voteOnProposal()` | ~1 hour | Test vote, update existing vote |
-| 9 | Create proposal flow UI | ~4 hours | Modal/screen |
-| 10 | Write Playwright E2E test for creating proposal | ~1.5 hours | Test propose meal, select date |
-| 11 | Write Maestro test for creating proposal | ~1.5 hours | Mirror Playwright test for mobile |
-| 12 | Create voting UI | ~3 hours | Component |
-| 13 | Write Playwright E2E test for voting | ~1.5 hours | Test vote yes/no, see updated count |
-| 14 | Write Maestro test for voting | ~1.5 hours | Mirror Playwright test for mobile |
-| 15 | Implement resolution logic | ~2 hours | Business logic |
-| 16 | Write unit tests for `checkProposalResolution()` | ~1.5 hours | Test majority, expiration |
-| 17 | Create proposals feed screen | ~4 hours | New tab |
-| 18 | Write Playwright E2E test for proposals feed | ~1.5 hours | Test view open/decided proposals |
-| 19 | Write Maestro test for proposals feed | ~1.5 hours | Mirror Playwright test for mobile |
-| 20 | Set up push notifications | ~4 hours | Expo notifications |
-| 21 | Write unit tests for notification triggers | ~1 hour | Test event → notification |
-| 22 | Integrate with sync | ~3 hours | Sync proposals/votes |
-| 23 | Write unit tests for proposal sync | ~1 hour | Test sync payload |
-| 24 | Run full test suites | ~20 min | Unit + Playwright + Maestro, verify no regressions |
-| 25 | Run quality checks and compare | ~30 min | Compare to baseline; create remediation plan if worse |
-| 26 | Document learning notes | ~30 min | Capture unexpected errors, workarounds, fixes |
+| 1 | Run existing test suites | ~15 min | Baseline: unit, Playwright E2E, Maestro | not started |
+| 2 | Run quality baseline | ~30 min | arch:test, lint:dead-code, lint:duplicates, security:scan | not started |
+| 3 | Add meal_proposals table | ~1 hour | Migration | not started |
+| 4 | Add proposal_votes table | ~1 hour | Migration | not started |
+| 5 | Write unit tests for migrations | ~30 min | Test table creation | not started |
+| 6 | Create proposal store actions | ~3 hours | Store | not started |
+| 7 | Write unit tests for `createProposal()` | ~1 hour | Test creation, auto-vote | not started |
+| 8 | Write unit tests for `voteOnProposal()` | ~1 hour | Test vote, update existing vote | not started |
+| 9 | Create proposal flow UI | ~4 hours | Modal/screen | not started |
+| 10 | Write Playwright E2E test for creating proposal | ~1.5 hours | Test propose meal, select date | not started |
+| 11 | Write Maestro test for creating proposal | ~1.5 hours | Mirror Playwright test for mobile | not started |
+| 12 | Create voting UI | ~3 hours | Component | not started |
+| 13 | Write Playwright E2E test for voting | ~1.5 hours | Test vote yes/no, see updated count | not started |
+| 14 | Write Maestro test for voting | ~1.5 hours | Mirror Playwright test for mobile | not started |
+| 15 | Implement resolution logic | ~2 hours | Business logic | not started |
+| 16 | Write unit tests for `checkProposalResolution()` | ~1.5 hours | Test majority, expiration | not started |
+| 17 | Create proposals feed screen | ~4 hours | New tab | not started |
+| 18 | Write Playwright E2E test for proposals feed | ~1.5 hours | Test view open/decided proposals | not started |
+| 19 | Write Maestro test for proposals feed | ~1.5 hours | Mirror Playwright test for mobile | not started |
+| 20 | Set up push notifications | ~4 hours | Expo notifications | not started |
+| 21 | Write unit tests for notification triggers | ~1 hour | Test event → notification | not started |
+| 22 | Integrate with sync | ~3 hours | Sync proposals/votes | not started |
+| 23 | Write unit tests for proposal sync | ~1 hour | Test sync payload | not started |
+| 24 | Run full test suites | ~20 min | Unit + Playwright + Maestro, verify no regressions | not started |
+| 25 | Run quality checks and compare | ~30 min | Compare to baseline; create remediation plan if worse | not started |
+| 26 | Document learning notes | ~30 min | Capture unexpected errors, workarounds, fixes | not started |
+| 27 | Run all existing unit tests, Playwright tests and Maestro Tests | Quality | ~0.5 hours | not started | not started |
 
 **Total Estimated Effort:** ~43.5 hours (including unit + Playwright + Maestro tests + quality checks)
 

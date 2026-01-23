@@ -702,33 +702,34 @@ Add filters for:
 
 | Order | Task | Type | Effort | Notes |
 |-------|------|------|--------|-------|
-| 1 | ▶️ RUN existing test suites | Testing | ~15 min | Baseline: unit, Playwright E2E, Maestro |
-| 2 | ▶️ RUN quality baseline | Quality | ~30 min | test:mutation, arch:test, lint:dead-code, lint:duplicates, security:scan |
-| 3 | Add ingredient classification columns | Implementation | ~2 hours | Migration |
-| 4 | 🧪 CREATE unit tests for migration | Testing | ~30 min | Test column additions |
-| 5 | Classify existing ingredients | Implementation | ~2 hours | Data work |
-| 6 | Update meal type configuration | Implementation | ~2 hours | Settings |
-| 7 | 🧪 CREATE unit tests for meal type config | Testing | ~30 min | Test rotation toggles |
-| 8 | Implement building-block rotation | Implementation | ~4 hours | Algorithm |
-| 9 | 🧪 CREATE unit tests for `getBaseIngredientPenalty()` | Testing | ~1.5 hours | Test rotation penalties |
-| 10 | Implement protein rotation | Implementation | ~4 hours | Algorithm |
-| 11 | 🧪 CREATE unit tests for `getProteinPenalty()` | Testing | ~1.5 hours | Test category rotation |
-| 12 | Add component roles (main/side) | Implementation | ~2 hours | Migration |
-| 13 | 🧪 CREATE unit tests for role assignment | Testing | ~30 min | Test main/side classification |
-| 14 | Update suggestion generator | Implementation | ~6 hours | Major rewrite |
-| 15 | 🧪 CREATE unit tests for `generateLunchDinnerSuggestion()` | Testing | ~2 hours | Test main + sides structure |
-| 16 | Update suggestion card UI | Implementation | ~4 hours | New layout |
-| 17 | 🧪 CREATE Playwright E2E test for lunch/dinner suggestions | Testing | ~2 hours | Test main + sides display |
-| 18 | 🧪 CREATE Maestro test for lunch/dinner suggestions | Testing | ~2 hours | Mirror Playwright test for mobile |
-| 19 | Add lunch/dinner ingredients | Implementation | ~2 hours | Seed data |
-| 20 | Update ingredient management | Implementation | ~3 hours | Filters, categories |
-| 21 | 🧪 CREATE Playwright E2E test for ingredient classification UI | Testing | ~1.5 hours | Test protein/base filters |
-| 22 | 🧪 CREATE Maestro test for ingredient classification UI | Testing | ~1.5 hours | Mirror Playwright test for mobile |
-| 23 | 🧪 CREATE Playwright E2E test for full lunch/dinner flow | Testing | ~2 hours | Test select → log → history |
-| 24 | 🧪 CREATE Maestro test for full lunch/dinner flow | Testing | ~2 hours | Mirror Playwright test for mobile |
-| 25 | ▶️ RUN full test suites | Testing | ~20 min | Unit + Playwright + Maestro, verify no regressions |
-| 26 | ▶️ RUN quality checks and compare | Quality | ~30 min | Compare to baseline; create remediation plan if worse |
-| 27 | Document learning notes | Documentation | ~30 min | Capture unexpected errors, workarounds, fixes |
+| 1 | ▶️ RUN existing test suites | Testing | ~15 min | Baseline: unit, Playwright E2E, Maestro | not started |
+| 2 | ▶️ RUN quality baseline | Quality | ~30 min | arch:test, lint:dead-code, lint:duplicates, security:scan | not started |
+| 3 | Add ingredient classification columns | Implementation | ~2 hours | Migration | not started |
+| 4 | 🧪 CREATE unit tests for migration | Testing | ~30 min | Test column additions | not started |
+| 5 | Classify existing ingredients | Implementation | ~2 hours | Data work | not started |
+| 6 | Update meal type configuration | Implementation | ~2 hours | Settings | not started |
+| 7 | 🧪 CREATE unit tests for meal type config | Testing | ~30 min | Test rotation toggles | not started |
+| 8 | Implement building-block rotation | Implementation | ~4 hours | Algorithm | not started |
+| 9 | 🧪 CREATE unit tests for `getBaseIngredientPenalty()` | Testing | ~1.5 hours | Test rotation penalties | not started |
+| 10 | Implement protein rotation | Implementation | ~4 hours | Algorithm | not started |
+| 11 | 🧪 CREATE unit tests for `getProteinPenalty()` | Testing | ~1.5 hours | Test category rotation | not started |
+| 12 | Add component roles (main/side) | Implementation | ~2 hours | Migration | not started |
+| 13 | 🧪 CREATE unit tests for role assignment | Testing | ~30 min | Test main/side classification | not started |
+| 14 | Update suggestion generator | Implementation | ~6 hours | Major rewrite | not started |
+| 15 | 🧪 CREATE unit tests for `generateLunchDinnerSuggestion()` | Testing | ~2 hours | Test main + sides structure | not started |
+| 16 | Update suggestion card UI | Implementation | ~4 hours | New layout | not started |
+| 17 | 🧪 CREATE Playwright E2E test for lunch/dinner suggestions | Testing | ~2 hours | Test main + sides display | not started |
+| 18 | 🧪 CREATE Maestro test for lunch/dinner suggestions | Testing | ~2 hours | Mirror Playwright test for mobile | not started |
+| 19 | Add lunch/dinner ingredients | Implementation | ~2 hours | Seed data | not started |
+| 20 | Update ingredient management | Implementation | ~3 hours | Filters, categories | not started |
+| 21 | 🧪 CREATE Playwright E2E test for ingredient classification UI | Testing | ~1.5 hours | Test protein/base filters | not started |
+| 22 | 🧪 CREATE Maestro test for ingredient classification UI | Testing | ~1.5 hours | Mirror Playwright test for mobile | not started |
+| 23 | 🧪 CREATE Playwright E2E test for full lunch/dinner flow | Testing | ~2 hours | Test select → log → history | not started |
+| 24 | 🧪 CREATE Maestro test for full lunch/dinner flow | Testing | ~2 hours | Mirror Playwright test for mobile | not started |
+| 25 | ▶️ RUN full test suites | Testing | ~20 min | Unit + Playwright + Maestro, verify no regressions | not started |
+| 26 | ▶️ RUN quality checks and compare | Quality | ~30 min | Compare to baseline; create remediation plan if worse | not started |
+| 27 | Document learning notes | Documentation | ~30 min | Capture unexpected errors, workarounds, fixes | not started |
+| 28 | Run all existing unit tests, Playwright tests and Maestro Tests | Quality | ~0.5 hours | not started |
 
 **Total Estimated Effort:** ~55.5 hours (including unit + Playwright + Maestro tests + quality checks)
 

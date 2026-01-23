@@ -504,29 +504,30 @@ zeroconf.scan('saborspin', 'tcp', 'local.');
 
 | Order | Task | Effort | Notes |
 |-------|------|--------|-------|
-| 1 | Run existing test suites | ~15 min | Baseline: unit, Playwright E2E, Maestro |
-| 2 | Run quality baseline | ~30 min | test:mutation, arch:test, lint:dead-code, lint:duplicates, security:scan |
-| 3 | Set up WebRTC library | ~2 hours | Installation, config |
-| 4 | Implement signaling server | ~4 hours | WebSocket server |
-| 5 | Write unit tests for signaling server | ~1.5 hours | Test message routing |
-| 6 | Implement P2P connection class | ~4 hours | WebRTC wrapper |
-| 7 | Write unit tests for P2P connection | ~1.5 hours | Test offer/answer flow |
-| 8 | Implement signaling client | ~3 hours | Connect, register |
-| 9 | Write unit tests for signaling client | ~1 hour | Test connection states |
-| 10 | Implement P2P sync manager | ~4 hours | Connection management |
-| 11 | Write unit tests for P2PSyncManager | ~1.5 hours | Test sync via P2P |
-| 12 | Integrate with existing sync | ~3 hours | Hybrid logic |
-| 13 | Write unit tests for hybrid fallback | ~1 hour | Test P2P → HTTP fallback |
-| 14 | Add connection status UI | ~2 hours | "Connected to 2 devices" |
-| 15 | Write Playwright E2E test for P2P status display | ~1 hour | Test connection indicator UI |
-| 16 | Write Maestro test for P2P status display | ~1 hour | Mirror Playwright test for mobile |
-| 17 | Write Playwright E2E test for P2P toggle in settings | ~1 hour | Test enable/disable P2P |
-| 18 | Write Maestro test for P2P toggle in settings | ~1 hour | Mirror Playwright test for mobile |
-| 19 | Run full test suites | ~20 min | Unit + Playwright + Maestro, verify no regressions |
-| 20 | Run quality checks and compare | ~30 min | Compare to baseline; create remediation plan if worse |
-| 21 | Integration testing with multiple devices | ~4 hours | Real device P2P testing |
-| 22 | (Optional) mDNS discovery | ~4 hours | Local network |
-| 23 | Document learning notes | ~30 min | Capture unexpected errors, workarounds, fixes |
+| 1 | Run existing test suites | ~15 min | Baseline: unit, Playwright E2E, Maestro | not started |
+| 2 | Run quality baseline | ~30 min | arch:test, lint:dead-code, lint:duplicates, security:scan | not started |
+| 3 | Set up WebRTC library | ~2 hours | Installation, config | not started |
+| 4 | Implement signaling server | ~4 hours | WebSocket server | not started |
+| 5 | Write unit tests for signaling server | ~1.5 hours | Test message routing | not started |
+| 6 | Implement P2P connection class | ~4 hours | WebRTC wrapper | not started |
+| 7 | Write unit tests for P2P connection | ~1.5 hours | Test offer/answer flow | not started |
+| 8 | Implement signaling client | ~3 hours | Connect, register | not started |
+| 9 | Write unit tests for signaling client | ~1 hour | Test connection states | not started |
+| 10 | Implement P2P sync manager | ~4 hours | Connection management | not started |
+| 11 | Write unit tests for P2PSyncManager | ~1.5 hours | Test sync via P2P | not started |
+| 12 | Integrate with existing sync | ~3 hours | Hybrid logic | not started |
+| 13 | Write unit tests for hybrid fallback | ~1 hour | Test P2P → HTTP fallback | not started |
+| 14 | Add connection status UI | ~2 hours | "Connected to 2 devices" | not started |
+| 15 | Write Playwright E2E test for P2P status display | ~1 hour | Test connection indicator UI | not started |
+| 16 | Write Maestro test for P2P status display | ~1 hour | Mirror Playwright test for mobile | not started |
+| 17 | Write Playwright E2E test for P2P toggle in settings | ~1 hour | Test enable/disable P2P | not started |
+| 18 | Write Maestro test for P2P toggle in settings | ~1 hour | Mirror Playwright test for mobile | not started |
+| 19 | Run full test suites | ~20 min | Unit + Playwright + Maestro, verify no regressions | not started |
+| 20 | Run quality checks and compare | ~30 min | Compare to baseline; create remediation plan if worse | not started |
+| 21 | Integration testing with multiple devices | ~4 hours | Real device P2P testing | not started |
+| 22 | (Optional) mDNS discovery | ~4 hours | Local network | not started |
+| 23 | Document learning notes | ~30 min | Capture unexpected errors, workarounds, fixes | not started |
+| 24 | Run all existing unit tests, Playwright tests and Maestro Tests | Quality | ~0.5 hours | not started | not started |
 
 **Total Estimated Effort:** ~43.5 hours (including unit + Playwright + Maestro tests + quality checks)
 
