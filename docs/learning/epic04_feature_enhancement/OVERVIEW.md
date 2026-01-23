@@ -1,18 +1,20 @@
-# Epic 4: Feature Enhancement
+# Epic 4: Feature Enhancement & Family Sharing
 
-**Status:** 🔄 SCOPE BEING REFINED
+**Status:** 🔄 PLANNING
 
-## 🎯 What This Epic Is About
+## What This Epic Is About
 
-**Expanding SaborSpin with User-Requested Features**
+**Expanding SaborSpin from Individual Tool to Family Kitchen Platform**
 
-Epic 3 established the production-ready foundation. Epic 4 focuses on enhancing the app with features that add real value to users based on feedback and real-world usage.
-
-> **Note:** The exact scope of this epic is still being refined. The phases below represent potential directions, not a finalized plan.
+Epic 3 established the production-ready foundation. Epic 4 enhances the app with:
+1. Polish features (favorites, badges, stats)
+2. Data model evolution (preparation methods, named meals)
+3. Family sharing capabilities (Approach 2 from exploration)
+4. Lunch/dinner expansion
 
 ---
 
-## 📚 What You've Accomplished So Far
+## Prerequisites Completed
 
 ### Epic 1: Infrastructure & Foundation ✅
 - Professional dev workflow
@@ -31,161 +33,226 @@ Epic 3 established the production-ready foundation. Epic 4 focuses on enhancing 
 - User customization (ingredients, categories, meal types)
 - Branding & identity (SaborSpin)
 - Project structure & documentation
-- Telemetry expansion
-- Internationalization (i18n)
-- Mutation testing
-- Architecture testing
-- Code quality tools
-
-**Now it's time to validate with users and add features they want.**
 
 ---
 
-## 🗺️ Phase Overview
+## Phase Overview
 
-### Phase 0: Landing Page Deployment (2-4 hours) ⬅️ START HERE
+### Phase 0: Landing Page Deployment ✅
 **Goal:** Deploy saborspin.com landing page to production
 
 **Status:** Ready to implement
 
-This is the first phase of Epic 04. The landing page is already built - this phase focuses on:
-- DNS configuration (point domain to VPS)
-- SSL certificate setup (HTTPS)
-- FTP credentials configuration
+- DNS configuration
+- SSL certificate setup
 - Landing page deployment
-- APK hosting setup (direct download, no app store)
+- APK hosting setup
 
-**Why first:** Establishes web presence before user validation begins.
-
-**[Start Phase 0 →](./PHASE0_LANDING_DEPLOYMENT.md)**
+**[Phase 0 Details →](./PHASE0_LANDING_DEPLOYMENT.md)**
 
 ---
 
-### Phase 6: Validation & Iteration (3-4 weeks, ongoing)
-**Goal:** Deploy to real users and iterate based on feedback
+### Phase 1: Quick Wins (Polish)
+**Goal:** Low-effort, high-impact improvements with no architectural changes
 
-**⚠️ Moved from Epic 3** - This phase validates the production-ready app with real users.
+**Features:**
+- ⭐ Favorite combinations
+- 🆕 "New!" badge on suggestions
+- 🎨 Variety color coding (green/yellow/red)
+- 📊 Variety stats ("15 combos this month!")
+- 📳 Haptic feedback
 
-Tasks:
-- Distribute APK to 5-10 beta testers
-- Monitor usage via telemetry
-- Collect user feedback
-- Fix bugs based on real usage
-- Iterate through multiple versions (V1.0.0 → V1.1.0 → V1.2.0)
-- Reflect on entire learning journey
+**Dependencies:** None - can start immediately
 
-**Why this matters:** Real user validation transforms the app from "technically complete" to "user-validated product."
-
-**You'll learn:**
-- Beta testing for mobile apps
-- APK distribution
-- User feedback collection
-- Telemetry analysis with real data
-- Iterative development
-- Data-driven decision making
-
-**[Start Phase 6 →](./PHASE6_VALIDATION.md)** | **[Quick Summary →](./PHASE6_SUMMARY.md)**
+**[Phase 1 Details →](./PHASE1_QUICK_WINS.md)**
 
 ---
 
-### Phase 1: Polish Features (2-4 hours per feature)
-**Goal:** Implement high-impact features to enhance the user experience
+### Phase 2: Data Model Evolution
+**Goal:** Evolve data model to support preparation methods and named meals
 
-Feature options include:
-- ⭐ Favorite Combinations - Save and quick-access loved combinations
-- 📊 Weekly Variety Report - Analytics and gamification
-- 📸 Ingredient Photos - Visual enhancement
-- 🥗 Basic Nutrition Tracking - Health-conscious users
-- 🔔 Smart Notifications - Proactive engagement
+**Features:**
+- Add preparation method to ingredients (fried, grilled, roasted, etc.)
+- Support optional meal naming ("Mom's chicken")
+- Migrate to Approach C: Flexible Meals
+- Hybrid prep method list (predefined + custom)
 
-**[Start Phase 1 →](./PHASE1_POLISH_FEATURES.md)**
+**Dependencies:** None
 
----
-
-### Phase 2: TBD
-*To be defined based on user feedback and priorities*
+**[Phase 2 Details →](./PHASE2_DATA_MODEL_EVOLUTION.md)**
 
 ---
 
-### Phase 3: TBD
-*To be defined based on user feedback and priorities*
+### Phase 3: Enhanced Variety
+**Goal:** Smarter variety enforcement at ingredient level
+
+**Features:**
+- Ingredient frequency tracking (not just combination-level)
+- Pairing rules (what goes well together / should be avoided)
+- Enhanced variety scoring algorithm
+
+**Dependencies:** Phase 2 helps but not required
+
+**[Phase 3 Details →](./PHASE3_ENHANCED_VARIETY.md)**
 
 ---
 
-## ✅ Success Criteria
+### Phase 4: User Identity & Families
+**Goal:** Foundation for family sharing - local identity and family management
+
+**Features:**
+- Local user identity (display name, key pair)
+- Family creation with invite code/QR/link
+- Family joining flow
+- Basic family UI (family selector, member list)
+- Role management (admin vs member)
+
+**Dependencies:** None
+
+**[Phase 4 Details →](./PHASE4_USER_IDENTITY_FAMILIES.md)**
+
+---
+
+### Phase 5: Shared Meal Logs
+**Goal:** Enable meal sharing within families
+
+**Features:**
+- Extend meal_logs with user_id, family_id, visibility
+- Privacy toggle on meal logging ("Share with family?")
+- Family meal history view
+- "Who ate what today" dashboard
+
+**Dependencies:** Phase 4
+
+**[Phase 5 Details →](./PHASE5_SHARED_MEAL_LOGS.md)**
+
+---
+
+### Phase 6: HTTP Sync
+**Goal:** Sync family data across devices via server
+
+**Features:**
+- VPS endpoints for family sync
+- Encrypted blob storage (server can't read data)
+- Sync on app open
+- Conflict resolution (last-write-wins)
+- Sync status indicator
+
+**Dependencies:** Phase 5
+
+**[Phase 6 Details →](./PHASE6_HTTP_SYNC.md)**
+
+---
+
+### Phase 7: Proposals & Voting
+**Goal:** Collaborative meal planning within families
+
+**Features:**
+- Propose meal to family ("Let's have tacos tomorrow")
+- Voting mechanism (yes/no)
+- Push notifications for new proposals
+- Proposal status tracking (open/accepted/rejected)
+
+**Dependencies:** Phase 6
+
+**[Phase 7 Details →](./PHASE7_PROPOSALS_VOTING.md)**
+
+---
+
+### Phase 8: P2P Sync (Optional)
+**Goal:** Direct device-to-device sync when on same network
+
+**Features:**
+- WebRTC integration
+- Local network discovery
+- P2P-first, HTTP-fallback logic
+- Reduced server dependency
+
+**Dependencies:** Phase 6
+
+**Note:** This phase is optional. HTTP sync covers most use cases.
+
+**[Phase 8 Details →](./PHASE8_P2P_SYNC.md)**
+
+---
+
+### Phase 9: Lunch/Dinner Expansion
+**Goal:** Expand beyond breakfast/snacks to full meal planning
+
+**Features:**
+- Different variety rules per meal type
+- More complex meal structures (main + sides)
+- Building-block rotation (pasta → rice → potato)
+- Meal type-specific ingredient filtering
+
+**Dependencies:** Phase 2 (data model), Phase 3 (enhanced variety)
+
+**[Phase 9 Details →](./PHASE9_LUNCH_DINNER_EXPANSION.md)**
+
+---
+
+## Phase Dependency Graph
+
+```
+Phase 0 (Landing)
+    ↓
+Phase 1 (Quick Wins) ──────────────────────────────┐
+    ↓                                              │
+Phase 2 (Data Model) ─────────────────────────┐    │
+    ↓                                         │    │
+Phase 3 (Enhanced Variety) ───────────────────┼────┤
+                                              │    │
+Phase 4 (User Identity) ──────────────────────┼────┤
+    ↓                                         │    │
+Phase 5 (Shared Meals) ───────────────────────┼────┤
+    ↓                                         │    │
+Phase 6 (HTTP Sync) ──────────────────────────┼────┤
+    ↓                    ↓                    │    │
+Phase 7 (Proposals)   Phase 8 (P2P) [Optional]│    │
+                                              ↓    ↓
+                              Phase 9 (Lunch/Dinner Expansion)
+```
+
+---
+
+## Success Criteria
 
 ### Epic 4 Complete When:
 
-**Feature Implementation:**
-- [ ] Selected features are fully implemented
-- [ ] Features integrate seamlessly with existing functionality
-- [ ] All new features have comprehensive tests
+**Phase Completion:**
+- [ ] Phase 0: Landing page live at saborspin.com
+- [ ] Phase 1: All quick wins implemented
+- [ ] Phase 2: Data model supports prep methods and naming
+- [ ] Phase 3: Ingredient-level variety tracking works
+- [ ] Phase 4: Users can create/join families
+- [ ] Phase 5: Meals can be shared within families
+- [ ] Phase 6: Family data syncs across devices
+- [ ] Phase 7: Families can propose and vote on meals
+- [ ] Phase 8: (Optional) P2P sync works on local network
+- [ ] Phase 9: Lunch/dinner meals fully supported
 
 **Quality:**
-- [ ] No regressions in existing features
 - [ ] All tests pass (unit + E2E)
 - [ ] TypeScript and ESLint pass
+- [ ] No regressions in existing features
 - [ ] Telemetry captures new feature usage
 
-**User Experience:**
-- [ ] Features add measurable value
-- [ ] UI remains intuitive
-- [ ] Performance is acceptable
+---
+
+## Reference Documents
+
+- [Meals Randomizer Exploration](../../product_info/meals-randomizer-exploration.md) - Full exploration with Approach 2 details
+- [Data Model Evolution](../../product_info/meals-randomizer-exploration.md#data-model-evolution-from-ingredients-to-meals) - Approach C design
+- [Potential Enhancements](../../product_info/meals-randomizer-exploration.md#potential-enhancements-post-v1) - Feature details
 
 ---
 
-## 🎓 Skills You'll Master
+## Ready to Start?
 
-- Feature prioritization
-- User-driven development
-- Analytics and data visualization
-- Mobile notifications
-- Image handling in React Native
-- Iterative product development
+**Begin with [Phase 0: Landing Page Deployment](./PHASE0_LANDING_DEPLOYMENT.md)** if not done.
+
+Then proceed to **[Phase 1: Quick Wins](./PHASE1_QUICK_WINS.md)** for immediate user value.
 
 ---
 
-## 💡 Key Decisions to Make
-
-### Feature Selection:
-- Which features provide the most value?
-- What do real users request most?
-- Which features fit the MVP scope?
-- How do features interact with each other?
-
-### Technical Decisions:
-- Charting library for analytics
-- Notification scheduling approach
-- Image storage strategy
-- Database schema updates
-
----
-
-## 📚 Resources
-
-### Feature-Specific
-- expo-notifications docs
-- expo-image-picker docs
-- react-native-chart-kit
-- victory-native
-
-### Product Development
-- Feature prioritization frameworks
-- User feedback collection
-- A/B testing concepts
-
----
-
-## 🎯 Ready to Start?
-
-**Begin with [Phase 1: Polish Features](./PHASE1_POLISH_FEATURES.md)**
-
-Choose features based on:
-1. Real user feedback
-2. Personal usage patterns
-3. Development effort vs impact
-4. Learning opportunities
-
----
-
-*Epic 4: Feature Enhancement - Building what users actually want*
+*Epic 4: From Individual Tool to Family Kitchen Platform*

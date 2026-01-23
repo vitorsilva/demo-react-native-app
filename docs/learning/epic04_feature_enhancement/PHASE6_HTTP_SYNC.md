@@ -1,0 +1,451 @@
+# Phase 6: HTTP Sync
+
+**Status:** 📋 PLANNED
+
+**Goal:** Sync family data across devices via server
+
+**Dependencies:** Phase 5 (Shared Meal Logs)
+
+---
+
+## Overview
+
+This phase enables cross-device synchronization:
+1. VPS endpoints for family data
+2. Encrypted blob storage (server can't read data)
+3. Sync on app open (on-demand, not always-on)
+4. Conflict resolution
+5. Sync status indicator
+
+This makes family sharing actually work across devices.
+
+---
+
+## Architecture
+
+```
+┌─────────────┐         ┌─────────────┐
+│  Device A   │         │  Device B   │
+│   (João)    │         │   (Maria)   │
+└──────┬──────┘         └──────┬──────┘
+       │                       │
+       │    ┌─────────────┐    │
+       └────►   VPS API   ◄────┘
+            │             │
+            │ Encrypted   │
+            │   Blobs     │
+            └─────────────┘
+```
+
+**Key Principles:**
+- **On-demand sync:** Sync when app opens or user requests
+- **Encrypted blobs:** Server stores encrypted data it cannot read
+- **Last-write-wins:** Simple conflict resolution for MVP
+- **Offline-first:** App works without network, syncs when available
+
+---
+
+## Server API
+
+### Endpoints
+
+| Method | Endpoint | Purpose |
+|--------|----------|---------|
+| `POST` | `/families/register` | Register family for sync |
+| `GET` | `/families/{code}` | Look up family by invite code |
+| `POST` | `/sync/{familyId}/push` | Upload encrypted data |
+| `GET` | `/sync/{familyId}/pull` | Download encrypted data |
+| `GET` | `/sync/{familyId}/status` | Check if updates available |
+
+### Data Structures
+
+**Family Registration:**
+
+```typescript
+// POST /families/register
+interface RegisterFamilyRequest {
+  familyId: string;
+  inviteCode: string;
+  adminPublicKey: string;  // For verification
+  createdAt: string;
+}
+
+interface RegisterFamilyResponse {
+  success: boolean;
+  familyId: string;
+}
+```
+
+**Sync Push:**
+
+```typescript
+// POST /sync/{familyId}/push
+interface SyncPushRequest {
+  familyId: string;
+  userId: string;
+  encryptedPayload: string;  // Base64 encrypted JSON
+  signature: string;          // Signed by user
+  timestamp: string;
+  version: number;            // Incremental version
+}
+
+interface SyncPushResponse {
+  success: boolean;
+  serverVersion: number;
+  conflicts?: boolean;  // True if server has newer data
+}
+```
+
+**Sync Pull:**
+
+```typescript
+// GET /sync/{familyId}/pull?since={version}
+interface SyncPullResponse {
+  familyId: string;
+  currentVersion: number;
+  payloads: {
+    userId: string;
+    encryptedPayload: string;
+    signature: string;
+    timestamp: string;
+    version: number;
+  }[];
+}
+```
+
+---
+
+## Encryption Strategy
+
+**Family Encryption Key:**
+
+```typescript
+// Generated when family is created
+// Shared with members via secure channel (e.g., in invite payload)
+async function generateFamilyKey(): Promise<string> {
+  const key = await Crypto.getRandomBytesAsync(32);
+  return base64Encode(key);
+}
+
+// Encrypt data for sync
+async function encryptForSync(data: object, familyKey: string): Promise<string> {
+  const json = JSON.stringify(data);
+  const encrypted = await encrypt(json, familyKey);  // AES-256-GCM
+  return base64Encode(encrypted);
+}
+
+// Decrypt data from sync
+async function decryptFromSync(encrypted: string, familyKey: string): Promise<object> {
+  const data = base64Decode(encrypted);
+  const decrypted = await decrypt(data, familyKey);
+  return JSON.parse(decrypted);
+}
+```
+
+**Key Distribution:**
+- Family key embedded in invite (QR code, deep link)
+- Key stored encrypted on device
+- Server never sees unencrypted key
+
+---
+
+## Sync Logic
+
+### On App Open
+
+```typescript
+async function syncOnAppOpen(): Promise<void> {
+  const families = await getMyFamilies();
+
+  for (const family of families) {
+    await syncFamily(family.id);
+  }
+}
+
+async function syncFamily(familyId: string): Promise<SyncResult> {
+  const family = await getFamily(familyId);
+  const localVersion = await getLocalSyncVersion(familyId);
+
+  // 1. Check if server has updates
+  const status = await api.get(`/sync/${familyId}/status`);
+
+  if (status.serverVersion > localVersion) {
+    // 2. Pull and merge
+    await pullAndMerge(familyId, localVersion);
+  }
+
+  // 3. Push local changes
+  await pushLocalChanges(familyId);
+
+  // 4. Update local version
+  await setLocalSyncVersion(familyId, status.serverVersion + 1);
+
+  return { success: true };
+}
+```
+
+### Pull and Merge
+
+```typescript
+async function pullAndMerge(familyId: string, sinceVersion: number): Promise<void> {
+  const response = await api.get(`/sync/${familyId}/pull?since=${sinceVersion}`);
+  const familyKey = await getFamilyKey(familyId);
+
+  for (const payload of response.payloads) {
+    // Verify signature
+    const isValid = await verifySignature(
+      payload.encryptedPayload,
+      payload.signature,
+      payload.userId
+    );
+
+    if (!isValid) {
+      console.warn('Invalid signature, skipping payload');
+      continue;
+    }
+
+    // Decrypt
+    const data = await decryptFromSync(payload.encryptedPayload, familyKey);
+
+    // Merge into local database
+    await mergeIntoLocal(data, payload.timestamp);
+  }
+}
+```
+
+### Push Local Changes
+
+```typescript
+async function pushLocalChanges(familyId: string): Promise<void> {
+  const user = await getCurrentUser();
+  const familyKey = await getFamilyKey(familyId);
+  const lastPush = await getLastPushTimestamp(familyId);
+
+  // Get changes since last push
+  const changes = await getChangesSince(familyId, lastPush);
+
+  if (changes.length === 0) return;
+
+  // Build payload
+  const payload = {
+    mealLogs: changes.filter(c => c.type === 'meal_log'),
+    ingredients: changes.filter(c => c.type === 'ingredient'),
+    // ... other entity types
+  };
+
+  // Encrypt
+  const encryptedPayload = await encryptForSync(payload, familyKey);
+
+  // Sign
+  const signature = await signData(encryptedPayload, user.privateKey);
+
+  // Push
+  await api.post(`/sync/${familyId}/push`, {
+    familyId,
+    userId: user.id,
+    encryptedPayload,
+    signature,
+    timestamp: new Date().toISOString(),
+    version: await getLocalSyncVersion(familyId) + 1,
+  });
+
+  await setLastPushTimestamp(familyId, new Date().toISOString());
+}
+```
+
+---
+
+## Conflict Resolution
+
+**Strategy: Last-Write-Wins (LWW)**
+
+For MVP, use simple timestamp-based resolution:
+
+```typescript
+async function mergeIntoLocal(data: SyncPayload, remoteTimestamp: string): Promise<void> {
+  for (const mealLog of data.mealLogs) {
+    const local = await db.query('SELECT * FROM meal_logs WHERE id = ?', [mealLog.id]);
+
+    if (!local) {
+      // New record, insert
+      await db.insert('meal_logs', mealLog);
+    } else if (new Date(mealLog.updatedAt) > new Date(local.updatedAt)) {
+      // Remote is newer, update
+      await db.update('meal_logs', mealLog, { id: mealLog.id });
+    }
+    // else: local is newer, keep local
+  }
+}
+```
+
+**Future Enhancement:** Conflict UI for manual resolution when needed.
+
+---
+
+## Sync Status Indicator
+
+**UI Component:**
+
+```
+┌─────────────────────────────────────┐
+│  ☁️ Synced                    ✓     │  ← All synced
+│  ☁️ Syncing...               🔄     │  ← In progress
+│  ☁️ Offline (3 changes pending) ⚠️  │  ← Offline with pending
+│  ☁️ Sync failed              ❌     │  ← Error state
+└─────────────────────────────────────┘
+```
+
+**Store State:**
+
+```typescript
+interface SyncState {
+  status: 'idle' | 'syncing' | 'error' | 'offline';
+  lastSyncAt: string | null;
+  pendingChanges: number;
+  error: string | null;
+}
+```
+
+---
+
+## Change Tracking
+
+**Track changes for sync:**
+
+```sql
+CREATE TABLE sync_queue (
+  id TEXT PRIMARY KEY,
+  family_id TEXT NOT NULL,
+  entity_type TEXT NOT NULL,  -- 'meal_log', 'ingredient', etc.
+  entity_id TEXT NOT NULL,
+  action TEXT NOT NULL,        -- 'create', 'update', 'delete'
+  payload TEXT NOT NULL,       -- JSON of entity
+  created_at TEXT NOT NULL,
+  synced_at TEXT              -- NULL until synced
+);
+```
+
+**On local changes:**
+
+```typescript
+async function trackChange(
+  familyId: string,
+  entityType: string,
+  entityId: string,
+  action: 'create' | 'update' | 'delete',
+  payload: object
+): Promise<void> {
+  await db.insert('sync_queue', {
+    id: Crypto.randomUUID(),
+    familyId,
+    entityType,
+    entityId,
+    action,
+    payload: JSON.stringify(payload),
+    createdAt: new Date().toISOString(),
+    syncedAt: null,
+  });
+}
+```
+
+---
+
+## Server Implementation Notes
+
+**Tech Stack Options:**
+- Node.js + Express + SQLite/PostgreSQL
+- Deno + Oak
+- Go + Chi
+- (Reuse existing VPS from telemetry)
+
+**Storage:**
+- Encrypted blobs stored as-is
+- Indexed by familyId and version
+- Old versions can be pruned after N days
+
+**Security:**
+- Rate limiting
+- Family-level access tokens (optional)
+- HTTPS only
+
+---
+
+## Implementation Order
+
+| Order | Task | Effort | Notes |
+|-------|------|--------|-------|
+| 1 | Design server API spec | ~2 hours | OpenAPI/docs |
+| 2 | Implement server endpoints | ~8 hours | Backend work |
+| 3 | Add encryption utilities | ~4 hours | Client crypto |
+| 4 | Add sync_queue table | ~1 hour | Migration |
+| 5 | Implement change tracking | ~3 hours | Store hooks |
+| 6 | Implement sync pull logic | ~4 hours | Client |
+| 7 | Implement sync push logic | ~4 hours | Client |
+| 8 | Add sync-on-app-open | ~2 hours | App lifecycle |
+| 9 | Add manual sync trigger | ~1 hour | UI button |
+| 10 | Add sync status indicator | ~3 hours | Component |
+| 11 | Testing with 2+ devices | ~4 hours | Integration |
+
+**Total Estimated Effort:** ~36 hours
+
+---
+
+## Testing Strategy
+
+### Unit Tests
+- [ ] Encryption/decryption roundtrip
+- [ ] Signature generation/verification
+- [ ] Merge logic (LWW)
+- [ ] Change tracking captures all changes
+
+### Integration Tests
+- [ ] Push syncs to server
+- [ ] Pull retrieves from server
+- [ ] Two devices see same data after sync
+- [ ] Offline changes sync when back online
+
+### E2E Tests
+- [ ] Create family on device A, join on device B
+- [ ] Log meal on A, sync, see on B
+- [ ] Offline logging syncs when online
+
+---
+
+## Files to Create/Modify
+
+**New Files (Server):**
+- `server/index.ts` - Server entry point
+- `server/routes/families.ts` - Family endpoints
+- `server/routes/sync.ts` - Sync endpoints
+- `server/db/schema.sql` - Server database
+
+**New Files (Client):**
+- `lib/sync/syncManager.ts` - Sync orchestration
+- `lib/sync/encryption.ts` - Encryption utilities
+- `lib/sync/changeTracker.ts` - Change tracking
+- `lib/sync/api.ts` - Server API client
+- `components/SyncStatusIndicator.tsx` - Status UI
+
+**Modified Files:**
+- `lib/database/migrations.ts` - sync_queue table
+- `lib/store/index.ts` - Sync state, hooks for tracking
+- `app/_layout.tsx` - Sync on app open
+- `app/(tabs)/settings.tsx` - Manual sync button
+
+---
+
+## Success Criteria
+
+Phase 6 is complete when:
+- [ ] Server endpoints deployed and working
+- [ ] Family data syncs between devices
+- [ ] Encryption protects data from server
+- [ ] Sync status visible to user
+- [ ] Offline changes sync when online
+- [ ] All tests pass
+
+---
+
+## Reference
+
+See [Approach 2: Family Kitchen - Section 2.4](../../product_info/meals-randomizer-exploration.md#24-technical-architecture-pear-lite-hybrid) for architecture design.
