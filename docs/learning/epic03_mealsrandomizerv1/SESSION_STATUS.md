@@ -245,13 +245,37 @@ All technical phases of Epic 03 are done.
 
 **Completed Phases:** 1, 2, 3, 5, 7, 8, 9, 10, 12
 
-**Next Work: Epic 04 (Scope TBD)**
+---
 
-Epic 04 will be the next focus, but the exact scope is still being refined. Potential directions include:
-- User validation (beta testing with real users)
-- Polish features (animations, haptic feedback, onboarding)
-- New features based on user feedback
-- Platform expansion (iOS, app store submission)
+## 🚀 NEXT: Epic 04 - Feature Enhancement & Family Sharing
+
+**Location:** `docs/learning/epic04_feature_enhancement/`
+
+**Overview:** Expanding SaborSpin from Individual Tool to Family Kitchen Platform
+
+**Phases (12 total, ~387 hours estimated):**
+
+| Phase | Description | Status |
+|-------|-------------|--------|
+| **Phase 0** | Landing Page Deployment | 📋 Ready - START HERE |
+| Phase 1 | Quick Wins (Polish) | 📋 Planned |
+| Phase 2 | Data Model Evolution | 📋 Planned |
+| Phase 3 | Enhanced Variety | 📋 Planned |
+| Phase 3.5 | Server Infrastructure | 📋 Planned |
+| Phase 4 | User Identity & Families | 📋 Planned |
+| Phase 5 | Shared Meal Logs | 📋 Planned |
+| Phase 6 | HTTP Sync | 📋 Planned |
+| Phase 7 | Proposals & Voting | 📋 Planned |
+| Phase 8 | P2P Sync (Optional) | 📋 Planned |
+| Phase 9 | Lunch/Dinner Expansion | 📋 Planned |
+| Phase 10 | Landing Page Update | 📋 Planned |
+
+**Start with:** [Phase 0: Landing Page Deployment](../epic04_feature_enhancement/PHASE0_LANDING_DEPLOYMENT.md)
+- Deploy saborspin.com landing page to production
+- Same model as Saberloop (cPanel VPS, FTP deployment)
+- Prerequisites: VPS access via cPanel, domain ownership
+
+**Reference:** [Epic 04 Overview](../epic04_feature_enhancement/OVERVIEW.md)
 
 **Backlog Items:**
 See `docs/learning/parking-lot/quality_enhancements.md` for tracked items.
@@ -279,6 +303,19 @@ See `docs/learning/parking-lot/quality_enhancements.md` for tracked items.
 ---
 
 ## 🔄 Change Log
+
+### 2026-01-23 (Session 25 - Epic 04 Documentation)
+- **Phase 0 Landing Page Deployment:**
+  - Rewrote PHASE0_LANDING_DEPLOYMENT.md with cPanel-specific workflow
+  - Step-by-step instructions for DNS, addon domain, FTP user, SSL
+  - Follows same pattern as Saberloop (shared VPS, FTP deployment)
+  - Infrastructure diagram showing both domains on same VPS
+  - Created PHASE0_LEARNING_NOTES.md template
+- **Session Status Updated:**
+  - Added Epic 04 overview with all 12 phases
+  - Phase 0 marked as starting point
+  - Total estimated effort: ~387 hours
+- **Ready for Epic 04 implementation**
 
 ### 2026-01-22 (Session 24 - Documentation & Color Constants)
 - **Documentation Updates:**
@@ -824,4 +861,4 @@ See `docs/learning/parking-lot/quality_enhancements.md` for tracked items.
 ---
 
 **Last Updated:** 2026-01-23
-**Next Session:** Epic 04 (scope being refined)
+**Next Session:** Epic 04 Phase 0 - Landing Page Deployment
