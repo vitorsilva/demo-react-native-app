@@ -455,49 +455,61 @@ function generateSuggestions(
 
 ## Implementation Order
 
-| Order | Task | Effort | Notes |
-|-------|------|--------|-------|
-| 1 | Run existing test suites | ~15 min | Baseline: unit, Playwright E2E, Maestro |
-| 2 | Run quality baseline | ~30 min | test:mutation, arch:test, lint:dead-code, lint:duplicates, security:scan |
-| 3 | Add ingredient frequency calculation | ~2 hours | Utility function |
-| 4 | Write unit tests for `getIngredientFrequency()` | ~45 min | Test counting logic |
-| 5 | Update variety scoring with frequency | ~2 hours | Algorithm update |
-| 6 | Write unit tests for frequency penalties | ~45 min | Test penalty thresholds |
-| 7 | Add pairing_rules table | ~1 hour | Migration |
-| 8 | Write unit tests for pairing rules migration | ~30 min | Test table creation |
-| 9 | Add pairing rules store actions | ~2 hours | Store |
-| 10 | Write unit tests for pairing rules CRUD | ~1 hour | Test add/delete/query |
-| 11 | Add pairing rules to suggestion algorithm | ~2 hours | Algorithm |
-| 12 | Write unit tests for `applyPairingRules()` | ~1 hour | Test positive/negative rules |
-| 13 | Create Pairing Rules UI | ~4 hours | New screen |
-| 14 | Write Playwright E2E tests for pairing rules | ~1.5 hours | Test add/delete rules via UI |
-| 15 | Write Maestro tests for pairing rules | ~1.5 hours | Mirror Playwright tests for mobile |
-| 16 | Update suggestion generation | ~2 hours | Integration |
-| 17 | Write Playwright E2E test for suggestions | ~1.5 hours | Test negative pairs excluded |
-| 18 | Write Maestro test for suggestions | ~1.5 hours | Mirror Playwright test for mobile |
-| 19 | Run full test suites | ~20 min | Unit + Playwright + Maestro, verify no regressions |
-| 20 | Run quality checks and compare | ~30 min | Compare to baseline; create remediation plan if worse |
-| 21 | Document learning notes | ~30 min | Capture unexpected errors, workarounds, fixes |
+| Order | Task | Type | Effort | Notes |
+|-------|------|------|--------|-------|
+| 1 | ▶️ RUN existing test suites | Testing | ~15 min | Baseline: unit, Playwright E2E, Maestro |
+| 2 | ▶️ RUN quality baseline | Quality | ~30 min | test:mutation, arch:test, lint:dead-code, lint:duplicates, security:scan |
+| 3 | Add ingredient frequency calculation | Implementation | ~2 hours | Utility function |
+| 4 | 🧪 CREATE unit tests for `getIngredientFrequency()` | Testing | ~45 min | Test counting logic |
+| 5 | Update variety scoring with frequency | Implementation | ~2 hours | Algorithm update |
+| 6 | 🧪 CREATE unit tests for frequency penalties | Testing | ~45 min | Test penalty thresholds |
+| 7 | Add pairing_rules table | Implementation | ~1 hour | Migration |
+| 8 | 🧪 CREATE unit tests for pairing rules migration | Testing | ~30 min | Test table creation |
+| 9 | Add pairing rules store actions | Implementation | ~2 hours | Store |
+| 10 | 🧪 CREATE unit tests for pairing rules CRUD | Testing | ~1 hour | Test add/delete/query |
+| 11 | Add pairing rules to suggestion algorithm | Implementation | ~2 hours | Algorithm |
+| 12 | 🧪 CREATE unit tests for `applyPairingRules()` | Testing | ~1 hour | Test positive/negative rules |
+| 13 | Create Pairing Rules UI | Implementation | ~4 hours | New screen |
+| 14 | 🧪 CREATE Playwright E2E tests for pairing rules | Testing | ~1.5 hours | Test add/delete rules via UI |
+| 15 | 🧪 CREATE Maestro tests for pairing rules | Testing | ~1.5 hours | Mirror Playwright tests for mobile |
+| 16 | Update suggestion generation | Implementation | ~2 hours | Integration |
+| 17 | 🧪 CREATE Playwright E2E test for suggestions | Testing | ~1.5 hours | Test negative pairs excluded |
+| 18 | 🧪 CREATE Maestro test for suggestions | Testing | ~1.5 hours | Mirror Playwright test for mobile |
+| 19 | ▶️ RUN full test suites | Testing | ~20 min | Unit + Playwright + Maestro, verify no regressions |
+| 20 | ▶️ RUN quality checks and compare | Quality | ~30 min | Compare to baseline; create remediation plan if worse |
+| 21 | Document learning notes | Documentation | ~30 min | Capture unexpected errors, workarounds, fixes |
 
 **Total Estimated Effort:** ~27.5 hours (including unit + Playwright + Maestro tests + quality checks)
+
+**Legend:**
+- 🧪 CREATE = Writing new tests
+- 🔄 UPDATE = Modifying existing tests
+- ▶️ RUN = Executing tests (baseline/verification)
 
 ---
 
 ## Testing Strategy
 
-### Unit Tests
+### Unit Tests (🧪 CREATE new tests)
 - [ ] `getIngredientFrequency()` returns correct count
 - [ ] Variety score penalizes frequent ingredients
 - [ ] `applyPairingRules()` filters negative pairs
 - [ ] `applyPairingRules()` boosts positive pairs
 - [ ] Full algorithm respects all factors
 
-### E2E Tests
+### E2E Tests - Playwright (🧪 CREATE new tests)
 - [ ] Suggestions avoid frequently-used ingredients
 - [ ] Can add positive pairing rule
 - [ ] Can add negative pairing rule
 - [ ] Negative pairs don't appear in suggestions
 - [ ] Can delete pairing rules
+
+### Mobile E2E Tests - Maestro (🧪 CREATE new tests)
+- [ ] Mirror all Playwright tests for mobile verification
+
+### Existing Tests (▶️ RUN for regression check)
+- Run before implementation to establish baseline
+- Run after implementation to verify no regressions
 
 ---
 

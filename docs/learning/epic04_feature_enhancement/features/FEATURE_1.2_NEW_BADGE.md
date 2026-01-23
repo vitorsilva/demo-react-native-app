@@ -89,14 +89,14 @@ function isNewCombination(ingredients: string[], history: MealLog[]): boolean {
 
 ## Testing Strategy
 
-### Unit Tests
+### Unit Tests (🧪 CREATE new tests)
 - [ ] `isNewCombination()` returns `true` for never-logged combinations
 - [ ] `isNewCombination()` returns `true` for 7+ days ago
 - [ ] `isNewCombination()` returns `false` for recent combinations (< 7 days)
 - [ ] Edge case: exactly 7 days returns `true`
 - [ ] Edge case: 6 days returns `false`
 
-### E2E Tests (Playwright)
+### E2E Tests - Playwright (🧪 CREATE new tests)
 - [ ] Badge visible on new combinations
 - [ ] Badge not visible on recent combinations
 
@@ -104,13 +104,18 @@ function isNewCombination(ingredients: string[], history: MealLog[]): boolean {
 
 ## Implementation Order
 
-| Order | Task | Effort |
-|-------|------|--------|
-| 1 | Create `isNewCombination()` utility | ~30 min |
-| 2 | Create NewBadge component | ~30 min |
-| 3 | Integrate badge into SuggestionCard | ~1 hour |
-| 4 | Write unit tests for `isNewCombination()` | ~30 min |
-| 5 | Write E2E test for badge visibility | ~30 min |
+| Order | Task | Type | Effort |
+|-------|------|------|--------|
+| 1 | Create `isNewCombination()` utility | Implementation | ~30 min |
+| 2 | Create NewBadge component | Implementation | ~30 min |
+| 3 | Integrate badge into SuggestionCard | Implementation | ~1 hour |
+| 4 | 🧪 CREATE unit tests for `isNewCombination()` | Testing | ~30 min |
+| 5 | 🧪 CREATE E2E test for badge visibility | Testing | ~30 min |
+
+**Legend:**
+- 🧪 CREATE = Writing new tests
+- 🔄 UPDATE = Modifying existing tests
+- ▶️ RUN = Executing tests (baseline/verification)
 
 ---
 

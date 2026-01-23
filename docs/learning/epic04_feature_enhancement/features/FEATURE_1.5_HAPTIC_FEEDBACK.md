@@ -148,12 +148,12 @@ const handleConfirm = () => {
 
 ## Testing Strategy
 
-### Unit Tests
+### Unit Tests (🧪 CREATE new tests)
 - [ ] Haptic utility functions call Expo Haptics correctly
 - [ ] Haptic functions respect disabled setting
 - [ ] No errors when haptics unavailable (web)
 
-### Manual Testing
+### Manual Testing (not automated)
 - [ ] Test on physical iOS device
 - [ ] Test on physical Android device
 - [ ] Verify haptic intensity feels appropriate
@@ -163,13 +163,18 @@ const handleConfirm = () => {
 
 ## Implementation Order
 
-| Order | Task | Effort |
-|-------|------|--------|
-| 1 | Create haptics utility module | ~20 min |
-| 2 | Add haptic preference to store | ~15 min |
-| 3 | Add toggle to Settings screen | ~15 min |
-| 4 | Integrate haptics into components | ~30 min |
-| 5 | Write unit tests for haptics utility | ~30 min |
+| Order | Task | Type | Effort |
+|-------|------|------|--------|
+| 1 | Create haptics utility module | Implementation | ~20 min |
+| 2 | Add haptic preference to store | Implementation | ~15 min |
+| 3 | Add toggle to Settings screen | Implementation | ~15 min |
+| 4 | Integrate haptics into components | Implementation | ~30 min |
+| 5 | 🧪 CREATE unit tests for haptics utility | Testing | ~30 min |
+
+**Legend:**
+- 🧪 CREATE = Writing new tests
+- 🔄 UPDATE = Modifying existing tests
+- ▶️ RUN = Executing tests (baseline/verification)
 
 ---
 

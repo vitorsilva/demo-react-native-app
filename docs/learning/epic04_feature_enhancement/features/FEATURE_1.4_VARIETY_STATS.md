@@ -159,7 +159,7 @@ function calculateVarietyStats(history: MealLog[], ingredients: Ingredient[]): V
 
 ## Testing Strategy
 
-### Unit Tests
+### Unit Tests (🧪 CREATE new tests)
 - [ ] `calculateVarietyStats()` returns correct unique combo count
 - [ ] `calculateVarietyStats()` returns correct most common combo
 - [ ] `calculateVarietyStats()` returns correct ingredient usage ratio
@@ -167,12 +167,12 @@ function calculateVarietyStats(history: MealLog[], ingredients: Ingredient[]): V
 - [ ] Edge case: no history returns zeros/defaults
 - [ ] Edge case: all same combo returns 1 unique, high count
 
-### E2E Tests (Playwright)
+### E2E Tests - Playwright (🧪 CREATE new tests)
 - [ ] Stats display on home screen
 - [ ] Stats update after logging a meal
 - [ ] Stats card can be collapsed/expanded
 
-### Mobile E2E Tests (Maestro)
+### Mobile E2E Tests - Maestro (🧪 CREATE new tests)
 - [ ] Stats visible on home screen on mobile
 - [ ] Stats card collapse/expand works on mobile
 
@@ -180,14 +180,19 @@ function calculateVarietyStats(history: MealLog[], ingredients: Ingredient[]): V
 
 ## Implementation Order
 
-| Order | Task | Effort |
-|-------|------|--------|
-| 1 | Create `calculateVarietyStats()` utility | ~1.5 hours |
-| 2 | Create VarietyStats component | ~1.5 hours |
-| 3 | Integrate stats card into Home screen | ~1 hour |
-| 4 | Write unit tests for `calculateVarietyStats()` | ~1 hour |
-| 5 | Write Playwright E2E test | ~1 hour |
-| 6 | Write Maestro test | ~1 hour |
+| Order | Task | Type | Effort |
+|-------|------|------|--------|
+| 1 | Create `calculateVarietyStats()` utility | Implementation | ~1.5 hours |
+| 2 | Create VarietyStats component | Implementation | ~1.5 hours |
+| 3 | Integrate stats card into Home screen | Implementation | ~1 hour |
+| 4 | 🧪 CREATE unit tests for `calculateVarietyStats()` | Testing | ~1 hour |
+| 5 | 🧪 CREATE Playwright E2E test | Testing | ~1 hour |
+| 6 | 🧪 CREATE Maestro test | Testing | ~1 hour |
+
+**Legend:**
+- 🧪 CREATE = Writing new tests
+- 🔄 UPDATE = Modifying existing tests
+- ▶️ RUN = Executing tests (baseline/verification)
 
 ---
 

@@ -30,18 +30,25 @@ These features add immediate user value without requiring database migrations or
 
 ## Implementation Order
 
-| Order | Task | Effort | Notes |
-|-------|------|--------|-------|
-| 1 | Run existing test suites | ~15 min | Baseline: unit (220+), Playwright E2E (23) |
-| 2 | Run quality baseline | ~30 min | lint, typecheck, security scan |
-| 3 | [Feature 1.5: Haptic Feedback](./features/FEATURE_1.5_HAPTIC_FEEDBACK.md) | ~1.5 hrs | Add utility, sprinkle in components |
-| 4 | [Feature 1.3: Variety Color Coding](./features/FEATURE_1.3_COLOR_CODING.md) | ~3 hrs | Suggestion card, utility function |
-| 5 | [Feature 1.2: "New!" Badge](./features/FEATURE_1.2_NEW_BADGE.md) | ~3 hrs | Suggestion card, utility function |
-| 6 | [Feature 1.1: Favorite Combinations](./features/FEATURE_1.1_FAVORITES.md) | ~8 hrs | DB migration, store, UI components |
-| 7 | [Feature 1.4: Variety Stats](./features/FEATURE_1.4_VARIETY_STATS.md) | ~7 hrs | New component, calculation logic |
-| 8 | Run full test suites | ~20 min | Verify no regressions |
-| 9 | Run quality checks and compare | ~30 min | Compare to baseline |
-| 10 | Document learning notes | ~30 min | Capture unexpected errors, workarounds |
+| Order | Task | Type | Effort | Notes |
+|-------|------|------|--------|-------|
+| 1 | ▶️ RUN existing test suites | Testing | ~15 min | Baseline: unit (220+), Playwright E2E (23) |
+| 2 | ▶️ RUN quality baseline | Quality | ~30 min | lint, typecheck, security scan |
+| 3 | [Feature 1.5: Haptic Feedback](./features/FEATURE_1.5_HAPTIC_FEEDBACK.md) | Implementation | ~1.5 hrs | Add utility, sprinkle in components |
+| 4 | [Feature 1.3: Variety Color Coding](./features/FEATURE_1.3_COLOR_CODING.md) | Implementation | ~3 hrs | Suggestion card, utility function |
+| 5 | [Feature 1.2: "New!" Badge](./features/FEATURE_1.2_NEW_BADGE.md) | Implementation | ~3 hrs | Suggestion card, utility function |
+| 6 | [Feature 1.1: Favorite Combinations](./features/FEATURE_1.1_FAVORITES.md) | Implementation | ~8 hrs | DB migration, store, UI components |
+| 7 | [Feature 1.4: Variety Stats](./features/FEATURE_1.4_VARIETY_STATS.md) | Implementation | ~7 hrs | New component, calculation logic |
+| 8 | ▶️ RUN full test suites | Testing | ~20 min | Verify no regressions |
+| 9 | ▶️ RUN quality checks and compare | Quality | ~30 min | Compare to baseline |
+| 10 | Document learning notes | Documentation | ~30 min | Capture unexpected errors, workarounds |
+
+**Legend:**
+- 🧪 CREATE = Writing new tests
+- 🔄 UPDATE = Modifying existing tests
+- ▶️ RUN = Executing tests (baseline/verification)
+
+> **Note:** Each feature above includes its own 🧪 CREATE test tasks. See individual feature docs for details.
 
 ---
 
@@ -82,21 +89,26 @@ See [Feature 1.1: Favorites](./features/FEATURE_1.1_FAVORITES.md#database-migrat
 
 ## Testing Strategy
 
-### Unit Tests
+### Unit Tests (🧪 CREATE new tests)
 - `isNewCombination()` returns correct boolean
 - `getVarietyColor()` returns correct color
 - `calculateVarietyStats()` returns correct stats
 - Favorite toggle updates state correctly
 - Haptic utility functions work correctly
 
-### E2E Tests (Playwright)
+### E2E Tests - Playwright (🧪 CREATE new tests)
 - Can mark a combination as favorite
 - Favorites appear in filtered history
 - Stats display on home screen
 - Color coding visible on suggestion cards
 
-### Mobile E2E Tests (Maestro)
+### Mobile E2E Tests - Maestro (🧪 CREATE new tests)
 - Mirror Playwright tests for mobile verification
+
+### Existing Tests (▶️ RUN for regression check)
+- Unit tests: 220+ existing tests
+- E2E tests: 23 Playwright tests
+- Run before and after implementation to verify no regressions
 
 ---
 

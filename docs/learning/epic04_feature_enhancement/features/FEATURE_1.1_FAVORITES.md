@@ -178,17 +178,17 @@ score += favoriteBonus;
 
 ## Testing Strategy
 
-### Unit Tests
+### Unit Tests (🧪 CREATE new tests)
 - [ ] Favorite toggle updates state correctly
 - [ ] Algorithm boost applies to favorites
 - [ ] Filter correctly shows only favorites
 
-### E2E Tests (Playwright)
+### E2E Tests - Playwright (🧪 CREATE new tests)
 - [ ] Can mark a combination as favorite
 - [ ] Favorites appear in filtered history
 - [ ] Favorite persists after app restart
 
-### Mobile E2E Tests (Maestro)
+### Mobile E2E Tests - Maestro (🧪 CREATE new tests)
 - [ ] Can mark a combination as favorite on mobile
 - [ ] Favorites filter works on mobile
 
@@ -196,15 +196,20 @@ score += favoriteBonus;
 
 ## Implementation Order
 
-| Order | Task | Effort |
-|-------|------|--------|
-| 1 | Database migration for `is_favorite` column | ~30 min |
-| 2 | Add favorite actions to Zustand store | ~1 hour |
-| 3 | Add favorite icon to SuggestionCard | ~1 hour |
-| 4 | Add favorites filter to History screen | ~1.5 hours |
-| 5 | Write unit tests for favorites | ~1 hour |
-| 6 | Write Playwright E2E tests | ~1.5 hours |
-| 7 | Write Maestro tests | ~1.5 hours |
+| Order | Task | Type | Effort |
+|-------|------|------|--------|
+| 1 | Database migration for `is_favorite` column | Implementation | ~30 min |
+| 2 | Add favorite actions to Zustand store | Implementation | ~1 hour |
+| 3 | Add favorite icon to SuggestionCard | Implementation | ~1 hour |
+| 4 | Add favorites filter to History screen | Implementation | ~1.5 hours |
+| 5 | 🧪 CREATE unit tests for favorites | Testing | ~1 hour |
+| 6 | 🧪 CREATE Playwright E2E tests | Testing | ~1.5 hours |
+| 7 | 🧪 CREATE Maestro tests | Testing | ~1.5 hours |
+
+**Legend:**
+- 🧪 CREATE = Writing new tests
+- 🔄 UPDATE = Modifying existing tests
+- ▶️ RUN = Executing tests (baseline/verification)
 
 ---
 

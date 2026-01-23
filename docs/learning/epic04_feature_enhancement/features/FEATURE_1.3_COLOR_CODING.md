@@ -104,7 +104,7 @@ Colors should not be the only indicator. Consider adding:
 
 ## Testing Strategy
 
-### Unit Tests
+### Unit Tests (🧪 CREATE new tests)
 - [ ] `getVarietyColor()` returns `'green'` for never-logged combinations
 - [ ] `getVarietyColor()` returns `'green'` for 3+ days ago
 - [ ] `getVarietyColor()` returns `'yellow'` for 1-2 days ago
@@ -112,7 +112,7 @@ Colors should not be the only indicator. Consider adding:
 - [ ] Edge case: exactly 3 days returns `'green'`
 - [ ] Edge case: exactly 1 day returns `'yellow'`
 
-### E2E Tests (Playwright)
+### E2E Tests - Playwright (🧪 CREATE new tests)
 - [ ] Color indicator visible on suggestion cards
 - [ ] Correct color based on recency
 
@@ -120,13 +120,18 @@ Colors should not be the only indicator. Consider adding:
 
 ## Implementation Order
 
-| Order | Task | Effort |
-|-------|------|--------|
-| 1 | Create `getVarietyColor()` utility | ~30 min |
-| 2 | Add color indicator to SuggestionCard | ~1 hour |
-| 3 | Add accessibility support (shapes/labels) | ~30 min |
-| 4 | Write unit tests for `getVarietyColor()` | ~30 min |
-| 5 | Write E2E test for color visibility | ~30 min |
+| Order | Task | Type | Effort |
+|-------|------|------|--------|
+| 1 | Create `getVarietyColor()` utility | Implementation | ~30 min |
+| 2 | Add color indicator to SuggestionCard | Implementation | ~1 hour |
+| 3 | Add accessibility support (shapes/labels) | Implementation | ~30 min |
+| 4 | 🧪 CREATE unit tests for `getVarietyColor()` | Testing | ~30 min |
+| 5 | 🧪 CREATE E2E test for color visibility | Testing | ~30 min |
+
+**Legend:**
+- 🧪 CREATE = Writing new tests
+- 🔄 UPDATE = Modifying existing tests
+- ▶️ RUN = Executing tests (baseline/verification)
 
 ---
 
