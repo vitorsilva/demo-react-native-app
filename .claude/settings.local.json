@@ -97,7 +97,9 @@
       "Bash(python:*)",
       "Bash(npx jscpd:*)",
       "Bash(timeout:*)",
-      "Bash(npm run security:scan:*)"
+      "Bash(npm run security:scan:*)",
+      "Bash(nslookup:*)",
+      "Bash(npm run deploy:landing:*)"
     ],
     "deny": [],
     "ask": []
