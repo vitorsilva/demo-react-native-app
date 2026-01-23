@@ -1,9 +1,9 @@
 # Phase 6: Validation & Iteration
 
-**Epic:** 3 - Meals Randomizer V1
+**Epic:** 4 - Feature Enhancement
 **Status:** Not Started
 **Estimated Time:** Ongoing (3-4 weeks recommended)
-**Prerequisites:** Phases 1-5 complete
+**Prerequisites:** Epic 3 complete
 
 ---
 

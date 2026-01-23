@@ -28,13 +28,43 @@ Epic 3 established the production-ready foundation. Epic 4 focuses on enhancing 
 - Branding & identity (SaborSpin)
 - Project structure & documentation
 - Telemetry expansion
-- Validation & iteration
+- Internationalization (i18n)
+- Mutation testing
+- Architecture testing
+- Code quality tools
 
-**Now it's time to add features that users want.**
+**Now it's time to validate with users and add features they want.**
 
 ---
 
 ## 🗺️ Phase Overview
+
+### Phase 6: Validation & Iteration (3-4 weeks, ongoing)
+**Goal:** Deploy to real users and iterate based on feedback
+
+**⚠️ Moved from Epic 3** - This phase validates the production-ready app with real users.
+
+Tasks:
+- Distribute APK to 5-10 beta testers
+- Monitor usage via telemetry
+- Collect user feedback
+- Fix bugs based on real usage
+- Iterate through multiple versions (V1.0.0 → V1.1.0 → V1.2.0)
+- Reflect on entire learning journey
+
+**Why this matters:** Real user validation transforms the app from "technically complete" to "user-validated product."
+
+**You'll learn:**
+- Beta testing for mobile apps
+- APK distribution
+- User feedback collection
+- Telemetry analysis with real data
+- Iterative development
+- Data-driven decision making
+
+**[Start Phase 6 →](./PHASE6_VALIDATION.md)** | **[Quick Summary →](./PHASE6_SUMMARY.md)**
+
+---
 
 ### Phase 1: Polish Features (2-4 hours per feature)
 **Goal:** Implement high-impact features to enhance the user experience
