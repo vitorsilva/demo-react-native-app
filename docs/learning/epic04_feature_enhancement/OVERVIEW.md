@@ -1,10 +1,14 @@
 # Epic 4: Feature Enhancement
 
+**Status:** 🔄 SCOPE BEING REFINED
+
 ## 🎯 What This Epic Is About
 
 **Expanding SaborSpin with User-Requested Features**
 
 Epic 3 established the production-ready foundation. Epic 4 focuses on enhancing the app with features that add real value to users based on feedback and real-world usage.
+
+> **Note:** The exact scope of this epic is still being refined. The phases below represent potential directions, not a finalized plan.
 
 ---
 
