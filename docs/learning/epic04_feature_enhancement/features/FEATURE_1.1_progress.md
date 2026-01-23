@@ -221,3 +221,29 @@
 - ✅ Maestro test files ready for mobile testing
 
 **Status:** COMPLETE
+
+### Task 9: Get and Save screenshots of screens with new / changed UI elements ✅
+
+**Implementation:**
+- Leveraged existing screenshots from Playwright E2E test execution
+- Organized key screenshots into documentation folder `docs/product_info/mockups/favorites_feature/`
+- Created README.md documentation describing each screenshot
+
+**Files Created:**
+- `docs/product_info/mockups/favorites_feature/README.md` - Screenshot documentation
+- `docs/product_info/mockups/favorites_feature/suggestion_card_with_favorite_button.png` - Suggestions screen with favorite button
+- `docs/product_info/mockups/favorites_feature/history_screen_all_filter.png` - History with "All" filter
+- `docs/product_info/mockups/favorites_feature/history_screen_favorites_filter.png` - History with "Favorites" filter
+- `docs/product_info/mockups/favorites_feature/history_screen_empty_favorites.png` - Empty favorites state
+
+**Screenshots Document:**
+1. **Suggestion Card** - Shows the new favorite button (☆) next to the "Select" button
+2. **History All Filter** - Shows filter tabs and favorite indicators on each item
+3. **History Favorites Filter** - Shows only favorited meals when filter is active
+4. **Empty Favorites** - Shows empty state message when no favorites exist
+
+**Testing:**
+- All 238 unit tests pass
+- Linting: 0 errors, 5 pre-existing warnings
+
+**Status:** COMPLETE
