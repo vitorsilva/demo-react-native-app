@@ -200,7 +200,7 @@ score += favoriteBonus;
 |-------|------|------|--------|--------|
 | 1 | Database migration for `is_favorite` column | Implementation | ~30 min | done |
 | 2 | Add favorite actions to Zustand store | Implementation | ~1 hour | done |
-| 3 | Add favorite icon to SuggestionCard | Implementation | ~1 hour | not started |
+| 3 | Add favorite icon to SuggestionCard | Implementation | ~1 hour | done |
 | 4 | Add favorites filter to History screen | Implementation | ~1.5 hours | not started |
 | 5 | 🧪 CREATE unit tests for favorites | Testing | ~1 hour | not started |
 | 6 | 🧪 CREATE Playwright E2E tests | Testing | ~1.5 hours | not started |

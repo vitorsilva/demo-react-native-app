@@ -65,3 +65,49 @@ isFavorite: boolean  // true or false
 **Testing:**
 - All 220 unit tests pass
 - Linting: 0 errors, 5 pre-existing warnings
+
+## Suggestion Card Favorites
+
+### Task 3 - Add favorite icon to SuggestionCard
+
+**Implementation Details:**
+- Modified `app/suggestions/[mealType].tsx` to add favorite functionality to suggestion cards
+- Added necessary store selectors for meal logs and favorite toggling
+- Created helper function to check if a combination is favorited by comparing ingredient IDs
+- Implemented dual-mode favorite handling:
+  - If combination exists as meal log: toggle its favorite status
+  - If combination doesn't exist: create new meal log with favorite=true
+
+**Key Learnings:**
+- **Ingredient Matching Pattern:** Used sorted ingredient ID arrays joined as strings for comparison
+  ```typescript
+  const sortedIds = [...ingredientIds].sort().join(',');
+  ```
+- **Dual-mode Favoriting:** Suggestions can be favorited even if not yet logged as a meal
+- **State Reload Pattern:** After toggling favorite, must reload meal logs to update UI
+- **UI Component Pattern:** Grouped action buttons in a `cardActions` container with flexbox
+
+**Architecture Decision:**
+- Favoriting a suggestion creates a meal log with current timestamp
+- This allows users to build a favorites library from suggestions
+- Favorite status persists and is checked against all existing meal logs
+
+**UI Implementation:**
+- Used Unicode emoji stars: ⭐ (filled) and ☆ (outline)
+- Circular button with semi-transparent background for contrast
+- Positioned next to Select button using flexbox gap
+- Added haptic feedback for better UX
+
+**No Issues Encountered:**
+- Implementation was straightforward
+- All 220 existing tests pass without modification
+- No linting errors
+
+**Testing:**
+- All 220 unit tests pass
+- Linting: 0 errors, 5 pre-existing warnings
+- Manual testing confirms:
+  - Favorite icon appears on all suggestion cards
+  - Tapping toggles favorite status correctly
+  - Status persists across page navigations
+  - Haptic feedback works on favorite toggle

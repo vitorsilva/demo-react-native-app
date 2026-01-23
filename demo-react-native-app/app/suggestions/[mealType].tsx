@@ -53,6 +53,9 @@ export default function SuggestionsScreen() {
   const isDatabaseReady = useStore((state) => state.isDatabaseReady);
   const mealTypes = useStore((state) => state.mealTypes);
   const loadMealTypes = useStore((state) => state.loadMealTypes);
+  const mealLogs = useStore((state) => state.mealLogs);
+  const loadMealLogs = useStore((state) => state.loadMealLogs);
+  const toggleMealLogFavorite = useStore((state) => state.toggleMealLogFavorite);
 
   // Modal state
   const [modalVisible, setModalVisible] = useState(false);
@@ -102,6 +105,9 @@ export default function SuggestionsScreen() {
         return;
       }
 
+      // Load meal logs to check for favorites
+      await loadMealLogs();
+
       // Mark as generated to prevent re-runs
       hasGeneratedRef.current = true;
 
@@ -118,14 +124,39 @@ export default function SuggestionsScreen() {
     loadIngredients,
     mealTypes.length,
     loadMealTypes,
+    loadMealLogs,
   ]);
 
+  // Helper to check if a combination is favorited
+  const isCombinationFavorited = (ingredientIds: string[]): { isFavorite: boolean; mealLogId?: string } => {
+    // Sort ingredient IDs for comparison
+    const sortedIds = [...ingredientIds].sort().join(',');
+
+    // Find a meal log with matching ingredients and favorite status
+    const favoritedLog = mealLogs.find((log) => {
+      const logIngredientIds = [...log.ingredients].sort().join(',');
+      return logIngredientIds === sortedIds && log.isFavorite;
+    });
+
+    return {
+      isFavorite: !!favoritedLog,
+      mealLogId: favoritedLog?.id,
+    };
+  };
+
   // Transform store data to UI format
-  const suggestions = suggestedCombinations.map((ingredientArray, index) => ({
-    id: String(index),
-    ingredients: ingredientArray,
-    imageUrl: SUGGESTION_IMAGES[index % SUGGESTION_IMAGES.length],
-  }));
+  const suggestions = suggestedCombinations.map((ingredientArray, index) => {
+    const ingredientIds = ingredientArray.map((i) => i.id);
+    const favoriteStatus = isCombinationFavorited(ingredientIds);
+
+    return {
+      id: String(index),
+      ingredients: ingredientArray,
+      imageUrl: SUGGESTION_IMAGES[index % SUGGESTION_IMAGES.length],
+      isFavorite: favoriteStatus.isFavorite,
+      mealLogId: favoriteStatus.mealLogId,
+    };
+  });
 
   const handleBackPress = () => {
     router.back();
@@ -176,6 +207,36 @@ export default function SuggestionsScreen() {
 
     // Generate new suggestions with meal type config
     generateMealSuggestions(mealType);
+  };
+
+  const handleToggleFavorite = async (suggestionId: string) => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+    const suggestion = suggestions.find((s) => s.id === suggestionId);
+
+    if (!suggestion) return;
+
+    // Track user action
+    logger.action('toggle_favorite_from_suggestion', {
+      mealType,
+      isFavorite: !suggestion.isFavorite,
+    });
+
+    if (suggestion.mealLogId) {
+      // Already exists as a meal log, just toggle its favorite status
+      await toggleMealLogFavorite(suggestion.mealLogId);
+    } else {
+      // Create a new meal log with favorite status
+      const mealTypeName = currentMealType?.name.toLowerCase() || mealType || 'meal';
+      await logMeal({
+        date: new Date().toISOString(),
+        ingredients: suggestion.ingredients.map((i) => i.id),
+        mealType: mealTypeName,
+        isFavorite: true,
+      });
+    }
+
+    // Reload meal logs to update favorite status
+    await loadMealLogs();
   };
 
   return (
@@ -236,13 +297,24 @@ export default function SuggestionsScreen() {
                       <Text style={styles.cardTitle}>
                         {suggestion.ingredients.map((i) => i.name).join(' + ')}
                       </Text>
-                      <TouchableOpacity
-                        style={styles.selectButton}
-                        onPress={() => handleSelectSuggestion(suggestion.id)}
-                        testID={`select-button-${suggestion.id}`}
-                      >
-                        <Text style={styles.selectButtonText}>{t('actions.accept')}</Text>
-                      </TouchableOpacity>
+                      <View style={styles.cardActions}>
+                        <TouchableOpacity
+                          style={styles.selectButton}
+                          onPress={() => handleSelectSuggestion(suggestion.id)}
+                          testID={`select-button-${suggestion.id}`}
+                        >
+                          <Text style={styles.selectButtonText}>{t('actions.accept')}</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                          style={styles.favoriteButton}
+                          onPress={() => handleToggleFavorite(suggestion.id)}
+                          testID={`favorite-button-${suggestion.id}`}
+                        >
+                          <Text style={styles.favoriteIcon}>
+                            {suggestion.isFavorite ? '⭐' : '☆'}
+                          </Text>
+                        </TouchableOpacity>
+                      </View>
                     </View>
                   </LinearGradient>
                 ) : (
@@ -252,13 +324,24 @@ export default function SuggestionsScreen() {
                       <Text style={styles.cardTitle}>
                         {suggestion.ingredients.map((i) => i.name).join(' + ')}
                       </Text>
-                      <TouchableOpacity
-                        style={styles.selectButton}
-                        onPress={() => handleSelectSuggestion(suggestion.id)}
-                        testID={`select-button-${suggestion.id}`}
-                      >
-                        <Text style={styles.selectButtonText}>{t('actions.accept')}</Text>
-                      </TouchableOpacity>
+                      <View style={styles.cardActions}>
+                        <TouchableOpacity
+                          style={styles.selectButton}
+                          onPress={() => handleSelectSuggestion(suggestion.id)}
+                          testID={`select-button-${suggestion.id}`}
+                        >
+                          <Text style={styles.selectButtonText}>{t('actions.accept')}</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                          style={styles.favoriteButton}
+                          onPress={() => handleToggleFavorite(suggestion.id)}
+                          testID={`favorite-button-${suggestion.id}`}
+                        >
+                          <Text style={styles.favoriteIcon}>
+                            {suggestion.isFavorite ? '⭐' : '☆'}
+                          </Text>
+                        </TouchableOpacity>
+                      </View>
                     </View>
                   </View>
                 )}
@@ -373,6 +456,11 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     flex: 1,
   },
+  cardActions: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+  },
   selectButton: {
     backgroundColor: '#4a96e3',
     borderRadius: 8,
@@ -383,6 +471,17 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     fontSize: 14,
     fontWeight: 'bold',
+  },
+  favoriteButton: {
+    width: 40,
+    height: 40,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 20,
+    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+  },
+  favoriteIcon: {
+    fontSize: 20,
   },
   // Generate button
   generateButton: {

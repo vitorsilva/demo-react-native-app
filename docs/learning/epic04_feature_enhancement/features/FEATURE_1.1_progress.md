@@ -39,3 +39,33 @@
 - Linting passed (5 pre-existing warnings, 0 errors)
 
 **Status:** COMPLETE
+
+### Task 3: Add favorite icon to SuggestionCard ✅
+
+**Implementation:**
+- Modified `app/suggestions/[mealType].tsx` to add favorite functionality:
+  - Added store selectors for `mealLogs`, `loadMealLogs`, and `toggleMealLogFavorite`
+  - Created `isCombinationFavorited()` helper function to check if a suggestion is favorited
+  - Updated suggestions transformation to include `isFavorite` and `mealLogId` properties
+  - Added `handleToggleFavorite()` function that:
+    - Toggles existing meal log favorite status if it exists
+    - Creates new meal log with favorite=true if it doesn't exist
+    - Reloads meal logs to update UI state
+  - Added favorite button (⭐/☆) to suggestion card UI next to Select button
+  - Created `cardActions` container to group Select and Favorite buttons
+  - Added haptic feedback on favorite toggle
+
+**Files Modified:**
+- `demo-react-native-app/app/suggestions/[mealType].tsx` - Added favorite button and logic
+
+**UI Changes:**
+- Each suggestion card now displays a star icon (☆ unfavorited, ⭐ favorited)
+- Favorite button appears next to Select button in a circular container
+- Tapping favorite toggles the favorite status with haptic feedback
+- Favorite status persists across app sessions
+
+**Testing:**
+- All 220 unit tests pass
+- Linting passed (5 pre-existing warnings, 0 errors)
+
+**Status:** COMPLETE
