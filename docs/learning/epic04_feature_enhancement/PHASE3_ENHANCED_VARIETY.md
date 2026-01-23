@@ -453,6 +453,52 @@ function generateSuggestions(
 
 ---
 
+## Deployment Strategy
+
+### Release Type
+**Standard Release** - Client-only algorithm improvements, no server dependencies
+
+### Pre-Deployment Checklist
+- [ ] All unit tests passing
+- [ ] All E2E tests passing (Playwright + Maestro)
+- [ ] Variety algorithm tested with various data sets
+- [ ] Pairing rules UI tested
+- [ ] Quality baseline comparison completed
+- [ ] Manual QA on physical device
+- [ ] Version bump in `app.json`
+
+### Build & Release
+```bash
+# 1. Bump version
+npm version patch  # or minor for significant variety improvements
+
+# 2. Build preview APK
+eas build --platform android --profile preview
+
+# 3. Test scenarios:
+#    - New user with no history
+#    - User with extensive history
+#    - Pairing rule creation/deletion
+
+# 4. Build production release
+eas build --platform android --profile production
+
+# 5. Submit to Play Store
+eas submit --platform android
+```
+
+### Rollback Plan
+- Revert to previous APK version
+- New frequency tracking data is additive, won't break older version
+- Pairing rules stored in new table, ignored by older versions
+
+### Post-Deployment
+- Monitor Sentry for algorithm errors
+- Check telemetry for variety score improvements
+- Track pairing rule feature adoption
+
+---
+
 ## Files to Create/Modify
 
 **New Files:**

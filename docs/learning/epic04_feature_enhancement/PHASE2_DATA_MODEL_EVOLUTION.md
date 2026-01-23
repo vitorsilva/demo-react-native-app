@@ -475,6 +475,58 @@ function formatMealDisplay(meal: MealLog, components: MealComponent[], ingredien
 
 ---
 
+## Deployment Strategy
+
+### Release Type
+**Migration Release** - Database schema changes require careful upgrade path
+
+### Pre-Deployment Checklist
+- [ ] All unit tests passing
+- [ ] All E2E tests passing (Playwright + Maestro)
+- [ ] Migration tested on fresh install
+- [ ] Migration tested on existing data (upgrade path)
+- [ ] Quality baseline comparison completed
+- [ ] Manual QA on physical device
+- [ ] Version bump in `app.json`
+
+### Migration Safety
+```typescript
+// Migration is additive - new tables/columns only
+// Existing data continues to work
+// Background migration converts meal_logs to component format
+```
+
+### Build & Release
+```bash
+# 1. Bump version (minor - data model change)
+npm version minor
+
+# 2. Build preview APK
+eas build --platform android --profile preview
+
+# 3. Test migration scenarios:
+#    - Fresh install
+#    - Upgrade from previous version with existing data
+#    - Upgrade with large history (100+ meals)
+
+# 4. Build production release
+eas build --platform android --profile production
+
+# 5. Staged rollout recommended (10% → 50% → 100%)
+```
+
+### Rollback Plan
+- New tables/columns are additive - old version ignores them
+- If critical issue: revert APK, new data in components table orphaned but not lost
+- Consider keeping `ingredients` column as backup during transition
+
+### Post-Deployment
+- Monitor migration success rate via telemetry
+- Check Sentry for migration errors
+- Verify meal history displays correctly after upgrade
+
+---
+
 ## Files to Create/Modify
 
 **New Files:**

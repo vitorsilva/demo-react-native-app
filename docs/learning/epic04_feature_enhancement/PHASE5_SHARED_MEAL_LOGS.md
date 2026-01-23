@@ -541,6 +541,56 @@ interface UserPreferences {
 
 ---
 
+## Deployment Strategy
+
+### Release Type
+**Feature Extension** - Extends Phase 4 family system with meal sharing
+
+### Prerequisites
+- Phase 4 deployed and stable
+- Users have created families in production
+
+### Pre-Deployment Checklist
+- [ ] All unit tests passing
+- [ ] All E2E tests passing (Playwright + Maestro)
+- [ ] Privacy toggle tested
+- [ ] Family history view tested
+- [ ] Quality baseline comparison completed
+- [ ] Manual QA with multiple family members
+- [ ] Version bump in `app.json`
+
+### Build & Release
+```bash
+# 1. Bump version
+npm version patch
+
+# 2. Build preview APK
+eas build --platform android --profile preview
+
+# 3. Test scenarios:
+#    - Log meal as personal (not shared)
+#    - Log meal as family (shared)
+#    - View family history
+#    - Day summary with multiple members
+
+# 4. Build production release
+eas build --platform android --profile production
+
+# 5. Release (users need Phase 4 families to use)
+```
+
+### Rollback Plan
+- Revert to Phase 4 APK
+- Shared meal data in extended columns, ignored by older version
+- Personal meals continue to work
+
+### Post-Deployment
+- Monitor sharing adoption rate
+- Track privacy toggle usage (personal vs family default)
+- Check family history view performance
+
+---
+
 ## Files to Create/Modify
 
 **New Files:**

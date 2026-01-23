@@ -657,6 +657,85 @@ async function sendProposalNotification(
 
 ---
 
+## Deployment Strategy
+
+### Release Type
+**Coordinated Release** - Server + client + push notifications
+
+### Prerequisites
+- Phase 6 HTTP sync deployed and stable
+- Push notification credentials configured (FCM/APNs)
+
+### Deployment Order
+1. **Server:** Deploy proposal endpoints
+2. **Server:** Configure push notification service
+3. **Client:** Deploy with proposal UI and notifications
+4. **Test:** End-to-end proposal flow
+
+### Server Deployment
+```bash
+# On VPS
+cd /var/www/saborspin-api
+
+# 1. Deploy proposal endpoints
+git pull origin main
+
+# 2. Configure push notifications
+# Set FCM_SERVER_KEY in environment
+
+# 3. Run migrations
+npm run migrate
+
+# 4. Restart service
+pm2 restart saborspin-api
+
+# 5. Verify endpoints
+curl https://api.saborspin.com/proposals/health
+```
+
+### Pre-Deployment Checklist
+- [ ] Server proposal endpoints deployed
+- [ ] Push notification service configured
+- [ ] All unit tests passing
+- [ ] All E2E tests passing (Playwright + Maestro)
+- [ ] Proposal flow tested end-to-end
+- [ ] Notifications tested on physical devices
+- [ ] Quality baseline comparison completed
+- [ ] Version bump in `app.json`
+
+### Client Build & Release
+```bash
+# 1. Bump version
+npm version patch
+
+# 2. Build preview APK
+eas build --platform android --profile preview
+
+# 3. Test scenarios:
+#    - Create proposal
+#    - Vote on proposal
+#    - Receive notification for new proposal
+#    - Proposal acceptance flow
+
+# 4. Build production release
+eas build --platform android --profile production
+
+# 5. Release
+```
+
+### Rollback Plan
+- **Client:** Revert APK, proposal features hidden
+- **Server:** Disable proposal endpoints
+- Existing proposals preserved in database
+
+### Post-Deployment
+- Monitor proposal creation rate
+- Track voting participation
+- Check notification delivery rates
+- Monitor Sentry for errors
+
+---
+
 ## Files to Create/Modify
 
 **New Files:**

@@ -464,6 +464,45 @@ const haptics = {
 
 ---
 
+## Deployment Strategy
+
+### Release Type
+**Standard Release** - Client-only features, no server dependencies
+
+### Pre-Deployment Checklist
+- [ ] All unit tests passing
+- [ ] All E2E tests passing (Playwright + Maestro)
+- [ ] Quality baseline comparison completed
+- [ ] Manual QA on physical device
+- [ ] Version bump in `app.json`
+
+### Build & Release
+```bash
+# 1. Bump version
+npm version patch  # or minor for feature release
+
+# 2. Build preview APK for testing
+eas build --platform android --profile preview
+
+# 3. Test on physical devices
+
+# 4. Build production release
+eas build --platform android --profile production
+
+# 5. Submit to Play Store (when ready)
+eas submit --platform android
+```
+
+### Rollback Plan
+- Revert to previous APK version via Play Store rollback
+- No database migrations to revert (only adds nullable column)
+
+### Post-Deployment
+- Monitor Sentry for new errors
+- Check telemetry for feature adoption (favorites usage, haptic toggles)
+
+---
+
 ## Files to Create/Modify
 
 **New Files:**

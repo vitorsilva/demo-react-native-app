@@ -548,6 +548,84 @@ zeroconf.scan('saborspin', 'tcp', 'local.');
 
 ---
 
+## Deployment Strategy
+
+### Release Type
+**Optional Feature Release** - P2P enhances existing HTTP sync (not required)
+
+### Prerequisites
+- Phase 6 HTTP sync deployed and stable
+- HTTP sync serves as fallback
+
+### Deployment Order
+1. **Server:** Deploy WebRTC signaling server
+2. **Client:** Deploy with P2P capabilities (feature flagged)
+3. **Monitor:** P2P success rates vs HTTP fallback
+
+### Server Deployment
+```bash
+# On VPS
+cd /var/www/saborspin-api
+
+# 1. Deploy signaling server
+git pull origin main
+
+# 2. Start WebSocket server
+pm2 start signaling.ts --name saborspin-signaling
+
+# 3. Verify signaling
+wscat -c wss://api.saborspin.com/signaling
+```
+
+### Pre-Deployment Checklist
+- [ ] Signaling server deployed
+- [ ] All unit tests passing
+- [ ] All E2E tests passing (Playwright + Maestro)
+- [ ] P2P tested on same WiFi network
+- [ ] P2P tested across networks (should fallback to HTTP)
+- [ ] HTTP fallback verified
+- [ ] Quality baseline comparison completed
+- [ ] Version bump in `app.json`
+
+### Feature Flag
+```typescript
+// P2P is opt-in, HTTP sync always available
+const ENABLE_P2P = process.env.EXPO_PUBLIC_ENABLE_P2P === 'true';
+```
+
+### Client Build & Release
+```bash
+# 1. Bump version
+npm version patch
+
+# 2. Build preview APK
+eas build --platform android --profile preview
+
+# 3. Test scenarios:
+#    - Two devices on same WiFi (P2P should work)
+#    - One device on cellular (should fallback to HTTP)
+#    - Reconnection after disconnect
+#    - mDNS discovery (if implemented)
+
+# 4. Build production release
+eas build --platform android --profile production
+
+# 5. Gradual rollout (feature is optional)
+```
+
+### Rollback Plan
+- P2P is optional - disable feature flag, HTTP sync continues
+- **Client:** Revert APK, HTTP-only sync
+- **Server:** Disable signaling server, HTTP continues working
+
+### Post-Deployment
+- Monitor P2P connection success rate
+- Track P2P vs HTTP sync usage
+- Check latency improvements with P2P
+- Monitor Sentry for WebRTC errors
+
+---
+
 ## Files to Create/Modify
 
 **New Files:**

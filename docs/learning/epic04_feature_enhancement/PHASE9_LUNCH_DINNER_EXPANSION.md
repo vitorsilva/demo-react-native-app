@@ -702,6 +702,69 @@ Add filters for:
 
 ---
 
+## Deployment Strategy
+
+### Release Type
+**Major Feature Release** - Expands app from breakfast/snacks to full meal planning
+
+### Prerequisites
+- Phase 2 (Data Model) deployed for flexible meals
+- Phase 3 (Enhanced Variety) deployed for rotation logic
+
+### Pre-Deployment Checklist
+- [ ] All unit tests passing
+- [ ] All E2E tests passing (Playwright + Maestro)
+- [ ] Lunch/dinner suggestions tested
+- [ ] Main + sides structure tested
+- [ ] Base rotation (pasta/rice/potato) tested
+- [ ] Existing breakfast/snack functionality unaffected
+- [ ] Quality baseline comparison completed
+- [ ] Manual QA on physical device
+- [ ] Version bump in `app.json`
+
+### Build & Release
+```bash
+# 1. Bump version (minor - major feature expansion)
+npm version minor
+
+# 2. Build preview APK
+eas build --platform android --profile preview
+
+# 3. Test scenarios:
+#    - Generate lunch suggestions
+#    - Generate dinner suggestions
+#    - Main + 2 sides structure
+#    - Base rotation across days
+#    - Named meals for lunch/dinner
+#    - Breakfast/snack still works
+
+# 4. Build production release
+eas build --platform android --profile production
+
+# 5. Submit to Play Store
+eas submit --platform android
+```
+
+### Migration
+```typescript
+// New meal types added to seed data
+// Users can enable/disable meal types in settings
+// Default: breakfast + snack enabled, lunch/dinner available
+```
+
+### Rollback Plan
+- Revert to previous APK
+- Lunch/dinner data in new columns, ignored by older version
+- Breakfast/snack functionality unaffected
+
+### Post-Deployment
+- Monitor lunch/dinner feature adoption
+- Track meal type configuration changes
+- Check variety scores for new meal types
+- Monitor suggestion generation performance
+
+---
+
 ## Files to Create/Modify
 
 **New Files:**

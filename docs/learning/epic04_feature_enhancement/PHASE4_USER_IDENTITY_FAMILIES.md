@@ -653,6 +653,61 @@ async function promoteToAdmin(familyId: string, userId: string): Promise<void> {
 
 ---
 
+## Deployment Strategy
+
+### Release Type
+**Major Feature Release** - New user identity and family system, foundational for future phases
+
+### Pre-Deployment Checklist
+- [ ] All unit tests passing
+- [ ] All E2E tests passing (Playwright + Maestro)
+- [ ] Crypto operations tested across devices
+- [ ] QR code/invite link generation tested
+- [ ] Family joining flow tested
+- [ ] Quality baseline comparison completed
+- [ ] Manual QA on multiple physical devices
+- [ ] Version bump in `app.json`
+
+### Feature Flags (Recommended)
+```typescript
+// Consider feature flag for gradual rollout
+const ENABLE_FAMILIES = process.env.EXPO_PUBLIC_ENABLE_FAMILIES === 'true';
+```
+
+### Build & Release
+```bash
+# 1. Bump version (minor - new major feature)
+npm version minor
+
+# 2. Build preview APK
+eas build --platform android --profile preview
+
+# 3. Test scenarios:
+#    - Create user identity
+#    - Create family
+#    - Join via QR code
+#    - Join via invite code
+#    - Join via link
+#    - Multi-family membership
+
+# 4. Build production release
+eas build --platform android --profile production
+
+# 5. Staged rollout (feature is opt-in)
+```
+
+### Rollback Plan
+- Feature is opt-in - users without families unaffected
+- Revert APK if critical issues
+- User/family data remains in SQLite, can be recovered
+
+### Post-Deployment
+- Monitor Sentry for crypto/identity errors
+- Track family creation rate
+- Monitor invite success rate (QR vs code vs link)
+
+---
+
 ## Files to Create/Modify
 
 **New Files:**

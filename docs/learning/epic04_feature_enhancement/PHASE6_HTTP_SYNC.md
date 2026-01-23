@@ -537,6 +537,77 @@ async function trackChange(
 
 ---
 
+## Deployment Strategy
+
+### Release Type
+**Coordinated Release** - Server + client deployment required
+
+### Deployment Order
+1. **Deploy server endpoints first** (backward compatible)
+2. **Deploy client update** (connects to new endpoints)
+3. **Monitor sync success rates**
+
+### Server Deployment
+```bash
+# On VPS (same as telemetry server)
+cd /var/www/saborspin-api
+
+# 1. Deploy new sync endpoints
+git pull origin main
+
+# 2. Run migrations (if any)
+npm run migrate
+
+# 3. Restart service
+pm2 restart saborspin-api
+
+# 4. Verify endpoints
+curl https://api.saborspin.com/health
+curl https://api.saborspin.com/sync/health
+```
+
+### Pre-Deployment Checklist
+- [ ] Server endpoints deployed and tested
+- [ ] All unit tests passing
+- [ ] All E2E tests passing (Playwright + Maestro)
+- [ ] Sync tested across multiple devices
+- [ ] Offline → online sync tested
+- [ ] Quality baseline comparison completed
+- [ ] Version bump in `app.json`
+
+### Client Build & Release
+```bash
+# 1. Bump version (minor - networking feature)
+npm version minor
+
+# 2. Build preview APK
+eas build --platform android --profile preview
+
+# 3. Test scenarios:
+#    - Fresh sync (no prior data)
+#    - Incremental sync
+#    - Offline logging → sync when online
+#    - Conflict resolution
+
+# 4. Build production release
+eas build --platform android --profile production
+
+# 5. Staged rollout (10% → 50% → 100%)
+```
+
+### Rollback Plan
+- **Client:** Revert APK, app works offline without sync
+- **Server:** Endpoints can be disabled, client falls back to local-only
+- Sync data preserved on server, can resume after fix
+
+### Post-Deployment
+- Monitor sync success/failure rates
+- Track sync latency
+- Check Sentry for network errors
+- Monitor server load
+
+---
+
 ## Files to Create/Modify
 
 **New Files (Server):**
