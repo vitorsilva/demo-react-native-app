@@ -8,6 +8,133 @@
 
 ---
 
+## Branching Strategy
+
+**Branch Name:** `FEATURE_2.0_DATA_MODEL_EVOLUTION`
+
+**Approach:**
+- Create feature branch from `main`
+- Make small, focused commits for each task
+- Commit message format: `feat(phase2): <description>` or `test(phase2): <description>`
+- Run tests before each commit
+- Squash merge to `main` when complete
+
+**Example commits:**
+```
+feat(phase2): add preparation_methods table migration
+feat(phase2): add meal_components table migration
+test(phase2): add unit tests for migrations
+feat(phase2): add PreparationMethodPicker component
+```
+
+---
+
+## Tool Instructions
+
+### Running Tests
+```bash
+cd demo-react-native-app
+
+# Unit tests
+npm test
+
+# E2E tests (Playwright) - requires app running
+npm run test:e2e
+
+# Linting
+npm run lint
+
+# TypeScript check
+npx tsc --noEmit
+```
+
+### Running Maestro Tests
+```bash
+# Install Maestro CLI (if not installed)
+curl -Ls "https://get.maestro.mobile.dev" | bash
+
+# Start the app on emulator/device first
+npm start
+
+# Run Maestro tests
+maestro test e2e/maestro/
+```
+
+### Quality Checks
+```bash
+# Architecture tests
+npm run arch:test
+
+# Dead code detection
+npm run lint:dead-code
+
+# Duplicate detection
+npm run lint:duplicates
+
+# Security scan
+npm run security:scan
+```
+
+---
+
+## I18N Considerations
+
+### New Translation Keys Required
+
+**English (`lib/i18n/locales/en/`):**
+```json
+// meals.json (or new file)
+{
+  "mealName": {
+    "placeholder": "Name this meal (optional)",
+    "example": "e.g., \"Mom's special\""
+  },
+  "preparation": {
+    "title": "Preparation for \"{{ingredient}}\"",
+    "none": "None (as is)",
+    "addCustom": "+ Add custom...",
+    "cancel": "Cancel",
+    "apply": "Apply"
+  },
+  "prepMethods": {
+    "fried": "fried",
+    "grilled": "grilled",
+    "roasted": "roasted",
+    "boiled": "boiled",
+    "baked": "baked",
+    "raw": "raw",
+    "steamed": "steamed",
+    "sauteed": "sautéed",
+    "stewed": "stewed",
+    "smoked": "smoked",
+    "poached": "poached",
+    "braised": "braised"
+  }
+}
+
+// settings.json
+{
+  "preparationMethods": {
+    "title": "Preparation Methods",
+    "system": "System (cannot delete)",
+    "custom": "Custom",
+    "addCustom": "+ Add Custom Method",
+    "delete": "Delete"
+  }
+}
+```
+
+**Portuguese (`lib/i18n/locales/pt-PT/`):**
+- Same structure with Portuguese translations
+- Note: Some prep methods may need cultural adaptation
+
+### Implementation Notes
+- All user-facing strings must use `t()` function
+- Prep method names stored in DB are keys, display via i18n
+- Custom user-added prep methods stored as entered (not translated)
+
+---
+
 ## Overview
 
 Currently, meals are simple ingredient combinations (`milk + bread + jam`). To support lunch/dinner and named meals like "Mom's chicken", we need to evolve the data model to:

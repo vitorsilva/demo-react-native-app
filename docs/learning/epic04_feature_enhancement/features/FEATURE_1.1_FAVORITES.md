@@ -205,7 +205,7 @@ score += favoriteBonus;
 | 5 | 🧪 CREATE unit tests for favorites | Testing | ~1 hour | done |
 | 6 | 🧪 CREATE Playwright E2E tests | Testing | ~1.5 hours | done |
 | 7 | 🧪 CREATE Maestro tests | Testing | ~1.5 hours | done |
-| 8 | Run all existing unit tests, Playwright tests and Maestro Tests | Quality | ~0.5 hours | not started |
+| 8 | Run all existing unit tests, Playwright tests and Maestro Tests | Quality | ~0.5 hours | done |
 | 9 | Get and Save screenshots of screens with new / changed UI elements | Quality | ~0.5 hours | not started |
 
 **Legend:**

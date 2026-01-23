@@ -10,6 +10,113 @@
 
 ---
 
+## Branching Strategy
+
+**Branch Name:** `FEATURE_6.0_HTTP_SYNC`
+
+**Approach:**
+- Create feature branch from `main`
+- Make small, focused commits for each task
+- Commit message format: `feat(phase6): <description>` or `test(phase6): <description>`
+- Run tests before each commit
+- Squash merge to `main` when complete
+
+---
+
+## Tool Instructions
+
+### Running Tests
+```bash
+cd demo-react-native-app
+
+# Unit tests
+npm test
+
+# E2E tests (Playwright)
+npm run test:e2e
+
+# Linting
+npm run lint
+```
+
+### Running Maestro Tests
+```bash
+npm start
+maestro test e2e/maestro/
+```
+
+### Quality Checks
+```bash
+npm run arch:test
+npm run lint:dead-code
+npm run lint:duplicates
+npm run security:scan
+```
+
+### Docker (Server Infrastructure)
+```bash
+# Start server stack
+docker-compose -f docker-compose.dev.yml up -d
+
+# View logs
+docker-compose -f docker-compose.dev.yml logs -f
+
+# Stop server stack
+docker-compose -f docker-compose.dev.yml down
+```
+
+---
+
+## I18N Considerations
+
+### New Translation Keys
+
+**English (`lib/i18n/locales/en/`):**
+```json
+// sync.json (new file)
+{
+  "status": {
+    "synced": "Synced",
+    "syncing": "Syncing...",
+    "pending": "{{count}} pending",
+    "offline": "Offline",
+    "error": "Sync error"
+  },
+  "detail": {
+    "title": "Sync Status",
+    "lastSync": "Last synced: {{time}}",
+    "upToDate": "Up to date",
+    "pendingChanges": "{{count}} changes pending",
+    "syncNow": "Sync Now"
+  },
+  "errors": {
+    "networkError": "Unable to connect to server",
+    "conflictResolved": "Conflict resolved automatically",
+    "retry": "Retry"
+  }
+}
+
+// settings.json (additions)
+{
+  "sync": {
+    "title": "Sync",
+    "autoSync": "Auto-sync on app open",
+    "lastSync": "Last sync",
+    "pendingChanges": "Pending changes",
+    "syncNow": "Sync Now"
+  }
+}
+```
+
+**Portuguese (`lib/i18n/locales/pt-PT/`):**
+- Same structure with Portuguese translations
+
+### Notes
+- Time formatting should use locale-aware formatting (e.g., `formatDistanceToNow`)
+- Sync status indicators are mostly icons, but need accessible labels
+
+---
+
 ## Development Prerequisites
 
 Before starting this phase, ensure:

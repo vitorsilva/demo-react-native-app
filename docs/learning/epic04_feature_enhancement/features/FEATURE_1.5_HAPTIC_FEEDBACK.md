@@ -8,6 +8,69 @@
 
 ---
 
+## Branching Strategy
+
+**Branch Name:** `FEATURE_1.5_HAPTIC_FEEDBACK`
+
+**Approach:**
+- Create feature branch from `main` (or from Phase 1 branch if in progress)
+- Small, focused commits per task
+- Commit format: `feat(1.5): <description>` or `test(1.5): <description>`
+
+---
+
+## Tool Instructions
+
+```bash
+cd demo-react-native-app
+
+# Unit tests
+npm test
+
+# E2E tests (Playwright)
+npm run test:e2e
+
+# Maestro tests
+maestro test e2e/maestro/
+
+# Linting
+npm run lint
+```
+
+---
+
+## I18N Considerations
+
+### New Translation Keys
+
+**English (`lib/i18n/locales/en/settings.json`):**
+```json
+{
+  "experience": {
+    "title": "Experience",
+    "hapticFeedback": "Haptic Feedback",
+    "hapticDescription": "Vibration on interactions"
+  }
+}
+```
+
+**Portuguese (`lib/i18n/locales/pt-PT/settings.json`):**
+```json
+{
+  "experience": {
+    "title": "Experiência",
+    "hapticFeedback": "Feedback Tátil",
+    "hapticDescription": "Vibração nas interações"
+  }
+}
+```
+
+### Notes
+- Haptic feedback is a device feature, no text shown during haptic events
+- Only settings UI text needs translation
+
+---
+
 ## Overview
 
 Subtle vibration feedback for key interactions, enhancing the tactile experience.

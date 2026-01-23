@@ -8,6 +8,110 @@
 
 ---
 
+## Branching Strategy
+
+**Branch Name:** `FEATURE_5.0_SHARED_MEAL_LOGS`
+
+**Approach:**
+- Create feature branch from `main`
+- Make small, focused commits for each task
+- Commit message format: `feat(phase5): <description>` or `test(phase5): <description>`
+- Run tests before each commit
+- Squash merge to `main` when complete
+
+---
+
+## Tool Instructions
+
+### Running Tests
+```bash
+cd demo-react-native-app
+
+# Unit tests
+npm test
+
+# E2E tests (Playwright)
+npm run test:e2e
+
+# Linting
+npm run lint
+```
+
+### Running Maestro Tests
+```bash
+npm start
+maestro test e2e/maestro/
+```
+
+### Quality Checks
+```bash
+npm run arch:test
+npm run lint:dead-code
+npm run lint:duplicates
+npm run security:scan
+```
+
+---
+
+## I18N Considerations
+
+### New Translation Keys
+
+**English (`lib/i18n/locales/en/`):**
+```json
+// meals.json (additions)
+{
+  "privacy": {
+    "label": "Share with family",
+    "private": "Just me",
+    "family": "Share with {{familyName}}"
+  }
+}
+
+// history.json (additions)
+{
+  "tabs": {
+    "myMeals": "My Meals",
+    "family": "Family"
+  },
+  "familyHistory": {
+    "todaySummary": "Today's Meals",
+    "memberMeals": "{{name}}'s meals",
+    "noMeals": "No meals logged today",
+    "sharedBy": "Shared by {{name}}"
+  }
+}
+
+// home.json (additions)
+{
+  "familySummary": {
+    "title": "Family Today",
+    "whoAteWhat": "{{name}} had {{mealType}}",
+    "noActivity": "No family meals logged today"
+  }
+}
+
+// settings.json (additions)
+{
+  "familySharing": {
+    "title": "Family Sharing",
+    "defaultVisibility": "Default meal visibility",
+    "alwaysAsk": "Always ask",
+    "alwaysPrivate": "Always private",
+    "alwaysShare": "Always share"
+  }
+}
+```
+
+**Portuguese (`lib/i18n/locales/pt-PT/`):**
+- Same structure with Portuguese translations
+
+### Notes
+- Family member names are user-entered, displayed as-is
+- Meal type names should use existing translated meal type keys
+
+---
+
 ## Overview
 
 With families established in Phase 4, this phase enables:

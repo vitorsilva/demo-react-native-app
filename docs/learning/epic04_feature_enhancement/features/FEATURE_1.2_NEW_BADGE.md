@@ -8,6 +8,57 @@
 
 ---
 
+## Branching Strategy
+
+**Branch Name:** `FEATURE_1.2_NEW_BADGE`
+
+**Approach:**
+- Create feature branch from `main` (or from Phase 1 branch if in progress)
+- Small, focused commits per task
+- Commit format: `feat(1.2): <description>` or `test(1.2): <description>`
+
+---
+
+## Tool Instructions
+
+```bash
+cd demo-react-native-app
+
+# Unit tests
+npm test
+
+# E2E tests (Playwright)
+npm run test:e2e
+
+# Maestro tests
+maestro test e2e/maestro/
+
+# Linting
+npm run lint
+```
+
+---
+
+## I18N Considerations
+
+### New Translation Keys
+
+**English (`lib/i18n/locales/en/suggestions.json`):**
+```json
+{
+  "newBadge": "New!"
+}
+```
+
+**Portuguese (`lib/i18n/locales/pt-PT/suggestions.json`):**
+```json
+{
+  "newBadge": "Novo!"
+}
+```
+
+---
+
 ## Overview
 
 Visual indicator on combinations the user hasn't tried recently (or ever).

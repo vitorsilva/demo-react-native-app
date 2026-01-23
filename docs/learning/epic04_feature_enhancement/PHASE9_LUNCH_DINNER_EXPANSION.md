@@ -8,6 +8,155 @@
 
 ---
 
+## Branching Strategy
+
+**Branch Name:** `FEATURE_9.0_LUNCH_DINNER_EXPANSION`
+
+**Approach:**
+- Create feature branch from `main`
+- Make small, focused commits for each task
+- Commit message format: `feat(phase9): <description>` or `test(phase9): <description>`
+- Run tests before each commit
+- Squash merge to `main` when complete
+
+---
+
+## Tool Instructions
+
+### Running Tests
+```bash
+cd demo-react-native-app
+
+# Unit tests
+npm test
+
+# E2E tests (Playwright)
+npm run test:e2e
+
+# Linting
+npm run lint
+
+# TypeScript check
+npx tsc --noEmit
+```
+
+### Running Maestro Tests
+```bash
+npm start
+maestro test e2e/maestro/
+```
+
+### Quality Checks
+```bash
+npm run arch:test
+npm run lint:dead-code
+npm run lint:duplicates
+npm run security:scan
+```
+
+---
+
+## I18N Considerations
+
+### New Translation Keys
+
+**English (`lib/i18n/locales/en/`):**
+```json
+// mealTypes.json (new/updated)
+{
+  "lunch": "Lunch",
+  "dinner": "Dinner",
+  "types": {
+    "breakfast": "Breakfast",
+    "lunch": "Lunch",
+    "dinner": "Dinner",
+    "snack": "Snack"
+  }
+}
+
+// suggestions.json (additions)
+{
+  "structure": {
+    "main": "Main",
+    "sides": "Sides",
+    "addSide": "+ Add Side"
+  },
+  "rotationWarning": {
+    "protein": "{{category}} {{count}}x this week",
+    "base": "{{category}} {{count}} days in a row"
+  }
+}
+
+// ingredients.json (additions)
+{
+  "filters": {
+    "mealType": "Meal Type",
+    "category": "Category",
+    "all": "All"
+  },
+  "categories": {
+    "protein": "Proteins",
+    "carb": "Carbs/Bases",
+    "vegetable": "Vegetables",
+    "sauce": "Sauces",
+    "seasoning": "Seasonings"
+  },
+  "rotationSettings": {
+    "title": "Rotation Settings",
+    "isProtein": "Is protein source?",
+    "proteinType": "Protein type",
+    "isBase": "Is base ingredient?",
+    "baseHint": "Carb that provides meal base"
+  },
+  "proteinTypes": {
+    "poultry": "Poultry",
+    "beef": "Beef",
+    "pork": "Pork",
+    "fish": "Fish",
+    "seafood": "Seafood",
+    "vegetarian": "Vegetarian"
+  }
+}
+
+// settings.json (additions)
+{
+  "mealTypeConfig": {
+    "rotationSettings": "Rotation Settings",
+    "baseRotation": "Base rotation",
+    "proteinRotation": "Protein rotation",
+    "rotationHint": "Rotation ensures you don't have {{item}} multiple days in a row"
+  }
+}
+
+// meals.json (additions)
+{
+  "logging": {
+    "selectMain": "Main (select 1)",
+    "selectSides": "Sides (select 1-3)",
+    "confirmMeal": "Confirm Meal"
+  }
+}
+
+// history.json (additions)
+{
+  "structured": {
+    "main": "Main",
+    "sides": "Sides"
+  }
+}
+```
+
+**Portuguese (`lib/i18n/locales/pt-PT/`):**
+- Same structure with Portuguese translations
+- Protein types and categories need cultural consideration
+
+### Notes
+- Ingredient names are user-entered, not translated
+- Meal type names (Lunch, Dinner) are system-defined and translated
+- Rotation warnings use interpolation for dynamic values
+
+---
+
 ## Overview
 
 This phase extends SaborSpin to handle lunch and dinner:

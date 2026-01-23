@@ -8,6 +8,123 @@
 
 ---
 
+## Branching Strategy
+
+**Branch Name:** `FEATURE_4.0_USER_IDENTITY_FAMILIES`
+
+**Approach:**
+- Create feature branch from `main`
+- Make small, focused commits for each task
+- Commit message format: `feat(phase4): <description>` or `test(phase4): <description>`
+- Run tests before each commit
+- Squash merge to `main` when complete
+
+---
+
+## Tool Instructions
+
+### Running Tests
+```bash
+cd demo-react-native-app
+
+# Unit tests
+npm test
+
+# E2E tests (Playwright)
+npm run test:e2e
+
+# Linting
+npm run lint
+
+# TypeScript check
+npx tsc --noEmit
+```
+
+### Running Maestro Tests
+```bash
+npm start
+maestro test e2e/maestro/
+```
+
+### Quality Checks
+```bash
+npm run arch:test
+npm run lint:dead-code
+npm run lint:duplicates
+npm run security:scan
+```
+
+---
+
+## I18N Considerations
+
+### New Translation Keys
+
+**English (`lib/i18n/locales/en/`):**
+```json
+// onboarding.json (new file)
+{
+  "welcome": {
+    "title": "Welcome to SaborSpin!",
+    "subtitle": "Let's set up your profile",
+    "nameLabel": "What should we call you?",
+    "namePlaceholder": "Your name",
+    "continue": "Continue"
+  }
+}
+
+// family.json (new file)
+{
+  "family": {
+    "title": "Families",
+    "create": "Create Family",
+    "join": "Join Family",
+    "members": "Members",
+    "invite": "Invite",
+    "leave": "Leave Family",
+    "delete": "Delete Family",
+    "inviteCode": "Invite Code",
+    "scanQR": "Scan QR Code",
+    "enterCode": "Enter Code",
+    "copyCode": "Copy Code",
+    "codeExpires": "Code expires in {{time}}",
+    "role": {
+      "admin": "Admin",
+      "member": "Member"
+    }
+  },
+  "familyForm": {
+    "nameLabel": "Family Name",
+    "namePlaceholder": "e.g., Silva Household",
+    "create": "Create",
+    "cancel": "Cancel"
+  }
+}
+
+// settings.json (additions)
+{
+  "profile": {
+    "title": "Profile",
+    "name": "Name",
+    "changeName": "Change Name"
+  },
+  "families": {
+    "title": "Families",
+    "manage": "Manage Families"
+  }
+}
+```
+
+**Portuguese (`lib/i18n/locales/pt-PT/`):**
+- Same structure with Portuguese translations
+
+### Notes
+- Family names are user-entered, not translated
+- Role names (Admin, Member) need translation
+- QR code scanning uses device camera, minimal text needed
+
+---
+
 ## Overview
 
 This phase establishes the foundation for family sharing (Approach 2: Family Kitchen):

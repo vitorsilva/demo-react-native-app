@@ -8,6 +8,90 @@
 
 ---
 
+## Branching Strategy
+
+**Branch Name:** `FEATURE_3.0_ENHANCED_VARIETY`
+
+**Approach:**
+- Create feature branch from `main`
+- Make small, focused commits for each task
+- Commit message format: `feat(phase3): <description>` or `test(phase3): <description>`
+- Run tests before each commit
+- Squash merge to `main` when complete
+
+---
+
+## Tool Instructions
+
+### Running Tests
+```bash
+cd demo-react-native-app
+
+# Unit tests
+npm test
+
+# E2E tests (Playwright)
+npm run test:e2e
+
+# Linting
+npm run lint
+
+# TypeScript check
+npx tsc --noEmit
+```
+
+### Running Maestro Tests
+```bash
+# Start the app on emulator/device first
+npm start
+
+# Run Maestro tests
+maestro test e2e/maestro/
+```
+
+### Quality Checks
+```bash
+npm run arch:test
+npm run lint:dead-code
+npm run lint:duplicates
+npm run security:scan
+```
+
+---
+
+## I18N Considerations
+
+### New Translation Keys
+
+**English (`lib/i18n/locales/en/`):**
+```json
+// suggestions.json
+{
+  "ingredientWarning": {
+    "frequent": "{{ingredient}} used {{count}} times this week",
+    "tooltip": "This ingredient has been used frequently"
+  }
+}
+
+// settings.json
+{
+  "pairingRules": {
+    "title": "Pairing Rules",
+    "goodPairs": "Good Pairs",
+    "avoid": "Avoid Together",
+    "addRule": "+ Add Rule",
+    "deleteRule": "Delete",
+    "emptyGood": "No good pairs defined",
+    "emptyAvoid": "No avoid rules defined"
+  }
+}
+```
+
+**Portuguese (`lib/i18n/locales/pt-PT/`):**
+- Same structure with Portuguese translations
+
+---
+
 ## Overview
 
 Currently, variety is enforced at the **combination level** - if you had "milk + cereals" yesterday, you won't get that exact combination today. But you might still get "milk + cookies" repeatedly.

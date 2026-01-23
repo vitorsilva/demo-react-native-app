@@ -8,6 +8,69 @@
 
 ---
 
+## Branching Strategy
+
+**Branch Name:** `FEATURE_1.3_COLOR_CODING`
+
+**Approach:**
+- Create feature branch from `main` (or from Phase 1 branch if in progress)
+- Small, focused commits per task
+- Commit format: `feat(1.3): <description>` or `test(1.3): <description>`
+
+---
+
+## Tool Instructions
+
+```bash
+cd demo-react-native-app
+
+# Unit tests
+npm test
+
+# E2E tests (Playwright)
+npm run test:e2e
+
+# Maestro tests
+maestro test e2e/maestro/
+
+# Linting
+npm run lint
+```
+
+---
+
+## I18N Considerations
+
+### New Translation Keys
+
+**English (`lib/i18n/locales/en/suggestions.json`):**
+```json
+{
+  "varietyIndicator": {
+    "fresh": "Fresh choice",
+    "recent": "Had recently",
+    "veryRecent": "Had today"
+  }
+}
+```
+
+**Portuguese (`lib/i18n/locales/pt-PT/suggestions.json`):**
+```json
+{
+  "varietyIndicator": {
+    "fresh": "Escolha fresca",
+    "recent": "Consumido recentemente",
+    "veryRecent": "Consumido hoje"
+  }
+}
+```
+
+### Notes
+- Color indicators are visual, but accessibility labels need translation
+- Consider adding aria-labels for screen readers
+
+---
+
 ## Overview
 
 Color-coded visual indicators showing recency of each suggestion.
