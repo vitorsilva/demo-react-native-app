@@ -603,7 +603,7 @@ eas build --platform android --profile production
 ### Post-Deployment
 - Monitor sync success/failure rates
 - Track sync latency
-- Check Sentry for network errors
+- Check OTel error spans for network errors
 - Monitor server load
 
 ---

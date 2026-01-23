@@ -702,7 +702,7 @@ eas build --platform android --profile production
 - User/family data remains in SQLite, can be recovered
 
 ### Post-Deployment
-- Monitor Sentry for crypto/identity errors
+- Monitor OTel error spans for crypto/identity errors
 - Track family creation rate
 - Monitor invite success rate (QR vs code vs link)
 

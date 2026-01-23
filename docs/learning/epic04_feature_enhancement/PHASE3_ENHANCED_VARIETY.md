@@ -493,7 +493,7 @@ eas submit --platform android
 - Pairing rules stored in new table, ignored by older versions
 
 ### Post-Deployment
-- Monitor Sentry for algorithm errors
+- Monitor OTel error spans for algorithm errors
 - Check telemetry for variety score improvements
 - Track pairing rule feature adoption
 

@@ -498,7 +498,7 @@ eas submit --platform android
 - No database migrations to revert (only adds nullable column)
 
 ### Post-Deployment
-- Monitor Sentry for new errors
+- Monitor OTel error spans for new errors
 - Check telemetry for feature adoption (favorites usage, haptic toggles)
 
 ---

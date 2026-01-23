@@ -522,7 +522,7 @@ eas build --platform android --profile production
 
 ### Post-Deployment
 - Monitor migration success rate via telemetry
-- Check Sentry for migration errors
+- Check OTel error spans for migration errors
 - Verify meal history displays correctly after upgrade
 
 ---

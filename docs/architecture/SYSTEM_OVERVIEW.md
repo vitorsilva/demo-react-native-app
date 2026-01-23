@@ -47,7 +47,7 @@ SaborSpin is a **local-first mobile app** built with React Native and Expo. All 
 | State | Zustand | Global state management |
 | Database | SQLite (expo-sqlite) | Local data persistence |
 | Testing | Jest + Playwright | Unit + E2E tests |
-| Observability | OpenTelemetry + Sentry | Metrics + error tracking |
+| Observability | OpenTelemetry | Metrics, tracing + error tracking |
 
 ## Application Layers
 

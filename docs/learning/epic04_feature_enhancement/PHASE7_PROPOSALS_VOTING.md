@@ -732,7 +732,7 @@ eas build --platform android --profile production
 - Monitor proposal creation rate
 - Track voting participation
 - Check notification delivery rates
-- Monitor Sentry for errors
+- Monitor OTel error spans for errors
 
 ---
 

@@ -622,7 +622,7 @@ eas build --platform android --profile production
 - Monitor P2P connection success rate
 - Track P2P vs HTTP sync usage
 - Check latency improvements with P2P
-- Monitor Sentry for WebRTC errors
+- Monitor OTel error spans for WebRTC errors
 
 ---
 
