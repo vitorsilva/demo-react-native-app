@@ -22,26 +22,42 @@ Set up the server-side infrastructure needed for family sharing features. This p
 
 ---
 
-## Architecture Decision: Reuse Saberloop Infrastructure
+## Architecture Decisions
+
+### Guiding Principle
+> **Reuse things that are equal, keep independent things that are different.**
 
 ### VPS Constraints
-- VPS supports PHP 7.4 + MySQL (no Node.js)
+- VPS supports PHP 7.4 + MySQL (no Node.js, no WebSocket)
 - Saberloop already has working infrastructure on same VPS
 - Proven patterns for telemetry, deployment, security
 
-### Approach: Extend Saberloop's Backend
+### Decision Matrix
 
-| Option | Description | Recommendation |
-|--------|-------------|----------------|
-| **A: Shared Endpoints** | Add SaborSpin routes to existing `php-api/` | ✅ Recommended |
-| B: Separate PHP Project | New `saborspin-api/` folder | More isolation but duplication |
-| C: Subdomain | `api.saborspin.com` pointing to separate folder | Clean but more VPS config |
+| Aspect | Concept | Technical Implementation |
+|--------|---------|--------------------------|
+| **Telemetry** | Same approach | Same infrastructure - all telemetry → Saberloop endpoint |
+| **App Data** | Same approach (PHP on VPS) | Independent - `saborspin.com` domain, separate DB |
+| **Authentication** | Same approach | Same pattern as Saberloop |
+| **Signaling** | Same approach (HTTP polling) | Same pattern - no WebSocket needed |
 
-**Recommendation: Option A** - Add SaborSpin endpoints to Saberloop's `php-api/` folder:
-- Reuse existing database connection, auth patterns, deployment scripts
-- Share MySQL instance (separate database or tables)
-- Unified telemetry collection
-- Single Docker setup for local development
+### Telemetry: Reuse Saberloop's
+- **Endpoint:** `https://saberloop.com/telemetry/ingest.php`
+- **Reason:** Same collection, same analysis tools, unified view
+- **No new infrastructure needed** for telemetry
+
+### App Data: Independent SaborSpin Backend
+- **Domain:** `saborspin.com/api/*` (separate from Saberloop)
+- **Database:** Separate MySQL database (`saborspin`) on same instance
+- **Code:** New `saborspin-api/` folder (independent from Saberloop's php-api)
+- **Reason:** App data is different, should be isolated
+
+### Signaling: HTTP Polling (Like Saberloop)
+- **No WebSocket** - VPS doesn't support it, and HTTP polling works fine
+- **Same pattern as Saberloop's `signal.php`:**
+  - `POST /signal` - Send signaling message
+  - `GET /signal/{room}/{participant}` - Poll for messages
+- **WebRTC establishes P2P** after signaling completes
 
 ---
 
@@ -55,18 +71,20 @@ Set up the server-side infrastructure needed for family sharing features. This p
 │                                                              │
 │  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐       │
 │  │   SaborSpin  │  │   PHP API    │  │    MySQL     │       │
-│  │  React Native│  │  (shared w/  │  │   (shared)   │       │
-│  │    :8081     │  │  Saberloop)  │  │    :3306     │       │
-│  │              │  │    :8080     │  │              │       │
+│  │  React Native│  │ (SaborSpin)  │  │  (saborspin) │       │
+│  │    :8081     │  │    :8080     │  │    :3306     │       │
 │  └──────┬───────┘  └──────┬───────┘  └──────┬───────┘       │
 │         │                 │                 │                │
 │         └─────────────────┴─────────────────┘                │
 │                           │                                  │
-│              ┌────────────▼────────────┐                    │
-│              │   Grafana + Loki        │                    │
-│              │   (Telemetry Analysis)  │                    │
-│              │   :3000 / :3100         │                    │
-│              └─────────────────────────┘                    │
+│         ┌─────────────────┼─────────────────┐               │
+│         │                 │                 │               │
+│         ▼                 ▼                 ▼               │
+│  ┌────────────┐   ┌────────────┐   ┌────────────┐          │
+│  │ Telemetry  │   │ App Data   │   │  Grafana   │          │
+│  │ →Saberloop │   │ →localhost │   │   +Loki    │          │
+│  │  endpoint  │   │   :8080    │   │   :3000    │          │
+│  └────────────┘   └────────────┘   └────────────┘          │
 └─────────────────────────────────────────────────────────────┘
 ```
 
@@ -78,15 +96,17 @@ Set up the server-side infrastructure needed for family sharing features. This p
 │                                                              │
 │  ┌──────────────────────────────────────────────────────┐   │
 │  │                    Apache / nginx                      │   │
-│  │  saberloop.com/* ──► Saberloop PHP                    │   │
-│  │  saberloop.com/saborspin/* ──► SaborSpin PHP          │   │
-│  │        (or saborspin.com/api/*)                       │   │
+│  │                                                        │   │
+│  │  saberloop.com/*          ──► Saberloop PHP           │   │
+│  │  saberloop.com/telemetry  ──► Telemetry (shared)      │   │
+│  │                                                        │   │
+│  │  saborspin.com/api/*      ──► SaborSpin PHP (NEW)     │   │
 │  └──────────────────────────────────────────────────────┘   │
 │                           │                                  │
 │              ┌────────────▼────────────┐                    │
 │              │        MySQL            │                    │
 │              │  - saberloop (existing) │                    │
-│              │  - saborspin (new)      │                    │
+│              │  - saborspin (NEW)      │                    │
 │              └─────────────────────────┘                    │
 └─────────────────────────────────────────────────────────────┘
 ```
@@ -95,40 +115,59 @@ Set up the server-side infrastructure needed for family sharing features. This p
 
 ## API Endpoints to Create
 
+**Base URL:** `https://saborspin.com/api`
+
 ### Family Management (Phase 4 prep)
 | Endpoint | Method | Purpose |
 |----------|--------|---------|
-| `/saborspin/families` | POST | Create family |
-| `/saborspin/families/{code}` | GET | Get family by invite code |
-| `/saborspin/families/{id}/join` | POST | Join family |
-| `/saborspin/families/{id}/members` | GET | List members |
+| `/families` | POST | Create family |
+| `/families/{code}` | GET | Get family by invite code |
+| `/families/{id}/join` | POST | Join family |
+| `/families/{id}/members` | GET | List members |
 
 ### Sync (Phase 6)
 | Endpoint | Method | Purpose |
 |----------|--------|---------|
-| `/saborspin/sync/{familyId}` | GET | Download family data blob |
-| `/saborspin/sync/{familyId}` | POST | Upload family data blob |
-| `/saborspin/sync/{familyId}/changes` | GET | Get changes since timestamp |
+| `/sync/{familyId}` | GET | Download family data blob |
+| `/sync/{familyId}` | POST | Upload family data blob |
+| `/sync/{familyId}/changes` | GET | Get changes since timestamp |
 
-### Signaling (Phase 8 - P2P)
+### Signaling - HTTP Polling (Phase 8 - P2P)
+
+**Same pattern as Saberloop** - No WebSocket, uses HTTP polling:
+
 | Endpoint | Method | Purpose |
 |----------|--------|---------|
-| `/saborspin/signal` | WebSocket | WebRTC signaling |
+| `/signal` | POST | Send signaling message (offer/answer/ICE) |
+| `/signal/{familyId}/{odId}` | GET | Poll for incoming messages |
+| `/signal/{familyId}/{odId}/peers` | GET | Get other participants |
 
-### Telemetry (Reuse Saberloop's)
+**How it works:**
+1. Client A sends `POST /signal` with offer to Client B
+2. Client B polls `GET /signal/{family}/{id}` and receives offer
+3. Client B sends `POST /signal` with answer to Client A
+4. Both exchange ICE candidates via same endpoints
+5. WebRTC connection established directly between clients
+6. Server is no longer needed (until reconnect)
+
+### Telemetry (Reuse Saberloop's - No Changes Needed)
 | Endpoint | Method | Purpose |
 |----------|--------|---------|
-| `/telemetry/ingest.php` | POST | Already exists in Saberloop |
+| `https://saberloop.com/telemetry/ingest.php` | POST | Shared telemetry endpoint |
+
+**Note:** Telemetry goes to Saberloop, not SaborSpin. Same analysis tools, unified view.
 
 ---
 
 ## Database Schema (MySQL)
 
+**Database:** `saborspin` (separate from Saberloop's database)
+
 ```sql
--- SaborSpin tables (in shared MySQL, separate database or prefixed tables)
+-- SaborSpin tables (in separate `saborspin` database)
 
 -- User identity (synced from device)
-CREATE TABLE saborspin_users (
+CREATE TABLE users (
   id VARCHAR(36) PRIMARY KEY,           -- UUID from device
   display_name VARCHAR(100),
   public_key TEXT,                       -- For signature verification
@@ -137,45 +176,58 @@ CREATE TABLE saborspin_users (
 );
 
 -- Families
-CREATE TABLE saborspin_families (
+CREATE TABLE families (
   id VARCHAR(36) PRIMARY KEY,            -- UUID
   name VARCHAR(100) NOT NULL,
   invite_code VARCHAR(8) UNIQUE,         -- Short code for joining
   created_by VARCHAR(36),                -- user_id
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  FOREIGN KEY (created_by) REFERENCES saborspin_users(id)
+  FOREIGN KEY (created_by) REFERENCES users(id)
 );
 
 -- Family membership
-CREATE TABLE saborspin_family_members (
+CREATE TABLE family_members (
   family_id VARCHAR(36),
   user_id VARCHAR(36),
   role ENUM('admin', 'member') DEFAULT 'member',
   joined_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (family_id, user_id),
-  FOREIGN KEY (family_id) REFERENCES saborspin_families(id),
-  FOREIGN KEY (user_id) REFERENCES saborspin_users(id)
+  FOREIGN KEY (family_id) REFERENCES families(id),
+  FOREIGN KEY (user_id) REFERENCES users(id)
 );
 
 -- Sync data (encrypted blobs)
-CREATE TABLE saborspin_sync_data (
+CREATE TABLE sync_data (
   family_id VARCHAR(36) PRIMARY KEY,
   encrypted_blob LONGTEXT,               -- JSON encrypted by family key
   version INT DEFAULT 1,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  FOREIGN KEY (family_id) REFERENCES saborspin_families(id)
+  FOREIGN KEY (family_id) REFERENCES families(id)
 );
 
 -- Sync log (for conflict detection)
-CREATE TABLE saborspin_sync_log (
+CREATE TABLE sync_log (
   id INT AUTO_INCREMENT PRIMARY KEY,
   family_id VARCHAR(36),
   user_id VARCHAR(36),
   action ENUM('upload', 'download') NOT NULL,
   version INT,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  FOREIGN KEY (family_id) REFERENCES saborspin_families(id),
-  FOREIGN KEY (user_id) REFERENCES saborspin_users(id)
+  FOREIGN KEY (family_id) REFERENCES families(id),
+  FOREIGN KEY (user_id) REFERENCES users(id)
+);
+
+-- Signaling messages (for WebRTC setup, like Saberloop)
+CREATE TABLE signaling (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  family_id VARCHAR(36) NOT NULL,
+  from_id VARCHAR(36) NOT NULL,          -- sender participant ID
+  to_id VARCHAR(36) NOT NULL,            -- recipient participant ID
+  type ENUM('offer', 'answer', 'ice') NOT NULL,
+  payload JSON NOT NULL,                  -- WebRTC signaling data
+  read_at TIMESTAMP NULL,                 -- when recipient read it
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  INDEX idx_recipient (family_id, to_id, read_at)
 );
 ```
 
@@ -208,38 +260,35 @@ CREATE TABLE saborspin_sync_log (
 
 ## Files to Create/Modify
 
-### New Files (in Saberloop repo: `demo-pwa-app/`)
-
-```
-php-api/
-├── saborspin/                      # NEW: SaborSpin API
-│   ├── config.php                  # Database config
-│   ├── Database.php                # DB connection (or reuse existing)
-│   ├── endpoints/
-│   │   ├── families.php            # Family CRUD
-│   │   ├── sync.php                # Sync endpoints
-│   │   └── health.php              # Health check
-│   ├── models/
-│   │   ├── Family.php
-│   │   ├── User.php
-│   │   └── SyncData.php
-│   ├── middleware/
-│   │   └── auth.php                # Token verification
-│   ├── migrate.php                 # Database migrations
-│   └── .htaccess                   # Routing rules
-```
-
 ### New Files (in SaborSpin repo: `demo-react-native-app/`)
 
 ```
 demo-react-native-app/
-├── docker-compose.dev.yml          # Local PHP + MySQL
-├── docker-compose.telemetry.yml    # Grafana + Loki
+├── saborspin-api/                  # NEW: Independent PHP API
+│   ├── config.php                  # Database config
+│   ├── config.local.php            # Local overrides (gitignored)
+│   ├── Database.php                # DB connection (copy pattern from Saberloop)
+│   ├── ApiHelper.php               # Request/response helpers (copy pattern)
+│   ├── endpoints/
+│   │   ├── families.php            # Family CRUD
+│   │   ├── sync.php                # Sync endpoints
+│   │   ├── signal.php              # WebRTC signaling (HTTP polling)
+│   │   └── health.php              # Health check
+│   ├── managers/
+│   │   ├── FamilyManager.php
+│   │   ├── SyncManager.php
+│   │   └── SignalingManager.php    # Copy pattern from Saberloop
+│   ├── migrate.php                 # Database migrations
+│   ├── cleanup.php                 # Delete expired signaling messages
+│   └── .htaccess                   # Routing rules
+├── docker-compose.dev.yml          # Local PHP + MySQL for SaborSpin
+├── docker-compose.telemetry.yml    # Grafana + Loki (analysis)
 ├── docker/
+│   ├── php/Dockerfile              # PHP 7.4 Apache (copy from Saberloop)
 │   ├── loki-config.yml
 │   └── grafana-datasources.yml
 ├── scripts/
-│   └── deploy-api.cjs              # Deploy to VPS (or reuse Saberloop's)
+│   └── deploy-api.cjs              # Deploy to VPS via FTP
 └── docs/
     └── developer-guide/
         └── SERVER_SETUP.md         # Server development guide
@@ -249,9 +298,8 @@ demo-react-native-app/
 
 | File | Change |
 |------|--------|
-| `demo-react-native-app/package.json` | Add docker/deploy scripts |
-| `demo-react-native-app/.env.example` | Add API endpoint variables |
-| `demo-pwa-app/docker-compose.php.yml` | Verify SaborSpin compatibility |
+| `package.json` | Add docker/deploy scripts |
+| `.env.example` | Add API endpoint variables |
 
 ---
 
@@ -260,21 +308,23 @@ demo-react-native-app/
 ### Start Local Development Stack
 
 ```bash
-# From Saberloop repo (shares PHP + MySQL)
-cd C:\Users\omeue\source\repos\demo-pwa-app
-docker-compose -f docker-compose.php.yml up -d php-api mysql
+# From SaborSpin repo
+cd C:\Users\omeue\source\repos\demo-react-native-app
 
-# Run SaborSpin migrations
-docker-compose -f docker-compose.php.yml exec php-api php /var/www/html/saborspin/migrate.php
+# Start PHP + MySQL
+docker-compose -f docker-compose.dev.yml up -d
+
+# Run migrations
+docker-compose -f docker-compose.dev.yml exec php-api php /var/www/html/migrate.php
 
 # View logs
-docker-compose -f docker-compose.php.yml logs -f php-api
+docker-compose -f docker-compose.dev.yml logs -f php-api
 ```
 
 ### Start Telemetry Analysis Stack
 
 ```bash
-# From SaborSpin repo (or Saberloop - same stack)
+# Grafana + Loki for viewing telemetry data
 docker-compose -f docker-compose.telemetry.yml up -d
 
 # Access Grafana: http://localhost:3000 (admin/admin)
@@ -284,10 +334,10 @@ docker-compose -f docker-compose.telemetry.yml up -d
 
 ```bash
 # Health check
-curl http://localhost:8080/saborspin/endpoints/health.php
+curl http://localhost:8080/endpoints/health.php
 
 # Create family (example)
-curl -X POST http://localhost:8080/saborspin/endpoints/families.php \
+curl -X POST http://localhost:8080/endpoints/families.php \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer <token>" \
   -d '{"name": "Silva Family", "userId": "uuid-here"}'
@@ -302,10 +352,10 @@ curl -X POST http://localhost:8080/saborspin/endpoints/families.php \
 ```bash
 # API Configuration (Phase 3.5)
 EXPO_PUBLIC_API_ENABLED=false           # Enable when ready
-EXPO_PUBLIC_API_ENDPOINT=https://saberloop.com/saborspin
+EXPO_PUBLIC_API_ENDPOINT=https://saborspin.com/api
 EXPO_PUBLIC_API_TOKEN=your-api-token
 
-# Telemetry (reuse Saberloop's endpoint)
+# Telemetry (reuse Saberloop's endpoint - shared infrastructure)
 EXPO_PUBLIC_TELEMETRY_ENABLED=true
 EXPO_PUBLIC_TELEMETRY_ENDPOINT=https://saberloop.com/telemetry/ingest.php
 ```
@@ -339,27 +389,32 @@ EXPO_PUBLIC_TELEMETRY_ENDPOINT=https://saberloop.com/telemetry/ingest.php
 
 ### Deployment Steps
 
-1. **Create database on VPS:**
+1. **Configure VPS for saborspin.com domain:**
+   - Point DNS to VPS IP
+   - Configure Apache/nginx virtual host for saborspin.com
+   - Set up SSL certificate (Let's Encrypt)
+
+2. **Create database on VPS:**
    ```bash
    mysql -u root -p
    CREATE DATABASE saborspin;
-   GRANT ALL ON saborspin.* TO 'saberloop'@'localhost';
+   GRANT ALL ON saborspin.* TO 'saborspin_user'@'localhost' IDENTIFIED BY 'password';
    ```
 
-2. **Deploy PHP files:**
+3. **Deploy PHP files:**
    ```bash
-   npm run deploy:saborspin-api
-   # Uses FTP to upload php-api/saborspin/ to VPS
+   npm run deploy:api
+   # Uses FTP to upload saborspin-api/ to VPS
    ```
 
-3. **Run migrations on VPS:**
+4. **Run migrations on VPS:**
    ```bash
-   ssh user@vps "cd /var/www/html/saborspin && php migrate.php"
+   ssh user@vps "cd /var/www/saborspin.com/api && php migrate.php"
    ```
 
-4. **Verify deployment:**
+5. **Verify deployment:**
    ```bash
-   curl https://saberloop.com/saborspin/endpoints/health.php
+   curl https://saborspin.com/api/endpoints/health.php
    ```
 
 ### Rollback Plan
@@ -374,14 +429,16 @@ EXPO_PUBLIC_TELEMETRY_ENDPOINT=https://saberloop.com/telemetry/ingest.php
 Phase 3.5 is complete when:
 
 - [ ] Docker stack runs locally (PHP + MySQL)
-- [ ] SaborSpin database tables created
+- [ ] SaborSpin database tables created (users, families, sync_data, signaling)
 - [ ] Family endpoints working (create, get, join)
 - [ ] Sync endpoints working (upload, download)
-- [ ] Authentication middleware in place
+- [ ] Signaling endpoints working (send, poll) - HTTP polling pattern
+- [ ] Authentication middleware in place (same pattern as Saberloop)
 - [ ] PHPUnit tests passing
-- [ ] Deployed to VPS and accessible
+- [ ] Deployed to VPS at `saborspin.com/api`
 - [ ] React Native app can call health endpoint
-- [ ] Telemetry analysis stack available locally
+- [ ] Telemetry goes to Saberloop endpoint successfully
+- [ ] Telemetry analysis stack (Grafana + Loki) available locally
 - [ ] Documentation updated
 
 ---
@@ -410,29 +467,15 @@ Document unexpected errors, workarounds, and fixes encountered during implementa
 
 ---
 
-## Questions for Validation
+## Decisions Made
 
-Before starting implementation, please confirm:
-
-1. **Shared vs Separate Database?**
-   - Option A: Same MySQL database as Saberloop (tables prefixed with `saborspin_`)
-   - Option B: Separate database (`saborspin`) on same MySQL instance
-   - **Recommendation:** Option B (cleaner separation, easier backup/restore)
-
-2. **API URL Structure?**
-   - Option A: `saberloop.com/saborspin/*` (subfolder of existing domain)
-   - Option B: `saborspin.com/api/*` (requires VPS config for new domain)
-   - **Recommendation:** Option A initially, can migrate later
-
-3. **Authentication Approach?**
-   - Option A: Simple token (like Saberloop telemetry)
-   - Option B: JWT with expiry
-   - Option C: Device-based key pairs (more complex)
-   - **Recommendation:** Start with Option A, evolve to B/C as needed
-
-4. **Should this phase include WebSocket signaling setup?**
-   - Could defer to Phase 8 (P2P Sync)
-   - **Recommendation:** Defer - HTTP endpoints are enough for now
+| Question | Decision | Rationale |
+|----------|----------|-----------|
+| **Database** | Separate database (`saborspin`) | Different app data should be isolated |
+| **API URL** | `saborspin.com/api/*` | Independent domain, cleaner separation |
+| **Telemetry** | Reuse Saberloop's endpoint | Same concept, same infrastructure |
+| **Authentication** | Same pattern as Saberloop | Proven approach, consistent |
+| **Signaling** | HTTP polling (no WebSocket) | VPS doesn't support WebSocket, HTTP works fine |
 
 ---
 
