@@ -124,9 +124,9 @@ npx --no -- commitlint --edit "$1"
 | **commitlint** | ✅ | ✅ (Phase 10) |
 | **jscpd** | ✅ | ✅ (Phase 10) |
 | **Knip** | ✅ | ✅ (Phase 10) |
-| eslint-plugin-sonarjs | ✅ | ❌ (future) |
-| eslint-plugin-import | ✅ | ❌ (future) |
-| Semgrep | ✅ | ❌ (future) |
+| eslint-plugin-sonarjs | ✅ | ✅ (Phase 12) |
+| eslint-plugin-import | ✅ | ✅ (Phase 12) |
+| Semgrep | ✅ | ✅ (Phase 12) |
 
 ---
 
@@ -186,27 +186,30 @@ npx --no -- commitlint --edit "$1"
 | jscpd runs and reports duplicates | ✅ Pass |
 | All 220 unit tests pass | ✅ Pass |
 | ESLint passes | ✅ Pass |
+| Mutation testing (core) | ✅ Pass (65%) |
+| Mutation testing (validation) | ✅ Pass (94%) |
+| Mutation testing (database) | ✅ Pass (87%) |
 
 ---
 
 ## Future Considerations
 
-### Potential Next Tools
+### Tools Added in Phase 12
 
-1. **eslint-plugin-sonarjs** - Quality/complexity rules
+The following tools were added in Phase 12 (Advanced Code Quality Tools):
+
+1. **eslint-plugin-sonarjs** - Quality/complexity rules ✅
    - Cognitive complexity limits
    - Code smell detection
-   - Effort: ~30 min
 
-2. **eslint-plugin-import** - Import ordering/validation
+2. **eslint-plugin-import** - Import ordering/validation ✅
    - Consistent import ordering
    - No unresolved imports
-   - Effort: ~20 min
 
-3. **Semgrep** - Security static analysis
+3. **Semgrep** - Security static analysis ✅
    - OWASP patterns
    - Custom security rules
-   - Effort: ~1 hour (requires Python)
+   - Command: `npm run security:scan`
 
 ### Addressing Knip Findings
 
