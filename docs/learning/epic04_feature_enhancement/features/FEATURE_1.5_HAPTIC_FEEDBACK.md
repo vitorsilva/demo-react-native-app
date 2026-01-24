@@ -246,7 +246,7 @@ const handleConfirm = () => {
 
 | Order | Task | Type | Effort |
 |-------|------|------|--------|
-| 1 | Create haptics utility module | Implementation | ~20 min | not started |
+| 1 | Create haptics utility module | Implementation | ~20 min | done |
 | 2 | Add haptic preference to store | Implementation | ~15 min | not started |
 | 3 | Add toggle to Settings screen | Implementation | ~15 min | not started |
 | 4 | Integrate haptics into components | Implementation | ~30 min | not started |
