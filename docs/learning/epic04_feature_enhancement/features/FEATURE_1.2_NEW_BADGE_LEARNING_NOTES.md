@@ -123,3 +123,26 @@ Created reusable test helpers:
 ### No Errors/Problems
 
 All 13 tests pass. Total test count now 251 (up from 238).
+
+---
+
+## Task 6: Create E2E Test for Badge Visibility
+
+### Test Design
+
+Created 3 tests following the pattern established in `favorites.spec.ts`:
+
+1. **Badge visibility test**: Verifies New! badge shows on fresh suggestions
+2. **Badge hiding test**: Verifies badge behavior after logging a combination
+3. **i18n test**: Verifies badge shows correct English text
+
+### TestID Usage
+
+The NewBadge component includes `testID="new-badge"` which allows E2E tests to:
+- Find all badges: `page.getByTestId('new-badge')`
+- Find first badge: `page.getByTestId('new-badge').first()`
+- Check text content: `expect(newBadge).toContainText('New!')`
+
+### No Errors/Problems
+
+E2E tests follow existing patterns. Full E2E verification will be done in Task 7.

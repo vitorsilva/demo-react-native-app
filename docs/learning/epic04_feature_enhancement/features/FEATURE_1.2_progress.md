@@ -113,3 +113,26 @@
 **Verification:**
 - Ran linting: passed (0 errors, 5 warnings - pre-existing)
 - Ran unit tests: 251 passed, 0 failed (238 existing + 13 new)
+
+---
+
+## Task 6: Create E2E Test for Badge Visibility (2026-01-24)
+
+**Status:** Done
+
+**What was done:**
+- Created `e2e/new-badge.spec.ts` with 3 Playwright E2E tests
+
+**Test scenarios:**
+1. `should show New! badge on suggestions for never-logged combinations` - verifies badge is visible on fresh suggestions
+2. `should hide New! badge after logging a combination recently` - verifies badge behavior after logging
+3. `should show New! badge text in correct language (English)` - verifies i18n text
+
+**Test pattern:**
+- Follows existing E2E test patterns from `favorites.spec.ts`
+- Uses testID selectors (`new-badge`)
+- Captures screenshots for documentation
+
+**Verification:**
+- Ran linting: passed (0 errors, 5 warnings - pre-existing)
+- Ran unit tests: 251 passed, 0 failed
