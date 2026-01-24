@@ -13,9 +13,11 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import { ConfirmationModal } from '../../components/modals/ConfirmationModal';
+import { NewBadge } from '../../components/NewBadge';
 import { useStore } from '../../lib/store';
 import { logger } from '../../lib/telemetry/logger';
 import { trackScreenView } from '../../lib/telemetry/screenTracking';
+import { isNewCombination } from '../../lib/utils/variety';
 
 // Conditionally import LinearGradient only for native platforms
 let LinearGradient: React.ComponentType<{
@@ -148,6 +150,7 @@ export default function SuggestionsScreen() {
   const suggestions = suggestedCombinations.map((ingredientArray, index) => {
     const ingredientIds = ingredientArray.map((i) => i.id);
     const favoriteStatus = isCombinationFavorited(ingredientIds);
+    const isNew = isNewCombination(ingredientIds, mealLogs);
 
     return {
       id: String(index),
@@ -155,6 +158,7 @@ export default function SuggestionsScreen() {
       imageUrl: SUGGESTION_IMAGES[index % SUGGESTION_IMAGES.length],
       isFavorite: favoriteStatus.isFavorite,
       mealLogId: favoriteStatus.mealLogId,
+      isNew,
     };
   });
 
@@ -293,6 +297,7 @@ export default function SuggestionsScreen() {
                     colors={['transparent', 'rgba(0,0,0,0.7)']}
                     style={styles.gradient}
                   >
+                    <NewBadge visible={suggestion.isNew} style={styles.newBadge} />
                     <View style={styles.cardContent}>
                       <Text style={styles.cardTitle}>
                         {suggestion.ingredients.map((i) => i.name).join(' + ')}
@@ -320,6 +325,7 @@ export default function SuggestionsScreen() {
                 ) : (
                   // Web fallback: simple dark overlay
                   <View style={styles.webGradientFallback}>
+                    <NewBadge visible={suggestion.isNew} style={styles.newBadge} />
                     <View style={styles.cardContent}>
                       <Text style={styles.cardTitle}>
                         {suggestion.ingredients.map((i) => i.name).join(' + ')}
@@ -425,6 +431,12 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     overflow: 'hidden',
     marginBottom: 16,
+  },
+  newBadge: {
+    position: 'absolute',
+    top: 12,
+    right: 12,
+    zIndex: 1,
   },
   cardImage: {
     height: 200,

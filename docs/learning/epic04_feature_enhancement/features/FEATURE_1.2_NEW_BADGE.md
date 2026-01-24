@@ -1,6 +1,6 @@
 # Feature 1.2: "New!" Badge 🆕
 
-**Status:** 📋 PLANNED
+**Status:** ✅ COMPLETE
 
 **Effort:** ~2 hours implementation + ~1 hour testing
 
@@ -155,24 +155,24 @@ function isNewCombination(ingredients: string[], history: MealLog[]): boolean {
 
 ## Acceptance Criteria
 
-- [ ] Badge appears on never-tried combinations
-- [ ] Badge appears on combinations not tried in 7+ days
-- [ ] Badge does not appear on recently logged combinations
+- [x] Badge appears on never-tried combinations
+- [x] Badge appears on combinations not tried in 7+ days
+- [x] Badge does not appear on recently logged combinations
 
 ---
 
 ## Testing Strategy
 
 ### Unit Tests (🧪 CREATE new tests)
-- [ ] `isNewCombination()` returns `true` for never-logged combinations
-- [ ] `isNewCombination()` returns `true` for 7+ days ago
-- [ ] `isNewCombination()` returns `false` for recent combinations (< 7 days)
-- [ ] Edge case: exactly 7 days returns `true`
-- [ ] Edge case: 6 days returns `false`
+- [x] `isNewCombination()` returns `true` for never-logged combinations
+- [x] `isNewCombination()` returns `true` for 7+ days ago
+- [x] `isNewCombination()` returns `false` for recent combinations (< 7 days)
+- [x] Edge case: exactly 7 days returns `true`
+- [x] Edge case: 6 days returns `false`
 
 ### E2E Tests - Playwright (🧪 CREATE new tests)
-- [ ] Badge visible on new combinations
-- [ ] Badge not visible on recent combinations
+- [x] Badge visible on new combinations
+- [x] Badge not visible on recent combinations
 
 ---
 
@@ -180,14 +180,14 @@ function isNewCombination(ingredients: string[], history: MealLog[]): boolean {
 
 | Order | Task | Type | Effort |
 |-------|------|------|--------|
-| 1 | 📸 Capture BEFORE screenshot of suggestion card | Documentation | ~5 min | not started |
-| 2 | Create `isNewCombination()` utility | Implementation | ~30 min | not started |
-| 3 | Create NewBadge component | Implementation | ~30 min | not started |
-| 4 | Integrate badge into SuggestionCard | Implementation | ~1 hour | not started |
-| 5 | 🧪 CREATE unit tests for `isNewCombination()` | Testing | ~30 min | not started |
-| 6 | 🧪 CREATE E2E test for badge visibility | Testing | ~30 min | not started |
-| 7 | Run all existing unit tests, Playwright tests and Maestro Tests | Quality | ~0.5 hours | not started |
-| 8 | 📸 Capture AFTER screenshot with New! badge | Documentation | ~5 min | not started |
+| 1 | 📸 Capture BEFORE screenshot of suggestion card | Documentation | ~5 min | done |
+| 2 | Create `isNewCombination()` utility | Implementation | ~30 min | done |
+| 3 | Create NewBadge component | Implementation | ~30 min | done |
+| 4 | Integrate badge into SuggestionCard | Implementation | ~1 hour | done |
+| 5 | 🧪 CREATE unit tests for `isNewCombination()` | Testing | ~30 min | done |
+| 6 | 🧪 CREATE E2E test for badge visibility | Testing | ~30 min | done |
+| 7 | Run all existing unit tests, Playwright tests and Maestro Tests | Quality | ~0.5 hours | done |
+| 8 | 📸 Capture AFTER screenshot with New! badge | Documentation | ~5 min | done |
 
 **Legend:**
 - 🧪 CREATE = Writing new tests
