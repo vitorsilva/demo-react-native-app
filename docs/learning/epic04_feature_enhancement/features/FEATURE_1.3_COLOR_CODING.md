@@ -211,7 +211,7 @@ Colors should not be the only indicator. Consider adding:
 | Order | Task | Type | Effort |
 |-------|------|------|--------|
 | 1 | Create `getVarietyColor()` utility | Implementation | ~30 min | done |
-| 2 | Add color indicator to SuggestionCard | Implementation | ~1 hour | not started |
+| 2 | Add color indicator to SuggestionCard | Implementation | ~1 hour | done |
 | 3 | Add accessibility support (shapes/labels) | Implementation | ~30 min | not started |
 | 4 | 🧪 CREATE unit tests for `getVarietyColor()` | Testing | ~30 min | not started |
 | 5 | 🧪 CREATE E2E test for color visibility | Testing | ~30 min | not started |
