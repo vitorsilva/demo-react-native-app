@@ -4,6 +4,11 @@
     "title": "Language",
     "description": "Choose your preferred language"
   },
+  "experience": {
+    "title": "Experience",
+    "hapticFeedback": "Haptic Feedback",
+    "hapticDescription": "Vibration on interactions"
+  },
   "globalPreferences": {
     "title": "Global Preferences",
     "varietyCooldown": {

@@ -162,6 +162,14 @@ export default function SettingsScreen() {
     setCurrentLanguage(newLang);
   };
 
+  // Handle haptic toggle
+  const handleHapticToggle = async (value: boolean) => {
+    await updatePreferences({
+      ...preferences,
+      hapticEnabled: value,
+    });
+  };
+
   // Toggle expanded meal type
   const toggleExpandMealType = (id: string) => {
     setExpandedMealType(expandedMealType === id ? null : id);
@@ -325,6 +333,25 @@ export default function SettingsScreen() {
               )}
             </TouchableOpacity>
           ))}
+        </View>
+
+        {/* === EXPERIENCE SECTION === */}
+        <Text style={styles.sectionTitle}>{t('experience.title')}</Text>
+
+        <View style={styles.settingCard}>
+          <View style={styles.settingHeader}>
+            <View style={styles.hapticLabelContainer}>
+              <Text style={styles.settingLabel}>{t('experience.hapticFeedback')}</Text>
+              <Text style={styles.hapticDescription}>{t('experience.hapticDescription')}</Text>
+            </View>
+            <Switch
+              value={preferences.hapticEnabled}
+              onValueChange={handleHapticToggle}
+              trackColor={{ false: '#3e3e3e', true: '#3e96ef' }}
+              thumbColor={preferences.hapticEnabled ? '#FFFFFF' : '#9dabb9'}
+              testID="haptic-toggle"
+            />
+          </View>
         </View>
 
         {/* === GLOBAL PREFERENCES SECTION === */}
@@ -751,5 +778,14 @@ const styles = StyleSheet.create({
   infoBold: {
     fontWeight: 'bold',
     color: '#FFFFFF',
+  },
+  // Haptic settings
+  hapticLabelContainer: {
+    flex: 1,
+  },
+  hapticDescription: {
+    fontSize: 13,
+    color: '#9BA1A6',
+    marginTop: 4,
   },
 });

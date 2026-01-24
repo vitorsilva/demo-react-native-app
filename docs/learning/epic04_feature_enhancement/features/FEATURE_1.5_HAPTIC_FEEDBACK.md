@@ -248,7 +248,7 @@ const handleConfirm = () => {
 |-------|------|------|--------|
 | 1 | Create haptics utility module | Implementation | ~20 min | done |
 | 2 | Add haptic preference to store | Implementation | ~15 min | done |
-| 3 | Add toggle to Settings screen | Implementation | ~15 min | not started |
+| 3 | Add toggle to Settings screen | Implementation | ~15 min | done |
 | 4 | Integrate haptics into components | Implementation | ~30 min | not started |
 | 5 | 🧪 CREATE unit tests for haptics utility | Testing | ~30 min | not started |
 | 6 | Run all existing unit tests, Playwright tests and Maestro Tests (you can start abd for maestro testing, look documentation) | Quality | ~0.5 hours | not started |

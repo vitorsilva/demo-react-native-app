@@ -50,3 +50,32 @@ Added the `hapticEnabled` preference to the application's preferences system. Th
 **Verification:**
 - TypeScript check: ✅ Passed
 - Linter: ✅ Passed (no new errors/warnings)
+
+## Task 3: Add toggle to Settings screen ✅
+
+**Date:** 2026-01-24
+
+**Summary:**
+Added the "Experience" section to the Settings screen with a Haptic Feedback toggle. Users can now enable/disable haptic feedback from the settings.
+
+**Changes made:**
+
+1. **`app/(tabs)/settings.tsx`:**
+   - Added new "Experience" section between Language and Global Preferences
+   - Added Switch toggle connected to `preferences.hapticEnabled`
+   - Added `handleHapticToggle` handler to update preferences
+   - Added new styles: `hapticLabelContainer`, `hapticDescription`
+
+2. **`lib/i18n/locales/en/settings.json`:**
+   - Added `experience.title`: "Experience"
+   - Added `experience.hapticFeedback`: "Haptic Feedback"
+   - Added `experience.hapticDescription`: "Vibration on interactions"
+
+3. **`lib/i18n/locales/pt-PT/settings.json`:**
+   - Added `experience.title`: "Experiência"
+   - Added `experience.hapticFeedback`: "Feedback Tátil"
+   - Added `experience.hapticDescription`: "Vibração nas interações"
+
+**Verification:**
+- TypeScript check: ✅ Passed
+- Linter: ✅ Passed (only pre-existing warnings)

@@ -46,3 +46,30 @@
   - `lib/store/__tests__/favorites.test.ts` - 1 occurrence
   - `lib/store/__tests__/index.test.ts` - 1 occurrence
 - **Structure test updated**: The test `'getPreferences returns correct structure'` was checking for exactly 2 keys, updated to check for 3 keys including `hapticEnabled`
+
+## Task 3: Add toggle to Settings screen
+
+### Date: 2026-01-24
+
+### What was implemented
+- Added "Experience" section to the Settings screen with a Haptic Feedback toggle
+- Added i18n translations for both English and Portuguese:
+  - `experience.title`: "Experience" / "Experiência"
+  - `experience.hapticFeedback`: "Haptic Feedback" / "Feedback Tátil"
+  - `experience.hapticDescription`: "Vibration on interactions" / "Vibração nas interações"
+- Toggle is connected to the `hapticEnabled` preference in the store
+- Uses the same styling patterns as existing settings (settingCard, settingHeader, etc.)
+
+### Key decisions
+1. **Placement**: Added the Experience section between Language and Global Preferences sections, as per the wireframe in the spec
+2. **Toggle style**: Used the same Switch component styling as meal type toggles for consistency
+3. **Description text**: Added a small description below the toggle label to explain what haptic feedback does
+
+### Files modified
+- `app/(tabs)/settings.tsx` - Added Experience section with haptic toggle
+- `lib/i18n/locales/en/settings.json` - Added experience translations
+- `lib/i18n/locales/pt-PT/settings.json` - Added Portuguese translations
+
+### No issues encountered
+- TypeScript check: ✅ Passed
+- Linter: ✅ Passed (only pre-existing warnings)
