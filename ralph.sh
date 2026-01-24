@@ -12,7 +12,7 @@ for ((i=1; i<=ITERATIONS; i++)); do
     @docs\learning\epic04_feature_enhancement\features\FEATURE_1.4_progress.md
 
     # do it once before starting
-    1. Read @docs\learning\epic04_feature_enhancement\features\FEATURE_1.4_VARIETY_STATS.md and identify in the ## implementation order for the task 'not started' with the lowest number
+    1. Read @docs\learning\epic04_feature_enhancement\features\FEATURE_1.4_VARIETY_STATS.md and IDENTITY in the **## implementation order** the task 'not started' with the lowest number
     2. Make sure you understand the task fully
     3. Make sure you are on the FEATURE_1.4_VARIETY_STATS branch in git if not, create worktree and switch to it.
 
@@ -29,7 +29,7 @@ for ((i=1; i<=ITERATIONS; i++)); do
   " 2>&1 | tee -a last_output.log
 
   # Stop the loop if Claude says it's finished
-  if grep -q "<promise>COMPLETE</promise>" last_output.log; then
+  if tail -n 3 last_output.log | grep -q "<promise>COMPLETE</promise>"; then
     echo "PRD Complete!"
     break 
   else
