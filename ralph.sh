@@ -11,7 +11,7 @@ for ((i=1; i<=ITERATIONS; i++)); do
     @docs\learning\epic04_feature_enhancement\features\FEATURE_1.4_VARIETY_STATS.md 
     @docs\learning\epic04_feature_enhancement\features\FEATURE_1.4_progress.md
 
-    # before starting
+    # do it once before starting
     1. Read @docs\learning\epic04_feature_enhancement\features\FEATURE_1.4_VARIETY_STATS.md and identify in the ## implementation order for the task 'not started' with the lowest number
     2. Make sure you understand the task fully
     3. Make sure you are on the FEATURE_1.4_VARIETY_STATS branch in git if not, create worktree and switch to it.
