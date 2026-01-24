@@ -106,3 +106,34 @@
 ### Verification
 - TypeScript check: ✅ Passed
 - Linter: ✅ Passed (only pre-existing warnings unrelated to this task)
+
+## Task 5: CREATE unit tests for haptics utility
+
+### Date: 2026-01-24
+
+### What was implemented
+- Created comprehensive unit tests for `lib/utils/haptics.ts` at `lib/utils/__tests__/haptics.test.ts`
+- 28 tests covering all haptic functions (light, medium, heavy, success, warning, error, selection)
+- Test scenarios cover:
+  - Haptics enabled on iOS (calls expo-haptics correctly)
+  - Haptics enabled on Android (calls expo-haptics correctly)
+  - Haptics disabled in preferences (does not call expo-haptics)
+  - Platform is web (does not call expo-haptics)
+  - expo-haptics throws error (gracefully handles without throwing)
+
+### Key decisions
+1. **Dynamic mocking with `jest.doMock`**: The haptics module evaluates `Platform.OS` at load time to set `isHapticsAvailable`. Using `jest.doMock` before each `require` allows testing different platform configurations.
+2. **Mock factory pattern**: Created `createHapticsMock()` and `createStoreMock()` helper functions to generate fresh mocks for each test suite. This ensures clean state and allows each suite to have its own mock configuration.
+3. **Comprehensive coverage**: Tests verify both positive cases (haptics called correctly) and negative cases (haptics not called when disabled or unavailable).
+
+### Issues encountered and fixes
+- **Initial test approach failed**: First attempt used `jest.mock()` at the top level and `jest.isolateModules()` in beforeEach. This didn't work because `Platform.OS` is evaluated at module load time and the top-level mock was already established.
+- **Solution**: Switched to using `jest.doMock()` inside each describe block's `beforeEach`, combined with `jest.resetModules()` to ensure fresh module loading with the correct mock configuration each time.
+
+### Files created
+- `lib/utils/__tests__/haptics.test.ts` - 28 unit tests
+
+### Verification
+- All 28 tests pass
+- TypeScript check: ✅ Passed
+- Linter: ✅ Passed (only pre-existing warnings)

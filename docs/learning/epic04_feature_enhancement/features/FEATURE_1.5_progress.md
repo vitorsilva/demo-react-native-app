@@ -120,3 +120,30 @@ Integrated the haptics utility into all relevant components, replacing direct `e
 **Verification:**
 - TypeScript check: ✅ Passed
 - Linter: ✅ Passed (only pre-existing warnings)
+
+## Task 5: CREATE unit tests for haptics utility ✅
+
+**Date:** 2026-01-24
+
+**Summary:**
+Created comprehensive unit tests for the haptics utility module at `lib/utils/__tests__/haptics.test.ts`. The test suite includes 28 tests covering all haptic functions and edge cases.
+
+**Test coverage:**
+- **Platform iOS with haptics enabled** (7 tests): Verifies all haptic functions call expo-haptics correctly with proper parameters
+- **Haptics disabled in preferences** (7 tests): Verifies no expo-haptics calls when user has disabled haptics
+- **Platform web** (5 tests): Verifies no expo-haptics calls on web platform
+- **expo-haptics throws error** (7 tests): Verifies graceful error handling without throwing
+- **Platform Android** (2 tests): Verifies haptics work on Android as well as iOS
+
+**Key testing approach:**
+- Used `jest.doMock()` with `jest.resetModules()` to test different platform and preference configurations
+- Created mock factory functions (`createHapticsMock()`, `createStoreMock()`) for clean test state
+- Each test suite loads a fresh module with its specific configuration
+
+**Files created:**
+- `demo-react-native-app/lib/utils/__tests__/haptics.test.ts` (28 tests)
+
+**Verification:**
+- All 28 tests pass
+- TypeScript check: ✅ Passed
+- Linter: ✅ Passed (only pre-existing warnings)
