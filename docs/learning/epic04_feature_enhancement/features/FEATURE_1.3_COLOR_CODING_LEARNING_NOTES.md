@@ -90,3 +90,26 @@
 ### No Issues Encountered
 - All tests and linting passed
 - TypeScript check passed with no errors
+
+---
+
+## Task 4: Create unit tests for getVarietyColor()
+
+**Date:** 2026-01-24
+
+### Approach
+- Added tests to existing variety.test.ts file following the same pattern as isNewCombination tests
+- Covered all scenarios from the testing strategy
+
+### Tests Created (12 new tests)
+- Never-logged combinations (2 tests)
+- 3+ days ago (fresh) - including edge case for exactly 3 days (3 tests)
+- 1-2 days ago (recent) - including edge case for exactly 1 day (2 tests)
+- Today (very recent) (1 test)
+- Order-independent matching (1 test)
+- Multiple logs handling (2 tests)
+- FRESH_THRESHOLD_DAYS constant export (1 test)
+
+### No Issues Encountered
+- All 12 new tests pass
+- Total test count increased from 220 to 263
