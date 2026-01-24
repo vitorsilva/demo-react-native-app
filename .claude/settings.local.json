@@ -119,7 +119,9 @@
       "Bash(npx tsx:*)",
       "Bash(./node_modules/.bin/tsc:*)",
       "Bash(node:*)",
-      "Bash(npm run:*)"
+      "Bash(npm run:*)",
+      "Bash(grep:*)",
+      "Bash(xargs -I {} sh -c 'echo \"\"=== {} ===\"\" && head -5 {}')"
     ],
     "deny": [],
     "ask": []
