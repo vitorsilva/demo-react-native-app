@@ -1,5 +1,10 @@
 {
   "newBadge": "Novo!",
+  "varietyIndicator": {
+    "fresh": "Escolha fresca",
+    "recent": "Consumido recentemente",
+    "veryRecent": "Consumido hoje"
+  },
   "title": "Sugestões de {{mealType}}",
   "pickOne": "Escolha uma:",
   "loading": "A encontrar combinações deliciosas...",

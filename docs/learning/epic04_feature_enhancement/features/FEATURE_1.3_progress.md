@@ -44,3 +44,27 @@ Created a `VarietyIndicator` component and integrated it into the suggestions sc
 - All unit tests pass
 - ESLint: 0 errors (5 pre-existing warnings unrelated to this change)
 - TypeScript: No type errors
+
+---
+
+## Task 3: Add accessibility support (shapes/labels) - DONE
+
+**Date:** 2026-01-24
+
+### Summary
+Enhanced the VarietyIndicator component with icons and added i18n translation support for accessibility labels, ensuring the indicator is accessible to color-blind users and supports multiple languages.
+
+### Changes Made
+- Added icons (checkmark, circle, exclamation) inside the colored indicators
+- Added i18n translations for accessibility labels in English and Portuguese
+- Used `useTranslation` hook for localized accessibility labels
+
+### Files Modified
+- `demo-react-native-app/components/VarietyIndicator.tsx`
+- `demo-react-native-app/lib/i18n/locales/en/suggestions.json`
+- `demo-react-native-app/lib/i18n/locales/pt-PT/suggestions.json`
+
+### Verification
+- All unit tests pass
+- ESLint: 0 errors (5 pre-existing warnings unrelated to this change)
+- TypeScript: No type errors
