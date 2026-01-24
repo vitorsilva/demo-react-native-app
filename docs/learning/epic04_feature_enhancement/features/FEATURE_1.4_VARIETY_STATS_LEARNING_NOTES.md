@@ -142,3 +142,38 @@
 - All 17 new tests pass (43 total tests in variety.test.ts)
 - TypeScript check passed without errors
 - Linter passed (only pre-existing warnings from other files)
+
+## Task 5: Create Playwright E2E test
+
+### What was implemented
+
+1. **Created `e2e/variety-stats.spec.ts`** with 6 comprehensive E2E tests:
+   - `should display variety stats card on home screen` - Verifies the stats card is visible on home
+   - `should show stats content when expanded` - Verifies content is visible in expanded state
+   - `should collapse and expand stats card when toggle is clicked` - Tests the collapse/expand functionality
+   - `should update stats after logging a meal` - Verifies stats update after logging a meal
+   - `should show stats in correct language (English)` - Verifies i18n text is correct
+   - `should display all stat categories when meals are logged` - Verifies all 4 stat categories (🎯⭐🥗📈) are shown
+
+2. **Test coverage includes**:
+   - Stats card visibility on home screen
+   - Stats content visible when expanded (default state)
+   - Collapse/expand toggle functionality with screenshots
+   - Stats update after logging a meal (navigates to suggestions, logs meal, returns to home)
+   - English language verification for the title
+   - All stat categories displayed (unique combos, most common, ingredients used, variety score)
+
+### Design decisions
+
+- Followed existing E2E test patterns from `new-badge.spec.ts` and `variety-indicator.spec.ts`
+- Used same `beforeEach` setup for database initialization and app ready state
+- Added multiple screenshots at various states (8 total) for documentation
+- Tested both empty state handling and populated state with logged meals
+- Used testIDs defined in the VarietyStats component: `variety-stats-card`, `variety-stats-toggle`, `variety-stats-content`
+
+### Notes
+
+- No issues encountered during implementation
+- TypeScript check passed without errors
+- Linter passed (only pre-existing warnings from other files)
+- Test file follows the established patterns in the codebase for E2E testing
