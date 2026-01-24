@@ -91,3 +91,54 @@
 - TypeScript check passed without errors
 - Linter passed (only pre-existing warnings from other files)
 - The component integration was straightforward since the Home screen already had the data available from the store
+
+## Task 4: Create unit tests for `calculateVarietyStats()`
+
+### What was implemented
+
+1. **Added comprehensive tests to `lib/utils/__tests__/variety.test.ts`**:
+   - Added `calculateVarietyStats` import and `Ingredient` type import
+   - Created helper functions for testing:
+     - `daysAgoThisMonth(days)` - creates date strings for this month
+     - `previousMonth(dayOffset)` - creates date strings for last month
+     - `createIngredient(id, name, isActive)` - creates test Ingredient objects
+     - `createStatsMealLog(ingredientIds, dateString, id)` - creates test MealLog objects
+
+2. **Test coverage includes**:
+   - **uniqueCombosThisMonth tests**:
+     - Correct unique combo count for this month
+     - Duplicate combinations counted only once
+     - Logs from previous month ignored
+     - Same ingredients in different order treated as same combination
+   - **mostCommonCombo tests**:
+     - Returns correct most common combo across all history
+     - Includes logs from all time (not just this month)
+     - Returns null when history is empty
+   - **ingredientsUsedThisWeek tests**:
+     - Correct ingredient usage ratio for this week
+     - Each ingredient counted only once
+     - Only active ingredients counted in totalIngredients
+   - **varietyScore tests**:
+     - Correct variety score percentage calculation
+     - Returns 0 when no logs this month
+     - Returns 0 when no ingredients
+     - Score is rounded to nearest integer
+   - **Edge cases**:
+     - Returns zeros/defaults when no history exists
+     - Returns 1 unique combo when all logs have same combination
+     - Handles empty ingredients list
+     - Handles single ingredient combinations
+
+### Design decisions
+
+- Created separate helper functions (`daysAgoThisMonth`, `previousMonth`, `createIngredient`, `createStatsMealLog`) to avoid naming conflicts with existing helpers (`daysAgo`, `createMealLog`)
+- Used `Date.setHours(12, 0, 0, 0)` for test dates to avoid timezone edge cases
+- `previousMonth` uses day 15 as base to avoid month-end edge cases when going back a month
+- Tests verify the formula: `(unique combos / total logs) * (ingredients used / total) * 100`
+
+### Notes
+
+- No issues encountered during implementation
+- All 17 new tests pass (43 total tests in variety.test.ts)
+- TypeScript check passed without errors
+- Linter passed (only pre-existing warnings from other files)

@@ -66,3 +66,25 @@
 **Verification:**
 - TypeScript check: PASSED
 - ESLint: PASSED (only pre-existing warnings)
+
+## Task 4: Create unit tests for `calculateVarietyStats()` - DONE
+
+**Date:** 2026-01-24
+
+**Summary:**
+- Added 17 comprehensive unit tests for `calculateVarietyStats()` function to `lib/utils/__tests__/variety.test.ts`
+- Created helper functions: `daysAgoThisMonth()`, `previousMonth()`, `createIngredient()`, `createStatsMealLog()`
+- Test coverage includes:
+  - uniqueCombosThisMonth: correct count, deduplication, month filtering, order-independent matching
+  - mostCommonCombo: correct combo and count, all-time history, null for empty
+  - ingredientsUsedThisWeek: correct ratio, deduplication, active-only counting
+  - varietyScore: correct formula, edge cases (no logs, no ingredients), rounding
+  - Edge cases: empty history, same combo repeated, empty ingredients, single-ingredient combos
+
+**Files modified:**
+- `lib/utils/__tests__/variety.test.ts` - Added 17 new tests for `calculateVarietyStats()`
+
+**Verification:**
+- Unit tests: 43 tests pass (26 existing + 17 new)
+- TypeScript check: PASSED
+- ESLint: PASSED (only pre-existing warnings)
