@@ -194,3 +194,31 @@ Since the haptic toggle implementation was already completed (Tasks 1-6), the BE
 1. **Screenshot timing**: Ideally, BEFORE screenshots should be captured before implementation starts (before Task 3 in this case). Since Tasks 1-6 were already complete, we needed to checkout main branch to capture the true "before" state.
 2. **Web version for screenshots**: Using the Expo web version (`npm run web`) via Playwright browser automation made capturing screenshots straightforward.
 3. **No "Experience" section in main**: The main branch Settings screen goes directly from "Language" to "Global Preferences" - confirming the BEFORE state correctly shows no haptic toggle.
+
+## Task 8: Capture AFTER screenshot with haptic toggle
+
+### Date: 2026-01-24
+
+### What was done
+Captured the AFTER screenshot of the Settings screen showing the new "Experience" section with the Haptic Feedback toggle.
+
+### Approach
+1. Started the Expo web server (`npm run web`)
+2. Navigated to http://localhost:8081 in Playwright browser
+3. Clicked on the Settings tab to navigate to Settings screen
+4. Captured screenshot showing the new "Experience" section with toggle
+5. Copied screenshot to `docs/learning/epic04_feature_enhancement/features/screenshots/`
+
+### Files created
+- `docs/learning/epic04_feature_enhancement/features/screenshots/screenshot_after_settings_haptic.png`
+
+### Screenshot shows
+- Settings screen with Language section at top
+- New "Experience" section between Language and Global Preferences
+- Haptic Feedback toggle with description "Vibration on interactions"
+- Toggle is enabled (on) by default
+- Global Preferences section below
+
+### No issues encountered
+- Screenshot captured successfully using Playwright browser automation
+- Screenshot correctly shows the new haptic toggle feature as implemented
