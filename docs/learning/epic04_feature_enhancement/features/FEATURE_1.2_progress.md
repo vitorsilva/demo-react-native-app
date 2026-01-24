@@ -66,3 +66,27 @@
 **Verification:**
 - Ran linting: passed (0 errors, 5 warnings - pre-existing)
 - Ran unit tests: 238 passed, 0 failed
+
+---
+
+## Task 4: Integrate Badge into SuggestionCard (2026-01-24)
+
+**Status:** Done
+
+**What was done:**
+- Integrated NewBadge component into `app/suggestions/[mealType].tsx`
+- Added imports for `NewBadge` component and `isNewCombination` utility
+- Added `isNew` property to suggestion transformation using `isNewCombination()`
+- Added NewBadge to both native (LinearGradient) and web fallback card layouts
+- Added `newBadge` style for absolute positioning (top-right, 12px offset)
+
+**Implementation details:**
+- Badge shows for combinations where `isNewCombination(ingredientIds, mealLogs)` returns true
+- Badge is positioned absolutely at top: 12, right: 12 within the card
+- Works on both native (with LinearGradient) and web platforms
+
+**Note:** The spec mentioned modifying `components/SuggestionCard.tsx`, but suggestion cards are rendered inline in `app/suggestions/[mealType].tsx`, so modifications were made there instead.
+
+**Verification:**
+- Ran linting: passed (0 errors, 5 warnings - pre-existing)
+- Ran unit tests: 238 passed, 0 failed

@@ -60,3 +60,36 @@ Task 2 was straightforward implementation with no issues encountered.
 ### No Errors/Problems
 
 Fixed import order warning during implementation. No other issues encountered.
+
+---
+
+## Task 4: Integrate Badge into SuggestionCard
+
+### Key Decisions
+
+1. **Direct Integration**: The spec mentioned `components/SuggestionCard.tsx`, but this file doesn't exist - suggestion cards are rendered inline in `app/suggestions/[mealType].tsx`. Integrated the badge there instead.
+
+2. **Badge Positioning**: Used absolute positioning with `top: 12, right: 12` to place the badge in the top-right corner of the card image.
+
+3. **Both Platform Variants**: Added the NewBadge to both the native (LinearGradient) and web fallback (dark overlay) card layouts to ensure consistent behavior.
+
+### Implementation Pattern
+
+The badge is rendered inside the gradient/overlay container with absolute positioning:
+```tsx
+<NewBadge visible={suggestion.isNew} style={styles.newBadge} />
+```
+
+Style:
+```ts
+newBadge: {
+  position: 'absolute',
+  top: 12,
+  right: 12,
+  zIndex: 1,
+}
+```
+
+### No Errors/Problems
+
+Straightforward integration with no issues encountered.
