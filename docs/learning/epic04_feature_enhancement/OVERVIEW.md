@@ -82,10 +82,11 @@ Epic 3 established the production-ready foundation. Epic 4 enhances the app with
 - Security: 0 issues
 - Unit tests: 238 passing
 - Coverage: 35.25% lines (business logic 100%)
+- Mutation scores: Core 65%, Validation 94.34%, Database 87.04%
 
 **Dependencies:** Phase 0.1
 
-**[Phase 0.2 Details →](./PHASE0.2_QUALITY_BASELINE.md)** | **[Baseline Report →](./EPIC04_QUALITY_BASELINE.md)**
+**[Phase 0.2 Details →](./PHASE0.2_QUALITY_BASELINE.md)** | **[Baseline Report →](./EPIC04_QUALITY_BASELINE.md)** | **[Learning Notes →](./PHASE0.2_LEARNING_NOTES.md)**
 
 ---
 
@@ -369,9 +370,9 @@ Phase 7 (Proposals)   Phase 8 (P2P) [Optional]            │    │
 ### Epic 4 Complete When:
 
 **Phase Completion:**
-- [ ] Phase 0: Landing page live at saborspin.com
-- [ ] Phase 0.1: All tools validated and configured
-- [ ] Phase 0.2: Quality baseline report created
+- [x] Phase 0: Landing page live at saborspin.com
+- [x] Phase 0.1: All tools validated and configured
+- [x] Phase 0.2: Quality baseline report created
 - [ ] Phase 1: All quick wins implemented
 - [ ] Phase 2: Data model supports prep methods and naming
 - [ ] Phase 3: Ingredient-level variety tracking works
