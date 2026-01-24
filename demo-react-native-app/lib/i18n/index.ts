@@ -48,7 +48,7 @@ export async function initI18n(): Promise<typeof i18n> {
       resources,
       fallbackLng: DEFAULT_LANGUAGE,
       defaultNS: 'common',
-      ns: ['common', 'tabs', 'home', 'history', 'settings', 'ingredients', 'categories', 'suggestions', 'errors'],
+      ns: ['common', 'tabs', 'home', 'history', 'settings', 'ingredients', 'categories', 'suggestions', 'stats', 'errors'],
       interpolation: {
         escapeValue: false, // React already escapes values
       },

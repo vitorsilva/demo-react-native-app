@@ -34,3 +34,35 @@
 - No issues encountered during implementation
 - TypeScript check and linter passed without new errors
 - Existing variety.ts already imported `getDaysAgo` from dateUtils, so pattern was established
+
+## Task 2: Create VarietyStats component
+
+### What was implemented
+
+1. **Created `components/VarietyStats.tsx`**:
+   - Collapsible card component for displaying variety statistics
+   - Shows unique combinations count, most common combo, ingredient usage, and variety score
+   - Uses `useState` for expand/collapse state
+   - Receives `VarietyStats` data and `ingredientNames` map as props
+   - Includes testIDs for E2E testing: `variety-stats-card`, `variety-stats-toggle`, `variety-stats-content`
+
+2. **Created i18n translations**:
+   - `lib/i18n/locales/en/stats.json` - English translations for stats
+   - `lib/i18n/locales/pt-PT/stats.json` - Portuguese translations for stats
+   - Updated `lib/i18n/locales/index.ts` to import and export stats translations
+   - Updated `lib/i18n/index.ts` to include 'stats' in the namespace list
+
+### Design decisions
+
+- Component receives pre-calculated stats rather than computing them internally (separation of concerns)
+- `ingredientNames` prop is a Map for O(1) lookup when formatting combo display
+- Card is expanded by default (`useState(true)`) for better first-time UX
+- Empty state shows "No meals logged yet" when there's no data
+- Uses emoji icons for visual appeal matching the spec wireframe
+
+### Notes
+
+- No issues encountered during implementation
+- TypeScript check passed without errors
+- Linter passed (only pre-existing warnings from other files)
+- Followed existing component patterns from `NewBadge.tsx` and `VarietyIndicator.tsx`

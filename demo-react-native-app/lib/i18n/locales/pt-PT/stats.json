@@ -1,0 +1,16 @@
+{
+  "varietyStats": {
+    "title": "A Tua Variedade Este Mes",
+    "uniqueCombinations": "Experimentaste {{count}} combinacoes diferentes este mes!",
+    "uniqueCombinations_one": "Experimentaste {{count}} combinacao diferente este mes!",
+    "uniqueCombinations_other": "Experimentaste {{count}} combinacoes diferentes este mes!",
+    "mostCommon": "O mais comum e {{combination}} ({{count}}x)",
+    "mostCommon_one": "O mais comum e {{combination}} ({{count}}x)",
+    "mostCommon_other": "O mais comum e {{combination}} ({{count}}x)",
+    "ingredientsUsed": "Usaste {{used}} dos teus {{total}} ingredientes esta semana",
+    "varietyScore": "Pontuacao de variedade: {{score}}%",
+    "expand": "Mostrar mais",
+    "collapse": "Mostrar menos",
+    "noData": "Ainda nao registaste refeicoes"
+  }
+}

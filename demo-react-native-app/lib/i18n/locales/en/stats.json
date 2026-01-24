@@ -1,0 +1,16 @@
+{
+  "varietyStats": {
+    "title": "Your Variety This Month",
+    "uniqueCombinations": "You've tried {{count}} different combinations this month!",
+    "uniqueCombinations_one": "You've tried {{count}} different combination this month!",
+    "uniqueCombinations_other": "You've tried {{count}} different combinations this month!",
+    "mostCommon": "Your most common is {{combination}} ({{count}}x)",
+    "mostCommon_one": "Your most common is {{combination}} ({{count}}x)",
+    "mostCommon_other": "Your most common is {{combination}} ({{count}}x)",
+    "ingredientsUsed": "You've used {{used}} of your {{total}} ingredients this week",
+    "varietyScore": "Variety score: {{score}}%",
+    "expand": "Show more",
+    "collapse": "Show less",
+    "noData": "No meals logged yet"
+  }
+}
