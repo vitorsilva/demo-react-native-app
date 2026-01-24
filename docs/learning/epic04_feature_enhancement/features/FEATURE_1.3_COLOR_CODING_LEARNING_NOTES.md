@@ -152,3 +152,22 @@
 
 ### Note on Maestro Tests
 Maestro tests (5 test files) require a running Android/iOS emulator or physical device. These tests are designed for mobile-specific flows and cannot be run in CI without device setup. The Playwright E2E tests provide comprehensive browser-based coverage.
+
+---
+
+## Tasks 7 & 8: Capture screenshots
+
+**Date:** 2026-01-24
+
+### Approach
+Used E2E test screenshots as documentation (Option C from spec - skip manual BEFORE since feature is implemented).
+
+### Screenshots Created
+- `AFTER_color_coding_green.png` - Green indicator for fresh combinations
+- `AFTER_color_coding_with_icon.png` - Indicator with accessibility icon
+
+### Location
+Screenshots saved to `docs/learning/epic04_feature_enhancement/features/screenshots/`
+
+### Note
+BEFORE state is documented via the ASCII wireframe in the feature document. E2E tests also captured multiple screenshots showing the indicator in different states.
