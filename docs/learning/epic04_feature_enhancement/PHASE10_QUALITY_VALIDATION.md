@@ -50,6 +50,11 @@ maestro test e2e/maestro/
 
 # Test coverage
 npm test -- --coverage
+
+# Mutation testing
+npm run test:mutation:core        # Core business logic
+npm run test:mutation:validation  # Validation logic
+npm run test:mutation:db          # Database operations
 ```
 
 ---
@@ -66,10 +71,11 @@ npm test -- --coverage
 | 6 | Run Playwright E2E tests | Quality | ~15 min | not started |
 | 7 | Run Maestro E2E tests | Quality | ~15 min | not started |
 | 8 | Run test coverage | Quality | ~10 min | not started |
-| 9 | Create final quality report | Documentation | ~15 min | not started |
-| 10 | Compare with baseline | Analysis | ~15 min | not started |
-| 11 | Create remediation plan (if needed) | Planning | ~30 min | not started |
-| 12 | Commit final report | Git | ~5 min | not started |
+| 9 | Run mutation testing (all waves) | Quality | ~10 min | not started |
+| 10 | Create final quality report | Documentation | ~15 min | not started |
+| 11 | Compare with baseline | Analysis | ~15 min | not started |
+| 12 | Create remediation plan (if needed) | Planning | ~30 min | not started |
+| 13 | Commit final report | Git | ~5 min | not started |
 
 **Total Estimated Effort:** ~2.5 hours
 
@@ -87,6 +93,9 @@ npm test -- --coverage
 | Security Issues (Critical) | ___ | ___ | ___ | [ ] OK / [ ] WORSE |
 | Security Issues (High) | ___ | ___ | ___ | [ ] OK / [ ] WORSE |
 | Test Coverage (Lines) | ___% | ___% | ___% | [ ] OK / [ ] WORSE |
+| Mutation Score (Core) | ___% | ___% | ___% | [ ] OK / [ ] WORSE |
+| Mutation Score (Validation) | ___% | ___% | ___% | [ ] OK / [ ] WORSE |
+| Mutation Score (Database) | ___% | ___% | ___% | [ ] OK / [ ] WORSE |
 | Unit Tests Passing | ___/___ | ___/___ | ___ | [ ] OK / [ ] WORSE |
 | E2E Tests Passing | ___/___ | ___/___ | ___ | [ ] OK / [ ] WORSE |
 
@@ -97,6 +106,7 @@ npm test -- --coverage
 - [ ] Duplicate blocks same or lower
 - [ ] No new critical/high security issues
 - [ ] Test coverage same or higher
+- [ ] Mutation scores same or higher
 - [ ] All tests passing
 
 ---
@@ -128,6 +138,9 @@ Save this report as `EPIC04_QUALITY_FINAL.md` in this folder.
 | Duplicate Blocks | ___ | ___ | ___ | ✅/❌ |
 | Security (Critical/High) | ___/___ | ___/___ | ___ | ✅/❌ |
 | Test Coverage | ___% | ___% | ___% | ✅/❌ |
+| Mutation Score (Core) | ___% | ___% | ___% | ✅/❌ |
+| Mutation Score (Validation) | ___% | ___% | ___% | ✅/❌ |
+| Mutation Score (Database) | ___% | ___% | ___% | ✅/❌ |
 | Unit Tests | ___/___ | ___/___ | ___ | ✅/❌ |
 | E2E Tests | ___/___ | ___/___ | ___ | ✅/❌ |
 
