@@ -66,3 +66,28 @@
 - TypeScript check passed without errors
 - Linter passed (only pre-existing warnings from other files)
 - Followed existing component patterns from `NewBadge.tsx` and `VarietyIndicator.tsx`
+
+## Task 3: Integrate stats card into Home screen
+
+### What was implemented
+
+1. **Modified `app/(tabs)/index.tsx`**:
+   - Added imports for `VarietyStats` component and `calculateVarietyStats` function
+   - Added `useMemo` import from React for performance optimization
+   - Added `varietyStats` calculation using memoization to prevent unnecessary recalculations
+   - Added `ingredientNames` Map creation (also memoized) for efficient ingredient name lookup
+   - Inserted the `<VarietyStats>` component between the header and meal type buttons
+
+### Design decisions
+
+- Used `useMemo` for both `varietyStats` calculation and `ingredientNames` map to optimize performance
+- Stats are recalculated when `mealLogs` or `ingredients` change (proper dependency array)
+- Placed the stats card after the header and before the meal type buttons (matching the wireframe in the spec)
+- Stats update automatically when screen comes into focus due to existing `useFocusEffect` reloading `mealLogs`
+
+### Notes
+
+- No issues encountered during implementation
+- TypeScript check passed without errors
+- Linter passed (only pre-existing warnings from other files)
+- The component integration was straightforward since the Home screen already had the data available from the store

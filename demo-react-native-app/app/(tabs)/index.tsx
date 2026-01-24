@@ -1,12 +1,14 @@
 import { useFocusEffect } from '@react-navigation/native';
 import { useRouter } from 'expo-router';
-import { useEffect, useCallback } from 'react';
+import { useEffect, useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { View, Text, StyleSheet, TouchableOpacity, FlatList } from 'react-native';
+import { VarietyStats } from '../../components/VarietyStats';
 import { colors } from '../../constants/colors';
 import { useStore } from '../../lib/store';
 import { trackScreenView } from '../../lib/telemetry/screenTracking';
 import { getDaysAgo, isToday, isYesterday } from '../../lib/utils/dateUtils';
+import { calculateVarietyStats } from '../../lib/utils/variety';
 
 export default function HomeScreen() {
   const router = useRouter();
@@ -43,6 +45,21 @@ export default function HomeScreen() {
 
   // Get active meal types only
   const activeMealTypes = mealTypes.filter((mt) => mt.is_active);
+
+  // Calculate variety stats for the stats card
+  const varietyStats = useMemo(
+    () => calculateVarietyStats(mealLogs, ingredients),
+    [mealLogs, ingredients]
+  );
+
+  // Create ingredient names map for VarietyStats component
+  const ingredientNames = useMemo(() => {
+    const map = new Map<string, string>();
+    for (const ingredient of ingredients) {
+      map.set(ingredient.id, ingredient.name);
+    }
+    return map;
+  }, [ingredients]);
 
   // Helper function to format date
   const formatDate = (dateString: string): string => {
@@ -90,6 +107,9 @@ export default function HomeScreen() {
         </View>
         <Text style={styles.headerTitle}>{t('title')}</Text>
       </View>
+
+      {/* Variety Stats Card */}
+      <VarietyStats stats={varietyStats} ingredientNames={ingredientNames} />
 
       {/* Meal Type Buttons - Dynamically generated */}
       <View style={styles.buttonsContainer}>

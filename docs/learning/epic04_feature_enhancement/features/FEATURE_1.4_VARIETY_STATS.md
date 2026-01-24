@@ -275,7 +275,7 @@ function calculateVarietyStats(history: MealLog[], ingredients: Ingredient[]): V
 |-------|------|------|--------|
 | 1 | Create `calculateVarietyStats()` utility | Implementation | ~1.5 hours | done |
 | 2 | Create VarietyStats component | Implementation | ~1.5 hours | done |
-| 3 | Integrate stats card into Home screen | Implementation | ~1 hour | not started |
+| 3 | Integrate stats card into Home screen | Implementation | ~1 hour | done |
 | 4 | 🧪 CREATE unit tests for `calculateVarietyStats()` | Testing | ~1 hour | not started |
 | 5 | 🧪 CREATE Playwright E2E test | Testing | ~1 hour | not started |
 | 6 | 🧪 CREATE Maestro test | Testing | ~1 hour | not started |

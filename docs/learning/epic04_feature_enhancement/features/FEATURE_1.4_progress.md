@@ -48,3 +48,21 @@
 **Verification:**
 - TypeScript check: PASSED
 - ESLint: PASSED (only pre-existing warnings)
+
+## Task 3: Integrate stats card into Home screen - DONE
+
+**Date:** 2026-01-24
+
+**Summary:**
+- Modified Home screen (`app/(tabs)/index.tsx`) to include the VarietyStats component
+- Added imports for `VarietyStats` component, `calculateVarietyStats` function, and `useMemo` from React
+- Implemented memoized `varietyStats` calculation using `calculateVarietyStats(mealLogs, ingredients)`
+- Created memoized `ingredientNames` Map for efficient ingredient name lookup in the component
+- Inserted `<VarietyStats>` component between the header and meal type buttons
+
+**Files modified:**
+- `app/(tabs)/index.tsx` - Added VarietyStats component integration with memoized calculations
+
+**Verification:**
+- TypeScript check: PASSED
+- ESLint: PASSED (only pre-existing warnings)
