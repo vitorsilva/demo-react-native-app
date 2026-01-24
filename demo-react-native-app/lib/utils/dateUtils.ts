@@ -47,3 +47,43 @@ export function getDaysAgo(dateString: string): number {
 
   return Math.floor((today.getTime() - date.getTime()) / (1000 * 60 * 60 * 24));
 }
+
+/**
+ * Checks if a date string is within the current calendar month.
+ * @param dateString - ISO date string to check
+ * @returns true if the date is in the current month
+ */
+export function isThisMonth(dateString: string): boolean {
+  const date = new Date(dateString);
+  const today = new Date();
+
+  return (
+    date.getMonth() === today.getMonth() &&
+    date.getFullYear() === today.getFullYear()
+  );
+}
+
+/**
+ * Checks if a date string is within the current calendar week (Sunday to Saturday).
+ * @param dateString - ISO date string to check
+ * @returns true if the date is in the current week
+ */
+export function isThisWeek(dateString: string): boolean {
+  const date = new Date(dateString);
+  const today = new Date();
+
+  // Reset times to midnight
+  date.setHours(0, 0, 0, 0);
+  today.setHours(0, 0, 0, 0);
+
+  // Get the start of the current week (Sunday)
+  const startOfWeek = new Date(today);
+  startOfWeek.setDate(today.getDate() - today.getDay());
+
+  // Get the end of the current week (Saturday at end of day)
+  const endOfWeek = new Date(startOfWeek);
+  endOfWeek.setDate(startOfWeek.getDate() + 6);
+  endOfWeek.setHours(23, 59, 59, 999);
+
+  return date >= startOfWeek && date <= endOfWeek;
+}

@@ -1,10 +1,11 @@
 /**
  * Variety utility functions for meal suggestion variety features.
- * Shared by Feature 1.2 (New! Badge) and Feature 1.3 (Variety Color Coding).
+ * Shared by Feature 1.2 (New! Badge), Feature 1.3 (Variety Color Coding),
+ * and Feature 1.4 (Variety Stats).
  */
 
-import { getDaysAgo } from './dateUtils';
-import type { MealLog } from '../../types/database';
+import { getDaysAgo, isThisMonth, isThisWeek } from './dateUtils';
+import type { Ingredient, MealLog } from '../../types/database';
 
 /** Number of days after which a combination is considered "new" again */
 export const NEW_COMBINATION_THRESHOLD_DAYS = 7;
@@ -102,4 +103,105 @@ export function getVarietyColor(ingredientIds: string[], history: MealLog[]): Va
 
   // Today (0 days) = very recent (red)
   return 'red';
+}
+
+/** Variety statistics for a user's meal history */
+export interface VarietyStats {
+  /** Number of unique ingredient combinations logged this month */
+  uniqueCombosThisMonth: number;
+  /** The most frequently logged combination with its count */
+  mostCommonCombo: { ingredients: string[]; count: number } | null;
+  /** Number of distinct ingredients used this week */
+  ingredientsUsedThisWeek: number;
+  /** Total number of available (active) ingredients */
+  totalIngredients: number;
+  /** Variety score percentage (0-100) */
+  varietyScore: number;
+}
+
+/**
+ * Calculates variety statistics from the user's meal history.
+ *
+ * Stats include:
+ * - Unique combinations this month
+ * - Most common combination (with count)
+ * - Ingredients used this week vs total available
+ * - Variety score percentage
+ *
+ * Variety score formula:
+ * (unique combos / total logs this month) * (ingredients used this week / total ingredients) * 100
+ *
+ * @param history - Array of meal logs
+ * @param ingredients - Array of available ingredients
+ * @returns VarietyStats object with calculated metrics
+ */
+export function calculateVarietyStats(
+  history: MealLog[],
+  ingredients: Ingredient[]
+): VarietyStats {
+  // Count active ingredients
+  const activeIngredients = ingredients.filter((ing) => ing.is_active);
+  const totalIngredients = activeIngredients.length;
+
+  // Filter logs to this month
+  const thisMonthLogs = history.filter((log) => isThisMonth(log.date));
+
+  // Count unique combinations this month
+  const uniqueCombos = new Set(
+    thisMonthLogs.map((log) => [...log.ingredients].sort().join(','))
+  );
+  const uniqueCombosThisMonth = uniqueCombos.size;
+
+  // Find most common combination (across all history, not just this month)
+  const comboCounts = new Map<string, { ingredients: string[]; count: number }>();
+
+  for (const log of history) {
+    const key = [...log.ingredients].sort().join(',');
+    const existing = comboCounts.get(key);
+
+    if (existing) {
+      existing.count++;
+    } else {
+      comboCounts.set(key, { ingredients: log.ingredients, count: 1 });
+    }
+  }
+
+  let mostCommonCombo: { ingredients: string[]; count: number } | null = null;
+  let maxCount = 0;
+
+  for (const combo of comboCounts.values()) {
+    if (combo.count > maxCount) {
+      maxCount = combo.count;
+      mostCommonCombo = combo;
+    }
+  }
+
+  // Count ingredients used this week
+  const thisWeekLogs = history.filter((log) => isThisWeek(log.date));
+  const ingredientsUsedThisWeekSet = new Set<string>();
+
+  for (const log of thisWeekLogs) {
+    for (const ingredientId of log.ingredients) {
+      ingredientsUsedThisWeekSet.add(ingredientId);
+    }
+  }
+  const ingredientsUsedThisWeek = ingredientsUsedThisWeekSet.size;
+
+  // Calculate variety score
+  // Formula: (unique combos / total logs this month) * (ingredients used this week / total ingredients) * 100
+  let varietyScore = 0;
+
+  if (thisMonthLogs.length > 0 && totalIngredients > 0) {
+    const comboRatio = uniqueCombosThisMonth / thisMonthLogs.length;
+    const ingredientRatio = ingredientsUsedThisWeek / totalIngredients;
+    varietyScore = Math.round(comboRatio * ingredientRatio * 100);
+  }
+
+  return {
+    uniqueCombosThisMonth,
+    mostCommonCombo,
+    ingredientsUsedThisWeek,
+    totalIngredients,
+    varietyScore,
+  };
 }
