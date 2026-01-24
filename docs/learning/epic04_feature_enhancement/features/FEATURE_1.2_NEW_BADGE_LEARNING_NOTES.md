@@ -93,3 +93,33 @@ newBadge: {
 ### No Errors/Problems
 
 Straightforward integration with no issues encountered.
+
+---
+
+## Task 5: Create Unit Tests for isNewCombination()
+
+### Test Structure
+
+Created 13 tests organized into logical groups:
+1. Never-logged combinations
+2. Recently logged combinations (< 7 days)
+3. Combinations logged 7+ days ago
+4. Order-independent matching
+5. Multiple logs for same combination
+6. Constant verification
+
+### Helper Functions
+
+Created reusable test helpers:
+- `daysAgo(n)` - creates ISO date string N days in the past
+- `createMealLog(ingredientIds, daysAgo, id)` - creates test MealLog objects
+
+### Edge Cases Covered
+
+- Exactly 7 days = new (threshold is >=)
+- Exactly 6 days = not new
+- Multiple logs: uses most recent date
+
+### No Errors/Problems
+
+All 13 tests pass. Total test count now 251 (up from 238).

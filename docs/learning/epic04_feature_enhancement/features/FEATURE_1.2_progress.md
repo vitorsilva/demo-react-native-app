@@ -90,3 +90,26 @@
 **Verification:**
 - Ran linting: passed (0 errors, 5 warnings - pre-existing)
 - Ran unit tests: 238 passed, 0 failed
+
+---
+
+## Task 5: Create Unit Tests for isNewCombination() (2026-01-24)
+
+**Status:** Done
+
+**What was done:**
+- Created `lib/utils/__tests__/variety.test.ts` with 13 comprehensive unit tests
+- Created test helpers: `daysAgo()` and `createMealLog()`
+
+**Test coverage:**
+- Never-logged combinations (empty history, different combinations)
+- Recent combinations (0, 1, 6 days ago)
+- Old combinations (7, 8, 30 days ago)
+- Edge cases: exactly 7 days (new) vs 6 days (not new)
+- Order-independent matching
+- Multiple logs for same combination (uses most recent)
+- Constant export verification
+
+**Verification:**
+- Ran linting: passed (0 errors, 5 warnings - pre-existing)
+- Ran unit tests: 251 passed, 0 failed (238 existing + 13 new)
