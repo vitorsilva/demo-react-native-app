@@ -177,3 +177,37 @@
 - TypeScript check passed without errors
 - Linter passed (only pre-existing warnings from other files)
 - Test file follows the established patterns in the codebase for E2E testing
+
+## Task 6: Create Maestro E2E test
+
+### What was implemented
+
+1. **Created `e2e/maestro/variety-stats.yaml`** with comprehensive mobile E2E tests:
+   - Stats card visibility on home screen
+   - Empty state verification when no meals logged
+   - Collapse/expand toggle functionality
+   - Stats update after logging a meal
+   - 7 screenshots captured at key interaction points
+
+2. **Test coverage includes**:
+   - Verify stats card is visible on home screen using testID `variety-stats-card`
+   - Verify title "Your Variety This Month" is displayed
+   - Verify content is visible when expanded using testID `variety-stats-content`
+   - Test collapse functionality - tap toggle and verify content is no longer visible
+   - Test expand functionality - tap toggle again and verify content reappears
+   - Log a meal and verify stats card updates after navigation
+
+### Design decisions
+
+- Used `clearState` at start for consistent testing (similar to favorites-empty-state.yaml pattern)
+- Followed established Maestro patterns from existing test files (favorites-flow.yaml, favorites-empty-state.yaml)
+- Used testIDs defined in VarietyStats component: `variety-stats-card`, `variety-stats-toggle`, `variety-stats-content`
+- Added multiple screenshots (7 total) at key interaction points for documentation
+- Tests both the empty state message ("No meals logged yet") and populated state after logging a meal
+
+### Notes
+
+- No issues encountered during implementation
+- TypeScript check passed without errors
+- Linter passed (only pre-existing warnings from other files)
+- Test file follows the established patterns for Maestro tests in the codebase
