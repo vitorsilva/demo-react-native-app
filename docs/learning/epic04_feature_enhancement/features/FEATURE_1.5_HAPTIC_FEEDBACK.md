@@ -251,7 +251,7 @@ const handleConfirm = () => {
 | 3 | Add toggle to Settings screen | Implementation | ~15 min | done |
 | 4 | Integrate haptics into components | Implementation | ~30 min | done |
 | 5 | 🧪 CREATE unit tests for haptics utility | Testing | ~30 min | done |
-| 6 | Run all existing unit tests, Playwright tests and Maestro Tests (you can start abd for maestro testing, look documentation) | Quality | ~0.5 hours | not started |
+| 6 | Run all existing unit tests, Playwright tests and Maestro Tests (you can start abd for maestro testing, look documentation) | Quality | ~0.5 hours | done |
 | 7 | 📸 Capture BEFORE screenshot of Settings screen | Documentation | ~5 min | not started |
 | 8 | 📸 Capture AFTER screenshot with haptic toggle | Documentation | ~5 min | not started |
 
