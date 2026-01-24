@@ -23,3 +23,30 @@ The module gracefully handles web platform (where haptics are unavailable) and i
 **Verification:**
 - TypeScript check: ✅ Passed
 - Linter: ✅ Passed (no new errors/warnings)
+
+## Task 2: Add haptic preference to store ✅
+
+**Date:** 2026-01-24
+
+**Summary:**
+Added the `hapticEnabled` preference to the application's preferences system. This allows users to enable/disable haptic feedback globally.
+
+**Changes made:**
+
+1. **`lib/database/preferences.ts`:**
+   - Added `hapticEnabled: boolean` to `UserPreferences` interface
+   - Added default value `hapticEnabled: true` to `DEFAULT_PREFERENCES`
+   - Updated `getPreferences()` to retrieve and parse haptic setting from database
+   - Updated `setPreferences()` to persist haptic setting to database
+
+2. **`lib/store/index.ts`:**
+   - Updated default preferences state to include `hapticEnabled: true`
+
+3. **Test files updated:**
+   - `lib/database/__tests__/preferences.test.ts` - Added `hapticEnabled: true` to all preference objects
+   - `lib/store/__tests__/favorites.test.ts` - Added `hapticEnabled: true` to initial state
+   - `lib/store/__tests__/index.test.ts` - Added `hapticEnabled: true` to initial state
+
+**Verification:**
+- TypeScript check: ✅ Passed
+- Linter: ✅ Passed (no new errors/warnings)
