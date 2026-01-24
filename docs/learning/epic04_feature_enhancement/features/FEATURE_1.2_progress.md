@@ -43,3 +43,26 @@
 **Verification:**
 - Ran linting: passed (0 errors, 5 warnings - pre-existing)
 - Ran unit tests: 238 passed, 0 failed
+
+---
+
+## Task 3: Create NewBadge Component (2026-01-24)
+
+**Status:** Done
+
+**What was done:**
+- Created `components/NewBadge.tsx` component
+- Added i18n translation keys for "New!" badge text:
+  - English: `newBadge: "New!"` in `lib/i18n/locales/en/suggestions.json`
+  - Portuguese: `newBadge: "Novo!"` in `lib/i18n/locales/pt-PT/suggestions.json`
+
+**Component features:**
+- Uses SaborSpin orange accent color (#FF6B35) for background
+- Small pill-shaped badge with 12px font, bold white text
+- Accepts `visible` prop to conditionally render
+- Includes `testID="new-badge"` for E2E testing
+- Extends `ViewProps` for flexible positioning by parent
+
+**Verification:**
+- Ran linting: passed (0 errors, 5 warnings - pre-existing)
+- Ran unit tests: 238 passed, 0 failed

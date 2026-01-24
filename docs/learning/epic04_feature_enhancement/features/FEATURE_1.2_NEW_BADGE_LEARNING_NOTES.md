@@ -35,3 +35,28 @@ The spec sample code used `differenceInDays` from date-fns, but we used the exis
 ### No Errors/Problems
 
 Task 2 was straightforward implementation with no issues encountered.
+
+---
+
+## Task 3: Create NewBadge Component
+
+### Key Decisions
+
+1. **Brand Colors**: Used SaborSpin's orange accent color (#FF6B35) as specified in the brand guidelines in CLAUDE.md.
+
+2. **Import Order**: ESLint required `react-i18next` to be imported before `react-native` due to import ordering rules. Fixed by reordering imports.
+
+3. **Conditional Rendering**: Added a `visible` prop that defaults to `true`, allowing parent components to easily show/hide the badge.
+
+4. **TestID**: Added `testID="new-badge"` for E2E testing support.
+
+### Styling Choices
+
+- Pill shape with `borderRadius: 12`
+- Compact padding (8px horizontal, 4px vertical)
+- Bold 12px white text for readability
+- Component extends `ViewProps` for style overrides by parent
+
+### No Errors/Problems
+
+Fixed import order warning during implementation. No other issues encountered.
