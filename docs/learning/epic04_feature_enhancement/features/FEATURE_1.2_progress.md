@@ -2,21 +2,16 @@
 
 ## Task 1: Capture BEFORE Screenshot (2026-01-24)
 
-**Status:** Done
+**Status:** Done (Updated with actual screenshot)
 
 **What was done:**
 - Created `screenshots/` directory for feature documentation
-- Created `BEFORE_SCREENSHOT_README.md` documenting the current state using Option B (ASCII wireframe reference)
-- Documented the current suggestion card layout from `app/suggestions/[mealType].tsx`
-- Noted that suggestion cards currently show:
-  - Background image with gradient overlay
-  - Ingredient combination text
-  - Accept button and favorite toggle
-  - No "New!" badge (to be added)
+- Created `BEFORE_SCREENSHOT_README.md` documenting the current state
+- **Actual screenshot added:** `screenshots/BEFORE_suggestion_cards.png`
+  - Screenshot from pre-Epic 04 showing original card layout
+  - Shows cards without New! badge or Favorites toggle
 
-**Approach taken:**
-- Used Option B from the feature spec (ASCII wireframe as "before" reference) since automated screenshot capture requires running the app
-- Documented current implementation structure for reference
+**Note:** The BEFORE screenshot was captured from a pre-Epic 04 state (before Feature 1.1 Favorites and Feature 1.2 New! Badge).
 
 **Verification:**
 - Ran linting: passed (0 errors, 5 warnings - pre-existing)
@@ -168,19 +163,20 @@
 
 ## Task 8: Capture AFTER Screenshot (2026-01-24)
 
-**Status:** Done
+**Status:** Done (Updated with actual screenshots)
 
 **What was done:**
 - Created `screenshots/AFTER_SCREENSHOT_README.md` documenting the implemented feature
+- **Actual screenshots added:**
+  - `screenshots/AFTER_new_badge_suggestions.png` - Shows New! badges on all suggestion cards
+  - `screenshots/home_with_logged_meal.png` - Shows home screen with logged meal
 - Documented the New! badge appearance and behavior
 - Listed all files created and modified
-- Provided ASCII wireframe of the updated card layout
 
-**Documentation includes:**
-- Badge appearance (color, font, shape, position)
-- Badge visibility logic (when shown/hidden)
-- List of new and modified files
-- Verification status
+**Screenshots captured using:**
+- Started app with `npm run web`
+- Used Playwright browser tools to navigate and capture
+- Screenshots show the orange "New!" badges clearly visible on each card
 
 ---
 
@@ -199,6 +195,9 @@
 - `e2e/new-badge.spec.ts`
 - `docs/learning/epic04_feature_enhancement/features/screenshots/BEFORE_SCREENSHOT_README.md`
 - `docs/learning/epic04_feature_enhancement/features/screenshots/AFTER_SCREENSHOT_README.md`
+- `docs/learning/epic04_feature_enhancement/features/screenshots/BEFORE_suggestion_cards.png`
+- `docs/learning/epic04_feature_enhancement/features/screenshots/AFTER_new_badge_suggestions.png`
+- `docs/learning/epic04_feature_enhancement/features/screenshots/home_with_logged_meal.png`
 
 **Files Modified:**
 - `app/suggestions/[mealType].tsx`

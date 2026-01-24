@@ -2,13 +2,21 @@
 
 ## Suggestion Card - After New! Badge Implementation
 
-Since capturing actual screenshots requires running the app, this document serves as the "AFTER" reference documenting the implemented feature.
+### Actual Screenshot
 
-### Implementation Summary
+![After - New! Badge on Suggestion Cards](./AFTER_new_badge_suggestions.png)
 
-The New! badge has been successfully implemented and integrated into the suggestion cards.
+The screenshot shows:
+- **Orange "New!" badges** in the top-right corner of each card
+- **Favorite toggle (☆)** next to the Select button (Feature 1.1)
+- **Beautiful food images** with gradient overlay
+- **Ingredient combination text** at the bottom
 
-### Updated Suggestion Card Layout (ASCII Wireframe)
+### Additional Screenshot: Home with Logged Meal
+
+![Home screen with logged meal](./home_with_logged_meal.png)
+
+### Updated Suggestion Card Layout (ASCII Reference)
 
 ```
 ┌─────────────────────────────────────┐
@@ -16,7 +24,7 @@ The New! badge has been successfully implemented and integrated into the suggest
 │  [Background Image]                 │     Visible when combination is "new"
 │                                     │
 │  ──────────────────────────────────│
-│  milk + cereals     [Accept]  [☆]   │
+│  milk + cereals     [Select]  [☆]   │
 │                                     │
 └─────────────────────────────────────┘
 ```
@@ -59,5 +67,5 @@ The badge does NOT appear when:
 
 ---
 
-*Document created as part of Feature 1.2: New! Badge implementation*
-*Date: 2026-01-24*
+*Document updated: 2026-01-24*
+*Screenshots captured: 2026-01-24*

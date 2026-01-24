@@ -2,9 +2,16 @@
 
 ## Suggestion Card - Before New! Badge Implementation
 
-Since capturing actual screenshots requires running the app, this document serves as the "BEFORE" reference (Option B from the feature spec).
+### Actual Screenshot
 
-### Current Suggestion Card Layout (ASCII Wireframe)
+![Before - Suggestion Cards](./BEFORE_suggestion_cards.png)
+
+**Note:** This screenshot was captured before both Feature 1.1 (Favorites) and Feature 1.2 (New! Badge) were implemented. It shows the original card layout with:
+- Background image with gradient overlay
+- Ingredient combination text
+- "Select" button
+
+### Original ASCII Wireframe Reference
 
 ```
 ┌─────────────────────────────────────┐
@@ -12,48 +19,16 @@ Since capturing actual screenshots requires running the app, this document serve
 │  [Background Image]                 │
 │                                     │
 │  ──────────────────────────────────│
-│  milk + cereals     [Accept]  [☆]   │
+│  milk + cereals           [Select]  │
 │                                     │
 └─────────────────────────────────────┘
 ```
 
-### Current Implementation Details
-
-**File:** `app/suggestions/[mealType].tsx`
-
-The suggestion card currently displays:
-- Background image with gradient overlay
-- Ingredient combination text (e.g., "milk + cereals")
-- "Accept" button (blue, rounded)
-- Favorite toggle button (☆ for unfavorited, ⭐ for favorited)
-
-**What's Missing (to be added):**
-- "New!" badge indicator in the top-right corner
-- Logic to determine if a combination is "new" (never tried or not tried in 7+ days)
-
-### Reference Code Structure
-
-The card is rendered inline in the `[mealType].tsx` file (lines 280-350):
-- `ImageBackground` component with background image
-- `LinearGradient` overlay (native) or dark overlay (web)
-- `cardContent` View containing title and action buttons
-
-### Expected AFTER State
-
-After implementation, the card should look like:
-
-```
-┌─────────────────────────────────────┐
-│                              [New!] │  ← New badge appears here for new combinations
-│  [Background Image]                 │
-│                                     │
-│  ──────────────────────────────────│
-│  milk + cereals     [Accept]  [☆]   │
-│                                     │
-└─────────────────────────────────────┘
-```
+### What Was Missing (now added):
+- **Feature 1.1:** Favorite toggle button (☆/⭐)
+- **Feature 1.2:** "New!" badge indicator in top-right corner
 
 ---
 
-*Document created as part of Feature 1.2: New! Badge implementation*
-*Date: 2026-01-24*
+*Document updated: 2026-01-24*
+*Screenshot captured: 2025-12-15 (pre-Epic 04)*
