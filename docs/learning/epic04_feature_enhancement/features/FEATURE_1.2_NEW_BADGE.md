@@ -186,7 +186,7 @@ function isNewCombination(ingredients: string[], history: MealLog[]): boolean {
 | 4 | Integrate badge into SuggestionCard | Implementation | ~1 hour | done |
 | 5 | 🧪 CREATE unit tests for `isNewCombination()` | Testing | ~30 min | done |
 | 6 | 🧪 CREATE E2E test for badge visibility | Testing | ~30 min | done |
-| 7 | Run all existing unit tests, Playwright tests and Maestro Tests | Quality | ~0.5 hours | not started |
+| 7 | Run all existing unit tests, Playwright tests and Maestro Tests | Quality | ~0.5 hours | done |
 | 8 | 📸 Capture AFTER screenshot with New! badge | Documentation | ~5 min | not started |
 
 **Legend:**
