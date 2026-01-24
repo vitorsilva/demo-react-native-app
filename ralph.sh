@@ -14,6 +14,7 @@ for ((i=1; i<=ITERATIONS; i++)); do
     # before starting
     1. Read @docs\learning\epic04_feature_enhancement\features\FEATURE_1.4_VARIETY_STATS.md and identify in the ## implementation order for the task 'not started' with the lowest number
     2. Make sure you understand the task fully
+    3. Make sure you are on the FEATURE_1.4_VARIETY_STATS branch in git if not, create worktree and switch to it.
 
     # Implementation
     1. Implement **ONLY** that task that was 'not started' with the lowest number in the order specified.
@@ -30,6 +31,8 @@ for ((i=1; i<=ITERATIONS; i++)); do
   # Stop the loop if Claude says it's finished
   if grep -q "<promise>COMPLETE</promise>" last_output.log; then
     echo "PRD Complete!"
-    break
+    break 
+  else
+    echo "Continuing to next iteration..."
   fi  
 done

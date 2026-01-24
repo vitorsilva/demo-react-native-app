@@ -281,3 +281,14 @@ All Feature 1.3 work is committed on the `FEATURE_1.3_COLOR_CODING` branch with 
 7. `docs(1.3): complete Feature 1.3 implementation`
 
 <promise>COMPLETE</promise>
+Task 1 is complete. I've:
+
+1. **Added date utilities** - `isThisMonth()` and `isThisWeek()` functions to `lib/utils/dateUtils.ts`
+2. **Implemented `calculateVarietyStats()`** in `lib/utils/variety.ts` with:
+   - `VarietyStats` interface
+   - Function that calculates unique combos, most common combo, ingredients used, and variety score
+3. **Verified** - TypeScript check and linter passed
+4. **Updated documentation** - Status in FEATURE_1.4_VARIETY_STATS.md, created learning notes and progress files
+5. **Committed** - Changes committed with message `feat(1.4): add calculateVarietyStats() utility function`
+
+<task>DONE</task>
