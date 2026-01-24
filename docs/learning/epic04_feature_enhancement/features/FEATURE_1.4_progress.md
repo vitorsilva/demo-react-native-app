@@ -154,3 +154,20 @@
 - Maestro tests: SKIPPED (no emulator)
 - TypeScript check: PASSED
 - ESLint: PASSED (only pre-existing warnings)
+
+## Task 8: Capture BEFORE screenshot of Home screen - DONE
+
+**Date:** 2026-01-24
+
+**Summary:**
+- Captured BEFORE screenshot of Home screen without the VarietyStats card
+- Checked out commit `8eb431b` (before VarietyStats integration) to capture authentic "before" state
+- Used Playwright MCP tools to navigate to the web app and capture screenshot
+- Saved screenshot to `docs/learning/epic04_feature_enhancement/features/screenshots/screenshot_before_home_stats.png`
+
+**Files created:**
+- `docs/learning/epic04_feature_enhancement/features/screenshots/screenshot_before_home_stats.png` - BEFORE screenshot showing Home screen without stats card
+
+**Verification:**
+- TypeScript check: PASSED
+- ESLint: PASSED (only pre-existing warnings)

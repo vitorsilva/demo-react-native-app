@@ -251,3 +251,35 @@
 - Maestro tests: Not executed (no emulator available)
 - TypeScript check: PASSED
 - ESLint: PASSED (only pre-existing warnings)
+
+## Task 8: Capture BEFORE screenshot of Home screen
+
+### What was done
+
+1. **Captured BEFORE screenshot** showing the Home screen without the VarietyStats card:
+   - Checked out the commit before VarietyStats integration (`8eb431b`)
+   - Started the web app on localhost:8081
+   - Used Playwright MCP tools to navigate and capture screenshot
+   - Saved to `docs/learning/epic04_feature_enhancement/features/screenshots/screenshot_before_home_stats.png`
+   - Returned to feature branch
+
+2. **Screenshot shows the BEFORE state**:
+   - SaborSpin header
+   - breakfast Ideas button
+   - snack Ideas button
+   - Recent Meals section with "No meals logged yet"
+   - Tab bar navigation
+   - NO VarietyStats card (confirming this is the "before" state)
+
+### Approach used
+
+Since the feature was already implemented, capturing a true "BEFORE" screenshot required:
+1. Stashing current changes
+2. Checking out the commit just before the VarietyStats integration (`8eb431b`)
+3. Starting the web app and capturing the screenshot using Playwright MCP tools
+4. Returning to the feature branch and restoring state
+
+### Notes
+
+- The Playwright MCP tool saved screenshots to `.playwright-mcp/` subdirectory, so the file needed to be copied to the correct location
+- TypeScript check and linter passed with only pre-existing warnings
