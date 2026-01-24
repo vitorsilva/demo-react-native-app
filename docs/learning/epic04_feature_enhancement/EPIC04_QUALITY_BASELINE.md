@@ -1,7 +1,7 @@
 # Epic 04 Quality Baseline Report
 
 **Date:** 2026-01-24
-**Commit:** da50641
+**Commit:** 9c4c887
 **Branch:** main
 
 ---
@@ -124,7 +124,38 @@ expo-router/entry    package.json  Package entry file not found
 
 ---
 
-## 6. Test Suite Status
+## 6. Mutation Testing
+
+**Commands:**
+- `npm run test:mutation:core` - Core business logic
+- `npm run test:mutation:validation` - Validation logic
+- `npm run test:mutation:db` - Database operations
+
+**Results:**
+
+| Wave | Target | Mutation Score | Killed | Survived | Timeout |
+|------|--------|----------------|--------|----------|---------|
+| Core | combinationGenerator.ts | 65.00% | 23 | 14 | 3 |
+| Validation | validation.ts | 94.34% | 150 | 7 | 0 |
+| Database | categories, ingredients, mealLogs, mealTypes, preferences | 87.04% | 188 | 22 | 0 |
+
+**Database Breakdown:**
+| File | Mutation Score |
+|------|----------------|
+| preferences.ts | 100.00% |
+| mealLogs.ts | 88.57% |
+| mealTypes.ts | 87.88% |
+| categories.ts | 86.36% |
+| ingredients.ts | 84.34% |
+
+**Notes:**
+- Core: Surviving mutants are mostly in shuffle randomization (non-deterministic behavior)
+- Validation: High score (94%) - well-tested validation logic
+- Database: Good coverage (87%) with CRUD operations well-tested
+
+---
+
+## 7. Test Suite Status
 
 **Unit Tests:** 238 passing / 0 failing / 238 total (16 test suites)
 **E2E Tests (Playwright):** 29 tests configured
@@ -141,6 +172,9 @@ expo-router/entry    package.json  Package entry file not found
 | Duplicate Blocks | 19 | 4.09% duplication |
 | Security Issues (Critical/High) | 0/0 | Clean scan |
 | Test Coverage (Lines) | 35.25% | Business logic 100% |
+| Mutation Score (Core) | 65.00% | Shuffle randomization survivors |
+| Mutation Score (Validation) | 94.34% | Well-tested |
+| Mutation Score (Database) | 87.04% | Good CRUD coverage |
 | Unit Tests | 238/238 passing | |
 | E2E Tests (Playwright) | 29 configured | |
 | E2E Tests (Maestro) | 3 flows | |
@@ -159,6 +193,8 @@ expo-router/entry    package.json  Package entry file not found
 3. **Security:** Clean scan with no vulnerabilities found.
 
 4. **Architecture:** No dependency violations. Layer boundaries are enforced.
+
+5. **Mutation Testing:** Three mutation testing waves configured (core, validation, database). Validation has highest score (94%), database is solid (87%), core has lower score (65%) due to shuffle randomization being non-deterministic.
 
 ---
 

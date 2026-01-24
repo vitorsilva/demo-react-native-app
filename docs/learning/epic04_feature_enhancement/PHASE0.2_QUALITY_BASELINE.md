@@ -50,8 +50,13 @@ npm run lint:duplicates
 # Security scan
 npm run security:scan
 
-# Test coverage (optional)
+# Test coverage
 npm test -- --coverage
+
+# Mutation testing
+npm run test:mutation:core        # Core business logic
+npm run test:mutation:validation  # Validation logic
+npm run test:mutation:db          # Database operations
 ```
 
 ---
@@ -65,11 +70,12 @@ npm test -- --coverage
 | 3 | Run duplicate detection | Quality | ~5 min | ✅ done |
 | 4 | Run security scan | Quality | ~5 min | ✅ done |
 | 5 | Run test suite with coverage | Quality | ~10 min | ✅ done |
-| 6 | Document baseline report | Documentation | ~15 min | ✅ done |
-| 7 | Commit baseline report | Git | ~5 min | ✅ done |
+| 6 | Run mutation testing | Quality | ~10 min | ✅ done |
+| 7 | Document baseline report | Documentation | ~15 min | ✅ done |
+| 8 | Commit baseline report | Git | ~5 min | ✅ done |
 
 **Total Estimated Effort:** ~1 hour
-**Actual Effort:** ~10 min
+**Actual Effort:** ~20 min
 
 ---
 
