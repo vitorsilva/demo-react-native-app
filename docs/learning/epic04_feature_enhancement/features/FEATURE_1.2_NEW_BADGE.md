@@ -181,7 +181,7 @@ function isNewCombination(ingredients: string[], history: MealLog[]): boolean {
 | Order | Task | Type | Effort |
 |-------|------|------|--------|
 | 1 | 📸 Capture BEFORE screenshot of suggestion card | Documentation | ~5 min | done |
-| 2 | Create `isNewCombination()` utility | Implementation | ~30 min | not started |
+| 2 | Create `isNewCombination()` utility | Implementation | ~30 min | done |
 | 3 | Create NewBadge component | Implementation | ~30 min | not started |
 | 4 | Integrate badge into SuggestionCard | Implementation | ~1 hour | not started |
 | 5 | 🧪 CREATE unit tests for `isNewCombination()` | Testing | ~30 min | not started |

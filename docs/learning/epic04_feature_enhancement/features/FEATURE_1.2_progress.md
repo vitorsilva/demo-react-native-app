@@ -21,3 +21,25 @@
 **Verification:**
 - Ran linting: passed (0 errors, 5 warnings - pre-existing)
 - Ran unit tests: 238 passed, 0 failed
+
+---
+
+## Task 2: Create isNewCombination() Utility (2026-01-24)
+
+**Status:** Done
+
+**What was done:**
+- Created `lib/utils/variety.ts` with the `isNewCombination()` function
+- Reused existing `getDaysAgo()` from `lib/utils/dateUtils.ts` for date calculation
+- Function checks if a combination of ingredient IDs is "new" (never logged OR not logged in 7+ days)
+- Exported `NEW_COMBINATION_THRESHOLD_DAYS` constant (7) for use in tests and other features
+
+**Implementation details:**
+- Takes `ingredientIds: string[]` and `history: MealLog[]` as parameters
+- Sorts ingredient IDs for consistent comparison (order-independent matching)
+- Iterates through history to find the most recent log with matching ingredients
+- Returns `true` if never logged or if 7+ days since last logged
+
+**Verification:**
+- Ran linting: passed (0 errors, 5 warnings - pre-existing)
+- Ran unit tests: 238 passed, 0 failed
