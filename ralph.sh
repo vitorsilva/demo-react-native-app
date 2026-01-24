@@ -16,7 +16,7 @@ for ((i=1; i<=ITERATIONS; i++)); do
     1. Read @docs\learning\epic04_feature_enhancement\features\FEATURE_1.3_COLOR_CODING.md and look in the ## implementation order for the task 'not started' with the lowest number
     2. Make sure you understand the task fully
     4. Implement ONLY that task
-    5. Run unit test and linting to verify your work.
+    5. Make sure TypeScript check passes (npx tsc --noEmit) and Linter passes (npm run lint) to verify your work.
     6. If tests pass: 
       6.1 - Update @docs\learning\epic04_feature_enhancement\features\FEATURE_1.3_COLOR_CODING.md status to 'done'.
       6.2 - Append learning notes with errors / problems / fixes / workarounds to @docs\learning\epic04_feature_enhancement\features\FEATURE_1.3_COLOR_CODING_LEARNING_NOTES.md

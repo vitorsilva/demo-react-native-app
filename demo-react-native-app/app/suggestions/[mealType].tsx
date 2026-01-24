@@ -14,10 +14,11 @@ import {
 } from 'react-native';
 import { ConfirmationModal } from '../../components/modals/ConfirmationModal';
 import { NewBadge } from '../../components/NewBadge';
+import { VarietyIndicator } from '../../components/VarietyIndicator';
 import { useStore } from '../../lib/store';
 import { logger } from '../../lib/telemetry/logger';
 import { trackScreenView } from '../../lib/telemetry/screenTracking';
-import { isNewCombination } from '../../lib/utils/variety';
+import { isNewCombination, getVarietyColor } from '../../lib/utils/variety';
 
 // Conditionally import LinearGradient only for native platforms
 let LinearGradient: React.ComponentType<{
@@ -151,6 +152,7 @@ export default function SuggestionsScreen() {
     const ingredientIds = ingredientArray.map((i) => i.id);
     const favoriteStatus = isCombinationFavorited(ingredientIds);
     const isNew = isNewCombination(ingredientIds, mealLogs);
+    const varietyColor = getVarietyColor(ingredientIds, mealLogs);
 
     return {
       id: String(index),
@@ -159,6 +161,7 @@ export default function SuggestionsScreen() {
       isFavorite: favoriteStatus.isFavorite,
       mealLogId: favoriteStatus.mealLogId,
       isNew,
+      varietyColor,
     };
   });
 
@@ -297,6 +300,7 @@ export default function SuggestionsScreen() {
                     colors={['transparent', 'rgba(0,0,0,0.7)']}
                     style={styles.gradient}
                   >
+                    <VarietyIndicator color={suggestion.varietyColor} style={styles.varietyIndicator} />
                     <NewBadge visible={suggestion.isNew} style={styles.newBadge} />
                     <View style={styles.cardContent}>
                       <Text style={styles.cardTitle}>
@@ -325,6 +329,7 @@ export default function SuggestionsScreen() {
                 ) : (
                   // Web fallback: simple dark overlay
                   <View style={styles.webGradientFallback}>
+                    <VarietyIndicator color={suggestion.varietyColor} style={styles.varietyIndicator} />
                     <NewBadge visible={suggestion.isNew} style={styles.newBadge} />
                     <View style={styles.cardContent}>
                       <Text style={styles.cardTitle}>
@@ -431,6 +436,12 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     overflow: 'hidden',
     marginBottom: 16,
+  },
+  varietyIndicator: {
+    position: 'absolute',
+    top: 12,
+    left: 12,
+    zIndex: 1,
   },
   newBadge: {
     position: 'absolute',
