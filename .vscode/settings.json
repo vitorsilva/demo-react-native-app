@@ -8,6 +8,7 @@
         "fusilli",
         "jaegertracing",
         "Millis",
+        "networkidle",
         "prefs",
         "Sabor",
         "saborspin",
@@ -15,5 +16,10 @@
         "uuidv",
         "Wireframes",
         "worklets"
+    ],
+    "cSpell.ignorePaths": [
+        ".claude/**",
+        "ralph.sh",
+        "**/*.log"
     ]
 }
