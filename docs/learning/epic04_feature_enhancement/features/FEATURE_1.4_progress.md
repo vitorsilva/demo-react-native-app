@@ -130,3 +130,27 @@
 **Verification:**
 - TypeScript check: PASSED
 - ESLint: PASSED (only pre-existing warnings)
+
+## Task 7: Run all existing unit tests, Playwright tests and Maestro Tests - DONE
+
+**Date:** 2026-01-24
+
+**Summary:**
+- Ran all unit tests: 281 tests passed across 17 test suites
+- Ran Playwright E2E tests: Initially 2 tests failed in `variety-stats.spec.ts`
+  - Fixed failing tests by scoping text locators to stats content area
+  - Fixed regex pattern to match actual translation text ("combination" instead of "unique")
+  - After fixes: 42 tests passed (1 skipped)
+- Maestro tests: Not executed - no Android emulator/device available
+
+**Files modified:**
+- `e2e/variety-stats.spec.ts` - Fixed 2 failing tests:
+  - Scoped `getByText()` calls to `statsContent` to avoid ambiguous locators
+  - Changed `/unique/i` regex to `/combination/i` to match actual translation text
+
+**Verification:**
+- Unit tests: 281 PASSED
+- Playwright E2E tests: 42 PASSED (1 skipped)
+- Maestro tests: SKIPPED (no emulator)
+- TypeScript check: PASSED
+- ESLint: PASSED (only pre-existing warnings)

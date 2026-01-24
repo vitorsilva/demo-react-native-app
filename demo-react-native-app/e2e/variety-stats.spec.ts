@@ -42,8 +42,9 @@ test.describe('Variety Stats Feature', () => {
 
     // Should display variety score text (with fresh database, might show 0 or empty state)
     // Check for either the "No meals logged yet" text or variety score
-    const hasNoData = await page.getByText('No meals logged yet').isVisible().catch(() => false);
-    const hasVarietyScore = await page.getByText(/Variety score/).isVisible().catch(() => false);
+    // Use locator within stats content to avoid matching text elsewhere on the page
+    const hasNoData = await statsContent.getByText('No meals logged yet').isVisible().catch(() => false);
+    const hasVarietyScore = await statsContent.getByText(/Variety score/).isVisible().catch(() => false);
 
     expect(hasNoData || hasVarietyScore).toBeTruthy();
 
@@ -117,12 +118,13 @@ test.describe('Variety Stats Feature', () => {
     await page.screenshot({ path: 'e2e/screenshots/variety-stats-07-after-meal.png' });
 
     // After logging a meal, we should see actual stats (not empty state)
-    // Check for the unique combinations text (1 unique combo)
-    const uniqueCombosText = page.getByText(/unique/i);
-    await expect(uniqueCombosText).toBeVisible();
+    // Check for the combinations text (1 combo) - text says "different combination(s) this month"
+    const statsContent = page.getByTestId('variety-stats-content');
+    const combosText = statsContent.getByText(/combination/i);
+    await expect(combosText).toBeVisible();
 
     // Should show variety score
-    const varietyScoreText = page.getByText(/Variety score/);
+    const varietyScoreText = statsContent.getByText(/Variety score/);
     await expect(varietyScoreText).toBeVisible();
   });
 

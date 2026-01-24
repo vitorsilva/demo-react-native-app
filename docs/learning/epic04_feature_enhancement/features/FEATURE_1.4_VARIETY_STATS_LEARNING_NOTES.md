@@ -211,3 +211,43 @@
 - TypeScript check passed without errors
 - Linter passed (only pre-existing warnings from other files)
 - Test file follows the established patterns for Maestro tests in the codebase
+
+## Task 7: Run all existing unit tests, Playwright tests and Maestro Tests
+
+### What was done
+
+1. **Unit tests (npm test)**: All 281 tests passed successfully
+   - 17 test suites: database tests, business logic tests, store tests, utility tests, i18n tests, telemetry tests
+
+2. **Playwright E2E tests (npm run test:e2e)**: 42 tests passed (1 skipped)
+   - Initial run had 2 failing tests in `variety-stats.spec.ts`
+   - Fixed the failing tests and all passed on second run
+
+3. **Maestro tests**: Could not run - no Android emulator connected
+   - Maestro requires an Android emulator or physical device
+   - ADB confirmed no devices attached
+
+### Issues encountered and fixes
+
+**Playwright test failures in `variety-stats.spec.ts`:**
+
+1. **Test: "should show stats content when expanded"**
+   - **Problem**: `page.getByText('No meals logged yet')` was matching text in both the stats card AND the Recent Meals section, causing ambiguous locator
+   - **Fix**: Changed to use `statsContent.getByText('No meals logged yet')` to scope the locator within the stats content area
+
+2. **Test: "should update stats after logging a meal"**
+   - **Problem**: Test searched for `/unique/i` regex but actual translation text is "You've tried 1 different **combination** this month!" - uses "combination" not "unique"
+   - **Fix**: Changed regex to `/combination/i` to match the actual translation text
+   - **Also fixed**: Added scoping to `statsContent.getByText()` for consistency
+
+### Files modified
+
+- `e2e/variety-stats.spec.ts` - Fixed 2 failing tests by scoping locators to stats content area and fixing text regex patterns
+
+### Verification
+
+- Unit tests: 281 passed
+- Playwright E2E tests: 42 passed (1 skipped)
+- Maestro tests: Not executed (no emulator available)
+- TypeScript check: PASSED
+- ESLint: PASSED (only pre-existing warnings)
