@@ -180,13 +180,13 @@ function isNewCombination(ingredients: string[], history: MealLog[]): boolean {
 
 | Order | Task | Type | Effort |
 |-------|------|------|--------|
-| 1 | Create `isNewCombination()` utility | Implementation | ~30 min | not started |
-| 2 | Create NewBadge component | Implementation | ~30 min | not started |
-| 3 | Integrate badge into SuggestionCard | Implementation | ~1 hour | not started |
-| 4 | 🧪 CREATE unit tests for `isNewCombination()` | Testing | ~30 min | not started |
-| 5 | 🧪 CREATE E2E test for badge visibility | Testing | ~30 min | not started |
-| 6 | Run all existing unit tests, Playwright tests and Maestro Tests | Quality | ~0.5 hours | not started |
-| 7 | 📸 Capture BEFORE screenshot of suggestion card | Documentation | ~5 min | not started |
+| 1 | 📸 Capture BEFORE screenshot of suggestion card | Documentation | ~5 min | not started |
+| 2 | Create `isNewCombination()` utility | Implementation | ~30 min | not started |
+| 3 | Create NewBadge component | Implementation | ~30 min | not started |
+| 4 | Integrate badge into SuggestionCard | Implementation | ~1 hour | not started |
+| 5 | 🧪 CREATE unit tests for `isNewCombination()` | Testing | ~30 min | not started |
+| 6 | 🧪 CREATE E2E test for badge visibility | Testing | ~30 min | not started |
+| 7 | Run all existing unit tests, Playwright tests and Maestro Tests | Quality | ~0.5 hours | not started |
 | 8 | 📸 Capture AFTER screenshot with New! badge | Documentation | ~5 min | not started |
 
 **Legend:**
