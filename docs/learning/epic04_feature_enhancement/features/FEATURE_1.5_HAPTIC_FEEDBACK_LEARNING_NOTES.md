@@ -73,3 +73,36 @@
 ### No issues encountered
 - TypeScript check: ✅ Passed
 - Linter: ✅ Passed (only pre-existing warnings)
+
+## Task 4: Integrate haptics into components
+
+### Date: 2026-01-24
+
+### What was implemented
+- Updated `lib/utils/haptics.ts` to check the `hapticEnabled` preference from Zustand store before triggering haptics
+- Replaced all direct `expo-haptics` calls with the new `haptics` utility in:
+  - `app/suggestions/[mealType].tsx` - Select suggestion (light), generate new ideas (medium), toggle favorite (medium)
+  - `components/modals/ConfirmationModal.tsx` - Confirm meal logged (success)
+  - `app/(tabs)/history.tsx` - Toggle favorite (medium)
+
+### Key decisions
+1. **Store access in utility**: The haptics utility accesses the Zustand store directly via `useStore.getState()` to check if haptics are enabled. This is a valid pattern since Zustand allows accessing state outside of React components.
+2. **Haptic type mapping**: Following the spec:
+   - Select suggestion → Light impact
+   - Confirm meal logged → Success notification (was Medium impact, changed to Success per spec)
+   - Generate new ideas → Medium impact
+   - Add to favorites → Medium impact
+3. **Removed Platform checks**: The haptics utility already handles platform detection, so removed redundant `Platform.OS !== 'web'` checks from components.
+
+### Files modified
+- `lib/utils/haptics.ts` - Added store import and preference check in `safeHaptic`
+- `app/suggestions/[mealType].tsx` - Replaced `Haptics.*` calls with `haptics.*`
+- `components/modals/ConfirmationModal.tsx` - Replaced `Haptics.*` calls with `haptics.success()`
+- `app/(tabs)/history.tsx` - Replaced `Haptics.*` calls with `haptics.medium()`
+
+### Issues encountered and fixes
+- **Import order warning**: The linter flagged that `haptics` import should come after `dateUtils` (alphabetical order within utils). Fixed by reordering imports.
+
+### Verification
+- TypeScript check: ✅ Passed
+- Linter: ✅ Passed (only pre-existing warnings unrelated to this task)

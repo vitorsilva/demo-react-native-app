@@ -79,3 +79,44 @@ Added the "Experience" section to the Settings screen with a Haptic Feedback tog
 **Verification:**
 - TypeScript check: ✅ Passed
 - Linter: ✅ Passed (only pre-existing warnings)
+
+## Task 4: Integrate haptics into components ✅
+
+**Date:** 2026-01-24
+
+**Summary:**
+Integrated the haptics utility into all relevant components, replacing direct `expo-haptics` calls. The haptics now respect the user's preference setting from the store.
+
+**Changes made:**
+
+1. **`lib/utils/haptics.ts`:**
+   - Added import for `useStore` from Zustand store
+   - Added `isHapticsEnabled()` function to check preference
+   - Updated `safeHaptic` to check both platform availability and user preference
+
+2. **`app/suggestions/[mealType].tsx`:**
+   - Replaced `import * as Haptics from 'expo-haptics'` with `import { haptics }`
+   - `handleSelectSuggestion`: `Haptics.impactAsync(Light)` → `haptics.light()`
+   - `handleGenerateNew`: `Haptics.impactAsync(Medium)` → `haptics.medium()`
+   - `handleToggleFavorite`: `Haptics.impactAsync(Light)` → `haptics.medium()` (per spec)
+
+3. **`components/modals/ConfirmationModal.tsx`:**
+   - Replaced `import * as Haptics from 'expo-haptics'` with `import { haptics }`
+   - `handleDone`: `Haptics.impactAsync(Medium)` → `haptics.success()` (success notification per spec)
+
+4. **`app/(tabs)/history.tsx`:**
+   - Replaced `import * as Haptics from 'expo-haptics'` with `import { haptics }`
+   - Removed `Platform` import (no longer needed)
+   - `handleToggleFavorite`: Removed platform check, now uses `haptics.medium()`
+
+**Haptic mapping implemented:**
+| Action | Haptic Type |
+|--------|-------------|
+| Select suggestion | Light impact |
+| Confirm meal logged | Success notification |
+| Generate new ideas | Medium impact |
+| Add to favorites | Medium impact |
+
+**Verification:**
+- TypeScript check: ✅ Passed
+- Linter: ✅ Passed (only pre-existing warnings)

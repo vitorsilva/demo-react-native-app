@@ -2,10 +2,12 @@
  * Haptic feedback utility module.
  * Provides standardized haptic feedback for different interaction types.
  * Gracefully handles platforms where haptics are not available (e.g., web).
+ * Respects user's haptic preference setting from the store.
  */
 
 import * as Haptics from 'expo-haptics';
 import { Platform } from 'react-native';
+import { useStore } from '@/lib/store';
 
 /**
  * Check if haptics are available on the current platform.
@@ -14,11 +16,20 @@ import { Platform } from 'react-native';
 const isHapticsAvailable = Platform.OS !== 'web';
 
 /**
+ * Check if haptics are enabled in user preferences.
+ * Accesses the Zustand store directly.
+ */
+const isHapticsEnabled = (): boolean => {
+  return useStore.getState().preferences.hapticEnabled;
+};
+
+/**
  * Internal helper to safely execute haptic feedback.
  * Silently fails on platforms where haptics are not available.
+ * Respects user's haptic preference setting.
  */
 const safeHaptic = async (hapticFn: () => Promise<void>): Promise<void> => {
-  if (!isHapticsAvailable) {
+  if (!isHapticsAvailable || !isHapticsEnabled()) {
     return;
   }
 

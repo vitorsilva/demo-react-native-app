@@ -1,13 +1,13 @@
 import { useFocusEffect } from '@react-navigation/native';
-import * as Haptics from 'expo-haptics';
 import { useEffect, useCallback, useState, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { View, Text, StyleSheet, SectionList, TouchableOpacity, Platform } from 'react-native';
+import { View, Text, StyleSheet, SectionList, TouchableOpacity } from 'react-native';
 import { colors } from '../../constants/colors';
 import { getCurrentLanguage } from '../../lib/i18n';
 import { useStore } from '../../lib/store';
 import { trackScreenView } from '../../lib/telemetry/screenTracking';
 import { isToday, isYesterday } from '../../lib/utils/dateUtils';
+import { haptics } from '../../lib/utils/haptics';
 import type { MealLog } from '../../types/database';
 
 type FilterType = 'all' | 'favorites';
@@ -87,9 +87,7 @@ export default function HistoryScreen() {
 
   // Handle favorite toggle with haptic feedback
   const handleToggleFavorite = async (id: string) => {
-    if (Platform.OS !== 'web') {
-      await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-    }
+    haptics.medium();
     await toggleMealLogFavorite(id);
   };
 

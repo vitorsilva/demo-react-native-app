@@ -1,6 +1,6 @@
-import * as Haptics from 'expo-haptics';
 import { useTranslation } from 'react-i18next';
 import { View, Text, StyleSheet, TouchableOpacity, Modal } from 'react-native';
+import { haptics } from '@/lib/utils/haptics';
 
 interface ConfirmationModalProps {
   visible: boolean;
@@ -21,7 +21,7 @@ export function ConfirmationModal({
   const capitalizedMealType = mealType.charAt(0).toUpperCase() + mealType.slice(1);
 
   const handleDone = () => {
-    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+    haptics.success();
     onDone();
   };
 
