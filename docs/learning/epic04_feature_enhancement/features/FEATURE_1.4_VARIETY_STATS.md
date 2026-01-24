@@ -274,14 +274,14 @@ function calculateVarietyStats(history: MealLog[], ingredients: Ingredient[]): V
 | Order | Task | Type | Effort |
 |-------|------|------|--------|
 | 1 | Create `calculateVarietyStats()` utility | Implementation | ~1.5 hours | done |
-| 2 | Create VarietyStats component | Implementation | ~1.5 hours | not started |
-| 3 | Integrate stats card into Home screen | Implementation | ~1 hour | not started |
-| 4 | 🧪 CREATE unit tests for `calculateVarietyStats()` | Testing | ~1 hour | not started |
-| 5 | 🧪 CREATE Playwright E2E test | Testing | ~1 hour | not started |
-| 6 | 🧪 CREATE Maestro test | Testing | ~1 hour | not started |
-| 7 | Run all existing unit tests, Playwright tests and Maestro Tests | Quality | ~0.5 hours | not started |
-| 8 | 📸 Capture BEFORE screenshot of Home screen | Documentation | ~5 min | not started |
-| 9 | 📸 Capture AFTER screenshots with stats card | Documentation | ~10 min | not started |
+| 2 | Create VarietyStats component | Implementation | ~1.5 hours | done |
+| 3 | Integrate stats card into Home screen | Implementation | ~1 hour | done |
+| 4 | 🧪 CREATE unit tests for `calculateVarietyStats()` | Testing | ~1 hour | done |
+| 5 | 🧪 CREATE Playwright E2E test | Testing | ~1 hour | done |
+| 6 | 🧪 CREATE Maestro test | Testing | ~1 hour | done |
+| 7 | Run all existing unit tests, Playwright tests and Maestro Tests | Quality | ~0.5 hours | done |
+| 8 | 📸 Capture BEFORE screenshot of Home screen | Documentation | ~5 min | done |
+| 9 | 📸 Capture AFTER screenshots with stats card | Documentation | ~10 min | done |
 
 **Legend:**
 - 🧪 CREATE = Writing new tests

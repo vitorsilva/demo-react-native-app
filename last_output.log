@@ -292,3 +292,23 @@ Task 1 is complete. I've:
 5. **Committed** - Changes committed with message `feat(1.4): add calculateVarietyStats() utility function`
 
 <task>DONE</task>
+Task 2 has been completed successfully. I created the VarietyStats component with:
+
+1. **Component** (`components/VarietyStats.tsx`): A collapsible card showing variety statistics with:
+   - Unique combinations count
+   - Most common combination
+   - Ingredient usage ratio
+   - Variety score percentage
+   - Expand/collapse toggle
+   - Empty state handling
+
+2. **i18n translations**: 
+   - English (`lib/i18n/locales/en/stats.json`)
+   - Portuguese (`lib/i18n/locales/pt-PT/stats.json`)
+   - Updated i18n configuration files
+
+3. **Documentation**: Updated feature spec, learning notes, and progress files
+
+4. **Commit**: Created commit `3b5e14e` on branch `FEATURE_1.4_VARIETY_STATS`
+
+<task>DONE</task>

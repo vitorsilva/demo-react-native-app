@@ -12,6 +12,7 @@ import enHistory from './en/history.json';
 import enHome from './en/home.json';
 import enIngredients from './en/ingredients.json';
 import enSettings from './en/settings.json';
+import enStats from './en/stats.json';
 import enSuggestions from './en/suggestions.json';
 import enTabs from './en/tabs.json';
 
@@ -23,6 +24,7 @@ import ptHistory from './pt-PT/history.json';
 import ptHome from './pt-PT/home.json';
 import ptIngredients from './pt-PT/ingredients.json';
 import ptSettings from './pt-PT/settings.json';
+import ptStats from './pt-PT/stats.json';
 import ptSuggestions from './pt-PT/suggestions.json';
 import ptTabs from './pt-PT/tabs.json';
 
@@ -39,6 +41,7 @@ const resources = {
     ingredients: enIngredients,
     categories: enCategories,
     suggestions: enSuggestions,
+    stats: enStats,
     errors: enErrors,
   },
   'pt-PT': {
@@ -50,6 +53,7 @@ const resources = {
     ingredients: ptIngredients,
     categories: ptCategories,
     suggestions: ptSuggestions,
+    stats: ptStats,
     errors: ptErrors,
   },
 };
