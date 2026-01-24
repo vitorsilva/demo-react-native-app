@@ -15,7 +15,7 @@ for ((i=1; i<=ITERATIONS; i++)); do
     2. Make sure you understand the task fully
     3. Make sure you are on the FEATURE_1.1_FAVORITE branch in git if not, switch to it.
     4. Implement ONLY that task
-    5. Run unit tests and linting to verify your work.
+    5. Run linting to verify your work.
     6. If tests pass: 
       - Update @docs\learning\epic04_feature_enhancement\features\FEATURE_1.1_FAVORITES.md status to 'done'.
       - Append learning notes with errors / problems / fixes / workarounds to @docs\learning\epic04_feature_enhancement\features\FEATURE_1.1_FAVORITES_LEARNING_NOTES.md

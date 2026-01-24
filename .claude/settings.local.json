@@ -101,7 +101,18 @@
       "Bash(npm run security:scan:*)",
       "Bash(nslookup:*)",
       "Bash(npm run deploy:landing:*)",
-      "Bash(gh pr:*)"
+      "Bash(gh pr:*)",
+      "Bash(node --version:*)",
+      "Bash(npm --version)",
+      "Bash(npx expo --version)",
+      "Bash(git --version:*)",
+      "Bash(docker --version:*)",
+      "Bash(npx playwright:*)",
+      "Bash(eas --version:*)",
+      "Bash(docker-compose:*)",
+      "Bash(eas whoami:*)",
+      "Bash(npm run lint:dead-code:*)",
+      "Bash(git -C C:/Users/omeue/source/repos/demo-react-native-app remote -v)"
     ],
     "deny": [],
     "ask": []
