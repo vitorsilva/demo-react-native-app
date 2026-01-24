@@ -7,7 +7,7 @@ for ((i=1; i<=ITERATIONS; i++)); do
   echo "--- Starting Ralph Iteration $i ---"
   
   # We call 'claude' and feed it the PRD and Progress file as context
-  claude --permission-mode acceptEdits --allowedTools "Bash(npm test:*)" "Bash(git:*)" "Bash(npm run test)" "Bash(npm run web)" "Bash(npm start)" --add-dir . -p "
+  claude --permission-mode acceptEdits --allowedTools "Bash(npm test:*)" "Bash(git:*)" "Bash(npm run test)" "Bash(npm run web)" "Bash(npm start)"  "Bash(maestro test:*)" "Bash(expo run:*)" --add-dir . -p "
     @docs\learning\epic04_feature_enhancement\features\FEATURE_1.3_COLOR_CODING.md 
     @docs\learning\epic04_feature_enhancement\features\FEATURE_1.3_progress.md
 
