@@ -47,6 +47,7 @@ describe('Meal Log Operations', () => {
       date: new Date().toISOString(),
       mealType: 'breakfast',
       ingredients: ingredientIds,
+      isFavorite: false,
     });
 
     expect(mealId).toBeDefined();
@@ -78,6 +79,7 @@ describe('Meal Log Operations', () => {
       date: today.toISOString(),
       mealType: 'breakfast',
       ingredients: ingredientIds.slice(0, 2),
+      isFavorite: false,
     });
 
     // Log meal yesterday
@@ -85,6 +87,7 @@ describe('Meal Log Operations', () => {
       date: yesterday.toISOString(),
       mealType: 'snack',
       ingredients: ingredientIds.slice(1, 3),
+      isFavorite: false,
     });
 
     // Log meal last week (8 days ago)
@@ -92,6 +95,7 @@ describe('Meal Log Operations', () => {
       date: lastWeek.toISOString(),
       mealType: 'breakfast',
       ingredients: ingredientIds,
+      isFavorite: false,
     });
 
     // Get recent 7 days - should exclude last week's meal
@@ -113,12 +117,14 @@ describe('Meal Log Operations', () => {
       date: yesterday.toISOString(),
       mealType: 'breakfast',
       ingredients: ingredientIds,
+      isFavorite: false,
     });
 
     await logMeal(db, {
       date: today.toISOString(),
       mealType: 'snack',
       ingredients: ingredientIds,
+      isFavorite: false,
     });
 
     const meals = await getRecentMealLogs(db, 7);
@@ -133,9 +139,9 @@ describe('Meal Log Operations', () => {
     const date3 = '2025-01-10T10:00:00.000Z';
 
     const db = getDatabase();
-    await logMeal(db, { date: date1, mealType: 'breakfast', ingredients: ingredientIds });
-    await logMeal(db, { date: date2, mealType: 'snack', ingredients: ingredientIds });
-    await logMeal(db, { date: date3, mealType: 'breakfast', ingredients: ingredientIds });
+    await logMeal(db, { date: date1, mealType: 'breakfast', ingredients: ingredientIds, isFavorite: false });
+    await logMeal(db, { date: date2, mealType: 'snack', ingredients: ingredientIds, isFavorite: false });
+    await logMeal(db, { date: date3, mealType: 'breakfast', ingredients: ingredientIds, isFavorite: false });
 
     // Query range 2025-01-04 to 2025-01-09 (should only get date2)
     const meals = await getMealLogsByDateRange(
@@ -154,6 +160,7 @@ describe('Meal Log Operations', () => {
       date: new Date().toISOString(),
       mealType: 'breakfast',
       ingredients: ingredientIds,
+      isFavorite: false,
     });
 
     const meals = await getRecentMealLogs(db, 7);
@@ -178,6 +185,7 @@ describe('Meal Log Operations', () => {
       date: new Date().toISOString(),
       mealType: 'breakfast',
       ingredients: ingredientIds,
+      isFavorite: false,
     });
 
     let meals = await getRecentMealLogs(db, 7);

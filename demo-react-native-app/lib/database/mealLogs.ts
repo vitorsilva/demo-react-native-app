@@ -10,7 +10,7 @@ import type { DatabaseAdapter } from './adapters/types';
  */
 export async function logMeal(
   db: DatabaseAdapter,
-  mealLog: Omit<MealLog, 'id' | 'createdAt'>
+  mealLog: Omit<MealLog, 'id' | 'createdAt' | 'isFavorite'> & { isFavorite?: boolean }
 ): Promise<MealLog> {
   const id = Crypto.randomUUID();
   const createdAt = new Date().toISOString();

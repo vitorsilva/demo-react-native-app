@@ -10,6 +10,7 @@ describe('getRecentlyUsedIngredients', () => {
         mealType: 'breakfast',
         ingredients: ['milk-id', 'bread-id'],
         createdAt: '2025-01-13T08:00:00Z',
+        isFavorite: false,
       },
       {
         id: '2',
@@ -17,6 +18,7 @@ describe('getRecentlyUsedIngredients', () => {
         mealType: 'snack',
         ingredients: ['cheese-id', 'apple-id'],
         createdAt: '2025-01-12T15:00:00Z',
+        isFavorite: false,
       },
     ];
 
@@ -37,6 +39,7 @@ describe('getRecentlyUsedIngredients', () => {
         mealType: 'breakfast',
         ingredients: ['milk-id', 'bread-id'],
         createdAt: '2025-01-13T08:00:00Z',
+        isFavorite: false,
       },
       {
         id: '2',
@@ -44,6 +47,7 @@ describe('getRecentlyUsedIngredients', () => {
         mealType: 'breakfast',
         ingredients: ['milk-id', 'cheese-id'], // milk-id appears again
         createdAt: '2025-01-12T08:00:00Z',
+        isFavorite: false,
       },
     ];
 
@@ -69,6 +73,7 @@ describe('getRecentlyUsedIngredients', () => {
         mealType: 'breakfast',
         ingredients: [],
         createdAt: '2025-01-13T08:00:00Z',
+        isFavorite: false,
       },
     ];
 

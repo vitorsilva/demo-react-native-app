@@ -93,7 +93,7 @@ interface StoreState {
   /** Loads recent meal logs from the database */
   loadMealLogs: (days?: number) => Promise<void>;
   /** Records a new meal log entry */
-  logMeal: (mealLog: Omit<MealLog, 'id' | 'createdAt'>) => Promise<void>;
+  logMeal: (mealLog: Omit<MealLog, 'id' | 'createdAt' | 'isFavorite'> & { isFavorite?: boolean }) => Promise<void>;
   /** Toggles the favorite status of a meal log */
   toggleMealLogFavorite: (id: string) => Promise<void>;
 
