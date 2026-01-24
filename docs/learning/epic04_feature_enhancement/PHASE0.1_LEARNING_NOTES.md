@@ -45,9 +45,11 @@ This is not the tsc command you are looking for
 
 **Issue:** Running `npx playwright test --list` from repo root showed error about `test.describe()` being called in wrong context.
 
-**Cause:** There's a Playwright test file (`e2e/favorites.spec.ts`) at the repo root level, separate from the app's E2E tests.
+**Cause:** When running `npx playwright` from the repo root (which has no playwright installed), npx downloads a temporary playwright package. This temporary playwright then discovers the test files in the app subfolder but loads them with wrong context/configuration, causing the error.
 
-**Solution:** Run Playwright commands from the app directory:
+**Note:** The test files ARE in the correct location (`demo-react-native-app/e2e/`). No files need to be moved.
+
+**Solution:** Always run Playwright commands from the app directory where playwright is properly installed:
 ```bash
 cd demo-react-native-app/demo-react-native-app
 npx playwright test --list  # Works correctly
