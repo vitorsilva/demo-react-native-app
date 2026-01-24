@@ -93,3 +93,25 @@ Added comprehensive unit tests for the `getVarietyColor()` function covering all
 ### Verification
 - All 263 unit tests pass (increased from 220)
 - ESLint: 0 errors (5 pre-existing warnings unrelated to this change)
+
+---
+
+## Task 5: Create E2E test for color visibility - DONE
+
+**Date:** 2026-01-24
+
+### Summary
+Created comprehensive E2E tests using Playwright to verify the variety indicator is visible and functional in the browser.
+
+### Tests Added (4 E2E tests)
+1. Verify variety indicator visibility on suggestion cards
+2. Verify green indicator for fresh combinations
+3. Verify indicator state change after logging
+4. Verify icon presence for accessibility
+
+### Files Created
+- `demo-react-native-app/e2e/variety-indicator.spec.ts`
+
+### Verification
+- All 4 E2E tests pass
+- Total E2E tests: 27 (increased from 23)

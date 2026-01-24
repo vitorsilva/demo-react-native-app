@@ -113,3 +113,28 @@
 ### No Issues Encountered
 - All 12 new tests pass
 - Total test count increased from 220 to 263
+
+---
+
+## Task 5: Create E2E test for color visibility
+
+**Date:** 2026-01-24
+
+### Approach
+- Created new E2E test file following the same pattern as new-badge.spec.ts
+- Tests cover visibility, color state, and accessibility icon
+
+### Tests Created (4 E2E tests)
+1. `should show variety indicator on suggestion cards` - Basic visibility check
+2. `should show green indicator for fresh combinations` - Verifies green state for fresh database
+3. `should change indicator color after logging a combination` - State change after logging
+4. `should show variety indicator with correct icon for accessibility` - Icon presence verification
+
+### Key Patterns Used
+- Used testID selectors (`variety-indicator-green`, etc.) for reliable element location
+- Added screenshots at key points for visual verification
+- Followed existing E2E patterns from new-badge.spec.ts
+
+### No Issues Encountered
+- All 4 E2E tests pass
+- Total E2E tests: 27 (up from 23)
