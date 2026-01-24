@@ -171,3 +171,26 @@ Ran all three test suites to verify the haptic feedback implementation doesn't b
 1. **No regressions from haptic feedback implementation** - All unit tests and E2E tests pass, confirming the haptic integration doesn't break existing functionality.
 2. **Flaky E2E test** - The favorites spec has a test isolation issue where state from previous tests can leak. This is a pre-existing issue unrelated to haptic changes.
 3. **Maestro requires manual setup** - Unlike unit and Playwright tests that run automatically, Maestro requires: (1) Android emulator running, (2) App APK installed, (3) Manual test execution.
+
+## Task 7: Capture BEFORE screenshot of Settings screen
+
+### Date: 2026-01-24
+
+### What was done
+Captured the BEFORE screenshot of the Settings screen showing the state without the "Experience" section (no haptic toggle).
+
+### Approach
+Since the haptic toggle implementation was already completed (Tasks 1-6), the BEFORE screenshot required accessing the main branch version of the app:
+1. Used `git checkout main` to switch to main branch
+2. Refreshed the Expo web app to load the main branch code
+3. Navigated to Settings screen and captured screenshot
+4. Copied screenshot to `docs/learning/epic04_feature_enhancement/features/screenshots/`
+5. Switched back to feature branch with `git checkout FEATURE_1.5_HAPTIC_FEEDBACK`
+
+### Files created
+- `docs/learning/epic04_feature_enhancement/features/screenshots/screenshot_before_settings_haptic.png`
+
+### Key observations
+1. **Screenshot timing**: Ideally, BEFORE screenshots should be captured before implementation starts (before Task 3 in this case). Since Tasks 1-6 were already complete, we needed to checkout main branch to capture the true "before" state.
+2. **Web version for screenshots**: Using the Expo web version (`npm run web`) via Playwright browser automation made capturing screenshots straightforward.
+3. **No "Experience" section in main**: The main branch Settings screen goes directly from "Language" to "Global Preferences" - confirming the BEFORE state correctly shows no haptic toggle.
