@@ -283,3 +283,32 @@ Since the feature was already implemented, capturing a true "BEFORE" screenshot 
 
 - The Playwright MCP tool saved screenshots to `.playwright-mcp/` subdirectory, so the file needed to be copied to the correct location
 - TypeScript check and linter passed with only pre-existing warnings
+
+## Task 9: Capture AFTER screenshots with stats card
+
+### What was done
+
+1. **Captured three AFTER screenshots** showing the VarietyStats card:
+   - `screenshot_after_home_stats.png` - Home screen with stats card (expanded, showing stats)
+   - `screenshot_stats_expanded.png` - Stats card in expanded state with all metrics visible
+   - `screenshot_stats_collapsed.png` - Stats card in collapsed state (just title visible)
+
+2. **Screenshots show the feature working**:
+   - Stats card displays real data after logging a meal
+   - Shows all 4 stat categories: unique combos, most common, ingredients used, variety score
+   - Collapse/expand toggle works correctly
+
+### Approach used
+
+1. Started the web app with current feature branch code
+2. Navigated to Home screen and logged a meal to populate stats
+3. Captured expanded state screenshots
+4. Clicked toggle to collapse the card
+5. Captured collapsed state screenshot
+6. Copied screenshots from `.playwright-mcp/` to correct location
+
+### Notes
+
+- Logged a meal first to show meaningful stats data instead of empty state
+- All screenshots saved to `docs/learning/epic04_feature_enhancement/features/screenshots/`
+- TypeScript check and linter passed with only pre-existing warnings

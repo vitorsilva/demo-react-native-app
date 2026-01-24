@@ -171,3 +171,24 @@
 **Verification:**
 - TypeScript check: PASSED
 - ESLint: PASSED (only pre-existing warnings)
+
+## Task 9: Capture AFTER screenshots with stats card - DONE
+
+**Date:** 2026-01-24
+
+**Summary:**
+- Captured three AFTER screenshots showing the VarietyStats card feature:
+  - `screenshot_after_home_stats.png` - Home screen with stats card expanded
+  - `screenshot_stats_expanded.png` - Stats card expanded showing all metrics
+  - `screenshot_stats_collapsed.png` - Stats card collapsed (just title visible)
+- Logged a meal first to show meaningful stats data (not empty state)
+- Used Playwright MCP tools to navigate, interact, and capture screenshots
+
+**Files created:**
+- `docs/learning/epic04_feature_enhancement/features/screenshots/screenshot_after_home_stats.png`
+- `docs/learning/epic04_feature_enhancement/features/screenshots/screenshot_stats_expanded.png`
+- `docs/learning/epic04_feature_enhancement/features/screenshots/screenshot_stats_collapsed.png`
+
+**Verification:**
+- TypeScript check: PASSED
+- ESLint: PASSED (only pre-existing warnings)

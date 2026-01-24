@@ -281,7 +281,7 @@ function calculateVarietyStats(history: MealLog[], ingredients: Ingredient[]): V
 | 6 | 🧪 CREATE Maestro test | Testing | ~1 hour | done |
 | 7 | Run all existing unit tests, Playwright tests and Maestro Tests | Quality | ~0.5 hours | done |
 | 8 | 📸 Capture BEFORE screenshot of Home screen | Documentation | ~5 min | done |
-| 9 | 📸 Capture AFTER screenshots with stats card | Documentation | ~10 min | not started |
+| 9 | 📸 Capture AFTER screenshots with stats card | Documentation | ~10 min | done |
 
 **Legend:**
 - 🧪 CREATE = Writing new tests
