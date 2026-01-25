@@ -464,3 +464,41 @@ import { haptics } from '@/lib/utils/haptics';
 - New files created: `lib/utils/mealDisplay.ts`, `lib/utils/__tests__/mealDisplay.test.ts`
 
 ---
+
+## Task 14: Create Playwright E2E tests for meal logging
+
+**Date:** 2026-01-25
+
+### Implementation Summary
+- Created new E2E test file: `e2e/meal-logging-phase2.spec.ts`
+- Added 8 Playwright tests covering Phase 2 meal logging features
+- Tests cover: meal name input, preparation method selection, custom prep methods, full logging flow
+
+### Test Design Decisions
+- **TestID patterns**: Used existing testID patterns from the codebase (e.g., `meal-component-{index}`)
+- **Picker test IDs**: Used the pattern `prep-method-{methodId}` for preparation method options
+- **Screenshots**: Added screenshots at key points for visual verification
+- **Selector strategy**: Combined data-testid selectors with text content assertions for robustness
+
+### Tests Created
+1. `should show meal name input and ingredient components in confirmation modal` - Verifies Phase 2 UI is visible
+2. `should log meal with a custom name` - Tests meal naming functionality
+3. `should open preparation method picker when clicking ingredient component` - Tests picker modal
+4. `should select a preparation method for an ingredient` - Tests method selection
+5. `should add a custom preparation method` - Tests custom method creation
+6. `should log meal with preparation method and custom name` - Full Phase 2 flow
+7. `should log meal without name (anonymous meal with components)` - Anonymous meal logging
+8. `should show multiple preparation method options in picker` - Verifies all predefined methods
+
+### No Issues Encountered
+- Implementation followed existing E2E test patterns in the codebase
+- All testIDs were already implemented in the UI components
+- Playwright test structure matches existing meal-logging.spec.ts pattern
+
+### Final Results
+- 8 new Playwright E2E tests created
+- TypeScript check passes with no errors
+- ESLint shows only pre-existing warnings (5 warnings, none from new code)
+- Playwright recognizes all 8 tests in the new spec file
+
+---

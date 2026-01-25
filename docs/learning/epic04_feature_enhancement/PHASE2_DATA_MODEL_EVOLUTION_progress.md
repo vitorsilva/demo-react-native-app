@@ -382,3 +382,49 @@ This document tracks progress for Phase 2 implementation tasks.
 - Unit tests: ✅ 389/389 passed (19 new tests added)
 
 ---
+
+### Task 14: Create Playwright E2E tests for meal logging ✅
+
+**Status:** COMPLETE
+
+**What was done:**
+- Created new E2E test file: `e2e/meal-logging-phase2.spec.ts`
+- Added 8 Playwright tests covering Phase 2 meal logging features:
+  1. Should show meal name input and ingredient components in confirmation modal
+  2. Should log meal with a custom name
+  3. Should open preparation method picker when clicking ingredient component
+  4. Should select a preparation method for an ingredient
+  5. Should add a custom preparation method
+  6. Should log meal with preparation method and custom name
+  7. Should log meal without name (anonymous meal with components)
+  8. Should show multiple preparation method options in picker
+
+**Test Coverage:**
+- Meal name input visibility and functionality
+- Meal component rows with preparation method selectors
+- Preparation method picker modal (open/close)
+- Selection of predefined preparation methods (grilled, steamed, raw, etc.)
+- Adding custom preparation methods inline
+- Full meal logging flow with name + prep methods
+- Anonymous meal logging (without name) with components
+- Verification of all 12+ predefined preparation method options
+
+**TestIDs Used:**
+- `meal-name-input` - Meal name text input
+- `meal-component-{index}` - Ingredient component rows
+- `prep-method-none` - "None (as is)" option
+- `prep-method-prep-{name}` - Predefined method options (e.g., prep-method-prep-grilled)
+- `show-add-custom-input` - Button to show custom input
+- `custom-prep-method-input` - Custom method text input
+- `add-custom-prep-method-button` - Add custom method button
+- `prep-picker-cancel` - Cancel button for picker
+
+**New Files Created:**
+- `e2e/meal-logging-phase2.spec.ts` (295 lines)
+
+**Verification:**
+- TypeScript check: ✅ Passed
+- ESLint: ✅ Passed (only pre-existing warnings)
+- Playwright test list: ✅ 8 tests recognized
+
+---
