@@ -658,8 +658,8 @@ function formatMealDisplay(meal: MealLog, components: MealComponent[], ingredien
 
 | Order | Task | Type | Effort | Notes |
 |-------|------|------|--------|-------|
-| 1 | ▶️ RUN existing test suites | Testing | ~15 min | Baseline: unit, Playwright E2E, Maestro | not started |
-| 2 | ▶️ RUN quality baseline | Quality | ~30 min | arch:test, lint:dead-code, lint:duplicates, security:scan | not started |
+| 1 | ▶️ RUN existing test suites | Testing | ~15 min | Baseline: unit, Playwright E2E, Maestro | done |
+| 2 | ▶️ RUN quality baseline | Quality | ~30 min | arch:test, lint:dead-code, lint:duplicates, security:scan | done |
 | 3 | Add preparation_methods table + seed | Implementation | ~1 hour | Migration | not started |
 | 4 | Add meal_components table | Implementation | ~1 hour | Migration | not started |
 | 5 | Add name column to meal_logs | Implementation | ~30 min | Migration | not started |
