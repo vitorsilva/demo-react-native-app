@@ -661,7 +661,7 @@ function formatMealDisplay(meal: MealLog, components: MealComponent[], ingredien
 | 1 | ▶️ RUN existing test suites | Testing | ~15 min | Baseline: unit, Playwright E2E, Maestro | done |
 | 2 | ▶️ RUN quality baseline | Quality | ~30 min | arch:test, lint:dead-code, lint:duplicates, security:scan | done |
 | 3 | Add preparation_methods table + seed | Implementation | ~1 hour | Migration | done |
-| 4 | Add meal_components table | Implementation | ~1 hour | Migration | not started |
+| 4 | Add meal_components table | Implementation | ~1 hour | Migration | done |
 | 5 | Add name column to meal_logs | Implementation | ~30 min | Migration | not started |
 | 6 | 🧪 CREATE unit tests for new migrations | Testing | ~1 hour | Test table creation, seeding | not started |
 | 7 | Update TypeScript types | Implementation | ~1 hour | Types file | not started |

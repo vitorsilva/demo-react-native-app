@@ -225,6 +225,26 @@
       }
     },
   },
+  {
+    version: 6,
+    up: async (db: DatabaseAdapter) => {
+      // Phase 2: Data Model Evolution - Add meal_components table
+      // This table stores ingredient + preparation method pairs for each meal
+      // Create meal_components table (idempotent with IF NOT EXISTS)
+      await db.runAsync(`
+        CREATE TABLE IF NOT EXISTS meal_components (
+          id TEXT PRIMARY KEY,
+          meal_log_id TEXT NOT NULL,
+          ingredient_id TEXT NOT NULL,
+          preparation_method_id TEXT,
+          created_at TEXT NOT NULL,
+          FOREIGN KEY (meal_log_id) REFERENCES meal_logs(id) ON DELETE CASCADE,
+          FOREIGN KEY (ingredient_id) REFERENCES ingredients(id),
+          FOREIGN KEY (preparation_method_id) REFERENCES preparation_methods(id)
+        )
+      `);
+    },
+  },
   ];
 
   // Main function to run pending migrations

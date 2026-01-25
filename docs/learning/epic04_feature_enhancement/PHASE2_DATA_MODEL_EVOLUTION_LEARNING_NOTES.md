@@ -25,3 +25,30 @@ This document captures errors, problems, fixes, and workarounds encountered duri
 - No special handling required
 
 ---
+
+## Task 4: Add meal_components table
+
+**Date:** 2026-01-25
+
+### Implementation Summary
+- Added migration version 6 to `lib/database/migrations.ts`
+- Created `meal_components` table with columns:
+  - `id TEXT PRIMARY KEY`
+  - `meal_log_id TEXT NOT NULL`
+  - `ingredient_id TEXT NOT NULL`
+  - `preparation_method_id TEXT` (nullable, for ingredients without preparation)
+  - `created_at TEXT NOT NULL`
+- Added foreign key constraints to `meal_logs`, `ingredients`, and `preparation_methods`
+- Used `ON DELETE CASCADE` for meal_log_id foreign key to ensure components are deleted when parent meal is deleted
+
+### Notes
+- Migration follows existing pattern using `CREATE TABLE IF NOT EXISTS` for idempotency
+- All 309 unit tests pass after implementation
+- TypeScript check passes with no errors
+- ESLint shows only pre-existing warnings (unrelated to this change)
+
+### No Issues Encountered
+- Implementation was straightforward following the established migration pattern
+- No special handling required
+
+---

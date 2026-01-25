@@ -37,3 +37,27 @@ This document tracks progress for Phase 2 implementation tasks.
 - Unit tests: ✅ 309/309 passed
 
 ---
+
+### Task 4: Add meal_components table ✅
+
+**Status:** COMPLETE
+
+**What was done:**
+- Created migration version 6 in `lib/database/migrations.ts`
+- Added `meal_components` table with schema:
+  - `id TEXT PRIMARY KEY`
+  - `meal_log_id TEXT NOT NULL`
+  - `ingredient_id TEXT NOT NULL`
+  - `preparation_method_id TEXT` (nullable)
+  - `created_at TEXT NOT NULL`
+- Added foreign key constraints:
+  - `meal_log_id` → `meal_logs(id)` with `ON DELETE CASCADE`
+  - `ingredient_id` → `ingredients(id)`
+  - `preparation_method_id` → `preparation_methods(id)`
+
+**Verification:**
+- TypeScript check: ✅ Passed
+- ESLint: ✅ Passed (only pre-existing warnings)
+- Unit tests: ✅ 309/309 passed
+
+---
