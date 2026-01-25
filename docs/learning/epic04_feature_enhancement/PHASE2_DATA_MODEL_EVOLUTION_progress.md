@@ -141,3 +141,43 @@ This document tracks progress for Phase 2 implementation tasks.
 - All existing tests continue to compile and work
 
 ---
+
+### Task 8: Update store with new actions ✅
+
+**Status:** COMPLETE
+
+**What was done:**
+- Created new database operations file: `lib/database/preparationMethods.ts`
+  - `getAllPreparationMethods(db)` - Retrieves all preparation methods sorted by predefined first, then by name
+  - `getPreparationMethodById(db, id)` - Retrieves a single method by ID
+  - `addPreparationMethod(db, name)` - Adds a custom (user-defined) method
+  - `deletePreparationMethod(db, id)` - Deletes a custom method (blocks predefined deletion)
+  - `preparationMethodExists(db, name)` - Checks if a method with given name exists (case-insensitive)
+- Created new database operations file: `lib/database/mealComponents.ts`
+  - `getMealComponents(db, mealLogId)` - Gets all components for a meal log
+  - `createMealComponents(db, mealLogId, components)` - Creates meal components
+  - `deleteMealComponents(db, mealLogId)` - Deletes all components for a meal
+  - `logMealWithComponents(db, mealLog, components, name?)` - Logs a meal with components and optional name
+  - `getMealLogWithComponents(db, mealLogId)` - Gets a meal with its components attached
+  - `getRecentMealLogsWithComponents(db, days)` - Gets recent meals with components
+- Updated `lib/store/index.ts` with new state and actions:
+  - Added `preparationMethods: PreparationMethod[]` state
+  - Added `loadPreparationMethods()` action
+  - Added `addPreparationMethod(name)` action
+  - Added `deletePreparationMethod(id)` action
+  - Added `logMealWithComponents(mealTypeId, components, name?)` action
+  - Added `getMealWithComponents(mealLogId)` action
+
+**New Files Created:**
+- `lib/database/preparationMethods.ts` (126 lines)
+- `lib/database/mealComponents.ts` (181 lines)
+
+**Files Modified:**
+- `lib/store/index.ts` - Added imports, state, interface, and action implementations
+
+**Verification:**
+- TypeScript check: ✅ Passed
+- ESLint: ✅ Passed (only pre-existing warnings)
+- Unit tests: ✅ 331/331 passed (no new tests in this task, tests come in task 9)
+
+---

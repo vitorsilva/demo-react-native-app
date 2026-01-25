@@ -173,3 +173,46 @@ name?: string | null;
 - Existing tests continue to compile and work
 
 ---
+
+## Task 8: Update store with new actions
+
+**Date:** 2026-01-25
+
+### Implementation Summary
+- Created new database operations file: `lib/database/preparationMethods.ts`
+  - `getAllPreparationMethods(db)` - Retrieves all preparation methods sorted by predefined first, then by name
+  - `getPreparationMethodById(db, id)` - Retrieves a single method by ID
+  - `addPreparationMethod(db, name)` - Adds a custom (user-defined) method
+  - `deletePreparationMethod(db, id)` - Deletes a custom method (blocks predefined deletion)
+  - `preparationMethodExists(db, name)` - Checks if a method with given name exists (case-insensitive)
+- Created new database operations file: `lib/database/mealComponents.ts`
+  - `getMealComponents(db, mealLogId)` - Gets all components for a meal log
+  - `createMealComponents(db, mealLogId, components)` - Creates meal components
+  - `deleteMealComponents(db, mealLogId)` - Deletes all components for a meal
+  - `logMealWithComponents(db, mealLog, components, name?)` - Logs a meal with components and optional name
+  - `getMealLogWithComponents(db, mealLogId)` - Gets a meal with its components attached
+  - `getRecentMealLogsWithComponents(db, days)` - Gets recent meals with components
+- Updated `lib/store/index.ts` with new state and actions:
+  - Added `preparationMethods: PreparationMethod[]` state
+  - Added `loadPreparationMethods()` action
+  - Added `addPreparationMethod(name)` action
+  - Added `deletePreparationMethod(id)` action
+  - Added `logMealWithComponents(mealTypeId, components, name?)` action
+  - Added `getMealWithComponents(mealLogId)` action
+
+### Design Decisions
+- Database operations files follow existing patterns (categories.ts, mealLogs.ts)
+- `logMealWithComponents` also populates the legacy `ingredients` column for backward compatibility
+- `deletePreparationMethod` checks for usage in meal_components before allowing deletion
+- Store actions follow the same loading/error handling patterns as existing actions
+
+### No Issues Encountered
+- Implementation was straightforward following the established patterns in the codebase
+- No TypeScript or linter errors
+
+### Final Results
+- All 331 unit tests pass
+- TypeScript check passes with no errors
+- ESLint shows only pre-existing warnings (unrelated to this change)
+
+---
