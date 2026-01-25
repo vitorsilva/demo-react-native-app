@@ -184,6 +184,47 @@
       }
     },
   },
+  {
+    version: 5,
+    up: async (db: DatabaseAdapter) => {
+      // Phase 2: Data Model Evolution - Add preparation_methods table
+      // Create preparation_methods table (idempotent with IF NOT EXISTS)
+      await db.runAsync(`
+        CREATE TABLE IF NOT EXISTS preparation_methods (
+          id TEXT PRIMARY KEY,
+          name TEXT NOT NULL UNIQUE,
+          is_predefined INTEGER DEFAULT 1,
+          created_at TEXT NOT NULL
+        )
+      `);
+
+      // Seed predefined preparation methods (idempotent via recordExists check)
+      const now = new Date().toISOString();
+      const predefinedMethods = [
+        ['prep-fried', 'fried'],
+        ['prep-grilled', 'grilled'],
+        ['prep-roasted', 'roasted'],
+        ['prep-boiled', 'boiled'],
+        ['prep-baked', 'baked'],
+        ['prep-raw', 'raw'],
+        ['prep-steamed', 'steamed'],
+        ['prep-sauteed', 'sautéed'],
+        ['prep-stewed', 'stewed'],
+        ['prep-smoked', 'smoked'],
+        ['prep-poached', 'poached'],
+        ['prep-braised', 'braised'],
+      ];
+
+      for (const [id, name] of predefinedMethods) {
+        if (!(await recordExists(db, 'preparation_methods', 'id = ?', [id]))) {
+          await db.runAsync(
+            `INSERT INTO preparation_methods (id, name, is_predefined, created_at) VALUES (?, ?, 1, ?)`,
+            [id, name, now]
+          );
+        }
+      }
+    },
+  },
   ];
 
   // Main function to run pending migrations

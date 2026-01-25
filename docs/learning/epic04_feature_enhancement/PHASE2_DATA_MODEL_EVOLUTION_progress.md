@@ -1,0 +1,39 @@
+# Phase 2: Data Model Evolution - Progress Log
+
+This document tracks progress for Phase 2 implementation tasks.
+
+---
+
+## 2026-01-25
+
+### Task 3: Add preparation_methods table + seed ✅
+
+**Status:** COMPLETE
+
+**What was done:**
+- Created migration version 5 in `lib/database/migrations.ts`
+- Added `preparation_methods` table with schema:
+  - `id TEXT PRIMARY KEY`
+  - `name TEXT NOT NULL UNIQUE`
+  - `is_predefined INTEGER DEFAULT 1`
+  - `created_at TEXT NOT NULL`
+- Seeded 12 predefined preparation methods:
+  1. fried
+  2. grilled
+  3. roasted
+  4. boiled
+  5. baked
+  6. raw
+  7. steamed
+  8. sautéed
+  9. stewed
+  10. smoked
+  11. poached
+  12. braised
+
+**Verification:**
+- TypeScript check: ✅ Passed
+- ESLint: ✅ Passed (only pre-existing warnings)
+- Unit tests: ✅ 309/309 passed
+
+---
