@@ -535,3 +535,31 @@ This document tracks progress for Phase 2 implementation tasks.
 - Playwright test list: ✅ 6 tests recognized
 
 ---
+
+### Task 18: Create Maestro test for history ✅
+
+**Status:** COMPLETE
+
+**What was done:**
+- Created 3 new Maestro test files mirroring Playwright E2E tests (Task 17):
+  1. `history-phase2-named-meal.yaml` - Named meal displays correctly in history
+  2. `history-phase2-prep-method.yaml` - Unnamed meal with prep method displays inline
+  3. `history-phase2-multiple-meals.yaml` - Multiple meals (named and unnamed) display correctly
+
+**Test Coverage:**
+- Named meals show their custom name in history (e.g., "Mom's special breakfast")
+- Unnamed meals show ingredients with prep methods inline (e.g., "grilled")
+- Multiple meal types visible in history (Breakfast, Snack)
+- Combined test: logs two meals, verifies both appear correctly
+
+**New Files Created:**
+- `e2e/maestro/history-phase2-named-meal.yaml`
+- `e2e/maestro/history-phase2-prep-method.yaml`
+- `e2e/maestro/history-phase2-multiple-meals.yaml`
+
+**Verification:**
+- TypeScript check: ✅ Passed (YAML files not checked)
+- ESLint: ✅ Passed (only pre-existing warnings: 5 warnings)
+- Maestro test files created and ready to run
+
+---

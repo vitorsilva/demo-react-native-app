@@ -1,0 +1,80 @@
+# Maestro E2E test for Phase 2 History with Named Meals
+# Tests that named meals display correctly in history screen
+#
+# Prerequisites:
+#   - Android emulator running: adb devices
+#   - App installed (see MAESTRO_TESTING.md for options)
+#
+# Run with: maestro test e2e/maestro/history-phase2-named-meal.yaml
+
+appId: com.vitorsilvavmrs.saborspin
+---
+# Launch app
+- launchApp
+
+# Verify home screen loads
+- extendedWaitUntil:
+    visible: "SaborSpin"
+    timeout: 30000
+
+# Take screenshot of initial home screen
+- takeScreenshot: history-phase2-01-home-initial
+
+# Navigate to breakfast suggestions
+- tapOn:
+    text: "breakfast Ideas"
+    optional: false
+
+# Wait for suggestions screen to load
+- extendedWaitUntil:
+    visible: "Pick one:"
+    timeout: 15000
+
+# Select first suggestion to open confirmation modal
+- tapOn:
+    id: "select-button-0"
+
+# Wait for confirmation modal to appear with Phase 2 elements
+- extendedWaitUntil:
+    id: "meal-name-input"
+    timeout: 10000
+
+# Enter a custom meal name
+- tapOn:
+    id: "meal-name-input"
+
+- inputText: "Mom's special breakfast"
+
+# Take screenshot with meal name entered
+- takeScreenshot: history-phase2-02-meal-name-entered
+
+# Complete the logging by tapping Done
+- tapOn:
+    id: "done-button"
+
+# Wait to return to home screen
+- extendedWaitUntil:
+    visible: "Recent Meals"
+    timeout: 10000
+
+# Take screenshot of home after logging named meal
+- takeScreenshot: history-phase2-03-home-after-named-meal
+
+# Navigate to History tab
+- tapOn: "History"
+
+# Wait for history screen to load
+- extendedWaitUntil:
+    visible: "Today"
+    timeout: 10000
+
+# Verify the named meal is visible in history
+- assertVisible: "Mom's special breakfast"
+
+# Take screenshot of history with named meal
+- takeScreenshot: history-phase2-04-history-named-meal
+
+# Verify the meal type is also shown
+- assertVisible: "Breakfast"
+
+# Test passed - named meals display correctly in history on mobile

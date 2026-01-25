@@ -1,0 +1,100 @@
+# Maestro E2E test for Phase 2 History with Preparation Methods
+# Tests that meals with prep methods display correctly in history (unnamed meals)
+#
+# Prerequisites:
+#   - Android emulator running: adb devices
+#   - App installed (see MAESTRO_TESTING.md for options)
+#
+# Run with: maestro test e2e/maestro/history-phase2-prep-method.yaml
+
+appId: com.vitorsilvavmrs.saborspin
+---
+# Launch app
+- launchApp
+
+# Verify home screen loads
+- extendedWaitUntil:
+    visible: "SaborSpin"
+    timeout: 30000
+
+# Take screenshot of initial home screen
+- takeScreenshot: history-prep-01-home-initial
+
+# Navigate to snack suggestions
+- tapOn:
+    text: "snack Ideas"
+    optional: false
+
+# Wait for suggestions screen to load
+- extendedWaitUntil:
+    visible: "Pick one:"
+    timeout: 15000
+
+# Select first suggestion to open confirmation modal
+- tapOn:
+    id: "select-button-0"
+
+# Wait for confirmation modal to appear with Phase 2 elements
+- extendedWaitUntil:
+    id: "meal-component-0"
+    timeout: 10000
+
+# Open preparation method picker for first ingredient (don't enter a name)
+- tapOn:
+    id: "meal-component-0"
+
+# Wait for prep method picker to appear
+- extendedWaitUntil:
+    id: "prep-method-prep-grilled"
+    timeout: 10000
+
+# Take screenshot of prep method picker
+- takeScreenshot: history-prep-02-prep-picker
+
+# Select grilled preparation method
+- tapOn:
+    id: "prep-method-prep-grilled"
+
+# Wait for picker to close and return to confirmation modal
+- extendedWaitUntil:
+    id: "done-button"
+    timeout: 5000
+
+# Verify grilled method is now shown on the component row
+- assertVisible:
+    text: "grilled"
+
+# Take screenshot with prep method selected
+- takeScreenshot: history-prep-03-prep-selected
+
+# Complete the logging by tapping Done (without entering a name)
+- tapOn:
+    id: "done-button"
+
+# Wait to return to home screen
+- extendedWaitUntil:
+    visible: "Recent Meals"
+    timeout: 10000
+
+# Take screenshot of home after logging unnamed meal with prep method
+- takeScreenshot: history-prep-04-home-after-meal
+
+# Navigate to History tab
+- tapOn: "History"
+
+# Wait for history screen to load
+- extendedWaitUntil:
+    visible: "Today"
+    timeout: 10000
+
+# Verify the prep method is visible in history (inline with ingredients)
+- assertVisible:
+    text: "grilled"
+
+# Take screenshot of history with prep method meal
+- takeScreenshot: history-prep-05-history-prep-method
+
+# Verify the meal type is shown
+- assertVisible: "Snack"
+
+# Test passed - unnamed meals with prep methods display correctly in history on mobile

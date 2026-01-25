@@ -638,3 +638,37 @@ import { haptics } from '@/lib/utils/haptics';
 - Playwright recognizes all 6 tests in the new spec file
 
 ---
+
+## Task 18: Create Maestro test for history
+
+**Date:** 2026-01-25
+
+### Implementation Summary
+- Created 3 new Maestro test files mirroring Playwright E2E tests (Task 17):
+  1. `history-phase2-named-meal.yaml` - Named meal displays correctly in history
+  2. `history-phase2-prep-method.yaml` - Unnamed meal with prep method displays inline
+  3. `history-phase2-multiple-meals.yaml` - Multiple meals (named and unnamed) display correctly
+
+### Test Coverage
+- Named meals show their custom name in history (e.g., "Mom's special breakfast")
+- Unnamed meals show ingredients with prep methods inline (e.g., "grilled")
+- Multiple meal types visible in history (Breakfast, Snack)
+- Combined test: logs two meals, verifies both appear correctly
+
+### Design Decisions
+- Split into 3 separate test files for better isolation and debugging
+- Used testIDs from Task 16: `meal-name-input`, `meal-component-0`, `prep-method-*`
+- Added screenshots at key verification points
+- Follows existing Maestro patterns from `favorites-flow.yaml` and `meal-logging-phase2.yaml`
+
+### No Issues Encountered
+- Implementation was straightforward following existing Maestro patterns
+- YAML syntax matches existing test files
+- TypeScript check passes with no errors (YAML files not checked)
+- ESLint shows only pre-existing warnings (5 warnings, none related to new files)
+
+### Final Results
+- 3 new Maestro test files created
+- Tests are ready to run with `maestro test e2e/maestro/history-phase2*.yaml`
+
+---

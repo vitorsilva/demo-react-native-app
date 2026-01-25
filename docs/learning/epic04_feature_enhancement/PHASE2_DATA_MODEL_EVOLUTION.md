@@ -675,7 +675,7 @@ function formatMealDisplay(meal: MealLog, components: MealComponent[], ingredien
 | 15 | 🧪 CREATE Maestro tests for meal logging | Testing | ~2 hours | Mirror Playwright tests for mobile | done |
 | 16 | Update history/display to use components | Implementation | ~2 hours | UI updates | done |
 | 17 | 🧪 CREATE Playwright E2E test for history | Testing | ~1 hour | Test named meals show correctly | done |
-| 18 | 🧪 CREATE Maestro test for history | Testing | ~1 hour | Mirror Playwright test for mobile | not started |
+| 18 | 🧪 CREATE Maestro test for history | Testing | ~1 hour | Mirror Playwright test for mobile | done |
 | 19 | Add prep method management UI | Implementation | ~2 hours | Settings screen | not started |
 | 20 | 🧪 CREATE Playwright E2E test for prep management | Testing | ~1 hour | Test add/delete custom prep methods | not started |
 | 21 | 🧪 CREATE Maestro test for prep management | Testing | ~1 hour | Mirror Playwright test for mobile | not started |
