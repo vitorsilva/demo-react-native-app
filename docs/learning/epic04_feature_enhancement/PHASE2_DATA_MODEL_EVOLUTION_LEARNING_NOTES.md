@@ -277,3 +277,29 @@ expect(state.error).toBeDefined();
 - ESLint shows only pre-existing warnings (unrelated to this change)
 
 ---
+
+## Task 10: Migrate existing data
+
+**Date:** 2026-01-25
+
+### Implementation Summary
+- Added migration version 8 to `lib/database/migrations.ts`
+- Added import for `expo-crypto` to generate UUIDs
+- Migration converts legacy `meal_logs.ingredients` JSON array to `meal_components` entries
+- Uses LEFT JOIN to find meal logs without existing components (idempotent)
+- Checks if ingredient exists before creating component (handles deleted ingredients gracefully)
+- Logs warnings for malformed JSON or missing ingredients without failing migration
+
+### Design Decisions
+- **Idempotent migration**: Uses LEFT JOIN with WHERE `mc.id IS NULL` to only process meals without components
+- **Graceful error handling**: Invalid JSON or missing ingredients log warnings but don't fail migration
+- **Ingredient validation**: Checks `recordExists` for each ingredient before creating component
+- **Uses existing `created_at`**: Components inherit the meal log's `created_at` timestamp for data consistency
+
+### No Issues Encountered
+- Implementation was straightforward following the established migration pattern
+- All 355 unit tests pass
+- TypeScript check passes with no errors
+- ESLint shows only pre-existing warnings (unrelated to this change)
+
+---

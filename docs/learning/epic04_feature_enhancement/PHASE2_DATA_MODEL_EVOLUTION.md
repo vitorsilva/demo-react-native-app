@@ -667,7 +667,7 @@ function formatMealDisplay(meal: MealLog, components: MealComponent[], ingredien
 | 7 | Update TypeScript types | Implementation | ~1 hour | Types file | done |
 | 8 | Update store with new actions | Implementation | ~2 hours | Store | done |
 | 9 | 🧪 CREATE unit tests for store actions | Testing | ~1.5 hours | Test CRUD for prep methods, components | done |
-| 10 | Migrate existing data | Implementation | ~2 hours | Migration script | not started |
+| 10 | Migrate existing data | Implementation | ~2 hours | Migration script | done |
 | 11 | 🧪 CREATE unit tests for data migration | Testing | ~1 hour | Test legacy data converts correctly | not started |
 | 12 | Update meal logging flow UI | Implementation | ~4 hours | New components | not started |
 | 13 | 🧪 CREATE unit tests for `formatMealDisplay()` | Testing | ~30 min | Test named/unnamed meal display | not started |

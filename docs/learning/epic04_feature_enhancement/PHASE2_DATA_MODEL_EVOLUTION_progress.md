@@ -226,3 +226,35 @@ This document tracks progress for Phase 2 implementation tasks.
 - Unit tests: ✅ 355/355 passed (24 new tests added)
 
 ---
+
+### Task 10: Migrate existing data ✅
+
+**Status:** COMPLETE
+
+**What was done:**
+- Added migration version 8 to `lib/database/migrations.ts`
+- Added import for `expo-crypto` module to generate UUIDs
+- Migration converts legacy `meal_logs.ingredients` JSON array to `meal_components` entries
+- Key features of the migration:
+  - Uses LEFT JOIN to find meal logs that don't have components yet (idempotent)
+  - Parses JSON ingredients array and creates `meal_components` for each ingredient
+  - Sets `preparation_method_id` to NULL for migrated components
+  - Validates ingredient existence before creating component
+  - Logs warnings for malformed JSON or missing ingredients without failing
+  - Inherits `created_at` timestamp from parent meal log
+
+**Implementation Details:**
+- Query finds meal logs without components: `LEFT JOIN meal_components mc ON mc.meal_log_id = ml.id WHERE mc.id IS NULL`
+- Uses `recordExists` helper to verify each ingredient before creating component
+- Uses `Crypto.randomUUID()` for generating component IDs
+- Graceful error handling preserves migration integrity
+
+**Files Modified:**
+- `lib/database/migrations.ts` - Added import for expo-crypto and migration version 8
+
+**Verification:**
+- TypeScript check: ✅ Passed
+- ESLint: ✅ Passed (only pre-existing warnings)
+- Unit tests: ✅ 355/355 passed (no new tests in this task, tests come in task 11)
+
+---
