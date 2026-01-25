@@ -504,3 +504,34 @@ This document tracks progress for Phase 2 implementation tasks.
 - Unit tests: ✅ 389/389 passed (no new tests in this task)
 
 ---
+
+### Task 17: Create Playwright E2E test for history ✅
+
+**Status:** COMPLETE
+
+**What was done:**
+- Created new E2E test file: `e2e/history-phase2.spec.ts`
+- Added 6 Playwright tests covering Phase 2 history screen features:
+  1. Named meal displays with name prominently shown
+  2. Meal with preparation method displays prep inline
+  3. Combined flow: named meal + prep method display together
+  4. Multiple meals in history (both named and unnamed)
+  5. Unicode character support in meal names
+  6. Favorites functionality works with named meals
+
+**Test Coverage:**
+- Named meals show name prominently (via `meal-name-{id}` testID)
+- Unnamed meals show ingredients with prep methods inline
+- Full Phase 2 flow: log meal with name and prep → verify in history
+- Unicode character support (Japanese, emoji, special characters)
+- Integration with favorites functionality
+
+**New Files Created:**
+- `e2e/history-phase2.spec.ts` (296 lines)
+
+**Verification:**
+- TypeScript check: ✅ Passed
+- ESLint: ✅ Passed (only pre-existing warnings: 5 warnings)
+- Playwright test list: ✅ 6 tests recognized
+
+---

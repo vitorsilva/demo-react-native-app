@@ -596,3 +596,45 @@ import { haptics } from '@/lib/utils/haptics';
   - Fallback to legacy display for old meals
 
 ---
+
+## Task 17: Create Playwright E2E test for history
+
+**Date:** 2026-01-25
+
+### Implementation Summary
+- Created new E2E test file: `e2e/history-phase2.spec.ts`
+- Added 6 Playwright tests covering Phase 2 history screen features:
+  1. `should display named meal in history with name prominently shown`
+  2. `should display meal with preparation method in history`
+  3. `should display both named meal and ingredients in history`
+  4. `should display multiple meals correctly in history`
+  5. `should display meal with unicode characters in name`
+  6. `should toggle favorite on named meal in history`
+
+### Test Coverage
+- Named meals show name prominently (via `meal-name-{id}` testID)
+- Unnamed meals with prep methods show ingredients inline with prep (e.g., "grilled")
+- Combined flow: named meal + prep method display
+- Multiple meals in history (named and unnamed)
+- Unicode character support in meal names (e.g., "朝食の特別 🍳 Café")
+- Favorites functionality works correctly with named meals
+
+### Design Decisions
+- Used testIDs added in Task 16: `meal-item-{id}`, `meal-name-{id}`
+- Tests log meals via the Phase 2 flow then verify history display
+- Screenshots captured at key verification points
+- Follows existing favorites.spec.ts patterns for history navigation
+
+### No Issues Encountered
+- Implementation was straightforward following existing Playwright patterns
+- All testIDs from Task 16 worked correctly
+- TypeScript check passes with no errors
+- ESLint shows only pre-existing warnings (5 warnings, none from new code)
+
+### Final Results
+- 6 new Playwright E2E tests created
+- TypeScript check passes with no errors
+- ESLint shows only pre-existing warnings
+- Playwright recognizes all 6 tests in the new spec file
+
+---
