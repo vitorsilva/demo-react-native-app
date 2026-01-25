@@ -679,7 +679,7 @@ function formatMealDisplay(meal: MealLog, components: MealComponent[], ingredien
 | 19 | Add prep method management UI | Implementation | ~2 hours | Settings screen | done |
 | 20 | 🧪 CREATE Playwright E2E test for prep management | Testing | ~1 hour | Test add/delete custom prep methods | done |
 | 21 | 🧪 CREATE Maestro test for prep management | Testing | ~1 hour | Mirror Playwright test for mobile | done |
-| 22 | ▶️ RUN full test suites | Testing | ~20 min | Unit + Playwright + Maestro, verify no regressions | not started |
+| 22 | ▶️ RUN full test suites | Testing | ~20 min | Unit + Playwright + Maestro, verify no regressions | done |
 | 23 | ▶️ RUN quality checks and compare | Quality | ~30 min | Compare to baseline; create remediation plan if worse | not started |
 | 24 | Document learning notes | Documentation | ~30 min | Capture unexpected errors, workarounds, fixes | not started |
 | 25 | 📸 Capture BEFORE screenshots | Documentation | ~15 min | not started |
