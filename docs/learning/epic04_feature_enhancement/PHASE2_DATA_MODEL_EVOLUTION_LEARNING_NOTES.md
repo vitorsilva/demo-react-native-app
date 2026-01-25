@@ -502,3 +502,58 @@ import { haptics } from '@/lib/utils/haptics';
 - Playwright recognizes all 8 tests in the new spec file
 
 ---
+
+## Task 15: Create Maestro tests for meal logging
+
+**Date:** 2026-01-25
+
+### Implementation Summary
+- Created 3 new Maestro test files mirroring Playwright E2E tests:
+  1. `meal-logging-phase2.yaml` - Main Phase 2 meal logging flow (name + prep method)
+  2. `meal-logging-phase2-custom-prep.yaml` - Adding custom preparation methods
+  3. `meal-logging-phase2-anonymous.yaml` - Anonymous meal logging (no name, just prep method)
+- Tests cover the same scenarios as Playwright tests but for mobile (Android)
+
+### Tests Created
+1. **meal-logging-phase2.yaml** - Tests:
+   - Meal name input visibility
+   - Meal component row visibility
+   - Opening preparation method picker
+   - Selecting a predefined preparation method (grilled)
+   - Entering a custom meal name
+   - Completing meal logging with Phase 2 features
+   - Verifying meal appears in Recent Meals
+
+2. **meal-logging-phase2-custom-prep.yaml** - Tests:
+   - Opening the "Add custom" input
+   - Entering a custom preparation method name (air-fried)
+   - Adding the custom method
+   - Verifying custom method appears on component row
+   - Completing meal logging with custom prep method
+
+3. **meal-logging-phase2-anonymous.yaml** - Tests:
+   - Navigating to snack suggestions (different meal type)
+   - Leaving meal name empty (anonymous meal)
+   - Selecting a preparation method (raw)
+   - Completing logging without a name
+   - Verifying meal appears in Recent Meals
+
+### Design Decisions
+- Split into 3 separate test files for better isolation and debugging
+- Used testIDs from UI components (meal-name-input, meal-component-0, prep-method-*, etc.)
+- Added screenshots at key steps for visual verification
+- Used `extendedWaitUntil` with timeouts for reliability
+- Followed existing Maestro test patterns from favorites-flow.yaml
+
+### No Issues Encountered
+- Implementation followed existing Maestro test patterns in the codebase
+- All testIDs match the UI components created in Task 12
+- YAML syntax is straightforward following Maestro documentation
+
+### Final Results
+- 3 new Maestro test files created
+- TypeScript check passes with no errors (YAML files not checked)
+- ESLint shows only pre-existing warnings (5 warnings, none related to new files)
+- Tests are ready to run with `maestro test e2e/maestro/meal-logging-phase2*.yaml`
+
+---

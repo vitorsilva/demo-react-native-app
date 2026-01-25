@@ -672,7 +672,7 @@ function formatMealDisplay(meal: MealLog, components: MealComponent[], ingredien
 | 12 | Update meal logging flow UI | Implementation | ~4 hours | New components | done |
 | 13 | 🧪 CREATE unit tests for `formatMealDisplay()` | Testing | ~30 min | Test named/unnamed meal display | done |
 | 14 | 🧪 CREATE Playwright E2E tests for meal logging | Testing | ~2 hours | Test logging flow with prep selection | done |
-| 15 | 🧪 CREATE Maestro tests for meal logging | Testing | ~2 hours | Mirror Playwright tests for mobile | not started |
+| 15 | 🧪 CREATE Maestro tests for meal logging | Testing | ~2 hours | Mirror Playwright tests for mobile | done |
 | 16 | Update history/display to use components | Implementation | ~2 hours | UI updates | not started |
 | 17 | 🧪 CREATE Playwright E2E test for history | Testing | ~1 hour | Test named meals show correctly | not started |
 | 18 | 🧪 CREATE Maestro test for history | Testing | ~1 hour | Mirror Playwright test for mobile | not started |

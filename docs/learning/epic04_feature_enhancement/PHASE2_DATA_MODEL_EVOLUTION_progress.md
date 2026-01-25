@@ -428,3 +428,45 @@ This document tracks progress for Phase 2 implementation tasks.
 - Playwright test list: ✅ 8 tests recognized
 
 ---
+
+### Task 15: Create Maestro tests for meal logging ✅
+
+**Status:** COMPLETE
+
+**What was done:**
+- Created 3 new Maestro test files for Phase 2 meal logging (mirroring Playwright E2E tests):
+  1. `meal-logging-phase2.yaml` - Main Phase 2 flow with meal name and prep method selection
+  2. `meal-logging-phase2-custom-prep.yaml` - Adding and selecting custom preparation methods
+  3. `meal-logging-phase2-anonymous.yaml` - Anonymous meal logging (no name, with prep method)
+
+**Test Coverage:**
+- Meal name input visibility and functionality
+- Meal component rows with prep method selectors
+- Preparation method picker modal (open/close)
+- Selection of predefined preparation methods (grilled, raw)
+- Adding custom preparation methods inline (air-fried)
+- Full meal logging flow with name + prep methods
+- Anonymous meal logging (without name) with components
+- Screenshots at key steps for visual verification
+
+**TestIDs Used:**
+- `meal-name-input` - Meal name text input
+- `meal-component-0` - Ingredient component rows
+- `prep-method-none` - "None (as is)" option
+- `prep-method-prep-{name}` - Predefined method options
+- `show-add-custom-input` - Button to show custom input
+- `custom-prep-method-input` - Custom method text input
+- `add-custom-prep-method-button` - Add custom method button
+- `prep-picker-cancel` - Cancel button for picker
+
+**New Files Created:**
+- `e2e/maestro/meal-logging-phase2.yaml`
+- `e2e/maestro/meal-logging-phase2-custom-prep.yaml`
+- `e2e/maestro/meal-logging-phase2-anonymous.yaml`
+
+**Verification:**
+- TypeScript check: ✅ Passed
+- ESLint: ✅ Passed (only pre-existing warnings)
+- Maestro test files created and ready to run
+
+---

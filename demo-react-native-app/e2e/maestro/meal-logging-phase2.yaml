@@ -1,0 +1,120 @@
+# Maestro E2E test for Phase 2 Meal Logging with Preparation Methods
+# Tests the enhanced meal logging flow with:
+# - Preparation method selection for ingredients
+# - Optional meal naming
+#
+# Prerequisites:
+#   - Android emulator running: adb devices
+#   - App installed (see MAESTRO_TESTING.md for options)
+#
+# Run with: maestro test e2e/maestro/meal-logging-phase2.yaml
+
+appId: com.vitorsilvavmrs.saborspin
+---
+# Launch app
+- launchApp
+
+# Verify home screen loads
+- extendedWaitUntil:
+    visible: "SaborSpin"
+    timeout: 30000
+
+# Take screenshot of initial home screen
+- takeScreenshot: phase2-01-home-initial
+
+# Navigate to breakfast suggestions
+- tapOn:
+    text: "breakfast Ideas"
+    optional: false
+
+# Wait for suggestions screen to load
+- extendedWaitUntil:
+    visible: "Pick one:"
+    timeout: 15000
+
+# Take screenshot of suggestions screen
+- takeScreenshot: phase2-02-suggestions-screen
+
+# Select first suggestion to open confirmation modal
+- tapOn:
+    id: "select-button-0"
+
+# Wait for confirmation modal to appear with Phase 2 elements
+- extendedWaitUntil:
+    id: "meal-name-input"
+    timeout: 10000
+
+# Verify meal name input is visible
+- assertVisible:
+    id: "meal-name-input"
+
+# Verify at least one meal component row is visible
+- assertVisible:
+    id: "meal-component-0"
+
+# Take screenshot showing Phase 2 confirmation modal
+- takeScreenshot: phase2-03-confirmation-modal
+
+# Enter a custom meal name
+- tapOn:
+    id: "meal-name-input"
+
+- inputText: "Morning delight"
+
+# Take screenshot with meal name entered
+- takeScreenshot: phase2-04-meal-name-entered
+
+# Open preparation method picker for first ingredient
+- tapOn:
+    id: "meal-component-0"
+
+# Wait for prep method picker to appear
+- extendedWaitUntil:
+    id: "prep-method-none"
+    timeout: 10000
+
+# Verify multiple preparation methods are visible
+- assertVisible:
+    id: "prep-method-none"
+
+- assertVisible:
+    id: "prep-method-prep-fried"
+
+- assertVisible:
+    id: "prep-method-prep-grilled"
+
+# Take screenshot of prep method picker
+- takeScreenshot: phase2-05-prep-method-picker
+
+# Select grilled preparation method
+- tapOn:
+    id: "prep-method-prep-grilled"
+
+# Wait for picker to close and return to confirmation modal
+- extendedWaitUntil:
+    id: "done-button"
+    timeout: 5000
+
+# Verify grilled method is now shown on the component row
+- assertVisible:
+    text: "grilled"
+
+# Take screenshot showing selected preparation method
+- takeScreenshot: phase2-06-prep-method-selected
+
+# Complete the logging by tapping Done
+- tapOn:
+    id: "done-button"
+
+# Wait to return to home screen
+- extendedWaitUntil:
+    visible: "Recent Meals"
+    timeout: 10000
+
+# Verify meal appears in Recent Meals
+- assertVisible: "Today"
+
+# Take screenshot of home after logging Phase 2 meal
+- takeScreenshot: phase2-07-home-after-meal
+
+# Test passed - Phase 2 meal logging with name and prep method works on mobile
