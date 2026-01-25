@@ -258,3 +258,43 @@ This document tracks progress for Phase 2 implementation tasks.
 - Unit tests: ✅ 355/355 passed (no new tests in this task, tests come in task 11)
 
 ---
+
+### Task 11: Create unit tests for data migration ✅
+
+**Status:** COMPLETE
+
+**What was done:**
+- Created new test file: `lib/database/__tests__/migrations.phase2.datamigration.test.ts`
+- Added 15 unit tests covering migration version 8 (data migration from meal_logs to meal_components)
+- Tests organized into three describe blocks:
+  - Basic migration functionality (2 tests)
+  - Migration of legacy meal_logs (10 tests)
+  - Migration edge cases (3 tests)
+
+**Test Coverage:**
+- Migration version 8 is recorded in migrations table
+- Single and multiple ingredient migration scenarios
+- Migrated components have null preparation_method_id (no prep method for legacy data)
+- Idempotency - meal logs with existing components are not re-migrated
+- Missing ingredients are skipped gracefully
+- Malformed JSON in ingredients array doesn't cause migration failure
+- Empty ingredients array results in no components
+- Migration query filters correctly with IS NOT NULL clause
+- Components inherit created_at timestamp from parent meal log
+- Handles duplicate ingredient IDs in array
+- Handles mixed valid/invalid ingredients gracefully
+- Correctly identifies unmigrated vs migrated meal logs
+
+**Issues Encountered:**
+- Initial test tried to insert NULL into `meal_logs.ingredients`, but schema has NOT NULL constraint
+- Fixed by verifying the migration query logic instead of inserting NULL data
+
+**New Files Created:**
+- `lib/database/__tests__/migrations.phase2.datamigration.test.ts` (437 lines)
+
+**Verification:**
+- TypeScript check: ✅ Passed
+- ESLint: ✅ Passed (only pre-existing warnings)
+- Unit tests: ✅ 370/370 passed (15 new tests added)
+
+---
