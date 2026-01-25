@@ -22,6 +22,25 @@
       "description": "How many meal combinations to show at once"
     }
   },
+  "preparationMethods": {
+    "title": "Preparation Methods",
+    "description": "Manage how ingredients can be prepared",
+    "system": "System Methods",
+    "systemDescription": "Built-in preparation methods (cannot be deleted)",
+    "custom": "Custom Methods",
+    "customDescription": "Your custom preparation methods",
+    "noCustom": "No custom methods yet",
+    "add": "Add Method",
+    "addNew": "Add New Preparation Method",
+    "name": "Name",
+    "namePlaceholder": "e.g., air-fried, smoked",
+    "delete": "Delete",
+    "deleteConfirm": "Are you sure you want to delete \"{{name}}\"?",
+    "validation": {
+      "nameRequired": "Preparation method name is required",
+      "nameTaken": "A preparation method with this name already exists"
+    }
+  },
   "mealTypes": {
     "title": "Meal Types",
     "description": "Configure meal types and their settings",

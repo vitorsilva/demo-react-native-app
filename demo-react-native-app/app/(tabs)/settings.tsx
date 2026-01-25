@@ -22,7 +22,7 @@ import {
 } from '../../lib/i18n';
 import { useStore } from '../../lib/store';
 import { trackScreenView } from '../../lib/telemetry/screenTracking';
-import type { MealType } from '../../types/database';
+import type { MealType, PreparationMethod } from '../../types/database';
 
 export default function SettingsScreen() {
   const { t } = useTranslation('settings');
@@ -31,6 +31,7 @@ export default function SettingsScreen() {
   const isDatabaseReady = useStore((state) => state.isDatabaseReady);
   const preferences = useStore((state) => state.preferences);
   const mealTypes = useStore((state) => state.mealTypes);
+  const preparationMethods = useStore((state) => state.preparationMethods);
   const isLoading = useStore((state) => state.isLoading);
   const error = useStore((state) => state.error);
 
@@ -41,20 +42,26 @@ export default function SettingsScreen() {
   const addMealType = useStore((state) => state.addMealType);
   const updateMealType = useStore((state) => state.updateMealType);
   const deleteMealType = useStore((state) => state.deleteMealType);
+  const loadPreparationMethods = useStore((state) => state.loadPreparationMethods);
+  const addPreparationMethod = useStore((state) => state.addPreparationMethod);
+  const deletePreparationMethod = useStore((state) => state.deletePreparationMethod);
 
   // Local state
   const [expandedMealType, setExpandedMealType] = useState<string | null>(null);
   const [isAddModalVisible, setIsAddModalVisible] = useState(false);
   const [newMealTypeName, setNewMealTypeName] = useState('');
   const [currentLanguage, setCurrentLanguage] = useState(getCurrentLanguage());
+  const [isAddPrepMethodModalVisible, setIsAddPrepMethodModalVisible] = useState(false);
+  const [newPrepMethodName, setNewPrepMethodName] = useState('');
 
   // Load data when database is ready
   useEffect(() => {
     if (isDatabaseReady) {
       loadPreferences();
       loadMealTypes();
+      loadPreparationMethods();
     }
-  }, [isDatabaseReady, loadPreferences, loadMealTypes]);
+  }, [isDatabaseReady, loadPreferences, loadMealTypes, loadPreparationMethods]);
 
   // Reload when screen comes into focus
   useFocusEffect(
@@ -62,8 +69,9 @@ export default function SettingsScreen() {
       trackScreenView('settings');
       if (isDatabaseReady) {
         loadMealTypes();
+        loadPreparationMethods();
       }
-    }, [isDatabaseReady, loadMealTypes])
+    }, [isDatabaseReady, loadMealTypes, loadPreparationMethods])
   );
 
   // Handle cooldown days change
@@ -147,6 +155,53 @@ export default function SettingsScreen() {
           style: 'destructive',
           onPress: async () => {
             const result = await deleteMealType(mealType.id);
+            if (!result.success && result.error) {
+              Alert.alert(t('errors:generic.error'), result.error);
+            }
+          },
+        },
+      ]
+    );
+  };
+
+  // Handle add preparation method
+  const handleAddPrepMethod = async () => {
+    const trimmedName = newPrepMethodName.trim();
+    if (!trimmedName) {
+      Alert.alert(t('errors:generic.error'), t('preparationMethods.validation.nameRequired'));
+      return;
+    }
+
+    // Check for duplicate name
+    const exists = preparationMethods.some(
+      (pm) => pm.name.toLowerCase() === trimmedName.toLowerCase()
+    );
+    if (exists) {
+      Alert.alert(t('errors:generic.error'), t('preparationMethods.validation.nameTaken'));
+      return;
+    }
+
+    try {
+      await addPreparationMethod(trimmedName);
+      setIsAddPrepMethodModalVisible(false);
+      setNewPrepMethodName('');
+    } catch {
+      Alert.alert(t('errors:generic.error'), t('preparationMethods.validation.nameTaken'));
+    }
+  };
+
+  // Handle delete preparation method
+  const handleDeletePrepMethod = async (method: PreparationMethod) => {
+    Alert.alert(
+      t('preparationMethods.delete'),
+      t('preparationMethods.deleteConfirm', { name: method.name }),
+      [
+        { text: t('common:buttons.cancel'), style: 'cancel' },
+        {
+          text: t('preparationMethods.delete'),
+          style: 'destructive',
+          onPress: async () => {
+            const result = await deletePreparationMethod(method.id);
             if (!result.success && result.error) {
               Alert.alert(t('errors:generic.error'), result.error);
             }
@@ -415,6 +470,66 @@ export default function SettingsScreen() {
           </View>
         </View>
 
+        {/* === PREPARATION METHODS SECTION === */}
+        <View style={styles.sectionHeaderRow}>
+          <Text style={styles.sectionTitle}>{t('preparationMethods.title')}</Text>
+          <TouchableOpacity
+            style={styles.addButton}
+            onPress={() => {
+              setNewPrepMethodName('');
+              setIsAddPrepMethodModalVisible(true);
+            }}
+            testID="add-prep-method-button"
+          >
+            <Text style={styles.addButtonText}>+ {t('preparationMethods.add')}</Text>
+          </TouchableOpacity>
+        </View>
+
+        <Text style={styles.sectionDescription}>
+          {t('preparationMethods.description')}
+        </Text>
+
+        {/* System methods */}
+        <View style={styles.prepMethodSection} testID="system-prep-methods">
+          <Text style={styles.prepMethodSectionTitle}>{t('preparationMethods.system')}</Text>
+          <Text style={styles.prepMethodSectionDescription}>{t('preparationMethods.systemDescription')}</Text>
+          <View style={styles.prepMethodChips}>
+            {preparationMethods
+              .filter((pm) => pm.isPredefined)
+              .map((method) => (
+                <View key={method.id} style={styles.prepMethodChip} testID={`system-method-${method.id}`}>
+                  <Text style={styles.prepMethodChipText}>{method.name}</Text>
+                </View>
+              ))}
+          </View>
+        </View>
+
+        {/* Custom methods */}
+        <View style={styles.prepMethodSection} testID="custom-prep-methods">
+          <Text style={styles.prepMethodSectionTitle}>{t('preparationMethods.custom')}</Text>
+          <Text style={styles.prepMethodSectionDescription}>{t('preparationMethods.customDescription')}</Text>
+          {preparationMethods.filter((pm) => !pm.isPredefined).length === 0 ? (
+            <Text style={styles.prepMethodEmptyText}>{t('preparationMethods.noCustom')}</Text>
+          ) : (
+            <View style={styles.customMethodsList}>
+              {preparationMethods
+                .filter((pm) => !pm.isPredefined)
+                .map((method) => (
+                  <View key={method.id} style={styles.customMethodItem} testID={`custom-method-${method.id}`}>
+                    <Text style={styles.customMethodName}>{method.name}</Text>
+                    <TouchableOpacity
+                      style={styles.deleteMethodButton}
+                      onPress={() => handleDeletePrepMethod(method)}
+                      testID={`delete-method-${method.id}`}
+                    >
+                      <Text style={styles.deleteMethodButtonText}>{t('preparationMethods.delete')}</Text>
+                    </TouchableOpacity>
+                  </View>
+                ))}
+            </View>
+          )}
+        </View>
+
         {/* === MEAL TYPES SECTION === */}
         <View style={styles.sectionHeaderRow}>
           <Text style={styles.sectionTitle}>{t('mealTypes.title')}</Text>
@@ -505,6 +620,51 @@ export default function SettingsScreen() {
                 style={modalStyles.saveButton}
                 onPress={handleAddMealType}
                 testID="save-button"
+              >
+                <Text style={modalStyles.saveButtonText}>{t('common:buttons.add')}</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
+
+      {/* Add Preparation Method Modal */}
+      <Modal
+        visible={isAddPrepMethodModalVisible}
+        animationType="slide"
+        transparent={true}
+        onRequestClose={() => setIsAddPrepMethodModalVisible(false)}
+      >
+        <View style={modalStyles.modalOverlay}>
+          <View style={modalStyles.modalContent}>
+            <Text style={modalStyles.modalTitle}>{t('preparationMethods.addNew')}</Text>
+
+            <Text style={modalStyles.inputLabel}>{t('preparationMethods.name')}</Text>
+            <TextInput
+              style={modalStyles.textInput}
+              value={newPrepMethodName}
+              onChangeText={setNewPrepMethodName}
+              placeholder={t('preparationMethods.namePlaceholder')}
+              placeholderTextColor="#9dabb9"
+              autoFocus
+              testID="prep-method-name-input"
+            />
+
+            <View style={modalStyles.modalButtons}>
+              <TouchableOpacity
+                style={modalStyles.cancelButton}
+                onPress={() => {
+                  setIsAddPrepMethodModalVisible(false);
+                  setNewPrepMethodName('');
+                }}
+                testID="cancel-prep-method-button"
+              >
+                <Text style={modalStyles.cancelButtonText}>{t('common:buttons.cancel')}</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={modalStyles.saveButton}
+                onPress={handleAddPrepMethod}
+                testID="save-prep-method-button"
               >
                 <Text style={modalStyles.saveButtonText}>{t('common:buttons.add')}</Text>
               </TouchableOpacity>
@@ -787,5 +947,71 @@ const styles = StyleSheet.create({
     fontSize: 13,
     color: '#9BA1A6',
     marginTop: 4,
+  },
+  // Preparation methods
+  prepMethodSection: {
+    backgroundColor: '#1f2329',
+    borderRadius: 12,
+    padding: 16,
+    marginBottom: 16,
+  },
+  prepMethodSectionTitle: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#FFFFFF',
+    marginBottom: 4,
+  },
+  prepMethodSectionDescription: {
+    fontSize: 13,
+    color: '#9BA1A6',
+    marginBottom: 12,
+  },
+  prepMethodChips: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 8,
+  },
+  prepMethodChip: {
+    backgroundColor: '#283039',
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 16,
+  },
+  prepMethodChipText: {
+    fontSize: 14,
+    color: '#FFFFFF',
+  },
+  prepMethodEmptyText: {
+    fontSize: 14,
+    color: '#9BA1A6',
+    fontStyle: 'italic',
+  },
+  customMethodsList: {
+    gap: 8,
+  },
+  customMethodItem: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    backgroundColor: '#283039',
+    paddingHorizontal: 12,
+    paddingVertical: 10,
+    borderRadius: 8,
+  },
+  customMethodName: {
+    fontSize: 15,
+    color: '#FFFFFF',
+    flex: 1,
+  },
+  deleteMethodButton: {
+    backgroundColor: '#ff4444',
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 6,
+  },
+  deleteMethodButtonText: {
+    fontSize: 12,
+    color: '#FFFFFF',
+    fontWeight: '600',
   },
 });

@@ -563,3 +563,45 @@ This document tracks progress for Phase 2 implementation tasks.
 - Maestro test files created and ready to run
 
 ---
+
+### Task 19: Add prep method management UI ✅
+
+**Status:** COMPLETE
+
+**What was done:**
+- Added Preparation Methods management section to Settings screen
+- Implemented full CRUD UI for custom preparation methods
+- Added i18n translations for both English and Portuguese
+- UI shows:
+  - System methods (12 predefined) as read-only chips
+  - Custom methods list with delete buttons
+  - Modal for adding new custom methods with validation
+
+**Files Modified:**
+- `lib/i18n/locales/en/settings.json` - Added 14 new i18n keys
+- `lib/i18n/locales/pt-PT/settings.json` - Added Portuguese translations
+- `app/(tabs)/settings.tsx` - Added:
+  - 7 new store selectors/actions
+  - 2 new local state variables
+  - 2 new handler functions
+  - 1 new UI section (~60 lines of JSX)
+  - 1 new modal (~45 lines of JSX)
+  - 12 new style definitions
+
+**Test IDs Added:**
+- `add-prep-method-button`
+- `system-prep-methods`
+- `custom-prep-methods`
+- `system-method-{id}`
+- `custom-method-{id}`
+- `delete-method-{id}`
+- `prep-method-name-input`
+- `cancel-prep-method-button`
+- `save-prep-method-button`
+
+**Verification:**
+- TypeScript check: ✅ Passed
+- ESLint: ✅ Passed (only pre-existing warnings: 7 warnings)
+- Ready for E2E testing in Tasks 20 and 21
+
+---

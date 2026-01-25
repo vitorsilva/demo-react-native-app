@@ -672,3 +672,80 @@ import { haptics } from '@/lib/utils/haptics';
 - Tests are ready to run with `maestro test e2e/maestro/history-phase2*.yaml`
 
 ---
+
+## Task 19: Add prep method management UI
+
+**Date:** 2026-01-25
+
+### Implementation Summary
+- Added preparation methods management section to Settings screen (`app/(tabs)/settings.tsx`)
+- UI follows the wireframe specification from PHASE2_DATA_MODEL_EVOLUTION.md
+- Added i18n translations for both English (`lib/i18n/locales/en/settings.json`) and Portuguese (`lib/i18n/locales/pt-PT/settings.json`)
+
+### Files Modified
+1. **`lib/i18n/locales/en/settings.json`** - Added `preparationMethods` translation keys
+2. **`lib/i18n/locales/pt-PT/settings.json`** - Added Portuguese translations
+3. **`app/(tabs)/settings.tsx`** - Added:
+   - Store selectors: `preparationMethods`, `loadPreparationMethods`, `addPreparationMethod`, `deletePreparationMethod`
+   - Local state for add modal: `isAddPrepMethodModalVisible`, `newPrepMethodName`
+   - Handler functions: `handleAddPrepMethod()`, `handleDeletePrepMethod()`
+   - New UI section between Global Preferences and Meal Types
+   - Modal for adding custom preparation methods
+   - New styles for prep method UI components
+
+### UI Components Added
+1. **Preparation Methods Section Header** - Title with "Add Method" button
+2. **System Methods Card** - Read-only chips showing 12 predefined methods (fried, grilled, etc.)
+3. **Custom Methods Card** - List of user-added methods with delete buttons
+4. **Add Preparation Method Modal** - Text input for new method name with validation
+
+### Test IDs Added (for E2E testing)
+- `add-prep-method-button` - Button to open add modal
+- `system-prep-methods` - Container for system methods
+- `custom-prep-methods` - Container for custom methods
+- `system-method-{id}` - Individual system method chips
+- `custom-method-{id}` - Individual custom method items
+- `delete-method-{id}` - Delete buttons for custom methods
+- `prep-method-name-input` - Text input in add modal
+- `cancel-prep-method-button` - Cancel button in modal
+- `save-prep-method-button` - Save button in modal
+
+### i18n Keys Added
+```json
+{
+  "preparationMethods": {
+    "title": "Preparation Methods",
+    "description": "Manage how ingredients can be prepared",
+    "system": "System Methods",
+    "systemDescription": "Built-in preparation methods (cannot be deleted)",
+    "custom": "Custom Methods",
+    "customDescription": "Your custom preparation methods",
+    "noCustom": "No custom methods yet",
+    "add": "Add Method",
+    "addNew": "Add New Preparation Method",
+    "name": "Name",
+    "namePlaceholder": "e.g., air-fried, smoked",
+    "delete": "Delete",
+    "deleteConfirm": "Are you sure you want to delete \"{{name}}\"?",
+    "validation": {
+      "nameRequired": "Preparation method name is required",
+      "nameTaken": "A preparation method with this name already exists"
+    }
+  }
+}
+```
+
+### No Issues Encountered
+- Implementation was straightforward following existing settings screen patterns
+- Store actions already existed from Task 8
+- TypeScript check passes with no errors
+- ESLint shows only pre-existing warnings (7 warnings, none new from this task)
+
+### Final Results
+- Preparation methods management UI complete in Settings screen
+- System methods displayed as read-only chips
+- Custom methods can be added via modal and deleted with confirmation
+- Consistent with existing UI patterns and styling
+- Ready for E2E testing in Tasks 20 and 21
+
+---
