@@ -245,6 +245,16 @@
       `);
     },
   },
+  {
+    version: 7,
+    up: async (db: DatabaseAdapter) => {
+      // Phase 2: Data Model Evolution - Add optional name column to meal_logs
+      // This allows users to give meals a name like "Mom's special"
+      if (!(await columnExists(db, 'meal_logs', 'name'))) {
+        await db.runAsync(`ALTER TABLE meal_logs ADD COLUMN name TEXT`);
+      }
+    },
+  },
   ];
 
   // Main function to run pending migrations

@@ -52,3 +52,24 @@ This document captures errors, problems, fixes, and workarounds encountered duri
 - No special handling required
 
 ---
+
+## Task 5: Add name column to meal_logs
+
+**Date:** 2026-01-25
+
+### Implementation Summary
+- Added migration version 7 to `lib/database/migrations.ts`
+- Added `name TEXT` column to `meal_logs` table
+- Column is nullable to allow optional meal naming (e.g., "Mom's special")
+
+### Notes
+- Migration uses `columnExists` helper to ensure idempotency
+- All 309 unit tests pass after implementation
+- TypeScript check passes with no errors
+- ESLint shows only pre-existing warnings (unrelated to this change)
+
+### No Issues Encountered
+- Implementation was straightforward following the established migration pattern
+- No special handling required
+
+---

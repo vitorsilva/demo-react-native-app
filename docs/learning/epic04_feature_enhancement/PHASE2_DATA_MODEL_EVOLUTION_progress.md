@@ -61,3 +61,20 @@ This document tracks progress for Phase 2 implementation tasks.
 - Unit tests: ✅ 309/309 passed
 
 ---
+
+### Task 5: Add name column to meal_logs ✅
+
+**Status:** COMPLETE
+
+**What was done:**
+- Created migration version 7 in `lib/database/migrations.ts`
+- Added `name TEXT` column to `meal_logs` table (nullable)
+- Column allows optional meal naming like "Mom's special"
+- Used `columnExists` helper for idempotency
+
+**Verification:**
+- TypeScript check: ✅ Passed
+- ESLint: ✅ Passed (only pre-existing warnings)
+- Unit tests: ✅ 309/309 passed
+
+---
