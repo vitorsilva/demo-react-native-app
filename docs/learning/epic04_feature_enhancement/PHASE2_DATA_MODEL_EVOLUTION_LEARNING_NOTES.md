@@ -121,3 +121,55 @@ INSERT INTO meal_logs (id, date, meal_type, ingredients, created_at) VALUES (...
 - ESLint shows only pre-existing warnings (unrelated to this change)
 
 ---
+
+## Task 7: Update TypeScript types
+
+**Date:** 2026-01-25
+
+### Implementation Summary
+- Updated `types/database.ts` to add Phase 2 types
+- Added new `PreparationMethod` interface with fields:
+  - `id: string`
+  - `name: string`
+  - `isPredefined: boolean` (maps from `is_predefined INTEGER` in SQLite)
+  - `createdAt: string`
+- Added new `MealComponent` interface with fields:
+  - `id: string`
+  - `mealLogId: string`
+  - `ingredientId: string`
+  - `preparationMethodId: string | null`
+  - `createdAt: string`
+- Updated `MealLog` interface:
+  - Added optional `name?: string | null` field for meal naming
+  - Added optional `components?: MealComponent[]` field for ingredient+preparation pairs
+
+### Issues Encountered
+
+#### Issue 1: Required vs optional `name` field
+**Problem:** Initial implementation used `name: string | null` (required field). This caused TypeScript errors throughout the codebase where `MealLog` objects were created without the `name` field.
+
+**Error:**
+```
+error TS2345: Argument of type '{ date: string; ingredients: string[]; mealType: string; }'
+is not assignable to parameter of type '...'.
+  Property 'name' is missing in type '...' but required in type 'Omit<MealLog, "id" | "createdAt" | "isFavorite">'.
+```
+
+**Fix:** Changed `name: string | null` to `name?: string | null` (optional field). This maintains backward compatibility with existing code while allowing new code to set meal names.
+
+```typescript
+// Before (incorrect - breaking change)
+name: string | null;
+
+// After (correct - backward compatible)
+name?: string | null;
+```
+
+**Lesson Learned:** When adding new fields to existing interfaces that are used throughout the codebase, always consider backward compatibility. New fields should be optional (`?`) to avoid breaking existing code. The spec mentioned "backward compatibility" which should have prompted using optional fields from the start.
+
+### Final Results
+- TypeScript check passes with no errors
+- ESLint shows only pre-existing warnings (unrelated to this change)
+- Existing tests continue to compile and work
+
+---

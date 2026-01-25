@@ -109,3 +109,35 @@ This document tracks progress for Phase 2 implementation tasks.
 - Unit tests: ✅ 331/331 passed (22 new tests added)
 
 ---
+
+### Task 7: Update TypeScript types ✅
+
+**Status:** COMPLETE
+
+**What was done:**
+- Updated `types/database.ts` with Phase 2 data model types
+- Added `PreparationMethod` interface:
+  - `id: string`
+  - `name: string`
+  - `isPredefined: boolean` (maps from INTEGER in SQLite)
+  - `createdAt: string`
+- Added `MealComponent` interface:
+  - `id: string`
+  - `mealLogId: string`
+  - `ingredientId: string`
+  - `preparationMethodId: string | null`
+  - `createdAt: string`
+- Updated `MealLog` interface:
+  - Added optional `name?: string | null` for meal naming
+  - Added optional `components?: MealComponent[]` for ingredient+preparation pairs
+
+**Issues Encountered:**
+- Initial implementation used required `name: string | null` which broke existing code
+- Fixed by making it optional: `name?: string | null` for backward compatibility
+
+**Verification:**
+- TypeScript check: ✅ Passed
+- ESLint: ✅ Passed (only pre-existing warnings)
+- All existing tests continue to compile and work
+
+---
