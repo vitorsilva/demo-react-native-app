@@ -646,3 +646,36 @@ This document tracks progress for Phase 2 implementation tasks.
 - Playwright test list: ✅ 12 tests recognized
 
 ---
+
+### Task 21: Create Maestro test for prep management ✅
+
+**Status:** COMPLETE
+
+**What was done:**
+- Created 4 new Maestro test files mirroring Playwright E2E tests (Task 20):
+  1. `prep-methods-settings.yaml` - Prep methods section visibility and system methods display
+  2. `prep-methods-add-custom.yaml` - Adding a custom preparation method
+  3. `prep-methods-delete-custom.yaml` - Deleting a custom preparation method
+  4. `prep-methods-full-workflow.yaml` - Complete CRUD workflow (add, verify, delete)
+
+**Test Coverage:**
+- Preparation Methods section visibility in Settings
+- System methods display (12 predefined methods)
+- Empty state for custom methods
+- Add modal functionality (open, input, save)
+- Adding custom preparation methods
+- Deleting custom preparation methods with confirmation
+- Full CRUD workflow with multiple methods
+
+**New Files Created:**
+- `e2e/maestro/prep-methods-settings.yaml`
+- `e2e/maestro/prep-methods-add-custom.yaml`
+- `e2e/maestro/prep-methods-delete-custom.yaml`
+- `e2e/maestro/prep-methods-full-workflow.yaml`
+
+**Verification:**
+- TypeScript check: ✅ Passed (YAML files not checked)
+- ESLint: ✅ Passed (only pre-existing warnings: 7 warnings)
+- Maestro test files created and ready to run
+
+---

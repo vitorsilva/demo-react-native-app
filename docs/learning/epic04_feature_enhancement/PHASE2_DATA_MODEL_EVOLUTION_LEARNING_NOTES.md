@@ -809,3 +809,50 @@ import { haptics } from '@/lib/utils/haptics';
 - Playwright recognizes all 12 tests in the new spec file
 
 ---
+
+## Task 21: Create Maestro test for prep management
+
+**Date:** 2026-01-25
+
+### Implementation Summary
+- Created 4 new Maestro test files mirroring Playwright E2E tests (Task 20):
+  1. `prep-methods-settings.yaml` - Prep methods section visibility and system methods display
+  2. `prep-methods-add-custom.yaml` - Adding a custom preparation method
+  3. `prep-methods-delete-custom.yaml` - Deleting a custom preparation method
+  4. `prep-methods-full-workflow.yaml` - Complete CRUD workflow (add, verify, delete)
+
+### Test Coverage
+- Preparation Methods section visibility in Settings
+- System methods display (12 predefined methods)
+- Empty state for custom methods
+- Add modal functionality (open, input, save)
+- Adding custom preparation methods
+- Deleting custom preparation methods with confirmation
+- Full CRUD workflow with multiple methods
+
+### TestIDs Used
+- `add-prep-method-button` - Button to open add modal
+- `system-prep-methods` - Container for system methods
+- `custom-prep-methods` - Container for custom methods
+- `prep-method-name-input` - Text input in add modal
+- `cancel-prep-method-button` - Cancel button in modal
+- `save-prep-method-button` - Save button in modal
+
+### Design Decisions
+- Split into 4 separate test files for better isolation and debugging
+- Follows existing Maestro patterns from favorites-flow.yaml and meal-logging-phase2.yaml
+- Uses `scrollUntilVisible` to handle Settings screen scrolling
+- Screenshots captured at key verification points
+- Uses `extendedWaitUntil` with timeouts for reliability
+
+### No Issues Encountered
+- Implementation was straightforward following existing Maestro patterns
+- YAML syntax matches existing test files
+- TypeScript check passes with no errors (YAML files not checked)
+- ESLint shows only pre-existing warnings (7 warnings, none related to new files)
+
+### Final Results
+- 4 new Maestro test files created
+- Tests are ready to run with `maestro test e2e/maestro/prep-methods*.yaml`
+
+---
