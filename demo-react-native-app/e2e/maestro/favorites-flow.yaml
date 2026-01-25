@@ -22,7 +22,7 @@ appId: com.vitorsilvavmrs.saborspin
 
 # Navigate to breakfast suggestions
 - tapOn:
-    text: "Breakfast"
+    text: "breakfast Ideas"
     optional: false
 
 # Wait for suggestions screen to load
@@ -53,7 +53,8 @@ appId: com.vitorsilvavmrs.saborspin
 
 # Wait for confirmation modal
 - extendedWaitUntil:
-    visible: "Logged"
+    visible:
+      text: ".*Logged.*"
     timeout: 10000
 
 # Take screenshot of confirmation

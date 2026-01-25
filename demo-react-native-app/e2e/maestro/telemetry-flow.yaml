@@ -9,16 +9,20 @@ appId: com.vitorsilvavmrs.saborspin
 - launchApp
 
 # Verify home screen loads (telemetry initializes on app start)
-- assertVisible: "What's for"
+- assertVisible: "SaborSpin"
 
 # Navigate to breakfast suggestions (triggers screen tracking)
-- tapOn: "Breakfast"
+- tapOn: "breakfast Ideas"
 
 # Wait for suggestions screen
-- assertVisible: "Breakfast Ideas"
+- assertVisible: "Breakfast Suggestions"
+
+# Scroll down to find the Generate button
+- scroll
 
 # Generate new suggestions (triggers perf logging)
-- tapOn: "Generate New Ideas"
+- tapOn:
+    id: "generate-new-ideas-button"
 
 # Wait for animation/loading
 - waitForAnimationToEnd
@@ -38,7 +42,10 @@ appId: com.vitorsilvavmrs.saborspin
     id: "select-button-0"
 
 # Verify confirmation modal (meal logging action tracked)
-- assertVisible: "Logged"
+- extendedWaitUntil:
+    visible:
+      text: ".*Logged.*"
+    timeout: 10000
 
 # Dismiss modal
 - tapOn:
@@ -53,10 +60,10 @@ appId: com.vitorsilvavmrs.saborspin
 
 # Navigate to Settings tab (triggers screen tracking)
 - tapOn: "Settings"
-- assertVisible: "Preferences"
+- assertVisible: "Global Preferences"
 
 # Navigate back to Home
 - tapOn: "Home"
-- assertVisible: "What's for"
+- assertVisible: "SaborSpin"
 
 # If we got here, telemetry didn't cause any crashes
