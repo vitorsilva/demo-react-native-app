@@ -347,3 +347,38 @@ This document tracks progress for Phase 2 implementation tasks.
 - Unit tests: ✅ 370/370 passed (no new tests in this task)
 
 ---
+
+### Task 13: Create unit tests for `formatMealDisplay()` ✅
+
+**Status:** COMPLETE
+
+**What was done:**
+- Created new utility file: `lib/utils/mealDisplay.ts`
+  - `formatMealDisplay(meal, components, ingredients, prepMethods)` - Formats a meal for display in the UI
+  - `formatMealComponent(component, ingredients, prepMethods)` - Formats a single meal component
+- Created new test file: `lib/utils/__tests__/mealDisplay.test.ts`
+- Added 19 unit tests organized into 5 describe blocks:
+  - Named meals (3 tests)
+  - Unnamed meals with components (4 tests)
+  - Legacy meals using ingredients array (2 tests)
+  - Edge cases (6 tests)
+  - formatMealComponent (4 tests)
+
+**Test Coverage:**
+- Named meals return the name directly (e.g., "Mom's special")
+- Unicode character support in meal names
+- Components formatted as "{prep} {ingredient}" or just "{ingredient}"
+- Multiple components joined by " + "
+- Fallback to legacy ingredients array when no components
+- Edge cases: missing ingredients, missing prep methods, empty names
+
+**New Files Created:**
+- `lib/utils/mealDisplay.ts` (92 lines)
+- `lib/utils/__tests__/mealDisplay.test.ts` (283 lines)
+
+**Verification:**
+- TypeScript check: ✅ Passed
+- ESLint: ✅ Passed (only pre-existing warnings)
+- Unit tests: ✅ 389/389 passed (19 new tests added)
+
+---

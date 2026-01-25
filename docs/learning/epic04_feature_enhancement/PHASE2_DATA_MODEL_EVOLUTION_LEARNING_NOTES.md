@@ -425,3 +425,42 @@ import { haptics } from '@/lib/utils/haptics';
 - ConfirmationModal updated to use Phase 2 data model
 
 ---
+
+## Task 13: Create unit tests for `formatMealDisplay()`
+
+**Date:** 2026-01-25
+
+### Implementation Summary
+- Created new utility file: `lib/utils/mealDisplay.ts`
+  - `formatMealDisplay(meal, components, ingredients, prepMethods)` - Formats a meal for display
+  - `formatMealComponent(component, ingredients, prepMethods)` - Formats a single component
+- Created new test file: `lib/utils/__tests__/mealDisplay.test.ts`
+- Added 19 unit tests covering the `formatMealDisplay` and `formatMealComponent` functions
+- Tests organized into four describe blocks:
+  1. Named meals (3 tests)
+  2. Unnamed meals with components (4 tests)
+  3. Legacy meals using ingredients array (2 tests)
+  4. Edge cases (6 tests)
+  5. formatMealComponent (4 tests)
+
+### Display Logic Implemented
+- If meal has a name: return the name (e.g., "Mom's special")
+- If meal has components: format as "{prep} {ingredient}" joined by " + "
+  - Components without prep method: just ingredient name (e.g., "milk")
+  - Components with prep method: "{prep} {ingredient}" (e.g., "fried chicken")
+- If no components: fall back to legacy ingredients array
+- Edge cases: handle missing ingredients, missing prep methods, empty names
+
+### No Issues Encountered
+- Implementation was straightforward following the spec in Phase 2 documentation section 2.8
+- All 19 new tests pass
+- TypeScript check passes with no errors
+- ESLint shows only pre-existing warnings (5 warnings, none from new code)
+
+### Final Results
+- All 389 unit tests pass (19 new tests added: 370 → 389)
+- TypeScript check passes with no errors
+- ESLint shows only pre-existing warnings
+- New files created: `lib/utils/mealDisplay.ts`, `lib/utils/__tests__/mealDisplay.test.ts`
+
+---
