@@ -71,7 +71,7 @@ appId: com.vitorsilvavmrs.saborspin
 
 # Now log a meal to verify stats update
 - tapOn:
-    text: "Breakfast"
+    text: "breakfast Ideas"
     optional: false
 
 # Wait for suggestions screen
@@ -88,7 +88,8 @@ appId: com.vitorsilvavmrs.saborspin
 
 # Wait for confirmation modal
 - extendedWaitUntil:
-    visible: "Logged"
+    visible:
+      text: ".*Logged.*"
     timeout: 10000
 
 # Dismiss modal

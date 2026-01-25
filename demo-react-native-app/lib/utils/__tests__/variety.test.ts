@@ -280,6 +280,32 @@ function daysAgoThisMonth(days: number): string {
 }
 
 /**
+ * Helper to create a date string that is guaranteed to be within the current week.
+ * Uses offset from the start of the week (Sunday) to ensure consistent results
+ * regardless of what day the tests run.
+ *
+ * @param dayOffset - Days from start of week (0 = Sunday, 1 = Monday, ... 6 = Saturday)
+ *                    Must be >= 0 and <= current day of week to ensure date is in the past
+ */
+function thisWeekDay(dayOffset: number): string {
+  const today = new Date();
+  const currentDayOfWeek = today.getDay(); // 0 = Sunday, 6 = Saturday
+
+  // Calculate the start of the current week (Sunday)
+  const startOfWeek = new Date(today);
+  startOfWeek.setDate(today.getDate() - currentDayOfWeek);
+  startOfWeek.setHours(12, 0, 0, 0);
+
+  // Create date at the specified offset from start of week
+  // Ensure we don't go beyond today
+  const safeOffset = Math.min(dayOffset, currentDayOfWeek);
+  const result = new Date(startOfWeek);
+  result.setDate(startOfWeek.getDate() + safeOffset);
+
+  return result.toISOString();
+}
+
+/**
  * Helper to create a date string in the previous month
  */
 function previousMonth(dayOffset: number = 0): string {
@@ -446,10 +472,11 @@ describe('calculateVarietyStats', () => {
         createIngredient('cheese', 'Cheese'),
         createIngredient('apple', 'Apple'),
       ];
-      // Use logs from today to ensure they're in this week
+      // Use thisWeekDay() to guarantee dates are in the current week
+      // (daysAgoThisMonth fails on Sunday when yesterday is previous week)
       const history = [
-        createStatsMealLog(['milk', 'bread'], daysAgoThisMonth(0)), // Today
-        createStatsMealLog(['cheese'], daysAgoThisMonth(1)), // Yesterday (still this week)
+        createStatsMealLog(['milk', 'bread'], thisWeekDay(0)), // Sunday of current week
+        createStatsMealLog(['cheese'], thisWeekDay(0)), // Same day, different ingredients
       ];
 
       const stats = calculateVarietyStats(history, ingredients);
@@ -462,9 +489,10 @@ describe('calculateVarietyStats', () => {
         createIngredient('milk', 'Milk'),
         createIngredient('bread', 'Bread'),
       ];
+      // Use thisWeekDay() to guarantee dates are in the current week
       const history = [
-        createStatsMealLog(['milk', 'bread'], daysAgoThisMonth(0)),
-        createStatsMealLog(['milk', 'bread'], daysAgoThisMonth(1)),
+        createStatsMealLog(['milk', 'bread'], thisWeekDay(0)),
+        createStatsMealLog(['milk', 'bread'], thisWeekDay(0)),
       ];
 
       const stats = calculateVarietyStats(history, ingredients);
@@ -486,9 +514,7 @@ describe('calculateVarietyStats', () => {
 
   describe('varietyScore', () => {
     it('returns correct variety score percentage', () => {
-      // 2 unique combos, 2 total logs this month = 100% combo ratio
-      // 2 ingredients used this week, 4 total = 50% ingredient ratio
-      // Score = 1.0 * 0.5 * 100 = 50
+      // Use thisWeekDay() to guarantee dates are in the current week
       const ingredients = [
         createIngredient('milk', 'Milk'),
         createIngredient('bread', 'Bread'),
@@ -496,8 +522,8 @@ describe('calculateVarietyStats', () => {
         createIngredient('apple', 'Apple'),
       ];
       const history = [
-        createStatsMealLog(['milk', 'bread'], daysAgoThisMonth(0)),
-        createStatsMealLog(['cheese', 'milk'], daysAgoThisMonth(1)),
+        createStatsMealLog(['milk', 'bread'], thisWeekDay(0)),
+        createStatsMealLog(['cheese', 'milk'], thisWeekDay(0)),
       ];
 
       const stats = calculateVarietyStats(history, ingredients);
@@ -532,15 +558,16 @@ describe('calculateVarietyStats', () => {
 
     it('is rounded to nearest integer', () => {
       // Set up a case that would produce a decimal score
+      // Use thisWeekDay() to guarantee dates are in the current week
       const ingredients = [
         createIngredient('a', 'A'),
         createIngredient('b', 'B'),
         createIngredient('c', 'C'),
       ];
       const history = [
-        createStatsMealLog(['a'], daysAgoThisMonth(0)),
-        createStatsMealLog(['a'], daysAgoThisMonth(1)),
-        createStatsMealLog(['b'], daysAgoThisMonth(2)),
+        createStatsMealLog(['a'], thisWeekDay(0)),
+        createStatsMealLog(['a'], thisWeekDay(0)),
+        createStatsMealLog(['b'], thisWeekDay(0)),
       ];
 
       const stats = calculateVarietyStats(history, ingredients);
@@ -573,12 +600,13 @@ describe('calculateVarietyStats', () => {
         createIngredient('milk', 'Milk'),
         createIngredient('bread', 'Bread'),
       ];
+      // Use thisWeekDay() to guarantee dates are in the current week
       const history = [
-        createStatsMealLog(['milk', 'bread'], daysAgoThisMonth(0)),
-        createStatsMealLog(['milk', 'bread'], daysAgoThisMonth(1)),
-        createStatsMealLog(['milk', 'bread'], daysAgoThisMonth(2)),
-        createStatsMealLog(['milk', 'bread'], daysAgoThisMonth(3)),
-        createStatsMealLog(['milk', 'bread'], daysAgoThisMonth(4)),
+        createStatsMealLog(['milk', 'bread'], thisWeekDay(0)),
+        createStatsMealLog(['milk', 'bread'], thisWeekDay(0)),
+        createStatsMealLog(['milk', 'bread'], thisWeekDay(0)),
+        createStatsMealLog(['milk', 'bread'], thisWeekDay(0)),
+        createStatsMealLog(['milk', 'bread'], thisWeekDay(0)),
       ];
 
       const stats = calculateVarietyStats(history, ingredients);
@@ -606,9 +634,10 @@ describe('calculateVarietyStats', () => {
         createIngredient('milk', 'Milk'),
         createIngredient('bread', 'Bread'),
       ];
+      // Use thisWeekDay() to guarantee dates are in the current week
       const history = [
-        createStatsMealLog(['milk'], daysAgoThisMonth(0)),
-        createStatsMealLog(['bread'], daysAgoThisMonth(1)),
+        createStatsMealLog(['milk'], thisWeekDay(0)),
+        createStatsMealLog(['bread'], thisWeekDay(0)),
       ];
 
       const stats = calculateVarietyStats(history, ingredients);

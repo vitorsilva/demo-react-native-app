@@ -24,7 +24,7 @@ describe('Favorites Feature - Store', () => {
       isLoading: false,
       error: null,
       isDatabaseReady: true,
-      preferences: { cooldownDays: 3, suggestionsCount: 4 },
+      preferences: { cooldownDays: 3, suggestionsCount: 4, hapticEnabled: true },
     });
   });
 

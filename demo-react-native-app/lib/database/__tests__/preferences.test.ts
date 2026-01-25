@@ -27,6 +27,7 @@ describe('Preferences Operations', () => {
     await setPreferences(db, {
       cooldownDays: 5,
       suggestionsCount: 6,
+      hapticEnabled: true,
     });
 
     const prefs = await getPreferences(db);
@@ -41,12 +42,14 @@ describe('Preferences Operations', () => {
     await setPreferences(db, {
       cooldownDays: 3,
       suggestionsCount: 4,
+      hapticEnabled: true,
     });
 
     // Update values
     await setPreferences(db, {
       cooldownDays: 7,
       suggestionsCount: 2,
+      hapticEnabled: true,
     });
 
     const prefs = await getPreferences(db);
@@ -61,12 +64,14 @@ describe('Preferences Operations', () => {
     await setPreferences(db, {
       cooldownDays: 3,
       suggestionsCount: 4,
+      hapticEnabled: true,
     });
 
     // Update only cooldownDays
     await setPreferences(db, {
       cooldownDays: 7,
       suggestionsCount: 4, // Keep same
+      hapticEnabled: true,
     });
 
     const prefs = await getPreferences(db);
@@ -80,6 +85,7 @@ describe('Preferences Operations', () => {
     await setPreferences(db, {
       cooldownDays: 5,
       suggestionsCount: 3,
+      hapticEnabled: true,
     });
 
     const prefs = await getPreferences(db);
@@ -94,6 +100,7 @@ describe('Preferences Operations', () => {
     await setPreferences(db, {
       cooldownDays: 1,
       suggestionsCount: 2,
+      hapticEnabled: true,
     });
 
     let prefs = await getPreferences(db);
@@ -104,6 +111,7 @@ describe('Preferences Operations', () => {
     await setPreferences(db, {
       cooldownDays: 7,
       suggestionsCount: 6,
+      hapticEnabled: true,
     });
 
     prefs = await getPreferences(db);
@@ -117,12 +125,14 @@ describe('Preferences Operations', () => {
     await setPreferences(db, {
       cooldownDays: 5,
       suggestionsCount: 3,
+      hapticEnabled: true,
     });
 
     const prefs = await getPreferences(db);
 
     expect(prefs).toHaveProperty('cooldownDays');
     expect(prefs).toHaveProperty('suggestionsCount');
-    expect(Object.keys(prefs)).toHaveLength(2);
+    expect(prefs).toHaveProperty('hapticEnabled');
+    expect(Object.keys(prefs)).toHaveLength(3);
   });
 });

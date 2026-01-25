@@ -1,4 +1,3 @@
-import * as Haptics from 'expo-haptics';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useEffect, useState, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -18,6 +17,7 @@ import { VarietyIndicator } from '../../components/VarietyIndicator';
 import { useStore } from '../../lib/store';
 import { logger } from '../../lib/telemetry/logger';
 import { trackScreenView } from '../../lib/telemetry/screenTracking';
+import { haptics } from '../../lib/utils/haptics';
 import { isNewCombination, getVarietyColor } from '../../lib/utils/variety';
 
 // Conditionally import LinearGradient only for native platforms
@@ -170,7 +170,7 @@ export default function SuggestionsScreen() {
   };
 
   const handleSelectSuggestion = (suggestionId: string) => {
-    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+    haptics.light();
     const suggestion = suggestions.find((s) => s.id === suggestionId);
     if (suggestion) {
       setSelectedIngredients(suggestion.ingredients.map((i) => i.name));
@@ -207,7 +207,7 @@ export default function SuggestionsScreen() {
   };
 
   const handleGenerateNew = () => {
-    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+    haptics.medium();
 
     // Track user action
     logger.action('regenerate_suggestions', { mealType });
@@ -217,7 +217,7 @@ export default function SuggestionsScreen() {
   };
 
   const handleToggleFavorite = async (suggestionId: string) => {
-    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+    haptics.medium();
     const suggestion = suggestions.find((s) => s.id === suggestionId);
 
     if (!suggestion) return;

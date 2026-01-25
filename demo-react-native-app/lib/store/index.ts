@@ -125,6 +125,7 @@ export const useStore = create<StoreState>((set, get) => ({
   preferences: {
     cooldownDays: 3,
     suggestionsCount: 4,
+    hapticEnabled: true,
   },
 
   // Load preferences from database

@@ -20,7 +20,7 @@ appId: com.vitorsilvavmrs.saborspin
 
 # First, log a meal without favoriting it
 - tapOn:
-    text: "Breakfast"
+    text: "breakfast Ideas"
     optional: false
 
 # Wait for suggestions
@@ -34,7 +34,8 @@ appId: com.vitorsilvavmrs.saborspin
 
 # Wait for confirmation and dismiss
 - extendedWaitUntil:
-    visible: "Logged"
+    visible:
+      text: ".*Logged.*"
     timeout: 10000
 
 - tapOn:
