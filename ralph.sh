@@ -25,8 +25,8 @@ for ((i=1; i<=ITERATIONS; i++)); do
       3.2 - Append learning notes with errors / problems / fixes / workarounds to @docs\learning\epic04_feature_enhancement\features\FEATURE_1.5_HAPTIC_FEEDBACK_LEARNING_NOTES.md
       3.3 - Append a summary of what you did to @docs\learning\epic04_feature_enhancement\features\FEATURE_1.5_progress.md.
       3.4 - Commit the changes with a clear message.
-    4. if ALL tasks in FEATURE_1.5_HAPTIC_FEEDBACK.md in the ## implementation order are marked done, output exactly: <promise>COMPLETE</promise> and STOP. Do NOT proceed to the next task. Exit immediately
-    5. if current task id completed output <task>DONE</task> and STOP. Do NOT proceed to the next task. Exit immediately
+    4. if ALL tasks in FEATURE_1.5_HAPTIC_FEEDBACK.md in the ## implementation order are marked done, output exactly: <promise>COMPLETE</promise> and STOP. Do NOT proceed to the next task. End the process in an orderly fashion.
+    5. if current task id completed output <task>DONE</task> and STOP. Do NOT proceed to the next task. Exit immediately. End the process in an orderly fashion.
   " 2>&1 | tee -a last_output.log
 
   # Stop the loop if Claude says it's finished
