@@ -682,9 +682,8 @@ function formatMealDisplay(meal: MealLog, components: MealComponent[], ingredien
 | 22 | ▶️ RUN full test suites | Testing | ~20 min | Unit + Playwright + Maestro, verify no regressions | not started |
 | 23 | ▶️ RUN quality checks and compare | Quality | ~30 min | Compare to baseline; create remediation plan if worse | not started |
 | 24 | Document learning notes | Documentation | ~30 min | Capture unexpected errors, workarounds, fixes | not started |
-| 25 | Run all existing unit tests, Playwright tests and Maestro Tests | Quality | ~0.5 hours | not started |
-| 26 | 📸 Capture BEFORE screenshots | Documentation | ~15 min | not started |
-| 27 | 📸 Capture AFTER screenshots | Documentation | ~20 min | not started |
+| 25 | 📸 Capture BEFORE screenshots | Documentation | ~15 min | not started |
+| 26 | 📸 Capture AFTER screenshots | Documentation | ~20 min | not started |
 
 **Total Estimated Effort:** ~29.5 hours (including unit + Playwright + Maestro tests + quality checks)
 
