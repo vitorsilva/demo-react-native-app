@@ -104,6 +104,8 @@ interface StoreState {
   // ─── Meal Log Actions ──────────────────────────────────────────────────────
   /** Loads recent meal logs from the database */
   loadMealLogs: (days?: number) => Promise<void>;
+  /** Loads recent meal logs from the database with their components (Phase 2) */
+  loadMealLogsWithComponents: (days?: number) => Promise<void>;
   /** Records a new meal log entry */
   logMeal: (mealLog: Omit<MealLog, 'id' | 'createdAt' | 'isFavorite'> & { isFavorite?: boolean }) => Promise<void>;
   /** Toggles the favorite status of a meal log */
@@ -198,6 +200,21 @@ export const useStore = create<StoreState>((set, get) => ({
     try {
       const db = getDatabase();
       const mealLogs = await mealLogsDb.getRecentMealLogs(db, days);
+      set({ mealLogs, isLoading: false });
+    } catch (error) {
+      set({
+        error: error instanceof Error ? error.message : 'Failed to load meal logs',
+        isLoading: false,
+      });
+    }
+  },
+
+  // Action: Load meal logs with their components (Phase 2)
+  loadMealLogsWithComponents: async (days = 30) => {
+    set({ isLoading: true, error: null });
+    try {
+      const db = getDatabase();
+      const mealLogs = await mealComponentsDb.getRecentMealLogsWithComponents(db, days);
       set({ mealLogs, isLoading: false });
     } catch (error) {
       set({

@@ -470,3 +470,37 @@ This document tracks progress for Phase 2 implementation tasks.
 - Maestro test files created and ready to run
 
 ---
+
+### Task 16: Update history/display to use components ✅
+
+**Status:** COMPLETE
+
+**What was done:**
+- Added new store action `loadMealLogsWithComponents` to `lib/store/index.ts`:
+  - Added action to store interface
+  - Implementation uses `mealComponentsDb.getRecentMealLogsWithComponents()` to fetch meals with components
+  - Follows same pattern as existing `loadMealLogs` action
+- Updated `app/(tabs)/history.tsx` to use Phase 2 data model:
+  - Import `formatMealDisplay` utility
+  - Load `preparationMethods` from store
+  - Use `loadMealLogsWithComponents` instead of `loadMealLogs`
+  - Replaced `getIngredientNames` with `getMealDisplayText` helper using `formatMealDisplay`
+  - Updated `renderMealItem` to show meal name (if present) separately from components
+  - Added `mealName` style for visual distinction between name and ingredients
+  - Added testIDs: `meal-item-{id}`, `meal-name-{id}`
+
+**Display Logic:**
+- Named meals: Show meal name prominently, then components below
+- Unnamed meals: Show components with preparation methods inline (e.g., "fried chicken + milk")
+- Legacy meals: Fall back to `ingredients` array via `formatMealDisplay`
+
+**Files Modified:**
+- `lib/store/index.ts` - Added loadMealLogsWithComponents action
+- `app/(tabs)/history.tsx` - Updated to use Phase 2 data model
+
+**Verification:**
+- TypeScript check: ✅ Passed
+- ESLint: ✅ Passed (only pre-existing warnings: 5 warnings)
+- Unit tests: ✅ 389/389 passed (no new tests in this task)
+
+---

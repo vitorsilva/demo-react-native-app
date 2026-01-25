@@ -557,3 +557,42 @@ import { haptics } from '@/lib/utils/haptics';
 - Tests are ready to run with `maestro test e2e/maestro/meal-logging-phase2*.yaml`
 
 ---
+
+## Task 16: Update history/display to use components
+
+**Date:** 2026-01-25
+
+### Implementation Summary
+- Added `loadMealLogsWithComponents` action to Zustand store:
+  - New action in store interface (`lib/store/index.ts`)
+  - Implementation uses `mealComponentsDb.getRecentMealLogsWithComponents()` to fetch meals with their components
+  - Follows same pattern as existing `loadMealLogs` action
+- Updated `app/(tabs)/history.tsx` to use Phase 2 data model:
+  - Import `formatMealDisplay` utility from `lib/utils/mealDisplay.ts`
+  - Load `preparationMethods` and use `loadMealLogsWithComponents` instead of `loadMealLogs`
+  - Updated `getMealDisplayText` helper to use `formatMealDisplay`
+  - Updated `renderMealItem` to show meal name (if present) separately from components
+  - Added `mealName` style for proper visual distinction
+  - Added testIDs for meal items and meal names
+
+### Display Logic
+- Named meals: Show meal name prominently, then components below (e.g., "Mom's special" with "fried chicken + milk" below)
+- Unnamed meals: Show components with preparation methods inline (e.g., "fried chicken + milk + toasted bread")
+- Legacy meals (without components): Fall back to `ingredients` array via `formatMealDisplay`
+
+### No Issues Encountered
+- Implementation was straightforward following existing patterns
+- All functionality worked on first attempt
+- TypeScript check passes with no errors
+- ESLint shows only pre-existing warnings (5 warnings, none from new code)
+
+### Final Results
+- All 389 unit tests pass (no new tests added in this task, tests come in Task 17)
+- TypeScript check passes with no errors
+- ESLint shows only pre-existing warnings
+- History screen now displays:
+  - Named meals with their custom names
+  - Preparation methods for each ingredient
+  - Fallback to legacy display for old meals
+
+---

@@ -8,6 +8,7 @@ import { useStore } from '../../lib/store';
 import { trackScreenView } from '../../lib/telemetry/screenTracking';
 import { isToday, isYesterday } from '../../lib/utils/dateUtils';
 import { haptics } from '../../lib/utils/haptics';
+import { formatMealDisplay } from '../../lib/utils/mealDisplay';
 import type { MealLog } from '../../types/database';
 
 type FilterType = 'all' | 'favorites';
@@ -19,27 +20,30 @@ export default function HistoryScreen() {
   // Zustand store selectors
   const isDatabaseReady = useStore((state) => state.isDatabaseReady);
   const mealLogs = useStore((state) => state.mealLogs);
-  const loadMealLogs = useStore((state) => state.loadMealLogs);
+  const loadMealLogsWithComponents = useStore((state) => state.loadMealLogsWithComponents);
   const ingredients = useStore((state) => state.ingredients);
   const loadIngredients = useStore((state) => state.loadIngredients);
+  const preparationMethods = useStore((state) => state.preparationMethods);
+  const loadPreparationMethods = useStore((state) => state.loadPreparationMethods);
   const toggleMealLogFavorite = useStore((state) => state.toggleMealLogFavorite);
 
   // Load data when database is ready
   useEffect(() => {
     if (isDatabaseReady) {
       loadIngredients();
-      loadMealLogs(30); // Load last 30 days
+      loadPreparationMethods();
+      loadMealLogsWithComponents(30); // Load last 30 days with components
     }
-  }, [isDatabaseReady, loadIngredients, loadMealLogs]);
+  }, [isDatabaseReady, loadIngredients, loadPreparationMethods, loadMealLogsWithComponents]);
 
   // Reload when screen comes into focus
   useFocusEffect(
     useCallback(() => {
       trackScreenView('history');
       if (isDatabaseReady) {
-        loadMealLogs(30);
+        loadMealLogsWithComponents(30);
       }
-    }, [isDatabaseReady, loadMealLogs])
+    }, [isDatabaseReady, loadMealLogsWithComponents])
   );
 
   // Get locale for date formatting
@@ -68,13 +72,14 @@ export default function HistoryScreen() {
     }
   };
 
-  // Helper to get ingredient names
-  const getIngredientNames = (ingredientIds: string[]): string => {
-    const names = ingredientIds.map((id) => {
-      const ingredient = ingredients.find((i) => i.id === id);
-      return ingredient ? ingredient.name : id;
-    });
-    return names.join(' + ');
+  // Helper to get formatted meal display
+  const getMealDisplayText = (meal: MealLog): string => {
+    return formatMealDisplay(
+      meal,
+      meal.components || [],
+      ingredients,
+      preparationMethods
+    );
   };
 
   // Filter meals based on active filter
@@ -123,11 +128,12 @@ export default function HistoryScreen() {
     const mealIcon = getMealIcon(item.mealType);
     // Use the actual meal type name (capitalized)
     const mealTypeLabel = item.mealType.charAt(0).toUpperCase() + item.mealType.slice(1);
-    const ingredientNames = getIngredientNames(item.ingredients);
+    const mealDisplayText = getMealDisplayText(item);
     const favoriteIcon = item.isFavorite ? '⭐' : '☆';
+    const hasName = item.name && item.name.trim().length > 0;
 
     return (
-      <View style={styles.mealItem}>
+      <View style={styles.mealItem} testID={`meal-item-${item.id}`}>
         <View style={styles.mealHeader}>
           <View style={styles.mealInfo}>
             <Text style={styles.mealIcon}>{mealIcon}</Text>
@@ -141,7 +147,14 @@ export default function HistoryScreen() {
             <Text style={styles.favoriteIcon}>{favoriteIcon}</Text>
           </TouchableOpacity>
         </View>
-        <Text style={styles.ingredients}>{ingredientNames}</Text>
+        {hasName ? (
+          <>
+            <Text style={styles.mealName} testID={`meal-name-${item.id}`}>{item.name}</Text>
+            <Text style={styles.ingredients}>{mealDisplayText !== item.name ? mealDisplayText : ''}</Text>
+          </>
+        ) : (
+          <Text style={styles.ingredients}>{mealDisplayText}</Text>
+        )}
       </View>
     );
   };
@@ -291,6 +304,12 @@ const styles = StyleSheet.create({
   },
   favoriteIcon: {
     fontSize: 20,
+  },
+  mealName: {
+    fontSize: 15,
+    fontWeight: '600',
+    color: colors.textPrimary,
+    marginBottom: 4,
   },
   ingredients: {
     fontSize: 14,
