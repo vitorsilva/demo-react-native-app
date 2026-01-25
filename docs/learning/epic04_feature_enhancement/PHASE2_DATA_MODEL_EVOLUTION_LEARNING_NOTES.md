@@ -749,3 +749,63 @@ import { haptics } from '@/lib/utils/haptics';
 - Ready for E2E testing in Tasks 20 and 21
 
 ---
+
+## Task 20: Create Playwright E2E test for prep management
+
+**Date:** 2026-01-25
+
+### Implementation Summary
+- Created new E2E test file: `e2e/prep-methods-settings.spec.ts`
+- Added 12 Playwright tests covering preparation methods management in Settings:
+  1. `should display Preparation Methods section in Settings`
+  2. `should display all 12 system preparation methods`
+  3. `should show empty state for custom methods initially`
+  4. `should open add preparation method modal`
+  5. `should cancel adding a preparation method`
+  6. `should add a custom preparation method`
+  7. `should delete a custom preparation method`
+  8. `should add multiple custom preparation methods`
+  9. `should not allow adding duplicate preparation method name`
+  10. `should not allow adding empty preparation method name`
+  11. `should trim whitespace from preparation method name`
+  12. `full workflow: add, verify, and delete custom preparation method`
+
+### Test Coverage
+- Preparation Methods section visibility
+- System methods display (all 12 predefined methods)
+- Empty state for custom methods
+- Add modal open/close functionality
+- Adding custom preparation methods
+- Deleting custom preparation methods
+- Validation: duplicate names, empty names
+- Whitespace trimming in method names
+- Full CRUD workflow
+
+### TestIDs Used
+- `add-prep-method-button` - Button to open add modal
+- `system-prep-methods` - Container for system methods
+- `custom-prep-methods` - Container for custom methods
+- `prep-method-name-input` - Text input in add modal
+- `cancel-prep-method-button` - Cancel button in modal
+- `save-prep-method-button` - Save button in modal
+
+### Design Decisions
+- Used existing Playwright patterns from i18n.spec.ts and favorites.spec.ts
+- Tests navigate to Settings tab first, then interact with prep methods section
+- Screenshots captured at key verification points
+- Delete confirmation handled via React Native Alert (web rendering)
+- Tests are independent and can run in any order
+
+### No Issues Encountered
+- Implementation was straightforward following existing Playwright patterns
+- All testIDs from Task 19 worked correctly
+- TypeScript check passes with no errors
+- ESLint shows only pre-existing warnings (7 warnings, none from new code)
+
+### Final Results
+- 12 new Playwright E2E tests created
+- TypeScript check passes with no errors
+- ESLint shows only pre-existing warnings
+- Playwright recognizes all 12 tests in the new spec file
+
+---

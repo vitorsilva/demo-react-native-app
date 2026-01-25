@@ -605,3 +605,44 @@ This document tracks progress for Phase 2 implementation tasks.
 - Ready for E2E testing in Tasks 20 and 21
 
 ---
+
+### Task 20: Create Playwright E2E test for prep management ✅
+
+**Status:** COMPLETE
+
+**What was done:**
+- Created new E2E test file: `e2e/prep-methods-settings.spec.ts`
+- Added 12 Playwright tests covering preparation methods management in Settings:
+  1. should display Preparation Methods section in Settings
+  2. should display all 12 system preparation methods
+  3. should show empty state for custom methods initially
+  4. should open add preparation method modal
+  5. should cancel adding a preparation method
+  6. should add a custom preparation method
+  7. should delete a custom preparation method
+  8. should add multiple custom preparation methods
+  9. should not allow adding duplicate preparation method name
+  10. should not allow adding empty preparation method name
+  11. should trim whitespace from preparation method name
+  12. full workflow: add, verify, and delete custom preparation method
+
+**Test Coverage:**
+- Preparation Methods section visibility in Settings
+- System methods display (all 12 predefined methods)
+- Empty state for custom methods
+- Add modal open/close functionality
+- Adding custom preparation methods with validation
+- Deleting custom preparation methods with confirmation
+- Validation: duplicate names, empty names
+- Whitespace trimming in method names
+- Full CRUD workflow (add → verify → delete → verify)
+
+**New Files Created:**
+- `e2e/prep-methods-settings.spec.ts` (359 lines)
+
+**Verification:**
+- TypeScript check: ✅ Passed
+- ESLint: ✅ Passed (only pre-existing warnings: 7 warnings)
+- Playwright test list: ✅ 12 tests recognized
+
+---
