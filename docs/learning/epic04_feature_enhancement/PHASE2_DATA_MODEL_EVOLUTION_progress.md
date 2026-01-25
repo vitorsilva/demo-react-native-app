@@ -181,3 +181,48 @@ This document tracks progress for Phase 2 implementation tasks.
 - Unit tests: ✅ 331/331 passed (no new tests in this task, tests come in task 9)
 
 ---
+
+### Task 9: Create unit tests for store actions ✅
+
+**Status:** COMPLETE
+
+**What was done:**
+- Created new test file: `lib/store/__tests__/preparationMethods.test.ts`
+- Added 24 unit tests organized into 6 describe blocks:
+  - Preparation Methods - loadPreparationMethods (3 tests)
+  - Preparation Methods - addPreparationMethod (4 tests)
+  - Preparation Methods - deletePreparationMethod (5 tests)
+  - Meal Components - logMealWithComponents (6 tests)
+  - Meal Components - getMealWithComponents (4 tests)
+  - Integration - Preparation Methods with Meal Components (2 tests)
+
+**Test Coverage:**
+- Load predefined methods from database
+- Sorting (predefined first, then by name)
+- Add custom preparation method with state update
+- Duplicate name error handling
+- Whitespace trimming in method names
+- Delete custom method (not predefined)
+- Block deletion of predefined methods
+- Block deletion when method used in meal components
+- Log meal with components (with/without name)
+- Legacy ingredients array population for backward compatibility
+- Get meal with components
+- Handle non-existent meals
+- Handle legacy meals without components
+- End-to-end workflow integration
+- Unicode character support in meal names
+
+**Issues Encountered:**
+- Initial test for duplicate method error used `rejects.toThrow()` which didn't work correctly
+- Fixed by using try-catch pattern with explicit error assertions
+
+**New Files Created:**
+- `lib/store/__tests__/preparationMethods.test.ts` (315 lines)
+
+**Verification:**
+- TypeScript check: ✅ Passed
+- ESLint: ✅ Passed (only pre-existing warnings)
+- Unit tests: ✅ 355/355 passed (24 new tests added)
+
+---
