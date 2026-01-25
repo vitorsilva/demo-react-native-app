@@ -121,7 +121,11 @@
       "Bash(node:*)",
       "Bash(npm run:*)",
       "Bash(grep:*)",
-      "Bash(xargs -I {} sh -c 'echo \"\"=== {} ===\"\" && head -5 {}')"
+      "Bash(xargs -I {} sh -c 'echo \"\"=== {} ===\"\" && head -5 {}')",
+      "Bash(cmd.exe /c \"%LOCALAPPDATA%\\\\Android\\\\Sdk\\\\emulator\\\\emulator.exe -list-avds\")",
+      "Bash(\"/c/Users/omeue/AppData/Local/Android/Sdk/emulator/emulator.exe\" -list-avds)",
+      "Bash(maestro test:*)",
+      "Bash(eas build:list:*)"
     ],
     "deny": [],
     "ask": []
