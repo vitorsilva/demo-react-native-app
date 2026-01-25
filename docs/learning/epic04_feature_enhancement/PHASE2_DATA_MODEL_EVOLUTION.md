@@ -663,7 +663,7 @@ function formatMealDisplay(meal: MealLog, components: MealComponent[], ingredien
 | 3 | Add preparation_methods table + seed | Implementation | ~1 hour | Migration | done |
 | 4 | Add meal_components table | Implementation | ~1 hour | Migration | done |
 | 5 | Add name column to meal_logs | Implementation | ~30 min | Migration | done |
-| 6 | 🧪 CREATE unit tests for new migrations | Testing | ~1 hour | Test table creation, seeding | not started |
+| 6 | 🧪 CREATE unit tests for new migrations | Testing | ~1 hour | Test table creation, seeding | done |
 | 7 | Update TypeScript types | Implementation | ~1 hour | Types file | not started |
 | 8 | Update store with new actions | Implementation | ~2 hours | Store | not started |
 | 9 | 🧪 CREATE unit tests for store actions | Testing | ~1.5 hours | Test CRUD for prep methods, components | not started |

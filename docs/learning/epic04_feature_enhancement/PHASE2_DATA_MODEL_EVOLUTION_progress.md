@@ -78,3 +78,34 @@ This document tracks progress for Phase 2 implementation tasks.
 - Unit tests: ✅ 309/309 passed
 
 ---
+
+### Task 6: Create unit tests for new migrations ✅
+
+**Status:** COMPLETE
+
+**What was done:**
+- Created new test file: `lib/database/__tests__/migrations.phase2.test.ts`
+- Added 22 unit tests organized into 4 describe blocks:
+  - Migration Version 5: preparation_methods table (7 tests)
+  - Migration Version 6: meal_components table (8 tests)
+  - Migration Version 7: name column in meal_logs (5 tests)
+  - Migration idempotency (2 tests)
+
+**Test Coverage:**
+- Table existence and schema validation
+- Foreign key constraints verification
+- Predefined methods seeding (12 methods)
+- Null/non-null value handling
+- Unicode character support in meal names
+- Migration idempotency (no duplicate data on re-run)
+
+**Issues Encountered:**
+- Initially used wrong column name (`logged_at` instead of `date`/`created_at`) for meal_logs inserts
+- Fixed by checking actual schema in `schema.ts`
+
+**Verification:**
+- TypeScript check: ✅ Passed
+- ESLint: ✅ Passed (only pre-existing warnings)
+- Unit tests: ✅ 331/331 passed (22 new tests added)
+
+---

@@ -73,3 +73,51 @@ This document captures errors, problems, fixes, and workarounds encountered duri
 - No special handling required
 
 ---
+
+## Task 6: Create unit tests for new migrations
+
+**Date:** 2026-01-25
+
+### Implementation Summary
+- Created new test file: `lib/database/__tests__/migrations.phase2.test.ts`
+- Added 22 unit tests covering Phase 2 migrations (versions 5, 6, and 7)
+- Tests organized into four describe blocks:
+  1. Migration Version 5: preparation_methods table (7 tests)
+  2. Migration Version 6: meal_components table (8 tests)
+  3. Migration Version 7: name column in meal_logs (5 tests)
+  4. Migration idempotency (2 tests)
+
+### Test Coverage
+- **Version 5 tests**: Table existence, schema validation, 12 predefined methods seeding, correct id format (prep-*), UNIQUE constraint on name, created_at population
+- **Version 6 tests**: Table existence, schema validation, foreign keys to meal_logs/ingredients/preparation_methods, null preparation_method_id support, valid preparation_method_id references
+- **Version 7 tests**: Column existence, null value support, meal name storage, update capability, unicode character support
+- **Idempotency tests**: Migration recording in migrations table, re-running migrations doesn't duplicate data
+
+### Issues Encountered
+
+#### Issue 1: Wrong column name in meal_logs table
+**Problem:** Initial test code used `logged_at` column for inserting test data into `meal_logs`, but the actual schema uses `date` and `created_at` columns.
+
+**Error:**
+```
+SqliteError: table meal_logs has no column named logged_at
+```
+
+**Fix:** Updated all INSERT statements to use the correct columns:
+```sql
+-- Before (incorrect)
+INSERT INTO meal_logs (id, meal_type, ingredients, logged_at) VALUES (...)
+
+-- After (correct)
+INSERT INTO meal_logs (id, date, meal_type, ingredients, created_at) VALUES (...)
+```
+
+**Lesson Learned:** Always verify the actual database schema (in `schema.ts`) before writing test queries. The schema showed `date TEXT NOT NULL` and `created_at TEXT NOT NULL`, not `logged_at`.
+
+### Final Results
+- All 22 new tests pass
+- Total test count increased from 309 to 331
+- TypeScript check passes with no errors
+- ESLint shows only pre-existing warnings (unrelated to this change)
+
+---
