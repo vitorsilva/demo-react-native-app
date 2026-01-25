@@ -298,3 +298,52 @@ This document tracks progress for Phase 2 implementation tasks.
 - Unit tests: ✅ 370/370 passed (15 new tests added)
 
 ---
+
+### Task 12: Update meal logging flow UI ✅
+
+**Status:** COMPLETE
+
+**What was done:**
+- Created 3 new UI components for the meal logging flow:
+  - `components/MealNameInput.tsx` - Optional text input for naming meals (e.g., "Mom's special")
+  - `components/MealComponentRow.tsx` - Row displaying ingredient + preparation method selector
+  - `components/PreparationMethodPicker.tsx` - Modal for selecting/adding preparation methods
+- Updated `components/modals/ConfirmationModal.tsx`:
+  - Changed props from `ingredients: string[]` to `ingredientObjects: Ingredient[]`
+  - Added `preparationMethods`, `onDone`, and `onAddPreparationMethod` props
+  - Integrated MealNameInput for optional meal naming
+  - Integrated MealComponentRow for each ingredient with prep method selection
+  - Integrated PreparationMethodPicker modal
+  - Export `MealComponentSelection` interface
+- Updated `app/suggestions/[mealType].tsx`:
+  - Changed from `logMeal` to `logMealWithComponents` for Phase 2 data model
+  - Load preparation methods on screen mount
+  - Pass ingredient objects and preparation methods to ConfirmationModal
+  - Updated telemetry tracking for new features
+- Added i18n translation keys to `lib/i18n/locales/en/suggestions.json`:
+  - `mealName.label`, `mealName.placeholder`
+  - `preparation.title`, `preparation.none`, `preparation.custom`, etc.
+  - `prepMethods.*` for all 12 predefined methods
+  - `confirmation.yourSelection`
+- Added Portuguese translations to `lib/i18n/locales/pt-PT/suggestions.json`
+
+**New Files Created:**
+- `components/MealNameInput.tsx`
+- `components/MealComponentRow.tsx`
+- `components/PreparationMethodPicker.tsx`
+
+**Files Modified:**
+- `components/modals/ConfirmationModal.tsx`
+- `app/suggestions/[mealType].tsx`
+- `lib/i18n/locales/en/suggestions.json`
+- `lib/i18n/locales/pt-PT/suggestions.json`
+
+**Issues Encountered:**
+- ESLint flagged import order - fixed by reordering imports
+
+**Verification:**
+- TypeScript check: ✅ Passed
+- ESLint: ✅ Passed (only pre-existing warnings)
+- Unit tests: ✅ 370/370 passed (no new tests in this task)
+
+---

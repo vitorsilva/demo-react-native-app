@@ -358,3 +358,70 @@ expect(Array.isArray(result)).toBe(true);
 - ESLint shows only pre-existing warnings (unrelated to this change)
 
 ---
+
+## Task 12: Update meal logging flow UI
+
+**Date:** 2026-01-25
+
+### Implementation Summary
+- Created 3 new UI components for the meal logging flow:
+  1. `MealNameInput.tsx` - Text input for optional meal naming (e.g., "Mom's special")
+  2. `MealComponentRow.tsx` - Displays ingredient with preparation method selector
+  3. `PreparationMethodPicker.tsx` - Modal for selecting/adding preparation methods
+- Updated `ConfirmationModal.tsx`:
+  - Changed from accepting string[] to accepting Ingredient[] objects
+  - Integrated MealNameInput for optional meal naming
+  - Integrated MealComponentRow for each ingredient with prep method selection
+  - Integrated PreparationMethodPicker for selecting preparation methods
+  - Added callback for adding custom preparation methods
+  - Export `MealComponentSelection` interface for use in parent components
+- Updated `app/suggestions/[mealType].tsx`:
+  - Changed from using `logMeal` to `logMealWithComponents` for Phase 2 data model
+  - Pass full ingredient objects and preparation methods to ConfirmationModal
+  - Load preparation methods on screen mount
+  - Updated telemetry to track meal naming and preparation method usage
+- Added i18n translation keys:
+  - English: `mealName`, `preparation`, `prepMethods` sections in suggestions.json
+  - Portuguese: Corresponding translations for all new keys
+
+### Design Decisions
+- Used modal pattern for PreparationMethodPicker to be consistent with existing app patterns
+- Preparation methods sorted: predefined first (alphabetically), then custom (alphabetically)
+- Default preparation method is "None (as is)" for ingredients that don't need preparation
+- Custom preparation methods can be added inline from the picker modal
+- Kept backward compatibility with legacy `ingredients` prop in ConfirmationModal
+
+### Issues Encountered
+
+#### Issue 1: Import order in ConfirmationModal
+**Problem:** ESLint flagged import order issues - `@/lib/utils/haptics` should come after component imports.
+
+**Warning:**
+```
+`@/lib/utils/haptics` import should occur after import of `@/components/PreparationMethodPicker`
+```
+
+**Fix:** Reordered imports to follow the pattern: React → third-party → components → utilities → types
+
+```typescript
+// Before (incorrect order)
+import { haptics } from '@/lib/utils/haptics';
+import { MealNameInput } from '@/components/MealNameInput';
+
+// After (correct order)
+import { MealComponentRow } from '@/components/MealComponentRow';
+import { MealNameInput } from '@/components/MealNameInput';
+import { PreparationMethodPicker } from '@/components/PreparationMethodPicker';
+import { haptics } from '@/lib/utils/haptics';
+```
+
+**Lesson Learned:** Always follow the established import order pattern: React/framework → third-party libraries → local components (alphabetical) → utilities → types.
+
+### Final Results
+- TypeScript check passes with no errors
+- ESLint shows only pre-existing warnings (5 warnings, none from new code)
+- All 370 unit tests pass
+- New components created: MealNameInput, MealComponentRow, PreparationMethodPicker
+- ConfirmationModal updated to use Phase 2 data model
+
+---

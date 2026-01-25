@@ -669,7 +669,7 @@ function formatMealDisplay(meal: MealLog, components: MealComponent[], ingredien
 | 9 | 🧪 CREATE unit tests for store actions | Testing | ~1.5 hours | Test CRUD for prep methods, components | done |
 | 10 | Migrate existing data | Implementation | ~2 hours | Migration script | done |
 | 11 | 🧪 CREATE unit tests for data migration | Testing | ~1 hour | Test legacy data converts correctly | done |
-| 12 | Update meal logging flow UI | Implementation | ~4 hours | New components | not started |
+| 12 | Update meal logging flow UI | Implementation | ~4 hours | New components | done |
 | 13 | 🧪 CREATE unit tests for `formatMealDisplay()` | Testing | ~30 min | Test named/unnamed meal display | not started |
 | 14 | 🧪 CREATE Playwright E2E tests for meal logging | Testing | ~2 hours | Test logging flow with prep selection | not started |
 | 15 | 🧪 CREATE Maestro tests for meal logging | Testing | ~2 hours | Mirror Playwright tests for mobile | not started |
