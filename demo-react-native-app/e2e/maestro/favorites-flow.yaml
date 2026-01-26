@@ -34,9 +34,7 @@ appId: com.vitorsilvavmrs.saborspin
 - takeScreenshot: favorites-02-suggestions-before
 
 # Mark first suggestion as favorite by tapping the star icon (☆)
-# The favorite button has testID="favorite-button-0"
-- tapOn:
-    id: "favorite-button-0"
+- tapOn: "☆"
 
 # Wait for UI to update (favorite state change)
 - waitForAnimationToEnd
@@ -49,7 +47,8 @@ appId: com.vitorsilvavmrs.saborspin
 
 # Now select the first suggestion to log the meal
 - tapOn:
-    id: "select-button-0"
+    text: "Select"
+    index: 0
 
 # Wait for confirmation modal
 - extendedWaitUntil:
@@ -61,8 +60,7 @@ appId: com.vitorsilvavmrs.saborspin
 - takeScreenshot: favorites-04-meal-logged
 
 # Dismiss modal
-- tapOn:
-    id: "done-button"
+- tapOn: "Done"
 
 # Wait to return to home screen
 - extendedWaitUntil:
@@ -83,9 +81,9 @@ appId: com.vitorsilvavmrs.saborspin
 # Verify favorite indicator is visible in history
 - assertVisible: "⭐"
 
-# Tap on Favorites filter tab
+# Tap on Favorites filter tab (has star emoji prefix)
 - tapOn:
-    id: "filter-favorites"
+    text: ".*Favorites.*"
 
 # Wait for filter to apply
 - waitForAnimationToEnd
@@ -97,10 +95,8 @@ appId: com.vitorsilvavmrs.saborspin
 # Take screenshot of favorites filter view
 - takeScreenshot: favorites-06-favorites-filter
 
-# Toggle the favorite off from history screen
-- tapOn:
-    id: ".*favorite-button.*"
-    optional: false
+# Toggle the favorite off from history screen by tapping the star
+- tapOn: "⭐"
 
 # Wait for UI update
 - waitForAnimationToEnd
@@ -109,8 +105,7 @@ appId: com.vitorsilvavmrs.saborspin
 - takeScreenshot: favorites-07-after-unfavorite
 
 # Navigate back to All filter to verify the meal still exists
-- tapOn:
-    id: "filter-all"
+- tapOn: "All"
 
 # Wait for filter to apply
 - waitForAnimationToEnd

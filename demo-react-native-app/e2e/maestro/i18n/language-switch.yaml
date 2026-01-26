@@ -21,8 +21,7 @@ appId: com.vitorsilvavmrs.saborspin
 - assertVisible: "Português"
 
 # Switch to Portuguese
-- tapOn:
-    id: "language-option-pt-PT"
+- tapOn: "Português"
 
 # Verify settings is now in Portuguese
 - assertVisible: "Definições"
@@ -48,8 +47,7 @@ appId: com.vitorsilvavmrs.saborspin
 - tapOn: "Definições"
 
 # Switch back to English
-- tapOn:
-    id: "language-option-en"
+- tapOn: "English"
 
 # Verify we're back in English
 - assertVisible: "Settings"

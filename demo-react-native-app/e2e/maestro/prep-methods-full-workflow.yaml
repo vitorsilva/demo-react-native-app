@@ -9,6 +9,8 @@
 
 appId: com.vitorsilvavmrs.saborspin
 ---
+# Clear app state for consistent testing
+- clearState
 # Launch app
 - launchApp
 
@@ -36,8 +38,16 @@ appId: com.vitorsilvavmrs.saborspin
 
 # Step 1: Verify initial state - no custom methods
 - scrollUntilVisible:
-    element:
-      id: "custom-prep-methods"
+    element: "Custom Methods"
+    direction: DOWN
+    timeout: 5000
+
+# Wait for content to settle
+- waitForAnimationToEnd
+
+# Scroll to make sure empty state text is visible
+- scrollUntilVisible:
+    element: "No custom methods yet"
     direction: DOWN
     timeout: 5000
 
@@ -47,8 +57,7 @@ appId: com.vitorsilvavmrs.saborspin
 - takeScreenshot: prep-workflow-02-initial-empty
 
 # Step 2: Add a custom preparation method
-- tapOn:
-    id: "add-prep-method-button"
+- tapOn: "+ Add Method"
 
 # Wait for modal
 - extendedWaitUntil:
@@ -56,16 +65,13 @@ appId: com.vitorsilvavmrs.saborspin
     timeout: 5000
 
 # Enter name
-- tapOn:
-    id: "prep-method-name-input"
 - inputText: "wok-fried"
 
 # Take screenshot of modal with input
 - takeScreenshot: prep-workflow-03-add-modal
 
 # Save
-- tapOn:
-    id: "save-prep-method-button"
+- tapOn: "Add"
 
 # Wait for modal to close
 - extendedWaitUntil:
@@ -77,8 +83,7 @@ appId: com.vitorsilvavmrs.saborspin
 
 # Step 3: Verify method appears in custom section
 - scrollUntilVisible:
-    element:
-      id: "custom-prep-methods"
+    element: "Custom Methods"
     direction: DOWN
     timeout: 5000
 
@@ -89,8 +94,7 @@ appId: com.vitorsilvavmrs.saborspin
 - takeScreenshot: prep-workflow-04-method-added
 
 # Step 4: Add another custom method to test multiple
-- tapOn:
-    id: "add-prep-method-button"
+- tapOn: "+ Add Method"
 
 # Wait for modal
 - extendedWaitUntil:
@@ -98,13 +102,10 @@ appId: com.vitorsilvavmrs.saborspin
     timeout: 5000
 
 # Enter another name
-- tapOn:
-    id: "prep-method-name-input"
 - inputText: "charred"
 
 # Save
-- tapOn:
-    id: "save-prep-method-button"
+- tapOn: "Add"
 
 # Wait for modal to close
 - extendedWaitUntil:
@@ -116,8 +117,7 @@ appId: com.vitorsilvavmrs.saborspin
 
 # Verify both methods are visible
 - scrollUntilVisible:
-    element:
-      id: "custom-prep-methods"
+    element: "Custom Methods"
     direction: DOWN
     timeout: 5000
 
@@ -128,8 +128,7 @@ appId: com.vitorsilvavmrs.saborspin
 - takeScreenshot: prep-workflow-05-multiple-methods
 
 # Step 5: Delete one of the custom methods
-- tapOn:
-    text: "Delete"
+- tapOn: "Delete"
 
 # Wait for confirmation
 - extendedWaitUntil:
@@ -141,8 +140,7 @@ appId: com.vitorsilvavmrs.saborspin
 - takeScreenshot: prep-workflow-06-delete-confirm
 
 # Confirm deletion
-- tapOn:
-    text: "Delete"
+- tapOn: "Delete"
 
 # Wait for deletion
 - waitForAnimationToEnd

@@ -10,8 +10,7 @@ appId: com.vitorsilvavmrs.saborspin
 
 # Navigate to Settings and switch to Portuguese
 - tapOn: "Settings"
-- tapOn:
-    id: "language-option-pt-PT"
+- tapOn: "Português"
 
 # Verify settings in Portuguese
 - assertVisible: "Definições"
@@ -28,9 +27,10 @@ appId: com.vitorsilvavmrs.saborspin
 - assertVisible: "SaborSpin"
 - assertVisible: "Refeições Recentes"
 
-# Navigate to breakfast suggestions (use testId since meal type names aren't translated)
+# Navigate to breakfast suggestions
 - tapOn:
-    id: "breakfast-ideas-button"
+    text: "breakfast Ideas"
+    optional: false
 
 # Wait for suggestions to load
 - waitForAnimationToEnd
@@ -38,19 +38,16 @@ appId: com.vitorsilvavmrs.saborspin
     visible: "Escolha uma:"
     timeout: 15000
 
-# Verify suggestions screen in Portuguese (button might be below fold)
-# Skip regenerate button check and proceed with selection
-
 # Select first suggestion
 - tapOn:
-    id: "select-button-0"
+    text: "Select"
+    index: 0
 
 # Verify confirmation modal in Portuguese (title has interpolation, check message)
 - assertVisible: "Bom apetite!"
 
 # Dismiss modal
-- tapOn:
-    id: "done-button"
+- tapOn: "Done"
 
 # Verify back on home with meal logged
 - assertVisible: "Refeições Recentes"

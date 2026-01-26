@@ -22,7 +22,7 @@ Write-Host "Fetching latest EAS build..." -ForegroundColor Yellow
 
 # Get latest Android build info
 try {
-    $BuildInfo = eas build:list --platform android --limit 1 --json 2>$null | ConvertFrom-Json
+    $BuildInfo = eas build:list --platform android --limit 1 --json --non-interactive 2>$null | ConvertFrom-Json
 } catch {
     Write-Host "Error: Failed to fetch build info. Make sure you're authenticated with EAS." -ForegroundColor Red
     exit 1
@@ -34,7 +34,7 @@ if (-not $BuildInfo -or $BuildInfo.Count -eq 0) {
 }
 
 $Build = $BuildInfo[0]
-$ApkUrl = $Build.applicationArchiveUrl
+$ApkUrl = $Build.artifacts.applicationArchiveUrl
 $BuildId = $Build.id
 
 if (-not $ApkUrl) {

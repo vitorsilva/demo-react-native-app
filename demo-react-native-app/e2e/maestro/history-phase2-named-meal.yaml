@@ -32,16 +32,16 @@ appId: com.vitorsilvavmrs.saborspin
 
 # Select first suggestion to open confirmation modal
 - tapOn:
-    id: "select-button-0"
+    text: "Select"
+    index: 0
 
 # Wait for confirmation modal to appear with Phase 2 elements
 - extendedWaitUntil:
-    id: "meal-name-input"
+    visible: "Name this meal (optional):"
     timeout: 10000
 
-# Enter a custom meal name
-- tapOn:
-    id: "meal-name-input"
+# Tap on the meal name input area
+- tapOn: "Name this meal (optional):"
 
 - inputText: "Mom's special breakfast"
 
@@ -49,8 +49,7 @@ appId: com.vitorsilvavmrs.saborspin
 - takeScreenshot: history-phase2-02-meal-name-entered
 
 # Complete the logging by tapping Done
-- tapOn:
-    id: "done-button"
+- tapOn: "Done"
 
 # Wait to return to home screen
 - extendedWaitUntil:

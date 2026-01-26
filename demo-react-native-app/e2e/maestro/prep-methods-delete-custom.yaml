@@ -9,6 +9,8 @@
 
 appId: com.vitorsilvavmrs.saborspin
 ---
+# Clear app state for consistent testing
+- clearState
 # Launch app
 - launchApp
 
@@ -32,8 +34,7 @@ appId: com.vitorsilvavmrs.saborspin
     timeout: 10000
 
 # Step 1: First add a custom method to delete
-- tapOn:
-    id: "add-prep-method-button"
+- tapOn: "+ Add Method"
 
 # Wait for modal to appear
 - extendedWaitUntil:
@@ -41,13 +42,10 @@ appId: com.vitorsilvavmrs.saborspin
     timeout: 5000
 
 # Enter custom method name
-- tapOn:
-    id: "prep-method-name-input"
 - inputText: "sous-vide"
 
-# Tap save button
-- tapOn:
-    id: "save-prep-method-button"
+# Tap add button
+- tapOn: "Add"
 
 # Wait for modal to close
 - extendedWaitUntil:
@@ -57,10 +55,9 @@ appId: com.vitorsilvavmrs.saborspin
 # Wait for UI to update
 - waitForAnimationToEnd
 
-# Scroll to custom methods section
+# Scroll to find the newly added custom method
 - scrollUntilVisible:
-    element:
-      id: "custom-prep-methods"
+    element: "sous-vide"
     direction: DOWN
     timeout: 5000
 
@@ -72,8 +69,7 @@ appId: com.vitorsilvavmrs.saborspin
 
 # Step 2: Delete the custom method
 # Find and tap the delete button for this method
-- tapOn:
-    text: "Delete"
+- tapOn: "Delete"
 
 # Wait for confirmation dialog
 - extendedWaitUntil:
@@ -85,8 +81,7 @@ appId: com.vitorsilvavmrs.saborspin
 - takeScreenshot: prep-delete-02-confirm-dialog
 
 # Confirm deletion
-- tapOn:
-    text: "Delete"
+- tapOn: "Delete"
 
 # Wait for deletion to complete
 - waitForAnimationToEnd
@@ -96,8 +91,7 @@ appId: com.vitorsilvavmrs.saborspin
 
 # Scroll to custom methods section
 - scrollUntilVisible:
-    element:
-      id: "custom-prep-methods"
+    element: "Custom Methods"
     direction: DOWN
     timeout: 5000
 

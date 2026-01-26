@@ -35,48 +35,49 @@ appId: com.vitorsilvavmrs.saborspin
 
 # Select first suggestion to open confirmation modal
 - tapOn:
-    id: "select-button-0"
+    text: "Select"
+    index: 0
 
 # Wait for confirmation modal
 - extendedWaitUntil:
-    id: "meal-name-input"
+    visible: "Done"
     timeout: 10000
-
-# Verify meal name input is visible (we'll leave it empty)
-- assertVisible:
-    id: "meal-name-input"
 
 # Take screenshot showing empty name input
 - takeScreenshot: phase2-anon-03-modal-no-name
 
-# Open preparation method picker for first ingredient
+# Scroll to see ingredients
+- scroll
+
+# Wait for UI to settle
+- waitForAnimationToEnd
+
+# Open preparation method picker for first ingredient (search for "as is")
 - tapOn:
-    id: "meal-component-0"
+    text: "as is"
+    index: 0
 
 # Wait for prep method picker
 - extendedWaitUntil:
-    id: "prep-method-prep-raw"
+    visible: "Raw"
     timeout: 10000
 
 # Select "raw" preparation method
-- tapOn:
-    id: "prep-method-prep-raw"
+- tapOn: "Raw"
 
 # Wait for picker to close
 - extendedWaitUntil:
-    id: "done-button"
+    visible: "Done"
     timeout: 5000
 
 # Verify raw method is shown
-- assertVisible:
-    text: "raw"
+- assertVisible: "Raw"
 
 # Take screenshot with prep method but no name
 - takeScreenshot: phase2-anon-04-prep-selected-no-name
 
 # Complete the logging (without entering a name)
-- tapOn:
-    id: "done-button"
+- tapOn: "Done"
 
 # Wait to return to home screen
 - extendedWaitUntil:

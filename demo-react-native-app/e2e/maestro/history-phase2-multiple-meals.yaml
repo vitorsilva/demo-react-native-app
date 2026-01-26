@@ -32,22 +32,21 @@ appId: com.vitorsilvavmrs.saborspin
 
 # Select first suggestion
 - tapOn:
-    id: "select-button-0"
+    text: "Select"
+    index: 0
 
 # Wait for confirmation modal
 - extendedWaitUntil:
-    id: "meal-name-input"
+    visible: "Name this meal (optional):"
     timeout: 10000
 
 # Enter a custom meal name
-- tapOn:
-    id: "meal-name-input"
+- tapOn: "Name this meal (optional):"
 
 - inputText: "Named breakfast"
 
 # Complete the logging
-- tapOn:
-    id: "done-button"
+- tapOn: "Done"
 
 # Wait to return to home screen
 - extendedWaitUntil:
@@ -69,34 +68,40 @@ appId: com.vitorsilvavmrs.saborspin
 
 # Select first suggestion
 - tapOn:
-    id: "select-button-0"
+    text: "Select"
+    index: 0
 
 # Wait for confirmation modal
 - extendedWaitUntil:
-    id: "meal-component-0"
+    visible: "Done"
     timeout: 10000
 
-# Open prep method picker (don't enter a name)
+# Scroll to see ingredients
+- scroll
+
+# Wait for UI to settle
+- waitForAnimationToEnd
+
+# Open prep method picker (don't enter a name, search for "as is")
 - tapOn:
-    id: "meal-component-0"
+    text: "as is"
+    index: 0
 
 # Wait for picker
 - extendedWaitUntil:
-    id: "prep-method-prep-fried"
+    visible: "Fried"
     timeout: 10000
 
 # Select fried preparation method
-- tapOn:
-    id: "prep-method-prep-fried"
+- tapOn: "Fried"
 
 # Wait for picker to close
 - extendedWaitUntil:
-    id: "done-button"
+    visible: "Done"
     timeout: 5000
 
 # Complete the logging
-- tapOn:
-    id: "done-button"
+- tapOn: "Done"
 
 # Wait to return to home screen
 - extendedWaitUntil:
@@ -125,8 +130,7 @@ appId: com.vitorsilvavmrs.saborspin
 - assertVisible: "Named breakfast"
 
 # Verify the prep method is displayed for unnamed meal
-- assertVisible:
-    text: "fried"
+- assertVisible: "Fried"
 
 # Take final screenshot
 - takeScreenshot: history-multi-05-complete

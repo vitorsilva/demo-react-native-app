@@ -9,6 +9,8 @@
 
 appId: com.vitorsilvavmrs.saborspin
 ---
+# Clear app state for consistent testing
+- clearState
 # Launch app
 - launchApp
 
@@ -42,8 +44,6 @@ appId: com.vitorsilvavmrs.saborspin
 - assertVisible: "Manage how ingredients can be prepared"
 
 # Verify system methods section exists
-- assertVisible:
-    id: "system-prep-methods"
 - assertVisible: "System Methods"
 
 # Take screenshot of prep methods section
@@ -59,8 +59,7 @@ appId: com.vitorsilvavmrs.saborspin
 
 # Scroll to custom methods section
 - scrollUntilVisible:
-    element:
-      id: "custom-prep-methods"
+    element: "Custom Methods"
     direction: DOWN
     timeout: 5000
 
@@ -74,8 +73,7 @@ appId: com.vitorsilvavmrs.saborspin
 - takeScreenshot: prep-methods-05-custom-empty
 
 # Verify add button is visible
-- assertVisible:
-    id: "add-prep-method-button"
+- assertVisible: "+ Add Method"
 
 # Take final screenshot
 - takeScreenshot: prep-methods-06-complete

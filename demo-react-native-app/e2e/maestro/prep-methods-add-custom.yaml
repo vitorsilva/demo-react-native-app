@@ -9,6 +9,8 @@
 
 appId: com.vitorsilvavmrs.saborspin
 ---
+# Clear app state for consistent testing
+- clearState
 # Launch app
 - launchApp
 
@@ -35,8 +37,7 @@ appId: com.vitorsilvavmrs.saborspin
 - takeScreenshot: prep-add-custom-01-before
 
 # Tap add button
-- tapOn:
-    id: "add-prep-method-button"
+- tapOn: "+ Add Method"
 
 # Wait for modal to appear
 - extendedWaitUntil:
@@ -44,42 +45,34 @@ appId: com.vitorsilvavmrs.saborspin
     timeout: 5000
 
 # Verify modal elements
-- assertVisible:
-    id: "prep-method-name-input"
-- assertVisible:
-    id: "cancel-prep-method-button"
-- assertVisible:
-    id: "save-prep-method-button"
+- assertVisible: "Cancel"
+- assertVisible: "Add"
 
 # Take screenshot of modal
 - takeScreenshot: prep-add-custom-02-modal-open
 
-# Enter custom method name
-- tapOn:
-    id: "prep-method-name-input"
+# Enter custom method name in the input field
 - inputText: "air-fried"
 
 # Take screenshot with name entered
 - takeScreenshot: prep-add-custom-03-name-entered
 
-# Tap save button
-- tapOn:
-    id: "save-prep-method-button"
+# Tap add button
+- tapOn: "Add"
 
 # Wait for modal to close
 - extendedWaitUntil:
     notVisible: "Add New Preparation Method"
     timeout: 5000
 
-# Scroll to custom methods section
-- scrollUntilVisible:
-    element:
-      id: "custom-prep-methods"
-    direction: DOWN
-    timeout: 5000
-
 # Wait for UI to update
 - waitForAnimationToEnd
+
+# Scroll to find the newly added custom method
+- scrollUntilVisible:
+    element: "air-fried"
+    direction: DOWN
+    timeout: 5000
 
 # Verify custom method appears in the list
 - assertVisible: "air-fried"

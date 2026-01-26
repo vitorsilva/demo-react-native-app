@@ -32,62 +32,70 @@ appId: com.vitorsilvavmrs.saborspin
 
 # Select first suggestion to open confirmation modal
 - tapOn:
-    id: "select-button-0"
+    text: "Select"
+    index: 0
 
 # Wait for confirmation modal
 - extendedWaitUntil:
-    id: "meal-component-0"
+    visible: "Done"
     timeout: 10000
 
-# Open preparation method picker for first ingredient
-- tapOn:
-    id: "meal-component-0"
+# Scroll to see ingredients
+- scroll
 
-# Wait for prep method picker to appear
+# Wait for UI to settle
+- waitForAnimationToEnd
+
+# Open preparation method picker for first ingredient (search for "as is")
+- tapOn:
+    text: "as is"
+    index: 0
+
+# Wait for prep method picker to appear - look for Grilled as indicator picker is open
 - extendedWaitUntil:
-    id: "show-add-custom-input"
+    visible: "Grilled"
     timeout: 10000
 
 # Take screenshot before adding custom method
 - takeScreenshot: phase2-custom-02-picker-before
 
-# Tap "Add custom" button to show input field
-- tapOn:
-    id: "show-add-custom-input"
+# Scroll down in picker to find Add custom option
+- scroll
 
-# Wait for custom input field
+# Wait a moment for the scroll to settle
+- waitForAnimationToEnd
+
+# Tap "Add custom" button to show input field (using partial match)
+- tapOn:
+    text: "Add custom"
+
+# Wait for custom input field to appear
 - extendedWaitUntil:
-    id: "custom-prep-method-input"
+    visible: "Add"
     timeout: 5000
 
-# Enter custom preparation method name
-- tapOn:
-    id: "custom-prep-method-input"
-
+# Enter custom preparation method name in the input field
 - inputText: "air-fried"
 
 # Take screenshot with custom method input
 - takeScreenshot: phase2-custom-03-input-filled
 
 # Tap Add button to add the custom method
-- tapOn:
-    id: "add-custom-prep-method-button"
+- tapOn: "Add"
 
 # Wait for picker to close and return to confirmation modal
 - extendedWaitUntil:
-    id: "done-button"
+    visible: "Done"
     timeout: 5000
 
 # Verify custom method is now shown on the component row
-- assertVisible:
-    text: "air-fried"
+- assertVisible: "air-fried"
 
 # Take screenshot showing custom preparation method selected
 - takeScreenshot: phase2-custom-04-custom-selected
 
 # Complete the logging
-- tapOn:
-    id: "done-button"
+- tapOn: "Done"
 
 # Wait to return to home screen
 - extendedWaitUntil:

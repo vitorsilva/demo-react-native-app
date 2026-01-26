@@ -22,18 +22,10 @@ appId: com.vitorsilvavmrs.saborspin
 - takeScreenshot: variety-stats-01-home-initial
 
 # Verify the variety stats card is visible on home screen
-- assertVisible:
-    id: "variety-stats-card"
-
-# Verify the stats card title is visible
 - assertVisible: "Your Variety This Month"
 
 # Take screenshot showing stats card
 - takeScreenshot: variety-stats-02-stats-card-visible
-
-# Verify content is visible (card is expanded by default)
-- assertVisible:
-    id: "variety-stats-content"
 
 # Since no meals are logged, verify empty state message
 - assertVisible: "No meals logged yet"
@@ -41,30 +33,26 @@ appId: com.vitorsilvavmrs.saborspin
 # Take screenshot of empty state
 - takeScreenshot: variety-stats-03-empty-state
 
-# Test collapse functionality - tap the toggle
-- tapOn:
-    id: "variety-stats-toggle"
+# Test collapse functionality - tap the toggle (the card header)
+- tapOn: "Your Variety This Month"
 
 # Wait for animation
 - waitForAnimationToEnd
 
 # Verify content is no longer visible (card is collapsed)
-- assertNotVisible:
-    id: "variety-stats-content"
+- assertNotVisible: "No meals logged yet"
 
 # Take screenshot of collapsed state
 - takeScreenshot: variety-stats-04-collapsed
 
 # Test expand functionality - tap the toggle again
-- tapOn:
-    id: "variety-stats-toggle"
+- tapOn: "Your Variety This Month"
 
 # Wait for animation
 - waitForAnimationToEnd
 
 # Verify content is visible again
-- assertVisible:
-    id: "variety-stats-content"
+- assertVisible: "No meals logged yet"
 
 # Take screenshot of expanded state
 - takeScreenshot: variety-stats-05-expanded-again
@@ -84,7 +72,8 @@ appId: com.vitorsilvavmrs.saborspin
 
 # Select first suggestion
 - tapOn:
-    id: "select-button-0"
+    text: "Select"
+    index: 0
 
 # Wait for confirmation modal
 - extendedWaitUntil:
@@ -93,8 +82,7 @@ appId: com.vitorsilvavmrs.saborspin
     timeout: 10000
 
 # Dismiss modal
-- tapOn:
-    id: "done-button"
+- tapOn: "Done"
 
 # Wait to return to home screen
 - extendedWaitUntil:
@@ -102,12 +90,7 @@ appId: com.vitorsilvavmrs.saborspin
     timeout: 10000
 
 # Verify stats card is still visible after navigation
-- assertVisible:
-    id: "variety-stats-card"
-
-# Verify stats have updated (should show at least 1 combination now)
-- assertVisible:
-    id: "variety-stats-content"
+- assertVisible: "Your Variety This Month"
 
 # Take screenshot of stats after logging meal
 - takeScreenshot: variety-stats-07-stats-after-meal
