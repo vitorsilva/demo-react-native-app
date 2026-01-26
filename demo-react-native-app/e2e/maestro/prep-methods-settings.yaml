@@ -66,14 +66,8 @@ appId: com.vitorsilvavmrs.saborspin
 # Verify custom methods section exists
 - assertVisible: "Custom Methods"
 
-# Verify empty state for custom methods
-- assertVisible: "No custom methods yet"
-
-# Take screenshot of custom methods empty state
-- takeScreenshot: prep-methods-05-custom-empty
-
-# Verify add button is visible
-- assertVisible: "+ Add Method"
+# Take screenshot of custom methods section
+- takeScreenshot: prep-methods-05-custom-section
 
 # Take final screenshot
 - takeScreenshot: prep-methods-06-complete

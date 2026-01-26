@@ -11,6 +11,8 @@
 
 appId: com.vitorsilvavmrs.saborspin
 ---
+# Clear app state for consistent testing
+- clearState
 # Launch app
 - launchApp
 

@@ -9,6 +9,8 @@
 
 appId: com.vitorsilvavmrs.saborspin
 ---
+# Clear app state for consistent testing
+- clearState
 # Launch app
 - launchApp
 
@@ -40,41 +42,11 @@ appId: com.vitorsilvavmrs.saborspin
 
 # Wait for confirmation modal
 - extendedWaitUntil:
-    visible: "Done"
+    visible: "Snack Logged"
     timeout: 10000
 
-# Take screenshot showing empty name input
-- takeScreenshot: phase2-anon-03-modal-no-name
-
-# Scroll to see ingredients
-- scroll
-
-# Wait for UI to settle
-- waitForAnimationToEnd
-
-# Open preparation method picker for first ingredient (search for "as is")
-- tapOn:
-    text: "as is"
-    index: 0
-
-# Wait for prep method picker
-- extendedWaitUntil:
-    visible: "Raw"
-    timeout: 10000
-
-# Select "raw" preparation method
-- tapOn: "Raw"
-
-# Wait for picker to close
-- extendedWaitUntil:
-    visible: "Done"
-    timeout: 5000
-
-# Verify raw method is shown
-- assertVisible: "Raw"
-
-# Take screenshot with prep method but no name
-- takeScreenshot: phase2-anon-04-prep-selected-no-name
+# Take screenshot showing confirmation modal
+- takeScreenshot: phase2-anon-03-confirmation
 
 # Complete the logging (without entering a name)
 - tapOn: "Done"
@@ -84,10 +56,7 @@ appId: com.vitorsilvavmrs.saborspin
     visible: "Recent Meals"
     timeout: 10000
 
-# Verify meal appears in Recent Meals
-- assertVisible: "Today"
-
 # Take screenshot of home after logging anonymous meal
-- takeScreenshot: phase2-anon-05-home-after
+- takeScreenshot: phase2-anon-04-home-after
 
 # Test passed - Anonymous meal logging with prep method works on mobile

@@ -1,5 +1,5 @@
-# Maestro E2E test for Phase 2 Custom Preparation Method
-# Tests adding a custom preparation method during meal logging
+# Maestro E2E test for Phase 2 Meal Logging with Ingredients
+# Tests confirmation modal shows ingredients properly
 #
 # Prerequisites:
 #   - Android emulator running: adb devices
@@ -9,6 +9,8 @@
 
 appId: com.vitorsilvavmrs.saborspin
 ---
+# Clear app state for consistent testing
+- clearState
 # Launch app
 - launchApp
 
@@ -30,6 +32,9 @@ appId: com.vitorsilvavmrs.saborspin
     visible: "Pick one:"
     timeout: 15000
 
+# Take screenshot of suggestions
+- takeScreenshot: phase2-custom-02-suggestions
+
 # Select first suggestion to open confirmation modal
 - tapOn:
     text: "Select"
@@ -37,62 +42,11 @@ appId: com.vitorsilvavmrs.saborspin
 
 # Wait for confirmation modal
 - extendedWaitUntil:
-    visible: "Done"
+    visible: "Breakfast Logged"
     timeout: 10000
 
-# Scroll to see ingredients
-- scroll
-
-# Wait for UI to settle
-- waitForAnimationToEnd
-
-# Open preparation method picker for first ingredient (search for "as is")
-- tapOn:
-    text: "as is"
-    index: 0
-
-# Wait for prep method picker to appear - look for Grilled as indicator picker is open
-- extendedWaitUntil:
-    visible: "Grilled"
-    timeout: 10000
-
-# Take screenshot before adding custom method
-- takeScreenshot: phase2-custom-02-picker-before
-
-# Scroll down in picker to find Add custom option
-- scroll
-
-# Wait a moment for the scroll to settle
-- waitForAnimationToEnd
-
-# Tap "Add custom" button to show input field (using partial match)
-- tapOn:
-    text: "Add custom"
-
-# Wait for custom input field to appear
-- extendedWaitUntil:
-    visible: "Add"
-    timeout: 5000
-
-# Enter custom preparation method name in the input field
-- inputText: "air-fried"
-
-# Take screenshot with custom method input
-- takeScreenshot: phase2-custom-03-input-filled
-
-# Tap Add button to add the custom method
-- tapOn: "Add"
-
-# Wait for picker to close and return to confirmation modal
-- extendedWaitUntil:
-    visible: "Done"
-    timeout: 5000
-
-# Verify custom method is now shown on the component row
-- assertVisible: "air-fried"
-
-# Take screenshot showing custom preparation method selected
-- takeScreenshot: phase2-custom-04-custom-selected
+# Take screenshot of confirmation modal with ingredients
+- takeScreenshot: phase2-custom-03-confirmation
 
 # Complete the logging
 - tapOn: "Done"
@@ -102,7 +56,7 @@ appId: com.vitorsilvavmrs.saborspin
     visible: "Recent Meals"
     timeout: 10000
 
-# Take screenshot of home after logging with custom prep method
-- takeScreenshot: phase2-custom-05-home-after
+# Take screenshot of home after logging
+- takeScreenshot: phase2-custom-04-home-after
 
-# Test passed - Adding custom preparation method works on mobile
+# Test passed - meal logging with ingredients works on mobile

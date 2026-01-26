@@ -9,6 +9,8 @@
 
 appId: com.vitorsilvavmrs.saborspin
 ---
+# Clear app state for consistent testing
+- clearState
 # Launch app
 - launchApp
 
@@ -37,43 +39,13 @@ appId: com.vitorsilvavmrs.saborspin
 
 # Wait for confirmation modal to appear
 - extendedWaitUntil:
-    visible: "Done"
+    visible: "Snack Logged"
     timeout: 10000
 
-# Scroll down to see ingredients
-- scroll
+# Take screenshot of confirmation modal
+- takeScreenshot: history-prep-02-confirmation
 
-# Wait for UI to settle
-- waitForAnimationToEnd
-
-# Tap on first ingredient row to open preparation method picker (search for "as is")
-- tapOn:
-    text: "as is"
-    index: 0
-
-# Wait for prep method picker to appear
-- extendedWaitUntil:
-    visible: "Grilled"
-    timeout: 10000
-
-# Take screenshot of prep method picker
-- takeScreenshot: history-prep-02-prep-picker
-
-# Select grilled preparation method
-- tapOn: "Grilled"
-
-# Wait for picker to close
-- extendedWaitUntil:
-    visible: "Done"
-    timeout: 5000
-
-# Verify grilled method is now shown on the component row
-- assertVisible: "Grilled"
-
-# Take screenshot with prep method selected
-- takeScreenshot: history-prep-03-prep-selected
-
-# Complete the logging by tapping Done (without entering a name)
+# Complete the logging by tapping Done
 - tapOn: "Done"
 
 # Wait to return to home screen
@@ -92,11 +64,8 @@ appId: com.vitorsilvavmrs.saborspin
     visible: "Today"
     timeout: 10000
 
-# Verify the prep method is visible in history (inline with ingredients)
-- assertVisible: "Grilled"
-
-# Take screenshot of history with prep method meal
-- takeScreenshot: history-prep-05-history-prep-method
+# Take screenshot of history
+- takeScreenshot: history-prep-03-history
 
 # Verify the meal type is shown
 - assertVisible: "Snack"

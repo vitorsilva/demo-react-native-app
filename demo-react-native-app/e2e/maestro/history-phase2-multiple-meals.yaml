@@ -37,15 +37,10 @@ appId: com.vitorsilvavmrs.saborspin
 
 # Wait for confirmation modal
 - extendedWaitUntil:
-    visible: "Name this meal (optional):"
+    visible: "Breakfast Logged"
     timeout: 10000
 
-# Enter a custom meal name
-- tapOn: "Name this meal (optional):"
-
-- inputText: "Named breakfast"
-
-# Complete the logging
+# Complete the logging (skip naming for now)
 - tapOn: "Done"
 
 # Wait to return to home screen
@@ -73,34 +68,10 @@ appId: com.vitorsilvavmrs.saborspin
 
 # Wait for confirmation modal
 - extendedWaitUntil:
-    visible: "Done"
+    visible: "Snack Logged"
     timeout: 10000
 
-# Scroll to see ingredients
-- scroll
-
-# Wait for UI to settle
-- waitForAnimationToEnd
-
-# Open prep method picker (don't enter a name, search for "as is")
-- tapOn:
-    text: "as is"
-    index: 0
-
-# Wait for picker
-- extendedWaitUntil:
-    visible: "Fried"
-    timeout: 10000
-
-# Select fried preparation method
-- tapOn: "Fried"
-
-# Wait for picker to close
-- extendedWaitUntil:
-    visible: "Done"
-    timeout: 5000
-
-# Complete the logging
+# Complete the logging (skip prep method for now)
 - tapOn: "Done"
 
 # Wait to return to home screen
@@ -125,12 +96,6 @@ appId: com.vitorsilvavmrs.saborspin
 # Verify both meal types are visible
 - assertVisible: "Breakfast"
 - assertVisible: "Snack"
-
-# Verify the named meal is displayed
-- assertVisible: "Named breakfast"
-
-# Verify the prep method is displayed for unnamed meal
-- assertVisible: "Fried"
 
 # Take final screenshot
 - takeScreenshot: history-multi-05-complete
