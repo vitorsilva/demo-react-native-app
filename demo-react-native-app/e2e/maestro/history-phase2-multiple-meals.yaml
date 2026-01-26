@@ -9,6 +9,8 @@
 
 appId: com.vitorsilvavmrs.saborspin
 ---
+# Clear app state for consistent testing
+- clearState
 # Launch app
 - launchApp
 
@@ -97,7 +99,11 @@ appId: com.vitorsilvavmrs.saborspin
 - assertVisible: "Breakfast"
 - assertVisible: "Snack"
 
+# Verify history UI elements
+- assertVisible: "Today"
+- assertVisible: "All"
+
 # Take final screenshot
 - takeScreenshot: history-multi-05-complete
 
-# Test passed - multiple meals (named and unnamed) display correctly in history on mobile
+# Test passed - multiple meals display correctly in history on mobile

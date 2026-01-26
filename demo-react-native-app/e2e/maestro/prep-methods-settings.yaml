@@ -53,6 +53,8 @@ appId: com.vitorsilvavmrs.saborspin
 - assertVisible: "fried"
 - assertVisible: "grilled"
 - assertVisible: "roasted"
+- assertVisible: "boiled"
+- assertVisible: "baked"
 
 # Take screenshot of system methods
 - takeScreenshot: prep-methods-04-system-methods

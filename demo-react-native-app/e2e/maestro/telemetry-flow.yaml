@@ -20,6 +20,10 @@ appId: com.vitorsilvavmrs.saborspin
 # Take screenshot of home screen
 - takeScreenshot: telemetry-home
 
+# Verify key home screen elements are visible
+- assertVisible: "breakfast Ideas"
+- assertVisible: "snack Ideas"
+
 # Navigate to breakfast suggestions (triggers screen tracking)
 - tapOn:
     text: "breakfast Ideas"
@@ -33,6 +37,10 @@ appId: com.vitorsilvavmrs.saborspin
 # Take screenshot of suggestions
 - takeScreenshot: telemetry-suggestions
 
+# Verify suggestions screen elements
+- assertVisible: "Pick one:"
+- assertVisible: "Select"
+
 # Select a meal (triggers action logging)
 - tapOn:
     text: "Select"
@@ -45,6 +53,11 @@ appId: com.vitorsilvavmrs.saborspin
 
 # Take screenshot of confirmation
 - takeScreenshot: telemetry-confirmation
+
+# Verify confirmation modal elements
+- assertVisible: "Breakfast Logged"
+- assertVisible: "Enjoy your meal!"
+- assertVisible: "Done"
 
 # Dismiss modal by tapping Done button
 - tapOn: "Done"
@@ -63,6 +76,10 @@ appId: com.vitorsilvavmrs.saborspin
 # Take screenshot of history
 - takeScreenshot: telemetry-history
 
+# Verify history screen elements
+- assertVisible: "Today"
+- assertVisible: "Breakfast"
+
 # Navigate to Settings tab (triggers screen tracking)
 - tapOn: "Settings"
 - extendedWaitUntil:
@@ -71,6 +88,11 @@ appId: com.vitorsilvavmrs.saborspin
 
 # Take screenshot of settings
 - takeScreenshot: telemetry-settings
+
+# Verify settings screen elements
+- assertVisible: "Settings"
+- assertVisible: "Variety Cooldown"
+- assertVisible: "Number of Suggestions"
 
 # Navigate back to Home
 - tapOn: "Home"

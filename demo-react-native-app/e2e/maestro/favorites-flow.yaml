@@ -33,6 +33,11 @@ appId: com.vitorsilvavmrs.saborspin
 # Take screenshot of suggestions screen before favoriting
 - takeScreenshot: favorites-02-suggestions-before
 
+# Verify suggestions screen elements
+- assertVisible: "Pick one:"
+- assertVisible: "Select"
+- assertVisible: "☆"
+
 # Mark first suggestion as favorite by tapping the star icon (☆)
 - tapOn: "☆"
 

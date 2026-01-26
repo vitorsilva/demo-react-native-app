@@ -70,4 +70,7 @@ appId: com.vitorsilvavmrs.saborspin
 # Verify the meal type is shown in history
 - assertVisible: "Breakfast"
 
+# Verify history filter tabs are present
+- assertVisible: "All"
+
 # Test passed - meals display correctly in history on mobile

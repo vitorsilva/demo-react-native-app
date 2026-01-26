@@ -82,4 +82,12 @@ appId: com.vitorsilvavmrs.saborspin
 # Take screenshot of stats after logging meal
 - takeScreenshot: variety-stats-07-stats-after-meal
 
+# Verify home screen elements are all present
+- assertVisible: "Recent Meals"
+- assertVisible: "breakfast Ideas"
+- assertVisible: "snack Ideas"
+
+# Take final screenshot
+- takeScreenshot: variety-stats-08-complete
+
 # Test passed - variety stats feature works on mobile

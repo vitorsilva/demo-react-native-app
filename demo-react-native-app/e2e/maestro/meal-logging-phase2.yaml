@@ -24,6 +24,12 @@ appId: com.vitorsilvavmrs.saborspin
 # Take screenshot of initial home screen
 - takeScreenshot: phase2-01-home-initial
 
+# Verify home screen elements
+- assertVisible: "SaborSpin"
+- assertVisible: "breakfast Ideas"
+- assertVisible: "snack Ideas"
+- assertVisible: "Your Variety This Month"
+
 # Navigate to breakfast suggestions
 - tapOn:
     text: "breakfast Ideas"
@@ -50,6 +56,11 @@ appId: com.vitorsilvavmrs.saborspin
 # Take screenshot showing Phase 2 confirmation modal
 - takeScreenshot: phase2-03-confirmation-modal
 
+# Verify Phase 2 confirmation modal elements
+- assertVisible: "Breakfast Logged"
+- assertVisible: "Enjoy your meal!"
+- assertVisible: "Done"
+
 # Take screenshot of ingredients
 - takeScreenshot: phase2-04-ingredients
 
@@ -64,9 +75,10 @@ appId: com.vitorsilvavmrs.saborspin
 # Take screenshot of home after logging meal
 - takeScreenshot: phase2-05-home-after
 
+# Verify home screen shows logged meal
+- assertVisible: "Recent Meals"
+
 # Take screenshot of home after logging meal
 - takeScreenshot: phase2-06-home-complete
 
-# Test passed - meal logging basic flow works
-
-# Test passed - Phase 2 meal logging with name and prep method works on mobile
+# Test passed - Phase 2 meal logging works on mobile

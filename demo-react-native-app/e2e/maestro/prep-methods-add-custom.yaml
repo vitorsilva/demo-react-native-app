@@ -45,6 +45,8 @@ appId: com.vitorsilvavmrs.saborspin
     timeout: 5000
 
 # Verify modal elements
+- assertVisible: "Add New Preparation Method"
+- assertVisible: "Name"
 - assertVisible: "Cancel"
 - assertVisible: "Add"
 
