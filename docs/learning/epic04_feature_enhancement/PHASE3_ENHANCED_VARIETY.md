@@ -577,11 +577,11 @@ function generateSuggestions(
 | 12 | Add pairing rules to suggestion algorithm | Implementation | ~2 hours | Algorithm | done |
 | 13 | 🧪 CREATE unit tests for `applyPairingRules()` | Testing | ~1 hour | Test positive/negative rules | done |
 | 14 | Create Pairing Rules UI | Implementation | ~4 hours | New screen | done |
-| 15 | 🧪 CREATE Playwright E2E tests for pairing rules | Testing | ~1.5 hours | Test add/delete rules via UI | not started |
-| 16 | 🧪 CREATE Maestro tests for pairing rules | Testing | ~1.5 hours | Mirror Playwright tests for mobile | not started |
+| 15 | 🧪 CREATE (and make sure they pass) Playwright E2E tests for pairing rules | Testing | ~1.5 hours | Test add/delete rules via UI | not started |
+| 16 | 🧪 CREATE (and make sure they pass) Maestro tests for pairing rules | Testing | ~1.5 hours | Mirror Playwright tests for mobile | not started |
 | 17 | Update suggestion generation | Implementation | ~2 hours | Integration | not started |
-| 18 | 🧪 CREATE Playwright E2E test for suggestions | Testing | ~1.5 hours | Test negative pairs excluded | not started |
-| 19 | 🧪 CREATE Maestro test for suggestions | Testing | ~1.5 hours | Mirror Playwright test for mobile | not started |
+| 18 | 🧪 CREATE (and make sure they pass) Playwright E2E test for suggestions | Testing | ~1.5 hours | Test negative pairs excluded | not started |
+| 19 | 🧪 CREATE (and make sure they pass) Maestro test for suggestions | Testing | ~1.5 hours | Mirror Playwright test for mobile | not started |
 | 20 | ▶️ RUN full test suites | Testing | ~20 min | Unit + Playwright + Maestro, verify no regressions | not started |
 | 21 | ▶️ RUN quality checks and compare | Quality | ~30 min | Compare to baseline; create remediation plan if worse | not started |
 | 22 | Document learning notes | Documentation | ~30 min | Capture unexpected errors, workarounds, fixes | not started |
