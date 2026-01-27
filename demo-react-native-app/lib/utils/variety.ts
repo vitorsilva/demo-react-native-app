@@ -11,6 +11,34 @@ import type { Ingredient, MealLog } from '../../types/database';
 export const NEW_COMBINATION_THRESHOLD_DAYS = 7;
 
 /**
+ * Counts how many times a specific ingredient has been used in recent meals.
+ * Used for ingredient-level variety tracking to penalize frequently-used ingredients.
+ *
+ * @param ingredientId - The ingredient ID to count
+ * @param history - Array of meal logs to search
+ * @param days - Number of days to look back (e.g., 7 for weekly frequency)
+ * @returns Number of times the ingredient was used in the specified period
+ */
+export function getIngredientFrequency(
+  ingredientId: string,
+  history: MealLog[],
+  days: number
+): number {
+  // Filter meals from the last N days
+  const recentMeals = history.filter((log) => getDaysAgo(log.date) < days);
+
+  // Count how many meals contain this ingredient
+  let count = 0;
+  for (const meal of recentMeals) {
+    if (meal.ingredients.includes(ingredientId)) {
+      count++;
+    }
+  }
+
+  return count;
+}
+
+/**
  * Checks if a combination of ingredients is considered "new" to the user.
  * A combination is "new" if:
  * - It has never been logged, OR

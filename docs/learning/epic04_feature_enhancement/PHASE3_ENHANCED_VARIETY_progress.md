@@ -119,3 +119,33 @@ This document tracks progress for Phase 3 implementation tasks.
 - Duplication rate is acceptable baseline (4.6%)
 
 ---
+
+### Task 4: Add ingredient frequency calculation
+
+**Status:** COMPLETE
+
+**What was done:**
+- Added `getIngredientFrequency()` function to `lib/utils/variety.ts`
+- Implemented Option A from the plan (aggregate from meal_logs, no new table)
+- Function counts ingredient usage in the last N days for variety scoring
+
+**File Modified:**
+- `demo-react-native-app/lib/utils/variety.ts` - Added new function
+
+**Function Implementation:**
+```typescript
+export function getIngredientFrequency(
+  ingredientId: string,
+  history: MealLog[],
+  days: number
+): number
+```
+- Filters meals within the specified day range using `getDaysAgo()`
+- Counts meals containing the specified ingredient
+- Returns count for use in variety penalty scoring
+
+**Verification:**
+- TypeScript check: ✅ No errors
+- Linter: ✅ 0 errors (7 pre-existing warnings unrelated to this change)
+
+---

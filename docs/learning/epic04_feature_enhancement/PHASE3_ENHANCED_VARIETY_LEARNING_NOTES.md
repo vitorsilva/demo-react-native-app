@@ -74,3 +74,22 @@ Always read the linked documentation before claiming something cannot be done. T
 - **Fix:** Identified correct directory from package.json location and ran commands from there
 
 ---
+
+### Task 4: Add ingredient frequency calculation
+
+**Status:** COMPLETE
+
+**What was done:**
+- Added `getIngredientFrequency()` function to `lib/utils/variety.ts`
+- Function counts how many times a specific ingredient was used in the last N days
+- Uses existing `getDaysAgo()` utility for date filtering
+- Follows Option A from the plan (aggregate from meal_logs, no new table)
+
+**Implementation Details:**
+- Function signature: `getIngredientFrequency(ingredientId: string, history: MealLog[], days: number): number`
+- Filters meals where `getDaysAgo(log.date) < days` (meals within the period)
+- Counts meals where `meal.ingredients.includes(ingredientId)`
+
+**No issues encountered.**
+
+---
