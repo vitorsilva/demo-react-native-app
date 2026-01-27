@@ -297,12 +297,14 @@ OR (unnamed meal):
 | Prep Methods Settings | New management screen | `screenshot_prep_methods_settings.png` |
 
 ### Capture Instructions
+NOTE: capture only non existint screenshots, otherwise only document their existence
 1. For BEFORE screenshots: capture existing UI before any implementation
 2. For AFTER screenshots: capture with actual data showing new features
 3. Include both iOS and Android variants if significantly different
 4. Save screenshots in `docs/learning/epic04_feature_enhancement/screenshots/`
 
 ### Capturing BEFORE screenshots after implementation
+NOTE: capture only non existint screenshots, otherwise only document their existence
 If the feature is already implemented, you can still capture BEFORE screenshots:
 - **Option A**: `git checkout <commit-before-feature>`, run app, screenshot, then `git checkout -`
 - **Option B**: Use the ASCII wireframe in this document as the "before" reference
