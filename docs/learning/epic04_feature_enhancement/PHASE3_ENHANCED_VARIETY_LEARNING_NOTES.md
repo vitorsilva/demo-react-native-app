@@ -118,3 +118,29 @@ Always read the linked documentation before claiming something cannot be done. T
 - Linter: ✅ 0 errors
 
 ---
+
+### Task 6: Update variety scoring with frequency
+
+**Status:** COMPLETE
+
+**What was done:**
+- Added `calculateVarietyScore()` function to `lib/utils/variety.ts`
+- Added `FREQUENCY_PENALTY` constant object with HIGH/MEDIUM/LOW thresholds
+- Function scores candidate combinations based on ingredient frequency penalties
+
+**Implementation Details:**
+- Score starts at 100
+- Each ingredient gets penalized based on usage frequency in cooldown period:
+  - 3+ times: -30 (HIGH penalty)
+  - 2 times: -15 (MEDIUM penalty)
+  - 1 time: -5 (LOW penalty)
+  - 0 times: no penalty (encourages rotation)
+- Score is clamped to minimum 0
+
+**Design Decision:**
+- Added to `lib/utils/variety.ts` (not `varietyEngine.ts`) to keep it co-located with `getIngredientFrequency()` which it depends on
+- Exported penalty constants for testability and documentation
+
+**No issues encountered.**
+
+---

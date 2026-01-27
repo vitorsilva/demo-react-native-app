@@ -187,3 +187,40 @@ export function getIngredientFrequency(
 - Linter: ✅ 0 errors
 
 ---
+
+### Task 6: Update variety scoring with frequency
+
+**Status:** COMPLETE
+
+**What was done:**
+- Added `calculateVarietyScore()` function to `lib/utils/variety.ts`
+- Added `FREQUENCY_PENALTY` constant for configurable penalty thresholds
+
+**File Modified:**
+- `demo-react-native-app/lib/utils/variety.ts` - Added new function and constant
+
+**Function Implementation:**
+```typescript
+export function calculateVarietyScore(
+  candidateIngredients: string[],
+  recentMeals: MealLog[],
+  cooldownDays: number
+): number
+```
+
+**Penalty Thresholds (FREQUENCY_PENALTY):**
+- HIGH: 30 (used 3+ times)
+- MEDIUM: 15 (used 2 times)
+- LOW: 5 (used 1 time)
+
+**Algorithm:**
+1. Start with score = 100
+2. For each ingredient, get frequency using `getIngredientFrequency()`
+3. Apply penalty based on frequency threshold
+4. Return score (minimum 0)
+
+**Verification:**
+- TypeScript check: ✅ No errors
+- Linter: ✅ 0 errors
+
+---

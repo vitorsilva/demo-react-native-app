@@ -38,6 +38,58 @@ export function getIngredientFrequency(
   return count;
 }
 
+/** Penalty thresholds for ingredient frequency scoring */
+export const FREQUENCY_PENALTY = {
+  /** Penalty when ingredient used 3+ times in the cooldown period */
+  HIGH: 30,
+  /** Penalty when ingredient used exactly 2 times */
+  MEDIUM: 15,
+  /** Penalty when ingredient used exactly 1 time */
+  LOW: 5,
+} as const;
+
+/**
+ * Calculates a variety score for a candidate combination based on ingredient frequency.
+ * Higher scores indicate better variety (less frequently used ingredients).
+ *
+ * Score starts at 100 and is reduced based on how often each ingredient
+ * has been used in recent meals:
+ * - Used 3+ times: -30 points per ingredient
+ * - Used 2 times: -15 points per ingredient
+ * - Used 1 time: -5 points per ingredient
+ * - Never used: no penalty (encourages rotation)
+ *
+ * @param candidateIngredients - Array of ingredient IDs in the candidate combination
+ * @param recentMeals - Array of recent meal logs to check frequency against
+ * @param cooldownDays - Number of days to look back for frequency calculation
+ * @returns Score from 0 to 100 (higher = better variety)
+ */
+export function calculateVarietyScore(
+  candidateIngredients: string[],
+  recentMeals: MealLog[],
+  cooldownDays: number
+): number {
+  let score = 100;
+
+  for (const ingredientId of candidateIngredients) {
+    // Get how many times this ingredient was used in the cooldown period
+    const frequency = getIngredientFrequency(ingredientId, recentMeals, cooldownDays);
+
+    // Apply penalties based on frequency
+    if (frequency >= 3) {
+      score -= FREQUENCY_PENALTY.HIGH; // Used 3+ times
+    } else if (frequency === 2) {
+      score -= FREQUENCY_PENALTY.MEDIUM; // Used twice
+    } else if (frequency === 1) {
+      score -= FREQUENCY_PENALTY.LOW; // Used once
+    }
+    // frequency === 0 → no penalty (ingredient rotation!)
+  }
+
+  // Ensure score doesn't go below 0
+  return Math.max(0, score);
+}
+
 /**
  * Checks if a combination of ingredients is considered "new" to the user.
  * A combination is "new" if:
