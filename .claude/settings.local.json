@@ -131,7 +131,9 @@
       "Bash(powershell -ExecutionPolicy Bypass -File scripts/download-apk.ps1 -Install)",
       "Bash(maestro hierarchy:*)",
       "Bash(JAVA_HOME=\"/c/Program Files/Android/Android Studio/jbr\" maestro test:*)",
-      "Bash(git reset:*)"
+      "Bash(git reset:*)",
+      "Bash(npx kill-port 8081)",
+      "Bash(\"$LOCALAPPDATA/Android/Sdk/emulator/emulator\" -list-avds)"
     ],
     "deny": [],
     "ask": []
