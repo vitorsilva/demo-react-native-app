@@ -4,6 +4,134 @@ This document captures errors, problems, fixes, and workarounds encountered duri
 
 ---
 
+## Executive Summary
+
+**Phase 2 Date Range:** 2026-01-25 to 2026-01-27
+
+**Total Tasks:** 26 (Tasks 1-26)
+
+**Issues Encountered:** 6 distinct issues across 5 tasks
+
+**Lessons Learned:** 8 key insights
+
+---
+
+## Key Issues Summary
+
+| Task | Issue | Root Cause | Resolution |
+|------|-------|------------|------------|
+| 6 | Wrong column name (`logged_at`) | Didn't verify schema before writing tests | Used correct columns from `schema.ts` |
+| 7 | Required vs optional `name` field | Breaking change to interface | Made field optional (`name?: string \| null`) |
+| 9 | `rejects.toThrow()` didn't work | Store action error handling pattern | Used explicit try-catch blocks |
+| 11 | NOT NULL constraint violation | Tried inserting NULL for edge case test | Verified query logic without inserting invalid data |
+| 12 | Import order ESLint warning | Incorrect import ordering | Followed pattern: React → components → utilities |
+
+---
+
+## Key Lessons Learned
+
+### 1. Schema Verification First
+**Context:** Task 6 - wrong column name in meal_logs table
+**Lesson:** Always verify the actual database schema in `schema.ts` before writing queries or tests. The implementation files may have outdated or different column names than expected.
+
+### 2. Backward Compatibility with Optional Fields
+**Context:** Task 7 - TypeScript interface changes
+**Lesson:** When adding new fields to existing interfaces used throughout the codebase, make them optional (`?`) to avoid breaking existing code. Only use required fields for new interfaces.
+
+### 3. Store Action Error Testing Patterns
+**Context:** Task 9 - testing async error handling
+**Lesson:** Store actions that catch errors for state updates and re-throw them may not work well with Jest's `rejects.toThrow()`. Use explicit try-catch blocks for more control.
+
+### 4. Respect Database Constraints in Tests
+**Context:** Task 11 - NOT NULL constraint
+**Lesson:** Don't violate database schema constraints to test edge cases. Instead, verify the query logic handles edge cases correctly without inserting invalid data.
+
+### 5. Import Order Consistency
+**Context:** Task 12 - ESLint import order warnings
+**Lesson:** Follow established import order: React/framework → third-party libraries → local components (alphabetical) → utilities → types.
+
+### 6. Code Duplication Acceptance
+**Context:** Task 23 - quality checks
+**Lesson:** Some code duplication represents consistent patterns that improve readability. The 4.6% duplication rate is acceptable for architectural consistency.
+
+### 7. Baseline Documentation
+**Context:** Task 23 - comparing quality metrics
+**Lesson:** Always document baseline metrics when running initial quality checks. This makes future comparisons meaningful.
+
+### 8. Idempotent Migrations
+**Context:** Tasks 3-5, 10 - database migrations
+**Lesson:** Use `CREATE TABLE IF NOT EXISTS`, `columnExists`, and `recordExists` helpers to ensure migrations are safe to re-run.
+
+---
+
+## Files Created in Phase 2
+
+### New Components
+- `components/MealNameInput.tsx`
+- `components/MealComponentRow.tsx`
+- `components/PreparationMethodPicker.tsx`
+
+### New Database Operations
+- `lib/database/preparationMethods.ts`
+- `lib/database/mealComponents.ts`
+
+### New Utilities
+- `lib/utils/mealDisplay.ts`
+
+### New Tests
+- `lib/database/__tests__/migrations.phase2.test.ts` (22 tests)
+- `lib/database/__tests__/migrations.phase2.datamigration.test.ts` (15 tests)
+- `lib/store/__tests__/preparationMethods.test.ts` (24 tests)
+- `lib/utils/__tests__/mealDisplay.test.ts` (19 tests)
+- `e2e/meal-logging-phase2.spec.ts` (8 tests)
+- `e2e/history-phase2.spec.ts` (6 tests)
+- `e2e/prep-methods-settings.spec.ts` (12 tests)
+- `e2e/maestro/meal-logging-phase2.yaml`
+- `e2e/maestro/meal-logging-phase2-custom-prep.yaml`
+- `e2e/maestro/meal-logging-phase2-anonymous.yaml`
+- `e2e/maestro/history-phase2-named-meal.yaml`
+- `e2e/maestro/history-phase2-prep-method.yaml`
+- `e2e/maestro/history-phase2-multiple-meals.yaml`
+- `e2e/maestro/prep-methods-settings.yaml`
+- `e2e/maestro/prep-methods-add-custom.yaml`
+- `e2e/maestro/prep-methods-delete-custom.yaml`
+- `e2e/maestro/prep-methods-full-workflow.yaml`
+
+---
+
+## Test Count Progression
+
+| Task | Unit Tests | Change |
+|------|------------|--------|
+| Baseline | 309 | - |
+| Task 6 | 331 | +22 |
+| Task 9 | 355 | +24 |
+| Task 11 | 370 | +15 |
+| Task 13 | 389 | +19 |
+| **Final** | **389** | **+80** |
+
+---
+
+## Quality Metrics (Final)
+
+| Metric | Value | Status |
+|--------|-------|--------|
+| Architecture Violations | 0 | ✅ |
+| Dead Code Issues | 0 | ✅ |
+| Code Duplication | 4.6% | ✅ Acceptable |
+| Security Vulnerabilities | 0 | ✅ |
+| Unit Tests Passing | 389/389 | ✅ |
+| Playwright E2E Tests | 69 | ✅ |
+| Maestro Test Files | 14 | ✅ |
+
+---
+
+## Detailed Task Notes
+
+Below are the detailed notes for each implementation task.
+
+---
+
 ## Task 3: Add preparation_methods table + seed
 
 **Date:** 2026-01-25
