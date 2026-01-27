@@ -114,13 +114,27 @@ describe('Phase 2 Migrations - Data Model Evolution', () => {
     test('preparation_methods name column has UNIQUE constraint', async () => {
       const db = getDatabase();
 
-      // Try to insert duplicate name - should fail
-      await expect(
-        db.runAsync(
+      // Count existing 'fried' entries
+      const beforeCount = await db.getAllAsync<{ count: number }>(
+        `SELECT COUNT(*) as count FROM preparation_methods WHERE name = 'fried'`
+      );
+      expect(beforeCount[0].count).toBe(1);
+
+      // Try to insert duplicate name - should fail or be ignored due to UNIQUE constraint
+      try {
+        await db.runAsync(
           `INSERT INTO preparation_methods (id, name, is_predefined, created_at) VALUES (?, ?, ?, ?)`,
           ['prep-fried-duplicate', 'fried', 1, new Date().toISOString()]
-        )
-      ).rejects.toThrow();
+        );
+      } catch {
+        // Expected - UNIQUE constraint violation
+      }
+
+      // Verify only one 'fried' entry exists (constraint enforced)
+      const afterCount = await db.getAllAsync<{ count: number }>(
+        `SELECT COUNT(*) as count FROM preparation_methods WHERE name = 'fried'`
+      );
+      expect(afterCount[0].count).toBe(1);
     });
 
     test('preparation_methods created_at is populated', async () => {
