@@ -337,3 +337,66 @@ CREATE TABLE pairing_rules (
 - All 35 store tests pass
 
 ---
+
+### Task 11: CREATE unit tests for pairing rules CRUD
+
+**Status:** COMPLETE
+
+**What was done:**
+- Created `lib/database/__tests__/pairingRules.test.ts`
+- Added 28 unit tests covering all CRUD operations for pairing rules
+
+**File Created:**
+- `demo-react-native-app/lib/database/__tests__/pairingRules.test.ts`
+
+**Tests Added (28 tests in 7 categories):**
+1. **getAllPairingRules** (3 tests)
+   - Returns empty array when no rules exist
+   - Returns all added rules
+   - Returns rules sorted by creation date descending
+
+2. **addPairingRule** (4 tests)
+   - Creates rule with generated ID and timestamp
+   - Creates positive rule type
+   - Creates negative rule type
+   - Rule is retrievable after creation
+
+3. **getPairingRuleById** (2 tests)
+   - Returns correct rule
+   - Returns null for non-existent ID
+
+4. **getPairingRulesForIngredient** (5 tests)
+   - Returns rules where ingredient is A
+   - Returns rules where ingredient is B
+   - Returns all rules involving ingredient (as A or B)
+   - Returns empty array when ingredient has no rules
+   - Returns rules sorted by creation date descending
+
+5. **deletePairingRule** (3 tests)
+   - Removes rule from database
+   - Returns error for non-existent rule
+   - Only deletes specified rule
+
+6. **pairingRuleExists** (4 tests)
+   - Returns true when rule exists (A-B order)
+   - Returns true when rule exists (B-A reverse lookup)
+   - Returns false when no rule exists
+   - Returns false for different ingredient pair
+
+7. **getPairingRuleForPair** (5 tests)
+   - Returns rule for exact pair match (A-B)
+   - Returns rule for reversed pair (B-A)
+   - Returns null when no rule exists for pair
+   - Returns correct rule type (positive)
+   - Returns correct rule type (negative)
+
+8. **Rule structure and properties** (2 tests)
+   - Rule has correct structure after retrieval
+   - ruleType is properly typed as string union
+
+**Verification:**
+- All 28 pairing rules CRUD tests pass
+- TypeScript check: ✅ No errors
+- Linter: ✅ 0 errors (7 pre-existing warnings)
+
+---

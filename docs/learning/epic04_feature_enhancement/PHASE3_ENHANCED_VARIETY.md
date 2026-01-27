@@ -573,7 +573,7 @@ function generateSuggestions(
 | 8 | Add pairing_rules table | Implementation | ~1 hour | Migration | done |
 | 9 | 🧪 CREATE unit tests for pairing rules migration | Testing | ~30 min | Test table creation | done |
 | 10 | Add pairing rules store actions | Implementation | ~2 hours | Store | done |
-| 11 | 🧪 CREATE unit tests for pairing rules CRUD | Testing | ~1 hour | Test add/delete/query | not started |
+| 11 | 🧪 CREATE unit tests for pairing rules CRUD | Testing | ~1 hour | Test add/delete/query | done |
 | 12 | Add pairing rules to suggestion algorithm | Implementation | ~2 hours | Algorithm | not started |
 | 13 | 🧪 CREATE unit tests for `applyPairingRules()` | Testing | ~1 hour | Test positive/negative rules | not started |
 | 14 | Create Pairing Rules UI | Implementation | ~4 hours | New screen | not started |

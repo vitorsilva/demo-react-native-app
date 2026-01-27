@@ -262,3 +262,32 @@ Always read the linked documentation before claiming something cannot be done. T
 **No issues encountered.**
 
 ---
+
+### Task 11: CREATE unit tests for pairing rules CRUD
+
+**Status:** COMPLETE
+
+**What was done:**
+- Created `lib/database/__tests__/pairingRules.test.ts` with 28 unit tests
+- Tests cover all 7 CRUD functions in pairingRules.ts
+
+**Test Categories (28 tests in 7 categories):**
+1. **getAllPairingRules** (3 tests): empty array, all rules, sorted by date descending
+2. **addPairingRule** (4 tests): generated ID/timestamp, positive type, negative type, retrievable
+3. **getPairingRuleById** (2 tests): returns correct rule, returns null for non-existent
+4. **getPairingRulesForIngredient** (5 tests): as A, as B, both A and B, empty array, sorted
+5. **deletePairingRule** (3 tests): removes rule, error for non-existent, only deletes specified
+6. **pairingRuleExists** (4 tests): exists A-B order, exists B-A reverse, false when none, false for different pair
+7. **getPairingRuleForPair** (5 tests): exact match, reversed pair, null when none, positive type, negative type
+8. **Rule structure and properties** (2 tests): correct structure, proper ruleType
+
+**Test Results:**
+- All 28 pairing rules CRUD tests pass
+- TypeScript check: ✅ No errors
+- Linter: ✅ 0 errors (7 pre-existing warnings)
+
+**Note:** There are 2 pre-existing failing tests in migrations.phase2.test.ts and migrations.phase3.test.ts related to UNIQUE constraint testing. These tests expect exceptions to be thrown, but the test database adapter (better-sqlite3) doesn't throw in the same way. This issue existed before Task 11 and is not related to the pairingRules.test.ts file.
+
+**No issues encountered.**
+
+---
