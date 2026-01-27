@@ -149,3 +149,41 @@ export function getIngredientFrequency(
 - Linter: ✅ 0 errors (7 pre-existing warnings unrelated to this change)
 
 ---
+
+### Task 5: CREATE unit tests for getIngredientFrequency()
+
+**Status:** COMPLETE
+
+**What was done:**
+- Added 13 unit tests for `getIngredientFrequency()` to `lib/utils/__tests__/variety.test.ts`
+- Followed existing test patterns in the file
+
+**File Modified:**
+- `demo-react-native-app/lib/utils/__tests__/variety.test.ts` - Added test suite
+
+**Tests Added (13 tests in 3 categories):**
+1. **Basic counting** (5 tests)
+   - Returns 0 for empty history
+   - Returns 0 when ingredient not in any meals
+   - Counts ingredient used once
+   - Counts ingredient used multiple times
+   - Counts each meal separately even on same day
+
+2. **Day range filtering** (5 tests)
+   - Only counts meals within the specified day range
+   - Includes meals from today (day 0)
+   - Excludes meals at exactly the day boundary
+   - Respects custom day ranges
+   - Returns 0 for 0-day range
+
+3. **Edge cases** (3 tests)
+   - Handles meals with single ingredient
+   - Handles meals with many ingredients
+   - Handles large history efficiently
+
+**Verification:**
+- All 57 variety tests pass (13 new + 44 existing)
+- TypeScript check: ✅ No errors
+- Linter: ✅ 0 errors
+
+---

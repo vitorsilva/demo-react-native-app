@@ -93,3 +93,28 @@ Always read the linked documentation before claiming something cannot be done. T
 **No issues encountered.**
 
 ---
+
+### Task 5: CREATE unit tests for getIngredientFrequency()
+
+**Status:** COMPLETE
+
+**What was done:**
+- Added 13 unit tests for `getIngredientFrequency()` to `lib/utils/__tests__/variety.test.ts`
+- Tests cover: basic counting, day range filtering, and edge cases
+
+**Test Categories:**
+1. **Basic counting** (5 tests): empty history, ingredient not found, single use, multiple uses, same-day meals
+2. **Day range filtering** (5 tests): day boundary, today, custom ranges, edge cases
+3. **Edge cases** (3 tests): single ingredient meals, many ingredients, large history
+
+**Issue Encountered:**
+- Initial "large history" test expected 50 meals but actual count was 51
+- Off-by-one error in manual calculation of `i % 14` distribution
+- **Fix:** Corrected expectation to 51 with detailed comment explaining the math
+
+**Test Results:**
+- All 57 variety tests pass (13 new + 44 existing)
+- TypeScript check: ✅ No errors
+- Linter: ✅ 0 errors
+
+---

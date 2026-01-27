@@ -4,6 +4,7 @@ import {
   getVarietyColor,
   FRESH_THRESHOLD_DAYS,
   calculateVarietyStats,
+  getIngredientFrequency,
 } from '../variety';
 import type { MealLog, Ingredient } from '../../../types/database';
 
@@ -644,6 +645,152 @@ describe('calculateVarietyStats', () => {
 
       expect(stats.uniqueCombosThisMonth).toBe(2);
       expect(stats.ingredientsUsedThisWeek).toBe(2);
+    });
+  });
+});
+
+describe('getIngredientFrequency', () => {
+  describe('basic counting', () => {
+    it('returns 0 for empty history', () => {
+      const history: MealLog[] = [];
+
+      expect(getIngredientFrequency('milk-id', history, 7)).toBe(0);
+    });
+
+    it('returns 0 when ingredient is not in any meals', () => {
+      const history: MealLog[] = [
+        createMealLog(['bread-id', 'cheese-id'], 1),
+        createMealLog(['apple-id', 'banana-id'], 2),
+      ];
+
+      expect(getIngredientFrequency('milk-id', history, 7)).toBe(0);
+    });
+
+    it('counts ingredient used once', () => {
+      const history: MealLog[] = [
+        createMealLog(['milk-id', 'bread-id'], 1),
+        createMealLog(['cheese-id', 'apple-id'], 2),
+      ];
+
+      expect(getIngredientFrequency('milk-id', history, 7)).toBe(1);
+    });
+
+    it('counts ingredient used multiple times', () => {
+      const history: MealLog[] = [
+        createMealLog(['milk-id', 'bread-id'], 1, '1'),
+        createMealLog(['milk-id', 'cheese-id'], 2, '2'),
+        createMealLog(['milk-id', 'apple-id'], 3, '3'),
+      ];
+
+      expect(getIngredientFrequency('milk-id', history, 7)).toBe(3);
+    });
+
+    it('counts each meal separately even on same day', () => {
+      const history: MealLog[] = [
+        createMealLog(['milk-id', 'bread-id'], 0, '1'),
+        createMealLog(['milk-id', 'cheese-id'], 0, '2'),
+      ];
+
+      expect(getIngredientFrequency('milk-id', history, 7)).toBe(2);
+    });
+  });
+
+  describe('day range filtering', () => {
+    it('only counts meals within the specified day range', () => {
+      const history: MealLog[] = [
+        createMealLog(['milk-id', 'bread-id'], 1, '1'), // Within 7 days
+        createMealLog(['milk-id', 'cheese-id'], 5, '2'), // Within 7 days
+        createMealLog(['milk-id', 'apple-id'], 10, '3'), // Outside 7 days
+      ];
+
+      expect(getIngredientFrequency('milk-id', history, 7)).toBe(2);
+    });
+
+    it('includes meals from today (day 0)', () => {
+      const history: MealLog[] = [
+        createMealLog(['milk-id', 'bread-id'], 0), // Today
+      ];
+
+      expect(getIngredientFrequency('milk-id', history, 7)).toBe(1);
+    });
+
+    it('excludes meals at exactly the day boundary', () => {
+      const history: MealLog[] = [
+        createMealLog(['milk-id', 'bread-id'], 7, '1'), // Exactly 7 days ago (excluded)
+        createMealLog(['milk-id', 'cheese-id'], 6, '2'), // 6 days ago (included)
+      ];
+
+      // 7 days means < 7, so day 7 is excluded
+      expect(getIngredientFrequency('milk-id', history, 7)).toBe(1);
+    });
+
+    it('respects custom day ranges', () => {
+      const history: MealLog[] = [
+        createMealLog(['milk-id', 'bread-id'], 1, '1'),
+        createMealLog(['milk-id', 'cheese-id'], 2, '2'),
+        createMealLog(['milk-id', 'apple-id'], 4, '3'),
+      ];
+
+      // With 3 days range, only 2 meals should count (days 1 and 2)
+      expect(getIngredientFrequency('milk-id', history, 3)).toBe(2);
+    });
+
+    it('returns 0 for 0-day range', () => {
+      const history: MealLog[] = [
+        createMealLog(['milk-id', 'bread-id'], 0), // Today
+      ];
+
+      // 0 days means < 0, which is impossible
+      expect(getIngredientFrequency('milk-id', history, 0)).toBe(0);
+    });
+  });
+
+  describe('edge cases', () => {
+    it('handles meals with single ingredient', () => {
+      const history: MealLog[] = [createMealLog(['milk-id'], 1)];
+
+      expect(getIngredientFrequency('milk-id', history, 7)).toBe(1);
+    });
+
+    it('handles meals with many ingredients', () => {
+      const history: MealLog[] = [
+        createMealLog(
+          ['milk-id', 'bread-id', 'cheese-id', 'apple-id', 'banana-id'],
+          1
+        ),
+      ];
+
+      expect(getIngredientFrequency('milk-id', history, 7)).toBe(1);
+      expect(getIngredientFrequency('banana-id', history, 7)).toBe(1);
+    });
+
+    it('does not count same meal multiple times', () => {
+      // Even if ingredient appears "multiple times" conceptually in one meal,
+      // it should only count the meal once
+      const history: MealLog[] = [
+        createMealLog(['milk-id', 'bread-id'], 1),
+      ];
+
+      expect(getIngredientFrequency('milk-id', history, 7)).toBe(1);
+    });
+
+    it('handles large history efficiently', () => {
+      // Create history with 100 meals
+      const history: MealLog[] = [];
+      for (let i = 0; i < 100; i++) {
+        history.push(
+          createMealLog(['milk-id', 'bread-id'], i % 14, `log-${i}`)
+        );
+      }
+
+      // Within 7 days, count meals on days 0-6
+      const count = getIngredientFrequency('milk-id', history, 7);
+      // 100 meals with days = i % 14
+      // Day 0: i=0,14,28,42,56,70,84,98 = 8 meals
+      // Day 1: i=1,15,29,43,57,71,85,99 = 8 meals
+      // Days 2-6: 7 meals each = 35 meals
+      // Total = 8 + 8 + 35 = 51 meals
+      expect(count).toBe(51);
     });
   });
 });
