@@ -308,3 +308,32 @@ CREATE TABLE pairing_rules (
 - Linter: ✅ 0 errors (7 pre-existing warnings)
 
 ---
+
+### Task 10: Add pairing rules store actions
+
+**Status:** COMPLETE
+
+**What was done:**
+- Added `PairingRule` type to `types/database.ts`
+- Created `lib/database/pairingRules.ts` with CRUD operations
+- Added pairing rules state and actions to the Zustand store
+
+**Files Created:**
+- `demo-react-native-app/lib/database/pairingRules.ts`
+
+**Files Modified:**
+- `demo-react-native-app/types/database.ts` - Added PairingRule interface
+- `demo-react-native-app/lib/store/index.ts` - Added state and 4 actions
+
+**Store Actions:**
+1. `loadPairingRules()` - Load all rules from database
+2. `addPairingRule(ingredientAId, ingredientBId, ruleType)` - Add a rule
+3. `deletePairingRule(id)` - Delete a rule
+4. `getPairingRulesForIngredient(ingredientId)` - Get rules for ingredient
+
+**Verification:**
+- TypeScript check: ✅ No errors
+- Linter: ✅ 0 errors (7 pre-existing warnings)
+- All 35 store tests pass
+
+---

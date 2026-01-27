@@ -222,3 +222,43 @@ Always read the linked documentation before claiming something cannot be done. T
 **No issues encountered.**
 
 ---
+
+### Task 10: Add pairing rules store actions
+
+**Status:** COMPLETE
+
+**What was done:**
+- Added `PairingRule` type to `types/database.ts`
+- Created `lib/database/pairingRules.ts` with CRUD operations
+- Added pairing rules state and actions to the Zustand store
+
+**Files Created:**
+- `demo-react-native-app/lib/database/pairingRules.ts` - Database operations
+
+**Files Modified:**
+- `demo-react-native-app/types/database.ts` - Added PairingRule type
+- `demo-react-native-app/lib/store/index.ts` - Added state and actions
+
+**Store Actions Implemented:**
+- `loadPairingRules()` - Load all rules from database
+- `addPairingRule(ingredientAId, ingredientBId, ruleType)` - Add a rule
+- `deletePairingRule(id)` - Delete a rule
+- `getPairingRulesForIngredient(ingredientId)` - Get rules for an ingredient
+
+**Database Functions Implemented:**
+- `getAllPairingRules(db)` - Get all rules
+- `getPairingRuleById(db, id)` - Get single rule
+- `getPairingRulesForIngredient(db, ingredientId)` - Get rules for ingredient
+- `addPairingRule(db, ingredientAId, ingredientBId, ruleType)` - Add rule
+- `deletePairingRule(db, id)` - Delete rule
+- `pairingRuleExists(db, ingredientAId, ingredientBId)` - Check if exists
+- `getPairingRuleForPair(db, ingredientAId, ingredientBId)` - Get rule for pair
+
+**Verification:**
+- TypeScript check: ✅ No errors
+- Linter: ✅ 0 errors (7 pre-existing warnings)
+- All 35 store tests pass
+
+**No issues encountered.**
+
+---
