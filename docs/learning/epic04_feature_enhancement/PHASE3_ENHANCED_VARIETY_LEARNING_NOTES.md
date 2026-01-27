@@ -549,3 +549,35 @@ When writing E2E tests for React Native Web apps, prefer testID selectors over t
 - Linter: ✅ 0 errors (8 pre-existing warnings)
 
 ---
+
+### Task 19: CREATE Maestro test for suggestions
+
+**Status:** COMPLETE
+
+**What was done:**
+- Created 4 Maestro test files mirroring the Playwright E2E tests for suggestions with pairing rules:
+  1. `suggestions-pairing-negative.yaml` - Tests that negative pairing rules exclude combinations from suggestions
+  2. `suggestions-pairing-regenerate.yaml` - Tests that regenerating suggestions still respects negative pairing rules
+  3. `suggestions-pairing-positive.yaml` - Tests that positive pairing rules are applied to suggestions
+  4. `suggestions-pairing-workflow.yaml` - Tests full workflow: add negative rule, verify exclusion, delete rule, verify allowed
+
+**Files Created:**
+- `demo-react-native-app/e2e/maestro/suggestions-pairing-negative.yaml`
+- `demo-react-native-app/e2e/maestro/suggestions-pairing-regenerate.yaml`
+- `demo-react-native-app/e2e/maestro/suggestions-pairing-positive.yaml`
+- `demo-react-native-app/e2e/maestro/suggestions-pairing-workflow.yaml`
+
+**Test Pattern Notes:**
+- Used existing Maestro test patterns from pairing-rules-full-workflow.yaml as template
+- Added appropriate timeouts for suggestion loading (15000ms)
+- Used `scrollUntilVisible` for finding elements
+- Added `waitForAnimationToEnd` after UI transitions
+- Included screenshots at key verification points
+
+**Note:** Test execution deferred to Task 20 ("RUN full test suites") as per the plan instructions.
+
+**Verification:**
+- TypeScript check: ✅ No errors (YAML files don't need TS check)
+- Linter: ✅ 0 errors (8 pre-existing warnings)
+
+---

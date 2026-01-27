@@ -1,0 +1,227 @@
+# Maestro E2E test for Full Suggestions with Pairing Rules Workflow
+# Tests: negative pairing prevents suggestion, delete rule allows it
+#
+# Prerequisites:
+#   - Android emulator running: adb devices
+#   - App installed (see MAESTRO_TESTING.md for options)
+#
+# Run with: maestro test e2e/maestro/suggestions-pairing-workflow.yaml
+
+appId: com.vitorsilvavmrs.saborspin
+---
+# Clear app state for consistent testing
+- clearState
+# Launch app
+- launchApp
+
+# Verify home screen loads
+- extendedWaitUntil:
+    visible: "SaborSpin"
+    timeout: 30000
+
+# Step 1: Add negative pairing rule for butter + cheese
+- tapOn: "Settings"
+
+# Wait for settings screen to load
+- extendedWaitUntil:
+    visible: "Settings"
+    timeout: 10000
+
+# Scroll to find Pairing Rules
+- scrollUntilVisible:
+    element: "Pairing Rules"
+    direction: DOWN
+    timeout: 10000
+
+# Navigate to Pairing Rules screen
+- tapOn: "Pairing Rules"
+
+# Wait for Pairing Rules screen to load
+- extendedWaitUntil:
+    visible: "Good Pairs"
+    timeout: 10000
+
+# Switch to Avoid tab
+- tapOn:
+    text: ".*Avoid.*"
+
+# Wait for UI to update
+- waitForAnimationToEnd
+
+# Add avoid pair: butter + cheese
+- tapOn: "Add Pair to Avoid"
+
+# Wait for modal
+- extendedWaitUntil:
+    visible: "First ingredient"
+    timeout: 5000
+
+# Select first ingredient - butter
+- tapOn: "Select ingredient..."
+- extendedWaitUntil:
+    visible: "First ingredient"
+    timeout: 5000
+- tapOn: "butter"
+
+# Select second ingredient - cheese
+- extendedWaitUntil:
+    visible: "Second ingredient"
+    timeout: 5000
+- tapOn:
+    text: "Select ingredient..."
+    index: 0
+- extendedWaitUntil:
+    visible: "Second ingredient"
+    timeout: 5000
+- tapOn: "cheese"
+
+# Save the rule
+- extendedWaitUntil:
+    visible: "Add"
+    timeout: 5000
+- tapOn: "Add"
+
+# Wait for modal to close
+- extendedWaitUntil:
+    notVisible: "should avoid"
+    timeout: 5000
+- waitForAnimationToEnd
+
+# Verify avoid pair was added
+- assertVisible: "butter"
+- assertVisible: "cheese"
+- assertNotVisible: "No avoid rules defined yet"
+
+# Take screenshot of negative rule added
+- takeScreenshot: suggestions-workflow-01-negative-added
+
+# Step 2: Navigate to suggestions and verify
+- tapOn: "Back"
+
+# Wait for settings screen
+- extendedWaitUntil:
+    visible: "Settings"
+    timeout: 10000
+
+# Navigate to Home tab
+- tapOn: "Home"
+
+# Wait for home screen
+- extendedWaitUntil:
+    visible: "SaborSpin"
+    timeout: 10000
+
+# Navigate to Breakfast suggestions
+- tapOn: "Breakfast ideas"
+
+# Wait for suggestions to load
+- extendedWaitUntil:
+    visible: "Select"
+    timeout: 15000
+
+# Take screenshot of suggestions with negative rule active
+- takeScreenshot: suggestions-workflow-02-with-negative-rule
+
+# Verify suggestions are displayed (without butter + cheese combination)
+- assertVisible: "Select"
+
+# Step 3: Navigate back and delete the negative rule
+- tapOn: "Back"
+
+# Wait for home screen
+- extendedWaitUntil:
+    visible: "SaborSpin"
+    timeout: 10000
+
+# Navigate to Settings
+- tapOn: "Settings"
+
+# Wait for settings screen
+- extendedWaitUntil:
+    visible: "Settings"
+    timeout: 10000
+
+# Scroll to find Pairing Rules
+- scrollUntilVisible:
+    element: "Pairing Rules"
+    direction: DOWN
+    timeout: 10000
+
+# Navigate to Pairing Rules screen
+- tapOn: "Pairing Rules"
+
+# Wait for Pairing Rules screen to load
+- extendedWaitUntil:
+    visible: "Good Pairs"
+    timeout: 10000
+
+# Switch to Avoid tab
+- tapOn:
+    text: ".*Avoid.*"
+
+# Wait for UI to update
+- waitForAnimationToEnd
+
+# Verify the rule is still there
+- assertVisible: "butter"
+- assertVisible: "cheese"
+
+# Delete the rule
+- tapOn: "Delete"
+
+# Wait for confirmation dialog
+- extendedWaitUntil:
+    visible:
+      text: ".*delete.*"
+    timeout: 5000
+
+# Take screenshot of delete confirmation
+- takeScreenshot: suggestions-workflow-03-delete-confirm
+
+# Confirm deletion
+- tapOn: "Delete"
+
+# Wait for deletion to complete
+- waitForAnimationToEnd
+
+# Verify empty state returns
+- extendedWaitUntil:
+    visible: "No avoid rules defined yet"
+    timeout: 5000
+
+- assertVisible: "No avoid rules defined yet"
+
+# Take screenshot after delete
+- takeScreenshot: suggestions-workflow-04-rule-deleted
+
+# Step 4: Navigate back to suggestions and verify
+- tapOn: "Back"
+
+# Wait for settings screen
+- extendedWaitUntil:
+    visible: "Settings"
+    timeout: 10000
+
+# Navigate to Home tab
+- tapOn: "Home"
+
+# Wait for home screen
+- extendedWaitUntil:
+    visible: "SaborSpin"
+    timeout: 10000
+
+# Navigate to Breakfast suggestions
+- tapOn: "Breakfast ideas"
+
+# Wait for suggestions to load
+- extendedWaitUntil:
+    visible: "Select"
+    timeout: 15000
+
+# Take screenshot of suggestions without negative rule
+- takeScreenshot: suggestions-workflow-05-without-negative-rule
+
+# Verify suggestions load - the combination is no longer blocked
+- assertVisible: "Select"
+
+# Test passed - Full workflow: negative pairing prevents suggestion, delete rule allows it

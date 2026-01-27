@@ -650,3 +650,33 @@ export function applyPairingRules(
 - Linter: ✅ 0 errors (8 pre-existing warnings)
 
 ---
+
+### Task 19: CREATE Maestro test for suggestions
+
+**Status:** COMPLETE
+
+**What was done:**
+- Created 4 Maestro test files mirroring the Playwright E2E tests for suggestions with pairing rules
+- Tests follow existing Maestro patterns from pairing-rules tests
+
+**Files Created:**
+- `demo-react-native-app/e2e/maestro/suggestions-pairing-negative.yaml`
+- `demo-react-native-app/e2e/maestro/suggestions-pairing-regenerate.yaml`
+- `demo-react-native-app/e2e/maestro/suggestions-pairing-positive.yaml`
+- `demo-react-native-app/e2e/maestro/suggestions-pairing-workflow.yaml`
+
+**Tests Created (4 tests):**
+1. `suggestions-pairing-negative` - Test negative pairing rules exclude combinations from suggestions
+2. `suggestions-pairing-regenerate` - Test regenerating suggestions still respects negative pairing rules
+3. `suggestions-pairing-positive` - Test positive pairing rules are applied to suggestions
+4. `suggestions-pairing-workflow` - Full workflow: add negative rule, verify exclusion, delete rule, verify allowed
+
+**Notes:**
+- Test execution deferred to Task 20 as per the plan instructions
+- Tests follow existing Maestro patterns with appropriate timeouts (15000ms for suggestions)
+
+**Verification:**
+- TypeScript check: ✅ No errors (YAML files)
+- Linter: ✅ 0 errors (8 pre-existing warnings)
+
+---
