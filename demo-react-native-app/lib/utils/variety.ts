@@ -5,7 +5,7 @@
  */
 
 import { getDaysAgo, isThisMonth, isThisWeek } from './dateUtils';
-import type { Ingredient, MealLog } from '../../types/database';
+import type { Ingredient, MealLog, PairingRule } from '../../types/database';
 
 /** Number of days after which a combination is considered "new" again */
 export const NEW_COMBINATION_THRESHOLD_DAYS = 7;
@@ -47,6 +47,67 @@ export const FREQUENCY_PENALTY = {
   /** Penalty when ingredient used exactly 1 time */
   LOW: 5,
 } as const;
+
+/** Score adjustments for pairing rules */
+export const PAIRING_RULE_SCORE = {
+  /** Bonus score for a positive pairing (pairs well together) */
+  POSITIVE_BONUS: 10,
+  /** Score returned for invalid combinations (negative pairing) */
+  NEGATIVE_PENALTY: -100,
+} as const;
+
+/** Result of applying pairing rules to a candidate combination */
+export interface PairingRuleResult {
+  /** Whether the combination is valid (no negative rules triggered) */
+  isValid: boolean;
+  /** Score adjustment from pairing rules (+10 per positive pair, -100 if invalid) */
+  score: number;
+}
+
+/**
+ * Applies pairing rules to a candidate ingredient combination.
+ * Checks all ingredient pairs against the pairing rules:
+ * - Negative rules: Combination is invalid (isValid=false, score=-100)
+ * - Positive rules: Adds bonus to score (+10 per positive pair)
+ *
+ * @param candidateIngredients - Array of ingredient IDs in the candidate combination
+ * @param pairingRules - Array of pairing rules to check against
+ * @returns Object with isValid (boolean) and score (number)
+ */
+export function applyPairingRules(
+  candidateIngredients: string[],
+  pairingRules: PairingRule[]
+): PairingRuleResult {
+  let score = 0;
+
+  // Check all pairs in the candidate
+  for (let i = 0; i < candidateIngredients.length; i++) {
+    for (let j = i + 1; j < candidateIngredients.length; j++) {
+      const a = candidateIngredients[i];
+      const b = candidateIngredients[j];
+
+      // Find if there's a rule for this pair (check both directions)
+      const rule = pairingRules.find(
+        (r) =>
+          (r.ingredientAId === a && r.ingredientBId === b) ||
+          (r.ingredientAId === b && r.ingredientBId === a)
+      );
+
+      if (rule) {
+        if (rule.ruleType === 'negative') {
+          // Negative pairing found - combination is invalid
+          return { isValid: false, score: PAIRING_RULE_SCORE.NEGATIVE_PENALTY };
+        }
+        if (rule.ruleType === 'positive') {
+          // Positive pairing found - add bonus
+          score += PAIRING_RULE_SCORE.POSITIVE_BONUS;
+        }
+      }
+    }
+  }
+
+  return { isValid: true, score };
+}
 
 /**
  * Calculates a variety score for a candidate combination based on ingredient frequency.

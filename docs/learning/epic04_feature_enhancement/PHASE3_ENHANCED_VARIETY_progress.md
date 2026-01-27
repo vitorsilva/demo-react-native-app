@@ -400,3 +400,40 @@ CREATE TABLE pairing_rules (
 - Linter: ✅ 0 errors (7 pre-existing warnings)
 
 ---
+
+### Task 12: Add pairing rules to suggestion algorithm
+
+**Status:** COMPLETE
+
+**What was done:**
+- Added `applyPairingRules()` function to `lib/utils/variety.ts`
+- Added `PAIRING_RULE_SCORE` constant with scoring values
+- Added `PairingRuleResult` interface for type safety
+
+**File Modified:**
+- `demo-react-native-app/lib/utils/variety.ts`
+
+**Function Added:**
+```typescript
+export function applyPairingRules(
+  candidateIngredients: string[],
+  pairingRules: PairingRule[]
+): PairingRuleResult
+```
+
+**Behavior:**
+- Checks all pairs of ingredients against pairing rules
+- Negative rules: Returns `{ isValid: false, score: -100 }` (combination filtered out)
+- Positive rules: Adds +10 bonus per matched positive pair
+- No matching rules: Returns `{ isValid: true, score: 0 }`
+
+**Constants Added:**
+- `PAIRING_RULE_SCORE.POSITIVE_BONUS = 10`
+- `PAIRING_RULE_SCORE.NEGATIVE_PENALTY = -100`
+
+**Verification:**
+- TypeScript check: ✅ No errors
+- Linter: ✅ 0 errors (7 pre-existing warnings)
+- All 75 variety tests pass
+
+---

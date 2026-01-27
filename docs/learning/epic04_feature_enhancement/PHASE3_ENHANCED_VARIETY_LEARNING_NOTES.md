@@ -291,3 +291,32 @@ Always read the linked documentation before claiming something cannot be done. T
 **No issues encountered.**
 
 ---
+
+### Task 12: Add pairing rules to suggestion algorithm
+
+**Status:** COMPLETE
+
+**What was done:**
+- Added `applyPairingRules()` function to `lib/utils/variety.ts`
+- Added `PAIRING_RULE_SCORE` constant for configurable scoring
+- Added `PairingRuleResult` interface for return type
+
+**Implementation Details:**
+- Function signature: `applyPairingRules(candidateIngredients: string[], pairingRules: PairingRule[]): PairingRuleResult`
+- Returns `{ isValid: boolean; score: number }`
+- For negative rules: immediately returns `{ isValid: false, score: -100 }`
+- For positive rules: adds +10 to score per matched positive pair
+- Checks all ingredient pairs in both directions (A-B and B-A)
+
+**Constants Added:**
+- `PAIRING_RULE_SCORE.POSITIVE_BONUS = 10`
+- `PAIRING_RULE_SCORE.NEGATIVE_PENALTY = -100`
+
+**Verification:**
+- TypeScript check: ✅ No errors
+- Linter: ✅ 0 errors (7 pre-existing warnings)
+- All 75 variety tests pass (existing tests unaffected)
+
+**No issues encountered.**
+
+---
