@@ -125,7 +125,13 @@
       "Bash(cmd.exe /c \"%LOCALAPPDATA%\\\\Android\\\\Sdk\\\\emulator\\\\emulator.exe -list-avds\")",
       "Bash(\"/c/Users/omeue/AppData/Local/Android/Sdk/emulator/emulator.exe\" -list-avds)",
       "Bash(maestro test:*)",
-      "Bash(eas build:list:*)"
+      "Bash(eas build:list:*)",
+      "Bash(npx expo run:android)",
+      "Bash(echo:*)",
+      "Bash(powershell -ExecutionPolicy Bypass -File scripts/download-apk.ps1 -Install)",
+      "Bash(maestro hierarchy:*)",
+      "Bash(JAVA_HOME=\"/c/Program Files/Android/Android Studio/jbr\" maestro test:*)",
+      "Bash(git reset:*)"
     ],
     "deny": [],
     "ask": []

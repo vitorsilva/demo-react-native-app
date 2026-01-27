@@ -437,3 +437,259 @@ I've read the feature specification and progress files. Looking at the Implement
 The progress file also confirms that all 8 tasks have been completed successfully with the message "Feature 1.5 Implementation Complete!" at the end.
 
 <promise>COMPLETE</promise>
+Task #3 is complete. The migration for the `preparation_methods` table has been:
+
+1. **Implemented** - Added migration version 5 in `lib/database/migrations.ts` that:
+   - Creates the `preparation_methods` table with columns: `id`, `name`, `is_predefined`, `created_at`
+   - Seeds 12 predefined preparation methods (fried, grilled, roasted, boiled, baked, raw, steamed, sautéed, stewed, smoked, poached, braised)
+
+2. **Verified** - TypeScript check passes, ESLint passes (only pre-existing warnings), all 309 unit tests pass
+
+3. **Documented** - Updated status in PHASE2_DATA_MODEL_EVOLUTION.md, created learning notes and progress files
+
+4. **Committed** - Changes committed with message: `feat(phase2): add preparation_methods table migration`
+
+<task>DONE</task>
+**Task 4 completed successfully.**
+
+**Summary of what was done:**
+- Added migration version 6 to `lib/database/migrations.ts` creating the `meal_components` table
+- The table stores ingredient + preparation method pairs for each meal with columns:
+  - `id TEXT PRIMARY KEY`
+  - `meal_log_id TEXT NOT NULL` (FK to meal_logs with ON DELETE CASCADE)
+  - `ingredient_id TEXT NOT NULL` (FK to ingredients)
+  - `preparation_method_id TEXT` (nullable FK to preparation_methods)
+  - `created_at TEXT NOT NULL`
+- All verifications passed:
+  - TypeScript check: ✅
+  - ESLint: ✅ (only pre-existing warnings)
+  - Unit tests: ✅ 309/309 passed
+- Updated documentation files (progress log, learning notes, status)
+- Committed changes with message: `feat(phase2): add meal_components table migration`
+
+<task>DONE</task>
+**Task 5 completed successfully.**
+
+## Summary
+
+**Task 5: Add name column to meal_logs** ✅
+
+**What was done:**
+- Added migration version 7 to `lib/database/migrations.ts`
+- Added `name TEXT` column to `meal_logs` table (nullable)
+- Column allows optional meal naming like "Mom's special"
+- Used `columnExists` helper to ensure idempotency
+
+**Verification:**
+- TypeScript check: ✅ Passed
+- ESLint: ✅ Passed (only pre-existing warnings)
+- Unit tests: ✅ 309/309 passed
+- Commit: `422b2c0 feat(phase2): add name column to meal_logs table`
+
+<task>DONE</task>
+**Task 6 completed successfully.** I created 22 unit tests for the Phase 2 migrations:
+
+**Summary:**
+- Created `lib/database/__tests__/migrations.phase2.test.ts` with 22 tests covering:
+  - **Migration Version 5** (7 tests): `preparation_methods` table existence, schema, 12 predefined methods seeding, correct id format, UNIQUE constraint, created_at population
+  - **Migration Version 6** (8 tests): `meal_components` table existence, schema, foreign keys to meal_logs/ingredients/preparation_methods, null preparation_method_id support
+  - **Migration Version 7** (5 tests): `name` column in meal_logs, null values, meal names, updates, unicode support
+  - **Idempotency** (2 tests): Migrations recorded in table, no duplicate data on re-run
+
+**Issue encountered:** Initially used wrong column name (`logged_at`) instead of actual schema columns (`date`, `created_at`). Fixed by verifying the schema in `schema.ts`.
+
+**Verification:**
+- TypeScript check: ✅ Passed
+- ESLint: ✅ Passed (only pre-existing warnings)
+- Unit tests: ✅ 331/331 passed (22 new tests)
+- Commit: `4281945` on branch `FEATURE_2.0_DATA_MODEL_EVOLUTION`
+
+<task>DONE</task>
+Task 7 (Update TypeScript types) has been completed successfully.
+
+**Summary of what was done:**
+- Added `PreparationMethod` interface with `id`, `name`, `isPredefined`, and `createdAt` fields
+- Added `MealComponent` interface with `id`, `mealLogId`, `ingredientId`, `preparationMethodId` (nullable), and `createdAt` fields  
+- Updated `MealLog` interface with optional `name` field and optional `components` array
+- Ensured backward compatibility by making new fields optional
+- TypeScript check passes
+- ESLint passes (only pre-existing warnings)
+- Updated documentation files (main spec, learning notes, progress log)
+- Committed changes with message: `feat(phase2): add TypeScript types for Phase 2 data model`
+
+<task>DONE</task>
+Task 8 has been completed successfully. Here's a summary of what was done:
+
+## Task 8: Update store with new actions - COMPLETE
+
+**Created new files:**
+1. `lib/database/preparationMethods.ts` - Database operations for preparation methods:
+   - `getAllPreparationMethods()` - Get all methods sorted by predefined first
+   - `getPreparationMethodById()` - Get a single method by ID
+   - `addPreparationMethod()` - Add custom (user-defined) method
+   - `deletePreparationMethod()` - Delete custom method (blocks predefined)
+   - `preparationMethodExists()` - Check if name exists (case-insensitive)
+
+2. `lib/database/mealComponents.ts` - Database operations for meal components:
+   - `getMealComponents()` - Get components for a meal log
+   - `createMealComponents()` - Create meal components
+   - `deleteMealComponents()` - Delete all components for a meal
+   - `logMealWithComponents()` - Log a meal with components and optional name
+   - `getMealLogWithComponents()` - Get meal with components attached
+   - `getRecentMealLogsWithComponents()` - Get recent meals with components
+
+**Updated `lib/store/index.ts`:**
+- Added `preparationMethods: PreparationMethod[]` state
+- Added `loadPreparationMethods()` action
+- Added `addPreparationMethod(name)` action  
+- Added `deletePreparationMethod(id)` action
+- Added `logMealWithComponents(mealTypeId, components, name?)` action
+- Added `getMealWithComponents(mealLogId)` action
+
+**Verification:**
+- TypeScript check: ✅ Passed
+- ESLint: ✅ Passed (only pre-existing warnings)
+- Unit tests: ✅ 331/331 passed
+
+<task>DONE</task>
+Task 9 is complete. Here's a summary of what was accomplished:
+
+## Task 9: CREATE unit tests for store actions ✅
+
+**Completed successfully:**
+- Created new test file: `lib/store/__tests__/preparationMethods.test.ts`
+- Added 24 unit tests covering all Phase 2 store actions:
+  - **Preparation Methods** (12 tests): `loadPreparationMethods`, `addPreparationMethod`, `deletePreparationMethod`
+  - **Meal Components** (10 tests): `logMealWithComponents`, `getMealWithComponents`
+  - **Integration** (2 tests): End-to-end workflow and Unicode support
+
+**Verification:**
+- TypeScript check: ✅ Passed
+- ESLint: ✅ Passed (only pre-existing warnings)
+- Unit tests: ✅ 355/355 passed (24 new tests added)
+
+**Issue Fixed:**
+- Initial test for duplicate method error used `rejects.toThrow()` which didn't work correctly with the store's error handling pattern. Fixed by using try-catch pattern with explicit error assertions.
+
+**Commit:** `ae8f51d` - `test(phase2): add unit tests for store actions`
+
+<task>DONE</task>
+This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). The promise rejected with the reason:
+Error: No messages returned
+    at p8f (B:/~BUN/root/claude.exe:5989:78)
+    at processTicksAndRejections (native:7:39)
+Task 11 is complete. Here's a summary of what was accomplished:
+
+## Task 11: Create unit tests for data migration ✅
+
+**Created:** `lib/database/__tests__/migrations.phase2.datamigration.test.ts`
+
+**15 unit tests added covering migration version 8:**
+
+1. **Basic migration functionality (2 tests):**
+   - Migration version 8 is recorded in migrations table
+   - Single ingredient migration scenario
+
+2. **Migration of legacy meal_logs (10 tests):**
+   - meal_components table exists and is ready for migration
+   - Migrated components have null preparation_method_id
+   - Multiple ingredients migrated to separate components
+   - Idempotency - meal logs with existing components not re-migrated
+   - Meal logs without components are found for migration
+   - Missing ingredients skipped during migration
+   - Malformed JSON doesn't cause migration failure
+   - Empty ingredients array results in no components
+   - Migration query correctly filters with IS NOT NULL clause
+   - Components inherit created_at from parent meal_log
+
+3. **Migration edge cases (3 tests):**
+   - Handles duplicate ingredient IDs
+   - Handles mixed valid/invalid ingredients gracefully
+   - Correctly identifies unmigrated meal logs
+
+**Verification:**
+- TypeScript: ✅ Pass
+- ESLint: ✅ Pass (only pre-existing warnings)
+- Unit tests: ✅ 370/370 passed (15 new tests)
+
+<task>DONE</task>
+Task 12 is now complete. Here's a summary of what was accomplished:
+
+## Task 12: Update meal logging flow UI - COMPLETED
+
+**New Components Created:**
+1. **MealNameInput** (`components/MealNameInput.tsx`) - Optional text input allowing users to name their meals (e.g., "Mom's special")
+2. **MealComponentRow** (`components/MealComponentRow.tsx`) - Displays each ingredient with a tappable preparation method selector dropdown
+3. **PreparationMethodPicker** (`components/PreparationMethodPicker.tsx`) - Modal for selecting predefined or custom preparation methods
+
+**Updated Components:**
+- **ConfirmationModal** - Now accepts full ingredient objects, displays preparation method selection for each ingredient, and supports meal naming
+- **suggestions/[mealType].tsx** - Now uses `logMealWithComponents` instead of `logMeal`, loads preparation methods on mount, and passes required props to ConfirmationModal
+
+**I18n Updates:**
+- Added translation keys for `mealName`, `preparation`, `prepMethods` sections in both English and Portuguese
+
+**Verification:**
+- ✅ TypeScript check passed
+- ✅ ESLint passed (only pre-existing warnings)  
+- ✅ All 370 unit tests passed
+- ✅ Committed with message: `feat(phase2): update meal logging flow UI with prep methods and naming`
+
+<task>DONE</task>
+Task 13 is complete.
+
+**Summary of what was done:**
+
+1. **Created `formatMealDisplay` utility function** (`lib/utils/mealDisplay.ts`):
+   - `formatMealDisplay(meal, components, ingredients, prepMethods)` - Formats a meal for display
+   - `formatMealComponent(component, ingredients, prepMethods)` - Formats a single component
+   - Display logic: named meals show name, unnamed meals show components as "{prep} {ingredient}" joined by " + "
+
+2. **Created 19 unit tests** (`lib/utils/__tests__/mealDisplay.test.ts`):
+   - Named meals (3 tests): name display, unicode support, ignoring components
+   - Unnamed meals with components (4 tests): single/multiple components, with/without prep methods
+   - Legacy meals (2 tests): fallback to ingredients array
+   - Edge cases (6 tests): empty data, missing ingredients/prep methods
+   - formatMealComponent (4 tests): individual component formatting
+
+3. **Verification:**
+   - TypeScript: ✅ Passes
+   - ESLint: ✅ Passes (only pre-existing warnings)
+   - Unit tests: ✅ 389/389 passed (19 new)
+
+4. **Documentation updated and committed**
+
+<task>DONE</task>
+Task 14 is complete. I have:
+
+1. **Created** `demo-react-native-app/e2e/meal-logging-phase2.spec.ts` with 8 Playwright E2E tests covering:
+   - Meal name input and ingredient component visibility in confirmation modal
+   - Logging meal with a custom name
+   - Opening preparation method picker when clicking ingredient component
+   - Selecting a preparation method for an ingredient
+   - Adding a custom preparation method
+   - Logging meal with preparation method and custom name
+   - Logging meal without name (anonymous meal with components)
+   - Showing multiple preparation method options in picker
+
+2. **Verified** TypeScript check passes (no errors)
+
+3. **Verified** ESLint passes (only pre-existing warnings)
+
+4. **Updated** documentation:
+   - `PHASE2_DATA_MODEL_EVOLUTION.md` - marked task 14 as "done"
+   - `PHASE2_DATA_MODEL_EVOLUTION_progress.md` - added task summary
+   - `PHASE2_DATA_MODEL_EVOLUTION_LEARNING_NOTES.md` - added learning notes
+
+5. **Committed** with message: `test(phase2): add Playwright E2E tests for meal logging with prep methods`
+
+<task>DONE</task>
+Task 15 is complete. I created 3 Maestro E2E test files that mirror the Playwright E2E tests for Phase 2 meal logging:
+
+1. **meal-logging-phase2.yaml** - Tests the main Phase 2 flow with meal name input and preparation method selection
+2. **meal-logging-phase2-custom-prep.yaml** - Tests adding custom preparation methods
+3. **meal-logging-phase2-anonymous.yaml** - Tests anonymous meal logging (no name, just prep method)
+
+All documentation has been updated and the changes have been committed.
+
+<task>DONE</task>
