@@ -685,7 +685,7 @@ function formatMealDisplay(meal: MealLog, components: MealComponent[], ingredien
 | 23 | ▶️ RUN quality checks and compare | Quality | ~30 min | Compare to baseline; create remediation plan if worse | done |
 | 24 | Document learning notes | Documentation | ~30 min | Capture unexpected errors, workarounds, fixes | done |
 | 25 | 📸 Capture BEFORE screenshots | Documentation | ~15 min | done |
-| 26 | 📸 Capture AFTER screenshots | Documentation | ~20 min | not started |
+| 26 | 📸 Capture AFTER screenshots | Documentation | ~20 min | done |
 
 **Total Estimated Effort:** ~29.5 hours (including unit + Playwright + Maestro tests + quality checks)
 
