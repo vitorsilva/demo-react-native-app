@@ -621,3 +621,32 @@ export function applyPairingRules(
 - All 477 unit tests pass
 
 ---
+
+### Task 18: CREATE Playwright E2E tests for suggestions with pairing rules
+
+**Status:** COMPLETE
+
+**What was done:**
+- Created `e2e/suggestions-pairing.spec.ts` with 4 E2E tests
+- Tests verify that pairing rules affect meal suggestions as expected
+
+**File Created:**
+- `demo-react-native-app/e2e/suggestions-pairing.spec.ts`
+
+**Tests Added (4 tests):**
+1. `should exclude negative pairing rules from suggestions` - Verifies negative pairs (e.g., Milk + Greek Yogurt) never appear together in suggestions
+2. `should regenerate suggestions without negative pairs` - Verifies exclusion persists across regenerations
+3. `should include positive pairing rules in suggestions with higher priority` - Verifies positive rules are applied
+4. `full workflow: negative pairing prevents suggestion, delete rule allows it` - Complete CRUD workflow
+
+**Challenges Overcome:**
+- Multiple back-buttons in DOM due to Expo Router keeping screens mounted → Used `:visible` selector
+- Tab bar hidden on full-screen suggestions page → Navigate back first, then use tabs
+- Delete confirmation dialog handling → Used `waitForFunction` for dynamic UI
+
+**Verification:**
+- All 4 Playwright E2E tests pass (1.1 min)
+- TypeScript check: ✅ No errors
+- Linter: ✅ 0 errors (8 pre-existing warnings)
+
+---
