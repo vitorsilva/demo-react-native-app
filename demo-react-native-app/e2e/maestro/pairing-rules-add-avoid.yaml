@@ -1,0 +1,134 @@
+# Maestro E2E test for Adding an Avoid Pair Pairing Rule
+# Verifies user can add a negative (avoid) pairing rule
+#
+# Prerequisites:
+#   - Android emulator running: adb devices
+#   - App installed (see MAESTRO_TESTING.md for options)
+#
+# Run with: maestro test e2e/maestro/pairing-rules-add-avoid.yaml
+
+appId: com.vitorsilvavmrs.saborspin
+---
+# Clear app state for consistent testing
+- clearState
+# Launch app
+- launchApp
+
+# Verify home screen loads
+- extendedWaitUntil:
+    visible: "SaborSpin"
+    timeout: 30000
+
+# Navigate to Settings tab
+- tapOn: "Settings"
+
+# Wait for settings screen to load
+- extendedWaitUntil:
+    visible: "Settings"
+    timeout: 10000
+
+# Scroll to find Pairing Rules
+- scrollUntilVisible:
+    element: "Pairing Rules"
+    direction: DOWN
+    timeout: 10000
+
+# Navigate to Pairing Rules screen
+- tapOn: "Pairing Rules"
+
+# Wait for Pairing Rules screen to load
+- extendedWaitUntil:
+    visible: "Good Pairs"
+    timeout: 10000
+
+# Switch to Avoid tab
+- tapOn:
+    text: ".*Avoid.*"
+
+# Wait for UI to update
+- waitForAnimationToEnd
+
+# Verify Avoid tab is showing with empty state
+- assertVisible: "No avoid rules defined yet"
+
+# Take screenshot before adding
+- takeScreenshot: pairing-add-avoid-01-before
+
+# Tap add button to open modal
+- tapOn: "Add Pair to Avoid"
+
+# Wait for modal to appear
+- extendedWaitUntil:
+    visible: "First ingredient"
+    timeout: 5000
+
+# Verify modal elements
+- assertVisible: "First ingredient"
+- assertVisible: "Second ingredient"
+- assertVisible: "should avoid"
+
+# Take screenshot of modal
+- takeScreenshot: pairing-add-avoid-02-modal-open
+
+# Tap first ingredient selector
+- tapOn: "Select ingredient..."
+
+# Wait for ingredient selection list
+- extendedWaitUntil:
+    visible: "First ingredient"
+    timeout: 5000
+
+# Select first ingredient (butter)
+- tapOn: "butter"
+
+# Wait for selection to register and return to main modal
+- extendedWaitUntil:
+    visible: "Second ingredient"
+    timeout: 5000
+
+# Take screenshot with first ingredient selected
+- takeScreenshot: pairing-add-avoid-03-first-selected
+
+# Tap second ingredient selector
+- tapOn:
+    text: "Select ingredient..."
+    index: 0
+
+# Wait for ingredient selection list
+- extendedWaitUntil:
+    visible: "Second ingredient"
+    timeout: 5000
+
+# Select second ingredient (yogurt)
+- tapOn: "yogurt"
+
+# Wait for selection to register
+- extendedWaitUntil:
+    visible: "Add"
+    timeout: 5000
+
+# Take screenshot with both ingredients selected
+- takeScreenshot: pairing-add-avoid-04-both-selected
+
+# Save the rule
+- tapOn: "Add"
+
+# Wait for modal to close
+- extendedWaitUntil:
+    notVisible: "should avoid"
+    timeout: 5000
+
+# Wait for UI update
+- waitForAnimationToEnd
+
+# Verify empty state is gone
+- assertNotVisible: "No avoid rules defined yet"
+
+# Verify the rule appears (should show ingredient names)
+- assertVisible: "butter"
+- assertVisible: "yogurt"
+
+# Take screenshot showing avoid pair added
+- takeScreenshot: pairing-add-avoid-05-rule-added
+
+# Test passed - Avoid pair pairing rule added successfully

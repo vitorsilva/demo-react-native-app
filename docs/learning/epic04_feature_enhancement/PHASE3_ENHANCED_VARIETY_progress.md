@@ -558,3 +558,37 @@ export function applyPairingRules(
 - Linter: ✅ 0 errors (8 pre-existing warnings)
 
 ---
+
+### Task 16: CREATE Maestro tests for pairing rules
+
+**Status:** COMPLETE
+
+**What was done:**
+- Created 5 Maestro test files mirroring the Playwright E2E tests for pairing rules
+- Tests follow the existing Maestro test patterns used in prep-methods tests
+
+**Files Created:**
+- `demo-react-native-app/e2e/maestro/pairing-rules-settings.yaml`
+- `demo-react-native-app/e2e/maestro/pairing-rules-add-good.yaml`
+- `demo-react-native-app/e2e/maestro/pairing-rules-add-avoid.yaml`
+- `demo-react-native-app/e2e/maestro/pairing-rules-delete.yaml`
+- `demo-react-native-app/e2e/maestro/pairing-rules-full-workflow.yaml`
+
+**Tests Created (5 tests):**
+1. `pairing-rules-settings` - Navigate to Pairing Rules from Settings, verify tabs
+2. `pairing-rules-add-good` - Add a positive (good pair) pairing rule
+3. `pairing-rules-add-avoid` - Add a negative (avoid) pairing rule
+4. `pairing-rules-delete` - Add and delete a pairing rule
+5. `pairing-rules-full-workflow` - Complete CRUD workflow with tab switching
+
+**Notes:**
+- Test execution deferred to Task 20 due to EAS build queue wait time
+- New EAS build triggered (ID: 6677d842-3019-4f9c-8112-16a2a67d6d36) with commit 877f28e
+- APK will include all Pairing Rules UI changes
+
+**Verification:**
+- TypeScript check: ✅ No errors (YAML files don't need TS check)
+- Linter: ✅ No errors
+- Test files follow existing Maestro patterns
+
+---

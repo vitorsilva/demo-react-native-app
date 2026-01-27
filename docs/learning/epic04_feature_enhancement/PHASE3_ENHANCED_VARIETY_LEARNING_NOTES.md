@@ -434,3 +434,43 @@ When writing E2E tests for React Native Web apps, prefer testID selectors over t
 - Linter: ✅ 0 errors (8 pre-existing warnings)
 
 ---
+
+### Task 16: CREATE Maestro tests for pairing rules
+
+**Status:** COMPLETE
+
+**What was done:**
+- Created 5 Maestro test files for pairing rules functionality:
+  1. `pairing-rules-settings.yaml` - Verify Pairing Rules link in settings and navigation
+  2. `pairing-rules-add-good.yaml` - Add a positive (good pair) pairing rule
+  3. `pairing-rules-add-avoid.yaml` - Add a negative (avoid) pairing rule
+  4. `pairing-rules-delete.yaml` - Delete a pairing rule
+  5. `pairing-rules-full-workflow.yaml` - Full workflow: add good pair, add avoid pair, verify tabs, delete rules
+
+**Files Created:**
+- `demo-react-native-app/e2e/maestro/pairing-rules-settings.yaml`
+- `demo-react-native-app/e2e/maestro/pairing-rules-add-good.yaml`
+- `demo-react-native-app/e2e/maestro/pairing-rules-add-avoid.yaml`
+- `demo-react-native-app/e2e/maestro/pairing-rules-delete.yaml`
+- `demo-react-native-app/e2e/maestro/pairing-rules-full-workflow.yaml`
+
+**Issue Encountered:**
+- The APK installed on the emulator was outdated (from Jan 25) and didn't have the Pairing Rules UI changes
+- Local Android build failed due to Windows path length limits (260 character limit)
+- Triggered a new EAS cloud build, but it was queued in the "Free Tier Queue" due to concurrency limits
+- **Resolution:** Test files have been created following the existing Maestro test patterns. Actual test execution will be done in Task 20 ("RUN full test suites") once the EAS build completes.
+
+**Lesson Learned:**
+1. Always check if the installed APK has the latest code changes before running Maestro tests
+2. On Windows, local React Native builds often fail due to path length limits - use EAS cloud builds instead
+3. EAS free tier has concurrency limits that can cause builds to be queued for extended periods
+
+**Test Pattern Used:**
+- Followed existing prep-methods tests as templates
+- Used `scrollUntilVisible` with appropriate timeouts for finding elements
+- Used `extendedWaitUntil` for reliable element detection
+- Added screenshots at key steps for debugging
+
+**Note:** Tests will be executed in Task 20 when the new APK build is available.
+
+---
