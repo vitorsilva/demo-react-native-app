@@ -1,4 +1,5 @@
   import type { DatabaseAdapter } from './adapters/types';
+import * as Crypto from 'expo-crypto';
 
   // Silent logging during tests
   const isTestEnv = process.env.NODE_ENV === 'test';
@@ -181,6 +182,133 @@
       // Add is_favorite column to meal_logs (idempotent)
       if (!(await columnExists(db, 'meal_logs', 'is_favorite'))) {
         await db.runAsync(`ALTER TABLE meal_logs ADD COLUMN is_favorite INTEGER DEFAULT 0`);
+      }
+    },
+  },
+  {
+    version: 5,
+    up: async (db: DatabaseAdapter) => {
+      // Phase 2: Data Model Evolution - Add preparation_methods table
+      // Create preparation_methods table (idempotent with IF NOT EXISTS)
+      await db.runAsync(`
+        CREATE TABLE IF NOT EXISTS preparation_methods (
+          id TEXT PRIMARY KEY,
+          name TEXT NOT NULL UNIQUE,
+          is_predefined INTEGER DEFAULT 1,
+          created_at TEXT NOT NULL
+        )
+      `);
+
+      // Seed predefined preparation methods (idempotent via recordExists check)
+      const now = new Date().toISOString();
+      const predefinedMethods = [
+        ['prep-fried', 'fried'],
+        ['prep-grilled', 'grilled'],
+        ['prep-roasted', 'roasted'],
+        ['prep-boiled', 'boiled'],
+        ['prep-baked', 'baked'],
+        ['prep-raw', 'raw'],
+        ['prep-steamed', 'steamed'],
+        ['prep-sauteed', 'sautéed'],
+        ['prep-stewed', 'stewed'],
+        ['prep-smoked', 'smoked'],
+        ['prep-poached', 'poached'],
+        ['prep-braised', 'braised'],
+      ];
+
+      for (const [id, name] of predefinedMethods) {
+        if (!(await recordExists(db, 'preparation_methods', 'id = ?', [id]))) {
+          await db.runAsync(
+            `INSERT INTO preparation_methods (id, name, is_predefined, created_at) VALUES (?, ?, 1, ?)`,
+            [id, name, now]
+          );
+        }
+      }
+    },
+  },
+  {
+    version: 6,
+    up: async (db: DatabaseAdapter) => {
+      // Phase 2: Data Model Evolution - Add meal_components table
+      // This table stores ingredient + preparation method pairs for each meal
+      // Create meal_components table (idempotent with IF NOT EXISTS)
+      await db.runAsync(`
+        CREATE TABLE IF NOT EXISTS meal_components (
+          id TEXT PRIMARY KEY,
+          meal_log_id TEXT NOT NULL,
+          ingredient_id TEXT NOT NULL,
+          preparation_method_id TEXT,
+          created_at TEXT NOT NULL,
+          FOREIGN KEY (meal_log_id) REFERENCES meal_logs(id) ON DELETE CASCADE,
+          FOREIGN KEY (ingredient_id) REFERENCES ingredients(id),
+          FOREIGN KEY (preparation_method_id) REFERENCES preparation_methods(id)
+        )
+      `);
+    },
+  },
+  {
+    version: 7,
+    up: async (db: DatabaseAdapter) => {
+      // Phase 2: Data Model Evolution - Add optional name column to meal_logs
+      // This allows users to give meals a name like "Mom's special"
+      if (!(await columnExists(db, 'meal_logs', 'name'))) {
+        await db.runAsync(`ALTER TABLE meal_logs ADD COLUMN name TEXT`);
+      }
+    },
+  },
+  {
+    version: 8,
+    up: async (db: DatabaseAdapter) => {
+      // Phase 2: Data Model Evolution - Migrate existing meal_logs to meal_components
+      // This migration converts the legacy ingredients JSON array to meal_components entries
+      // Only migrate logs that don't have components yet (idempotent)
+
+      const logsToMigrate = await db.getAllAsync<{
+        id: string;
+        ingredients: string;
+        created_at: string;
+      }>(
+        `SELECT ml.id, ml.ingredients, ml.created_at
+         FROM meal_logs ml
+         LEFT JOIN meal_components mc ON mc.meal_log_id = ml.id
+         WHERE mc.id IS NULL AND ml.ingredients IS NOT NULL`
+      );
+
+      for (const mealLog of logsToMigrate) {
+        try {
+          const ingredientIds = JSON.parse(mealLog.ingredients);
+          if (Array.isArray(ingredientIds)) {
+            for (const ingredientId of ingredientIds) {
+              // Verify ingredient exists before creating component
+              const ingredientExists = await recordExists(
+                db,
+                'ingredients',
+                'id = ?',
+                [ingredientId]
+              );
+
+              if (ingredientExists) {
+                await db.runAsync(
+                  `INSERT INTO meal_components (id, meal_log_id, ingredient_id, preparation_method_id, created_at)
+                   VALUES (?, ?, ?, NULL, ?)`,
+                  [Crypto.randomUUID(), mealLog.id, ingredientId, mealLog.created_at]
+                );
+              } else {
+                // Log warning but don't fail migration - ingredient may have been deleted
+                log(
+                  `⚠️ Skipping component for meal_log ${mealLog.id}: ingredient ${ingredientId} not found`
+                );
+              }
+            }
+          }
+        } catch (e) {
+          // Skip malformed JSON - log but don't fail migration
+          log(`⚠️ Skipping migration for meal_log ${mealLog.id}: invalid ingredients JSON`);
+        }
+      }
+
+      if (logsToMigrate.length > 0) {
+        log(`✅ Migrated ${logsToMigrate.length} meal logs to meal_components format`);
       }
     },
   },

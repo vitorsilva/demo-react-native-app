@@ -660,31 +660,30 @@ function formatMealDisplay(meal: MealLog, components: MealComponent[], ingredien
 |-------|------|------|--------|-------|
 | 1 | ▶️ RUN existing test suites | Testing | ~15 min | Baseline: unit, Playwright E2E, Maestro | done |
 | 2 | ▶️ RUN quality baseline | Quality | ~30 min | arch:test, lint:dead-code, lint:duplicates, security:scan | done |
-| 3 | Add preparation_methods table + seed | Implementation | ~1 hour | Migration | not started |
-| 4 | Add meal_components table | Implementation | ~1 hour | Migration | not started |
-| 5 | Add name column to meal_logs | Implementation | ~30 min | Migration | not started |
-| 6 | 🧪 CREATE unit tests for new migrations | Testing | ~1 hour | Test table creation, seeding | not started |
-| 7 | Update TypeScript types | Implementation | ~1 hour | Types file | not started |
-| 8 | Update store with new actions | Implementation | ~2 hours | Store | not started |
-| 9 | 🧪 CREATE unit tests for store actions | Testing | ~1.5 hours | Test CRUD for prep methods, components | not started |
-| 10 | Migrate existing data | Implementation | ~2 hours | Migration script | not started |
-| 11 | 🧪 CREATE unit tests for data migration | Testing | ~1 hour | Test legacy data converts correctly | not started |
-| 12 | Update meal logging flow UI | Implementation | ~4 hours | New components | not started |
-| 13 | 🧪 CREATE unit tests for `formatMealDisplay()` | Testing | ~30 min | Test named/unnamed meal display | not started |
-| 14 | 🧪 CREATE Playwright E2E tests for meal logging | Testing | ~2 hours | Test logging flow with prep selection | not started |
-| 15 | 🧪 CREATE Maestro tests for meal logging | Testing | ~2 hours | Mirror Playwright tests for mobile | not started |
-| 16 | Update history/display to use components | Implementation | ~2 hours | UI updates | not started |
-| 17 | 🧪 CREATE Playwright E2E test for history | Testing | ~1 hour | Test named meals show correctly | not started |
-| 18 | 🧪 CREATE Maestro test for history | Testing | ~1 hour | Mirror Playwright test for mobile | not started |
-| 19 | Add prep method management UI | Implementation | ~2 hours | Settings screen | not started |
-| 20 | 🧪 CREATE Playwright E2E test for prep management | Testing | ~1 hour | Test add/delete custom prep methods | not started |
-| 21 | 🧪 CREATE Maestro test for prep management | Testing | ~1 hour | Mirror Playwright test for mobile | not started |
-| 22 | ▶️ RUN full test suites | Testing | ~20 min | Unit + Playwright + Maestro, verify no regressions | not started |
+| 3 | Add preparation_methods table + seed | Implementation | ~1 hour | Migration | done |
+| 4 | Add meal_components table | Implementation | ~1 hour | Migration | done |
+| 5 | Add name column to meal_logs | Implementation | ~30 min | Migration | done |
+| 6 | 🧪 CREATE unit tests for new migrations | Testing | ~1 hour | Test table creation, seeding | done |
+| 7 | Update TypeScript types | Implementation | ~1 hour | Types file | done |
+| 8 | Update store with new actions | Implementation | ~2 hours | Store | done |
+| 9 | 🧪 CREATE unit tests for store actions | Testing | ~1.5 hours | Test CRUD for prep methods, components | done |
+| 10 | Migrate existing data | Implementation | ~2 hours | Migration script | done |
+| 11 | 🧪 CREATE unit tests for data migration | Testing | ~1 hour | Test legacy data converts correctly | done |
+| 12 | Update meal logging flow UI | Implementation | ~4 hours | New components | done |
+| 13 | 🧪 CREATE unit tests for `formatMealDisplay()` | Testing | ~30 min | Test named/unnamed meal display | done |
+| 14 | 🧪 CREATE Playwright E2E tests for meal logging | Testing | ~2 hours | Test logging flow with prep selection | done |
+| 15 | 🧪 CREATE Maestro tests for meal logging | Testing | ~2 hours | Mirror Playwright tests for mobile | done |
+| 16 | Update history/display to use components | Implementation | ~2 hours | UI updates | done |
+| 17 | 🧪 CREATE Playwright E2E test for history | Testing | ~1 hour | Test named meals show correctly | done |
+| 18 | 🧪 CREATE Maestro test for history | Testing | ~1 hour | Mirror Playwright test for mobile | done |
+| 19 | Add prep method management UI | Implementation | ~2 hours | Settings screen | done |
+| 20 | 🧪 CREATE Playwright E2E test for prep management | Testing | ~1 hour | Test add/delete custom prep methods | done |
+| 21 | 🧪 CREATE Maestro test for prep management | Testing | ~1 hour | Mirror Playwright test for mobile | done |
+| 22 | ▶️ RUN full test suites | Testing | ~20 min | Unit + Playwright + Maestro, verify no regressions | done |
 | 23 | ▶️ RUN quality checks and compare | Quality | ~30 min | Compare to baseline; create remediation plan if worse | not started |
 | 24 | Document learning notes | Documentation | ~30 min | Capture unexpected errors, workarounds, fixes | not started |
-| 25 | Run all existing unit tests, Playwright tests and Maestro Tests | Quality | ~0.5 hours | not started |
-| 26 | 📸 Capture BEFORE screenshots | Documentation | ~15 min | not started |
-| 27 | 📸 Capture AFTER screenshots | Documentation | ~20 min | not started |
+| 25 | 📸 Capture BEFORE screenshots | Documentation | ~15 min | not started |
+| 26 | 📸 Capture AFTER screenshots | Documentation | ~20 min | not started |
 
 **Total Estimated Effort:** ~29.5 hours (including unit + Playwright + Maestro tests + quality checks)
 

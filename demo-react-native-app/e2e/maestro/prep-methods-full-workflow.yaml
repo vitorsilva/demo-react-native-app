@@ -1,0 +1,151 @@
+# Maestro E2E test for Full Preparation Methods Workflow
+# Tests complete CRUD workflow: add, verify, delete custom preparation method
+#
+# Prerequisites:
+#   - Android emulator running: adb devices
+#   - App installed (see MAESTRO_TESTING.md for options)
+#
+# Run with: maestro test e2e/maestro/prep-methods-full-workflow.yaml
+
+appId: com.vitorsilvavmrs.saborspin
+---
+# Clear app state for consistent testing
+- clearState
+# Launch app
+- launchApp
+
+# Verify home screen loads
+- extendedWaitUntil:
+    visible: "SaborSpin"
+    timeout: 30000
+
+# Navigate to Settings tab
+- tapOn: "Settings"
+
+# Wait for settings screen to load
+- extendedWaitUntil:
+    visible: "Settings"
+    timeout: 10000
+
+# Take screenshot of settings
+- takeScreenshot: prep-workflow-01-settings
+
+# Scroll down to find Preparation Methods section
+- scrollUntilVisible:
+    element: "Preparation Methods"
+    direction: DOWN
+    timeout: 10000
+
+# Step 1: Verify initial state - no custom methods
+- scrollUntilVisible:
+    element: "Custom Methods"
+    direction: DOWN
+    timeout: 5000
+
+# Wait for content to settle
+- waitForAnimationToEnd
+
+# Scroll to make sure empty state text is visible
+- scrollUntilVisible:
+    element: "No custom methods yet"
+    direction: DOWN
+    timeout: 5000
+
+- assertVisible: "No custom methods yet"
+
+# Take screenshot of initial state
+- takeScreenshot: prep-workflow-02-initial-empty
+
+# Step 2: Add a custom preparation method
+- tapOn: "+ Add Method"
+
+# Wait for modal
+- extendedWaitUntil:
+    visible: "Add New Preparation Method"
+    timeout: 5000
+
+# Enter name
+- inputText: "wok-fried"
+
+# Take screenshot of modal with input
+- takeScreenshot: prep-workflow-03-add-modal
+
+# Save
+- tapOn: "Add"
+
+# Wait for modal to close
+- extendedWaitUntil:
+    notVisible: "Add New Preparation Method"
+    timeout: 5000
+
+# Wait for UI update
+- waitForAnimationToEnd
+
+# Step 3: Verify method appears in custom section
+- scrollUntilVisible:
+    element: "Custom Methods"
+    direction: DOWN
+    timeout: 5000
+
+- assertVisible: "wok-fried"
+- assertNotVisible: "No custom methods yet"
+
+# Take screenshot showing method added
+- takeScreenshot: prep-workflow-04-method-added
+
+# Step 4: Add another custom method to test multiple
+- tapOn: "+ Add Method"
+
+# Wait for modal
+- extendedWaitUntil:
+    visible: "Add New Preparation Method"
+    timeout: 5000
+
+# Enter another name
+- inputText: "charred"
+
+# Save
+- tapOn: "Add"
+
+# Wait for modal to close
+- extendedWaitUntil:
+    notVisible: "Add New Preparation Method"
+    timeout: 5000
+
+# Wait for UI update
+- waitForAnimationToEnd
+
+# Verify both methods are visible
+- scrollUntilVisible:
+    element: "Custom Methods"
+    direction: DOWN
+    timeout: 5000
+
+- assertVisible: "wok-fried"
+- assertVisible: "charred"
+
+# Take screenshot showing multiple methods
+- takeScreenshot: prep-workflow-05-multiple-methods
+
+# Step 5: Delete one of the custom methods
+- tapOn: "Delete"
+
+# Wait for confirmation
+- extendedWaitUntil:
+    visible:
+      text: ".*delete.*"
+    timeout: 5000
+
+# Take screenshot of confirmation
+- takeScreenshot: prep-workflow-06-delete-confirm
+
+# Confirm deletion
+- tapOn: "Delete"
+
+# Wait for deletion
+- waitForAnimationToEnd
+
+# Take final screenshot
+- takeScreenshot: prep-workflow-07-after-delete
+
+# Test passed - Full workflow completed successfully

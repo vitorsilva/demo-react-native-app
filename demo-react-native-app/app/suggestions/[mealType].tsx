@@ -11,7 +11,7 @@ import {
   Platform,
   ActivityIndicator,
 } from 'react-native';
-import { ConfirmationModal } from '../../components/modals/ConfirmationModal';
+import { ConfirmationModal, MealComponentSelection } from '../../components/modals/ConfirmationModal';
 import { NewBadge } from '../../components/NewBadge';
 import { VarietyIndicator } from '../../components/VarietyIndicator';
 import { useStore } from '../../lib/store';
@@ -19,6 +19,7 @@ import { logger } from '../../lib/telemetry/logger';
 import { trackScreenView } from '../../lib/telemetry/screenTracking';
 import { haptics } from '../../lib/utils/haptics';
 import { isNewCombination, getVarietyColor } from '../../lib/utils/variety';
+import type { Ingredient } from '../../types/database';
 
 // Conditionally import LinearGradient only for native platforms
 let LinearGradient: React.ComponentType<{
@@ -51,6 +52,7 @@ export default function SuggestionsScreen() {
   const error = useStore((state) => state.error);
   const generateMealSuggestions = useStore((state) => state.generateMealSuggestions);
   const logMeal = useStore((state) => state.logMeal);
+  const logMealWithComponents = useStore((state) => state.logMealWithComponents);
   const ingredients = useStore((state) => state.ingredients);
   const loadIngredients = useStore((state) => state.loadIngredients);
   const isDatabaseReady = useStore((state) => state.isDatabaseReady);
@@ -59,10 +61,13 @@ export default function SuggestionsScreen() {
   const mealLogs = useStore((state) => state.mealLogs);
   const loadMealLogs = useStore((state) => state.loadMealLogs);
   const toggleMealLogFavorite = useStore((state) => state.toggleMealLogFavorite);
+  const preparationMethods = useStore((state) => state.preparationMethods);
+  const loadPreparationMethods = useStore((state) => state.loadPreparationMethods);
+  const addPreparationMethod = useStore((state) => state.addPreparationMethod);
 
   // Modal state
   const [modalVisible, setModalVisible] = useState(false);
-  const [selectedIngredients, setSelectedIngredients] = useState<string[]>([]);
+  const [selectedIngredientObjects, setSelectedIngredientObjects] = useState<Ingredient[]>([]);
   const hasGeneratedRef = useRef(false);
 
   // Find the meal type from the database (case-insensitive match)
@@ -111,6 +116,9 @@ export default function SuggestionsScreen() {
       // Load meal logs to check for favorites
       await loadMealLogs();
 
+      // Load preparation methods
+      await loadPreparationMethods();
+
       // Mark as generated to prevent re-runs
       hasGeneratedRef.current = true;
 
@@ -128,6 +136,7 @@ export default function SuggestionsScreen() {
     mealTypes.length,
     loadMealTypes,
     loadMealLogs,
+    loadPreparationMethods,
   ]);
 
   // Helper to check if a combination is favorited
@@ -173,33 +182,35 @@ export default function SuggestionsScreen() {
     haptics.light();
     const suggestion = suggestions.find((s) => s.id === suggestionId);
     if (suggestion) {
-      setSelectedIngredients(suggestion.ingredients.map((i) => i.name));
+      setSelectedIngredientObjects(suggestion.ingredients);
       setModalVisible(true);
     }
   };
 
-  const handleModalDone = async () => {
-    // Log the meal to database
-    const suggestion = suggestions.find(
-      (s) => s.ingredients.map((i) => i.name).join(',') === selectedIngredients.join(',')
+  const handleModalDone = async (
+    components: MealComponentSelection[],
+    mealName: string | undefined
+  ) => {
+    // Use the meal type name from URL (or database if found)
+    const mealTypeName = currentMealType?.name.toLowerCase() || mealType || 'meal';
+
+    // Track user action
+    logger.action('suggestion_accepted', {
+      mealType: mealTypeName,
+      ingredientCount: components.length,
+      hasMealName: !!mealName,
+      hasPreparationMethods: components.some((c) => c.preparationMethodId !== null),
+    });
+
+    // Use the new logMealWithComponents for Phase 2 data model
+    await logMealWithComponents(
+      mealTypeName,
+      components.map((c) => ({
+        ingredientId: c.ingredientId,
+        preparationMethodId: c.preparationMethodId,
+      })),
+      mealName
     );
-
-    if (suggestion) {
-      // Use the meal type name from URL (or database if found)
-      const mealTypeName = currentMealType?.name.toLowerCase() || mealType || 'meal';
-
-      // Track user action
-      logger.action('suggestion_accepted', {
-        mealType: mealTypeName,
-        ingredientCount: suggestion.ingredients.length,
-      });
-
-      await logMeal({
-        date: new Date().toISOString(),
-        ingredients: suggestion.ingredients.map((i) => i.id),
-        mealType: mealTypeName,
-      });
-    }
 
     setModalVisible(false);
     // Navigate back to home
@@ -376,8 +387,10 @@ export default function SuggestionsScreen() {
       <ConfirmationModal
         visible={modalVisible}
         mealType={currentMealType?.name.toLowerCase() || mealType || 'meal'}
-        ingredients={selectedIngredients}
+        ingredientObjects={selectedIngredientObjects}
+        preparationMethods={preparationMethods}
         onDone={handleModalDone}
+        onAddPreparationMethod={addPreparationMethod}
       />
     </View>
   );

@@ -1,0 +1,88 @@
+# Maestro E2E test for Adding Custom Preparation Method
+# Verifies user can add a custom preparation method in Settings
+#
+# Prerequisites:
+#   - Android emulator running: adb devices
+#   - App installed (see MAESTRO_TESTING.md for options)
+#
+# Run with: maestro test e2e/maestro/prep-methods-add-custom.yaml
+
+appId: com.vitorsilvavmrs.saborspin
+---
+# Clear app state for consistent testing
+- clearState
+# Launch app
+- launchApp
+
+# Verify home screen loads
+- extendedWaitUntil:
+    visible: "SaborSpin"
+    timeout: 30000
+
+# Navigate to Settings tab
+- tapOn: "Settings"
+
+# Wait for settings screen to load
+- extendedWaitUntil:
+    visible: "Settings"
+    timeout: 10000
+
+# Scroll down to find Preparation Methods section
+- scrollUntilVisible:
+    element: "Preparation Methods"
+    direction: DOWN
+    timeout: 10000
+
+# Take screenshot before adding
+- takeScreenshot: prep-add-custom-01-before
+
+# Tap add button
+- tapOn: "+ Add Method"
+
+# Wait for modal to appear
+- extendedWaitUntil:
+    visible: "Add New Preparation Method"
+    timeout: 5000
+
+# Verify modal elements
+- assertVisible: "Add New Preparation Method"
+- assertVisible: "Name"
+- assertVisible: "Cancel"
+- assertVisible: "Add"
+
+# Take screenshot of modal
+- takeScreenshot: prep-add-custom-02-modal-open
+
+# Enter custom method name in the input field
+- inputText: "air-fried"
+
+# Take screenshot with name entered
+- takeScreenshot: prep-add-custom-03-name-entered
+
+# Tap add button
+- tapOn: "Add"
+
+# Wait for modal to close
+- extendedWaitUntil:
+    notVisible: "Add New Preparation Method"
+    timeout: 5000
+
+# Wait for UI to update
+- waitForAnimationToEnd
+
+# Scroll to find the newly added custom method
+- scrollUntilVisible:
+    element: "air-fried"
+    direction: DOWN
+    timeout: 5000
+
+# Verify custom method appears in the list
+- assertVisible: "air-fried"
+
+# Verify empty state is gone
+- assertNotVisible: "No custom methods yet"
+
+# Take screenshot showing custom method added
+- takeScreenshot: prep-add-custom-04-method-added
+
+# Test passed - Custom preparation method added successfully

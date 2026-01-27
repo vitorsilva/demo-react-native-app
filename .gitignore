@@ -8,3 +8,5 @@ test-results/
 # Environment variables (FTP credentials, etc)
 .env
 node_modules/
+demo-react-native-app/e2e/maestro/output/
+

@@ -1,0 +1,104 @@
+# Maestro E2E test for Deleting Custom Preparation Method
+# Verifies user can delete a custom preparation method in Settings
+#
+# Prerequisites:
+#   - Android emulator running: adb devices
+#   - App installed (see MAESTRO_TESTING.md for options)
+#
+# Run with: maestro test e2e/maestro/prep-methods-delete-custom.yaml
+
+appId: com.vitorsilvavmrs.saborspin
+---
+# Clear app state for consistent testing
+- clearState
+# Launch app
+- launchApp
+
+# Verify home screen loads
+- extendedWaitUntil:
+    visible: "SaborSpin"
+    timeout: 30000
+
+# Navigate to Settings tab
+- tapOn: "Settings"
+
+# Wait for settings screen to load
+- extendedWaitUntil:
+    visible: "Settings"
+    timeout: 10000
+
+# Scroll down to find Preparation Methods section
+- scrollUntilVisible:
+    element: "Preparation Methods"
+    direction: DOWN
+    timeout: 10000
+
+# Step 1: First add a custom method to delete
+- tapOn: "+ Add Method"
+
+# Wait for modal to appear
+- extendedWaitUntil:
+    visible: "Add New Preparation Method"
+    timeout: 5000
+
+# Enter custom method name
+- inputText: "sous-vide"
+
+# Tap add button
+- tapOn: "Add"
+
+# Wait for modal to close
+- extendedWaitUntil:
+    notVisible: "Add New Preparation Method"
+    timeout: 5000
+
+# Wait for UI to update
+- waitForAnimationToEnd
+
+# Scroll to find the newly added custom method
+- scrollUntilVisible:
+    element: "sous-vide"
+    direction: DOWN
+    timeout: 5000
+
+# Verify custom method was added
+- assertVisible: "sous-vide"
+
+# Take screenshot before delete
+- takeScreenshot: prep-delete-01-before-delete
+
+# Step 2: Delete the custom method
+# Find and tap the delete button for this method
+- tapOn: "Delete"
+
+# Wait for confirmation dialog
+- extendedWaitUntil:
+    visible:
+      text: ".*delete.*"
+    timeout: 5000
+
+# Take screenshot of confirmation dialog
+- takeScreenshot: prep-delete-02-confirm-dialog
+
+# Confirm deletion
+- tapOn: "Delete"
+
+# Wait for deletion to complete
+- waitForAnimationToEnd
+
+# Take screenshot after delete
+- takeScreenshot: prep-delete-03-after-delete
+
+# Scroll to custom methods section
+- scrollUntilVisible:
+    element: "Custom Methods"
+    direction: DOWN
+    timeout: 5000
+
+# Verify custom method is gone (might show empty state again)
+- assertNotVisible: "sous-vide"
+
+# Take final screenshot
+- takeScreenshot: prep-delete-04-complete
+
+# Test passed - Custom preparation method deleted successfully

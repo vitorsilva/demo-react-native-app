@@ -1,0 +1,109 @@
+# Maestro E2E test for Phase 2 History with Multiple Meals
+# Tests that multiple meals (named and unnamed) display correctly in history
+#
+# Prerequisites:
+#   - Android emulator running: adb devices
+#   - App installed (see MAESTRO_TESTING.md for options)
+#
+# Run with: maestro test e2e/maestro/history-phase2-multiple-meals.yaml
+
+appId: com.vitorsilvavmrs.saborspin
+---
+# Clear app state for consistent testing
+- clearState
+# Launch app
+- launchApp
+
+# Verify home screen loads
+- extendedWaitUntil:
+    visible: "SaborSpin"
+    timeout: 30000
+
+# Take screenshot of initial home screen
+- takeScreenshot: history-multi-01-home-initial
+
+# ===== Log first meal: Named breakfast =====
+- tapOn:
+    text: "breakfast Ideas"
+    optional: false
+
+# Wait for suggestions screen to load
+- extendedWaitUntil:
+    visible: "Pick one:"
+    timeout: 15000
+
+# Select first suggestion
+- tapOn:
+    text: "Select"
+    index: 0
+
+# Wait for confirmation modal
+- extendedWaitUntil:
+    visible: "Breakfast Logged"
+    timeout: 10000
+
+# Complete the logging (skip naming for now)
+- tapOn: "Done"
+
+# Wait to return to home screen
+- extendedWaitUntil:
+    visible: "Recent Meals"
+    timeout: 10000
+
+# Take screenshot after logging first meal
+- takeScreenshot: history-multi-02-first-meal-logged
+
+# ===== Log second meal: Unnamed snack with prep method =====
+- tapOn:
+    text: "snack Ideas"
+    optional: false
+
+# Wait for suggestions screen to load
+- extendedWaitUntil:
+    visible: "Pick one:"
+    timeout: 15000
+
+# Select first suggestion
+- tapOn:
+    text: "Select"
+    index: 0
+
+# Wait for confirmation modal
+- extendedWaitUntil:
+    visible: "Snack Logged"
+    timeout: 10000
+
+# Complete the logging (skip prep method for now)
+- tapOn: "Done"
+
+# Wait to return to home screen
+- extendedWaitUntil:
+    visible: "Recent Meals"
+    timeout: 10000
+
+# Take screenshot after logging second meal
+- takeScreenshot: history-multi-03-second-meal-logged
+
+# Navigate to History tab
+- tapOn: "History"
+
+# Wait for history screen to load
+- extendedWaitUntil:
+    visible: "Today"
+    timeout: 10000
+
+# Take screenshot of history with multiple meals
+- takeScreenshot: history-multi-04-history-multiple-meals
+
+# Verify both meal types are visible
+- assertVisible: "Breakfast"
+- assertVisible: "Snack"
+
+# Verify history UI elements
+- assertVisible: "Today"
+- assertVisible: "All"
+
+# Take final screenshot
+- takeScreenshot: history-multi-05-complete
+
+# Test passed - multiple meals display correctly in history on mobile

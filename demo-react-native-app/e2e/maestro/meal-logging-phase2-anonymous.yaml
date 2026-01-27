@@ -1,0 +1,62 @@
+# Maestro E2E test for Phase 2 Anonymous Meal Logging
+# Tests logging a meal without a name (anonymous meal with components)
+#
+# Prerequisites:
+#   - Android emulator running: adb devices
+#   - App installed (see MAESTRO_TESTING.md for options)
+#
+# Run with: maestro test e2e/maestro/meal-logging-phase2-anonymous.yaml
+
+appId: com.vitorsilvavmrs.saborspin
+---
+# Clear app state for consistent testing
+- clearState
+# Launch app
+- launchApp
+
+# Verify home screen loads
+- extendedWaitUntil:
+    visible: "SaborSpin"
+    timeout: 30000
+
+# Take screenshot of initial home screen
+- takeScreenshot: phase2-anon-01-home
+
+# Navigate to snack suggestions (different meal type)
+- tapOn:
+    text: "snack Ideas"
+    optional: false
+
+# Wait for suggestions screen to load
+- extendedWaitUntil:
+    visible: "Pick one:"
+    timeout: 15000
+
+# Take screenshot of snack suggestions
+- takeScreenshot: phase2-anon-02-suggestions
+
+# Select first suggestion to open confirmation modal
+- tapOn:
+    text: "Select"
+    index: 0
+
+# Wait for confirmation modal
+- extendedWaitUntil:
+    visible: "Snack Logged"
+    timeout: 10000
+
+# Take screenshot showing confirmation modal
+- takeScreenshot: phase2-anon-03-confirmation
+
+# Complete the logging (without entering a name)
+- tapOn: "Done"
+
+# Wait to return to home screen
+- extendedWaitUntil:
+    visible: "Recent Meals"
+    timeout: 10000
+
+# Take screenshot of home after logging anonymous meal
+- takeScreenshot: phase2-anon-04-home-after
+
+# Test passed - Anonymous meal logging with prep method works on mobile

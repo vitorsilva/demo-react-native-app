@@ -1,3 +1,3 @@
 # Maestro workspace configuration
 # Output directory for test artifacts (screenshots, logs, reports)
-testOutputDir: .maestro/tests
+testOutputDir: e2e/maestro/output

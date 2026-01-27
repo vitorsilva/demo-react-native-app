@@ -19,8 +19,36 @@
   },
   "confirmation": {
     "title": "{{mealType}} Logged",
+    "yourSelection": "Your selection:",
     "enjoyMessage": "Enjoy your meal!",
     "done": "Done"
+  },
+  "mealName": {
+    "label": "Name this meal (optional):",
+    "placeholder": "e.g., \"Mom's special\""
+  },
+  "preparation": {
+    "title": "Preparation for \"{{ingredient}}\"",
+    "none": "None (as is)",
+    "custom": "custom",
+    "addCustom": "+ Add custom...",
+    "customPlaceholder": "Enter custom method",
+    "add": "Add",
+    "cancel": "Cancel"
+  },
+  "prepMethods": {
+    "fried": "Fried",
+    "grilled": "Grilled",
+    "roasted": "Roasted",
+    "boiled": "Boiled",
+    "baked": "Baked",
+    "raw": "Raw",
+    "steamed": "Steamed",
+    "sautéed": "Sautéed",
+    "stewed": "Stewed",
+    "smoked": "Smoked",
+    "poached": "Poached",
+    "braised": "Braised"
   },
   "error": {
     "title": "Error",

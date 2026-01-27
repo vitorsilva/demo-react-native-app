@@ -25,7 +25,7 @@ NC='\033[0m' # No Color
 echo -e "${YELLOW}Fetching latest EAS build...${NC}"
 
 # Get latest Android build info
-BUILD_INFO=$(eas build:list --platform android --limit 1 --json 2>/dev/null)
+BUILD_INFO=$(eas build:list --platform android --limit 1 --json --non-interactive 2>/dev/null)
 
 if [ -z "$BUILD_INFO" ]; then
     echo -e "${RED}Error: Failed to fetch build info. Make sure you're authenticated with EAS.${NC}"
@@ -33,7 +33,8 @@ if [ -z "$BUILD_INFO" ]; then
 fi
 
 # Extract APK URL using grep/sed (works without jq)
-APK_URL=$(echo "$BUILD_INFO" | grep -o '"applicationArchiveUrl":"[^"]*"' | head -1 | sed 's/"applicationArchiveUrl":"//;s/"$//')
+# Handle both "key":"value" and "key": "value" formats
+APK_URL=$(echo "$BUILD_INFO" | grep -oE '"applicationArchiveUrl":\s*"[^"]*"' | head -1 | sed 's/"applicationArchiveUrl":\s*"//;s/"$//')
 
 if [ -z "$APK_URL" ]; then
     echo -e "${RED}Error: No APK URL found. Make sure there's a completed Android build.${NC}"
@@ -41,7 +42,7 @@ if [ -z "$APK_URL" ]; then
 fi
 
 # Extract build ID for reference
-BUILD_ID=$(echo "$BUILD_INFO" | grep -o '"id":"[^"]*"' | head -1 | sed 's/"id":"//;s/"$//')
+BUILD_ID=$(echo "$BUILD_INFO" | grep -oE '"id":\s*"[^"]*"' | head -1 | sed 's/"id":\s*"//;s/"$//')
 
 echo -e "Build ID: ${GREEN}$BUILD_ID${NC}"
 echo -e "APK URL: ${GREEN}$APK_URL${NC}"

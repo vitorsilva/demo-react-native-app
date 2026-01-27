@@ -14,9 +14,29 @@ export interface MealLog {
   id: string;
   date: string;
   mealType: string; // Dynamic meal type name (e.g., 'breakfast', 'snack', 'lunch')
-  ingredients: string[]; // Array of ingredient IDs
+  name?: string | null; // NEW: Optional meal name (e.g., "Mom's special")
+  ingredients: string[]; // Array of ingredient IDs (legacy, for backward compat)
   createdAt: string;
   isFavorite: boolean; // Whether this combination is marked as favorite
+  // Computed/joined
+  components?: MealComponent[]; // NEW: Ingredient + preparation pairs
+}
+
+// Phase 2: Data Model Evolution - Preparation Methods
+export interface PreparationMethod {
+  id: string;
+  name: string;
+  isPredefined: boolean; // true = system method, false = user-added
+  createdAt: string;
+}
+
+// Phase 2: Data Model Evolution - Meal Components
+export interface MealComponent {
+  id: string;
+  mealLogId: string;
+  ingredientId: string;
+  preparationMethodId: string | null; // NULL = no preparation (e.g., milk)
+  createdAt: string;
 }
 
 export interface Preferences {

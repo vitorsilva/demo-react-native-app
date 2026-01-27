@@ -1,0 +1,84 @@
+# Maestro E2E test for New! Badge Feature
+# Verifies that "New!" badge appears on never-logged combinations
+#
+# Prerequisites:
+#   - Android emulator running: adb devices
+#   - App installed (see MAESTRO_TESTING.md for options)
+#
+# Run with: maestro test e2e/maestro/new-badge.yaml
+
+appId: com.vitorsilvavmrs.saborspin
+---
+# Clear app state for fresh database (all combos will be "new")
+- clearState
+# Launch app
+- launchApp
+
+# Verify home screen loads
+- extendedWaitUntil:
+    visible: "SaborSpin"
+    timeout: 30000
+
+# Take screenshot of initial home screen
+- takeScreenshot: new-badge-01-home-initial
+
+# Navigate to breakfast suggestions
+- tapOn:
+    text: "breakfast Ideas"
+    optional: false
+
+# Wait for suggestions screen to load
+- extendedWaitUntil:
+    visible: "Pick one:"
+    timeout: 15000
+
+# Wait for suggestions to fully render
+- waitForAnimationToEnd
+
+# Take screenshot of suggestions with New! badges
+- takeScreenshot: new-badge-02-suggestions-with-badges
+
+# Verify "New!" badge is visible (fresh database = all combos are new)
+- assertVisible: "New!"
+
+# Select first suggestion to log it
+- tapOn:
+    text: "Select"
+    index: 0
+
+# Wait for confirmation modal
+- extendedWaitUntil:
+    visible: "Breakfast Logged"
+    timeout: 10000
+
+# Take screenshot of confirmation
+- takeScreenshot: new-badge-03-confirmation
+
+# Complete the logging
+- tapOn: "Done"
+
+# Wait to return to home screen
+- extendedWaitUntil:
+    visible: "Recent Meals"
+    timeout: 10000
+
+# Take screenshot of home after logging
+- takeScreenshot: new-badge-04-home-after-meal
+
+# Navigate back to breakfast suggestions to check badge status
+- tapOn:
+    text: "breakfast Ideas"
+    optional: false
+
+# Wait for suggestions to load
+- extendedWaitUntil:
+    visible: "Pick one:"
+    timeout: 15000
+
+# Wait for suggestions to render
+- waitForAnimationToEnd
+
+# Take screenshot showing suggestions after logging
+- takeScreenshot: new-badge-05-suggestions-after-log
+
+# Test passed - New! badge feature works on mobile

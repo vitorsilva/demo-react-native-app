@@ -1,0 +1,77 @@
+# Maestro E2E test for Preparation Methods Management in Settings
+# Verifies the prep methods section displays correctly
+#
+# Prerequisites:
+#   - Android emulator running: adb devices
+#   - App installed (see MAESTRO_TESTING.md for options)
+#
+# Run with: maestro test e2e/maestro/prep-methods-settings.yaml
+
+appId: com.vitorsilvavmrs.saborspin
+---
+# Clear app state for consistent testing
+- clearState
+# Launch app
+- launchApp
+
+# Verify home screen loads
+- extendedWaitUntil:
+    visible: "SaborSpin"
+    timeout: 30000
+
+# Take screenshot of initial home screen
+- takeScreenshot: prep-methods-01-home-initial
+
+# Navigate to Settings tab
+- tapOn: "Settings"
+
+# Wait for settings screen to load
+- extendedWaitUntil:
+    visible: "Settings"
+    timeout: 10000
+
+# Take screenshot of settings screen
+- takeScreenshot: prep-methods-02-settings-screen
+
+# Scroll down to find Preparation Methods section
+- scrollUntilVisible:
+    element: "Preparation Methods"
+    direction: DOWN
+    timeout: 10000
+
+# Verify section elements are visible
+- assertVisible: "Preparation Methods"
+- assertVisible: "Manage how ingredients can be prepared"
+
+# Verify system methods section exists
+- assertVisible: "System Methods"
+
+# Take screenshot of prep methods section
+- takeScreenshot: prep-methods-03-section-visible
+
+# Verify some predefined system methods are visible
+- assertVisible: "fried"
+- assertVisible: "grilled"
+- assertVisible: "roasted"
+- assertVisible: "boiled"
+- assertVisible: "baked"
+
+# Take screenshot of system methods
+- takeScreenshot: prep-methods-04-system-methods
+
+# Scroll to custom methods section
+- scrollUntilVisible:
+    element: "Custom Methods"
+    direction: DOWN
+    timeout: 5000
+
+# Verify custom methods section exists
+- assertVisible: "Custom Methods"
+
+# Take screenshot of custom methods section
+- takeScreenshot: prep-methods-05-custom-section
+
+# Take final screenshot
+- takeScreenshot: prep-methods-06-complete
+
+# Test passed - Preparation Methods section displays correctly

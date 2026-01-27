@@ -22,6 +22,25 @@
       "description": "Quantas combinações de refeições mostrar de cada vez"
     }
   },
+  "preparationMethods": {
+    "title": "Métodos de Preparação",
+    "description": "Gerir como os ingredientes podem ser preparados",
+    "system": "Métodos do Sistema",
+    "systemDescription": "Métodos de preparação predefinidos (não podem ser eliminados)",
+    "custom": "Métodos Personalizados",
+    "customDescription": "Os seus métodos de preparação personalizados",
+    "noCustom": "Ainda sem métodos personalizados",
+    "add": "Adicionar Método",
+    "addNew": "Adicionar Novo Método de Preparação",
+    "name": "Nome",
+    "namePlaceholder": "ex: frito no ar, fumado",
+    "delete": "Eliminar",
+    "deleteConfirm": "Tem a certeza que deseja eliminar \"{{name}}\"?",
+    "validation": {
+      "nameRequired": "O nome do método de preparação é obrigatório",
+      "nameTaken": "Já existe um método de preparação com este nome"
+    }
+  },
   "mealTypes": {
     "title": "Tipos de Refeição",
     "description": "Configure os tipos de refeição e as suas definições",

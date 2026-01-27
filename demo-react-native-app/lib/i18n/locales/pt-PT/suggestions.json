@@ -19,8 +19,36 @@
   },
   "confirmation": {
     "title": "{{mealType}} Registado",
+    "yourSelection": "A sua seleção:",
     "enjoyMessage": "Bom apetite!",
     "done": "Concluído"
+  },
+  "mealName": {
+    "label": "Dar nome à refeição (opcional):",
+    "placeholder": "ex: \"Especial da mãe\""
+  },
+  "preparation": {
+    "title": "Preparação para \"{{ingredient}}\"",
+    "none": "Nenhuma (como está)",
+    "custom": "personalizado",
+    "addCustom": "+ Adicionar personalizado...",
+    "customPlaceholder": "Inserir método personalizado",
+    "add": "Adicionar",
+    "cancel": "Cancelar"
+  },
+  "prepMethods": {
+    "fried": "Frito",
+    "grilled": "Grelhado",
+    "roasted": "Assado",
+    "boiled": "Cozido",
+    "baked": "No forno",
+    "raw": "Cru",
+    "steamed": "A vapor",
+    "sautéed": "Salteado",
+    "stewed": "Estufado",
+    "smoked": "Fumado",
+    "poached": "Escalfado",
+    "braised": "Braseado"
   },
   "error": {
     "title": "Erro",

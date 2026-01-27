@@ -30,7 +30,8 @@ appId: com.vitorsilvavmrs.saborspin
 
 # Select first meal (don't favorite it)
 - tapOn:
-    id: "select-button-0"
+    text: "Select"
+    index: 0
 
 # Wait for confirmation and dismiss
 - extendedWaitUntil:
@@ -38,8 +39,7 @@ appId: com.vitorsilvavmrs.saborspin
       text: ".*Logged.*"
     timeout: 10000
 
-- tapOn:
-    id: "done-button"
+- tapOn: "Done"
 
 # Navigate to History
 - tapOn: "History"
@@ -52,23 +52,21 @@ appId: com.vitorsilvavmrs.saborspin
 # Take screenshot of history with meal
 - takeScreenshot: favorites-empty-01-history-with-meal
 
-# Tap Favorites filter
+# Tap Favorites filter (has star emoji prefix)
 - tapOn:
-    id: "filter-favorites"
+    text: ".*Favorites.*"
 
 # Wait for filter to apply
 - waitForAnimationToEnd
 
 # Verify empty favorites state is shown
-- assertVisible:
-    id: "history-empty-favorites"
+- assertVisible: "No favorites yet"
 
 # Take screenshot of empty favorites state
 - takeScreenshot: favorites-empty-02-no-favorites
 
 # Tap All filter to go back
-- tapOn:
-    id: "filter-all"
+- tapOn: "All"
 
 # Wait for filter to apply
 - waitForAnimationToEnd

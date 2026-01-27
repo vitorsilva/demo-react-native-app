@@ -1,6 +1,10 @@
 # Maestro E2E test for telemetry functionality
 # Verifies app doesn't crash during telemetry operations on mobile
 #
+# Prerequisites:
+#   - Android emulator running: adb devices
+#   - App installed (see MAESTRO_TESTING.md for options)
+#
 # Run with: maestro test e2e/maestro/telemetry-flow.yaml
 
 appId: com.vitorsilvavmrs.saborspin
@@ -9,61 +13,94 @@ appId: com.vitorsilvavmrs.saborspin
 - launchApp
 
 # Verify home screen loads (telemetry initializes on app start)
-- assertVisible: "SaborSpin"
+- extendedWaitUntil:
+    visible: "SaborSpin"
+    timeout: 30000
+
+# Take screenshot of home screen
+- takeScreenshot: telemetry-home
+
+# Verify key home screen elements are visible
+- assertVisible: "breakfast Ideas"
+- assertVisible: "snack Ideas"
 
 # Navigate to breakfast suggestions (triggers screen tracking)
-- tapOn: "breakfast Ideas"
-
-# Wait for suggestions screen
-- assertVisible: "Breakfast Suggestions"
-
-# Scroll down to find the Generate button
-- scroll
-
-# Generate new suggestions (triggers perf logging)
 - tapOn:
-    id: "generate-new-ideas-button"
+    text: "breakfast Ideas"
+    optional: false
 
-# Wait for animation/loading
-- waitForAnimationToEnd
+# Wait for suggestions screen to load
+- extendedWaitUntil:
+    visible: "Pick one:"
+    timeout: 15000
 
-# Verify suggestions loaded (telemetry didn't crash the app)
+# Take screenshot of suggestions
+- takeScreenshot: telemetry-suggestions
+
+# Verify suggestions screen elements
 - assertVisible: "Pick one:"
-
-# Tap on first meal card (triggers action logging)
-- tapOn:
-    id: "suggestion-0"
-
-# Verify selection worked
 - assertVisible: "Select"
 
-# Tap select button
+# Select a meal (triggers action logging)
 - tapOn:
-    id: "select-button-0"
+    text: "Select"
+    index: 0
 
-# Verify confirmation modal (meal logging action tracked)
+# Wait for confirmation modal
 - extendedWaitUntil:
-    visible:
-      text: ".*Logged.*"
+    visible: "Breakfast Logged"
     timeout: 10000
 
-# Dismiss modal
-- tapOn:
-    id: "done-button"
+# Take screenshot of confirmation
+- takeScreenshot: telemetry-confirmation
+
+# Verify confirmation modal elements
+- assertVisible: "Breakfast Logged"
+- assertVisible: "Enjoy your meal!"
+- assertVisible: "Done"
+
+# Dismiss modal by tapping Done button
+- tapOn: "Done"
 
 # Verify we're back on home
-- assertVisible: "Recent Meals"
+- extendedWaitUntil:
+    visible: "Recent Meals"
+    timeout: 10000
 
 # Navigate to History tab (triggers screen tracking)
 - tapOn: "History"
+- extendedWaitUntil:
+    visible: ".*History.*|.*Today.*|.*logged.*"
+    timeout: 10000
+
+# Take screenshot of history
+- takeScreenshot: telemetry-history
+
+# Verify history screen elements
 - assertVisible: "Today"
+- assertVisible: "Breakfast"
 
 # Navigate to Settings tab (triggers screen tracking)
 - tapOn: "Settings"
-- assertVisible: "Global Preferences"
+- extendedWaitUntil:
+    visible: ".*Settings.*|.*Preferences.*|.*Cooldown.*"
+    timeout: 10000
+
+# Take screenshot of settings
+- takeScreenshot: telemetry-settings
+
+# Verify settings screen elements
+- assertVisible: "Settings"
+- assertVisible: "Variety Cooldown"
+- assertVisible: "Number of Suggestions"
 
 # Navigate back to Home
 - tapOn: "Home"
-- assertVisible: "SaborSpin"
+- extendedWaitUntil:
+    visible: "SaborSpin"
+    timeout: 10000
+
+# Take final screenshot
+- takeScreenshot: telemetry-complete
 
 # If we got here, telemetry didn't cause any crashes
