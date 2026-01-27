@@ -765,3 +765,31 @@ export function applyPairingRules(
 - Duplication rate decreased despite 1 new clone
 
 ---
+
+### Task 22: Document learning notes
+
+**Status:** COMPLETE
+
+**What was done:**
+- Reviewed and consolidated all learning notes from Phase 3 implementation
+- Created comprehensive "Phase 3 Summary: Key Learnings" section covering:
+  - Architecture patterns (store-only data access, migration patterns)
+  - Testing patterns (Playwright E2E and Maestro best practices)
+  - Common issues and solutions table
+  - Algorithm design (suggestion generation, frequency penalties)
+  - Quality metrics tracking (baseline vs final comparison)
+  - Development environment notes (Windows-specific, test execution)
+  - Files created/modified in Phase 3
+
+**Key Learnings Documented:**
+1. Store-only data access rule enforced by ESLint
+2. Use testID selectors instead of text in E2E tests
+3. Expo Router keeps screens mounted - use `:visible` pseudo-class
+4. Maestro requires `scrollUntilVisible` for elements below fold
+5. Case-sensitive ingredient names must match seed data exactly
+6. Local Android builds fail on Windows due to path limits - use EAS
+
+**Verification:**
+- Learning notes file updated with comprehensive summary
+
+---

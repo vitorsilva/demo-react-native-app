@@ -721,3 +721,120 @@ When writing E2E tests for React Native Web apps, prefer testID selectors over t
 **No issues encountered.**
 
 ---
+
+### Task 22: Document learning notes
+
+**Status:** COMPLETE
+
+**What was done:**
+- Reviewed and consolidated all learning notes from Phase 3 implementation
+- Created comprehensive summary of key learnings and patterns discovered
+
+---
+
+## Phase 3 Summary: Key Learnings
+
+This section consolidates the most important learnings from implementing Phase 3: Enhanced Variety.
+
+### 1. Architecture Patterns
+
+**Store-Only Data Access Rule:**
+- App screens must access data through the Zustand store, not directly from database modules
+- Enforced by ESLint rule: `boundaries/element-types`
+- Example: Use `store.pairingRules` array instead of calling `pairingRuleExists()` directly from screen
+
+**Database Migration Pattern:**
+- Migrations use `IF NOT EXISTS` for idempotency
+- Foreign keys with `ON DELETE CASCADE` ensure referential integrity
+- UNIQUE constraints prevent duplicate data (e.g., pairing rules)
+
+### 2. Testing Patterns
+
+**Playwright E2E Testing:**
+- Use `:visible` CSS pseudo-class when multiple identical testID elements exist (Expo Router keeps screens mounted)
+- Navigate back from full-screen overlays before using tab bar
+- Use `waitForFunction` for dynamic UI changes rather than fixed assertions
+- Prefer testID selectors over text selectors (text can have prefixes like "+" or "←")
+
+**Maestro Mobile Testing:**
+- Always use `id:` parameter (testID) when text appears in multiple places
+- Use `scrollUntilVisible` before tapping elements that may be below the fold
+- Ingredient names are case-sensitive - match seed data exactly ("Milk" not "milk")
+- Tab/screen state persists after navigation - don't assume fresh state
+- Add appropriate timeouts (15000ms) for async operations like suggestion generation
+
+### 3. Common Issues and Solutions
+
+| Issue | Solution |
+|-------|----------|
+| Multiple elements with same text | Use testID selectors instead of text |
+| Element not found after scroll | Scroll to the target element, not nearby text |
+| Test passes locally but fails in CI | Add explicit waits and scrolls |
+| Expo Router multiple back buttons | Use `:visible` pseudo-class |
+| Full-screen overlay hides tab bar | Navigate back first, then use tabs |
+
+### 4. Algorithm Design
+
+**Suggestion Generation Enhancement:**
+1. Generate 10x candidates for better filtering
+2. Filter: Skip combinations with negative pairing rules
+3. Score: Calculate variety score (ingredient frequency penalties)
+4. Bonus: Add positive pairing rule bonus (+10 per pair)
+5. Bonus: Add favorite combination bonus (+20)
+6. Bonus: Add new combination bonus (+10)
+7. Sort by total score and return top N
+
+**Frequency Penalty Thresholds:**
+- HIGH: -30 (used 3+ times in cooldown period)
+- MEDIUM: -15 (used 2 times)
+- LOW: -5 (used 1 time)
+- NONE: 0 (encourages rotation)
+
+### 5. Quality Metrics Tracking
+
+**Baseline vs Final Comparison:**
+| Metric | Baseline | Final | Result |
+|--------|----------|-------|--------|
+| Unit tests | 389 | 477 | +88 tests |
+| Playwright E2E | 68 | 84 | +16 tests |
+| Maestro tests | 16 | 25 | +9 tests |
+| Architecture violations | 0 | 0 | ✅ Clean |
+| Security findings | 0 | 0 | ✅ Clean |
+| Code duplication | 4.6% | 4.05% | ✅ Improved |
+
+### 6. Development Environment Notes
+
+**Windows-Specific:**
+- Local Android builds often fail due to 260-character path length limits
+- Use EAS cloud builds instead for reliable APK generation
+- EAS free tier has concurrency limits - builds may be queued
+
+**Test Execution Order:**
+- Run tests incrementally when debugging failures
+- Focus on specific failing tests rather than full suite
+- Save time by fixing in small batches
+
+### 7. Files Created in Phase 3
+
+**New Files (7):**
+- `app/(tabs)/pairing-rules.tsx` - Pairing Rules management screen
+- `components/AddPairingRuleModal.tsx` - Modal for adding rules
+- `components/PairingRuleItem.tsx` - Rule list item component
+- `lib/database/pairingRules.ts` - Database CRUD operations
+- `lib/database/__tests__/pairingRules.test.ts` - Unit tests
+- `lib/database/__tests__/migrations.phase3.test.ts` - Migration tests
+- `e2e/pairing-rules.spec.ts` - Playwright E2E tests
+- `e2e/suggestions-pairing.spec.ts` - Suggestions E2E tests
+- 9 Maestro test files for mobile testing
+
+**Modified Files (8):**
+- `lib/database/migrations.ts` - Added pairing_rules table
+- `lib/store/index.ts` - Added pairing rules state and actions
+- `lib/utils/variety.ts` - Added frequency and pairing rule functions
+- `types/database.ts` - Added PairingRule type
+- `app/(tabs)/settings.tsx` - Added Pairing Rules link
+- `app/(tabs)/_layout.tsx` - Hidden pairing-rules from tab bar
+- `lib/i18n/locales/en/settings.json` - Added translations
+- `lib/i18n/locales/pt-PT/settings.json` - Added Portuguese translations
+
+---
