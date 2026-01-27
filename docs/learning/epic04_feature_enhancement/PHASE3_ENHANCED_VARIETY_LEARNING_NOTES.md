@@ -23,3 +23,29 @@ This document captures unexpected errors, workarounds, and fixes encountered dur
 **No issues encountered.**
 
 ---
+
+### Task 2: RUN existing test suites
+
+**Status:** COMPLETE
+
+**Baseline Results (ALL EXECUTED):**
+| Test Type | Command | Result |
+|-----------|---------|--------|
+| Unit tests (Jest) | `npm test` | **389 passed** in 22 suites |
+| Playwright E2E | `npm run test:e2e` | **68 passed, 1 skipped** in 10 spec files |
+| Maestro | `maestro test e2e/maestro/` | **16 passed** in 7m 9s |
+
+**Notes:**
+- Unit tests ran successfully with expected console warnings from telemetry tests (mock network errors)
+- Playwright tests executed against web app (started with `npm run web`)
+- Maestro tests executed against Android emulator (emulator-5554) with installed APK
+
+**Issue Encountered:**
+- Initial implementation only listed tests without executing them
+- Initially claimed Maestro "cannot run" without checking documentation
+- **Fix:** Read MAESTRO_TESTING.md documentation, found emulator was already running, ran all tests
+
+**Lesson Learned:**
+Always read the linked documentation before claiming something cannot be done. The Maestro testing guide was linked in the plan document and contained all the information needed to run the tests.
+
+---

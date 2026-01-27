@@ -564,7 +564,7 @@ function generateSuggestions(
 | Order | Task | Type | Effort | Notes |
 |-------|------|------|--------|-------|
 | 1 | 📸 Capture BEFORE screenshots | Documentation | ~10 min | done |
-| 2 | ▶️ RUN existing test suites | Testing | ~15 min | Baseline: unit, Playwright E2E, Maestro | not started |
+| 2 | ▶️ RUN existing test suites | Testing | ~15 min | Baseline: unit, Playwright E2E, Maestro | done |
 | 3 | ▶️ RUN quality baseline | Quality | ~30 min | arch:test, lint:dead-code, lint:duplicates, security:scan | not started |
 | 4 | Add ingredient frequency calculation | Implementation | ~2 hours | Utility function | not started |
 | 5 | 🧪 CREATE unit tests for `getIngredientFrequency()` | Testing | ~45 min | Test counting logic | not started |
