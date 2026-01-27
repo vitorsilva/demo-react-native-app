@@ -575,7 +575,7 @@ function generateSuggestions(
 | 10 | Add pairing rules store actions | Implementation | ~2 hours | Store | done |
 | 11 | 🧪 CREATE unit tests for pairing rules CRUD | Testing | ~1 hour | Test add/delete/query | done |
 | 12 | Add pairing rules to suggestion algorithm | Implementation | ~2 hours | Algorithm | done |
-| 13 | 🧪 CREATE unit tests for `applyPairingRules()` | Testing | ~1 hour | Test positive/negative rules | not started |
+| 13 | 🧪 CREATE unit tests for `applyPairingRules()` | Testing | ~1 hour | Test positive/negative rules | done |
 | 14 | Create Pairing Rules UI | Implementation | ~4 hours | New screen | not started |
 | 15 | 🧪 CREATE Playwright E2E tests for pairing rules | Testing | ~1.5 hours | Test add/delete rules via UI | not started |
 | 16 | 🧪 CREATE Maestro tests for pairing rules | Testing | ~1.5 hours | Mirror Playwright tests for mobile | not started |

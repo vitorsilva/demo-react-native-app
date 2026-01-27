@@ -437,3 +437,51 @@ export function applyPairingRules(
 - All 75 variety tests pass
 
 ---
+
+### Task 13: CREATE unit tests for applyPairingRules()
+
+**Status:** COMPLETE
+
+**What was done:**
+- Added 16 unit tests for `applyPairingRules()` to `lib/utils/__tests__/variety.test.ts`
+- Added `createPairingRule()` helper function for test data
+- Updated imports to include `applyPairingRules`, `PAIRING_RULE_SCORE`, and `PairingRule`
+
+**File Modified:**
+- `demo-react-native-app/lib/utils/__tests__/variety.test.ts`
+
+**Tests Added (16 tests in 5 categories):**
+1. **Score constants** (1 test)
+   - Exports PAIRING_RULE_SCORE with correct values
+
+2. **Empty inputs** (3 tests)
+   - Returns valid with score 0 for empty candidate ingredients
+   - Returns valid with score 0 for empty rules
+   - Returns valid with score 0 for single ingredient (no pairs)
+
+3. **Positive rules** (3 tests)
+   - Adds bonus (+10) for matching positive rule
+   - Matches positive rule in reverse order (B-A)
+   - Accumulates bonus for multiple positive pairs
+
+4. **Negative rules** (3 tests)
+   - Returns invalid for matching negative rule
+   - Matches negative rule in reverse order (B-A)
+   - Returns invalid immediately when first negative rule found
+
+5. **Mixed rules** (2 tests)
+   - Returns valid with bonus when only positive rules match
+   - Returns valid with 0 score when no rules match
+
+6. **Edge cases** (4 tests)
+   - Handles many ingredients with multiple matching pairs
+   - Handles duplicate ingredients in candidate
+   - Handles no matching ingredients even with many rules
+   - Correctly identifies pair regardless of ingredient position
+
+**Verification:**
+- All 91 variety tests pass (75 existing + 16 new)
+- TypeScript check: ✅ No errors
+- Linter: ✅ 0 errors (7 pre-existing warnings)
+
+---

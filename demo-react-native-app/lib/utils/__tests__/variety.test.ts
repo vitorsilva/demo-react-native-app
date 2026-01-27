@@ -7,8 +7,10 @@ import {
   getIngredientFrequency,
   calculateVarietyScore,
   FREQUENCY_PENALTY,
+  applyPairingRules,
+  PAIRING_RULE_SCORE,
 } from '../variety';
-import type { MealLog, Ingredient } from '../../../types/database';
+import type { MealLog, Ingredient, PairingRule } from '../../../types/database';
 
 /**
  * Helper to create a date string N days ago from today
@@ -1014,6 +1016,214 @@ describe('calculateVarietyScore', () => {
 
       // 0 days means < 0, which excludes all meals
       expect(calculateVarietyScore(['milk-id'], history, 0)).toBe(100);
+    });
+  });
+});
+
+/**
+ * Helper to create a PairingRule for testing
+ */
+function createPairingRule(
+  ingredientAId: string,
+  ingredientBId: string,
+  ruleType: 'positive' | 'negative',
+  id: string = `rule-${ingredientAId}-${ingredientBId}`
+): PairingRule {
+  return {
+    id,
+    ingredientAId,
+    ingredientBId,
+    ruleType,
+    createdAt: new Date().toISOString(),
+  };
+}
+
+describe('applyPairingRules', () => {
+  describe('score constants', () => {
+    it('exports PAIRING_RULE_SCORE with correct values', () => {
+      expect(PAIRING_RULE_SCORE.POSITIVE_BONUS).toBe(10);
+      expect(PAIRING_RULE_SCORE.NEGATIVE_PENALTY).toBe(-100);
+    });
+  });
+
+  describe('empty inputs', () => {
+    it('returns valid with score 0 for empty candidate ingredients', () => {
+      const rules: PairingRule[] = [
+        createPairingRule('milk-id', 'cereals-id', 'positive'),
+      ];
+
+      const result = applyPairingRules([], rules);
+      expect(result.isValid).toBe(true);
+      expect(result.score).toBe(0);
+    });
+
+    it('returns valid with score 0 for empty rules', () => {
+      const result = applyPairingRules(['milk-id', 'cereals-id'], []);
+      expect(result.isValid).toBe(true);
+      expect(result.score).toBe(0);
+    });
+
+    it('returns valid with score 0 for single ingredient (no pairs to check)', () => {
+      const rules: PairingRule[] = [
+        createPairingRule('milk-id', 'cereals-id', 'positive'),
+      ];
+
+      const result = applyPairingRules(['milk-id'], rules);
+      expect(result.isValid).toBe(true);
+      expect(result.score).toBe(0);
+    });
+  });
+
+  describe('positive rules', () => {
+    it('adds bonus (+10) for matching positive rule', () => {
+      const rules: PairingRule[] = [
+        createPairingRule('milk-id', 'cereals-id', 'positive'),
+      ];
+
+      const result = applyPairingRules(['milk-id', 'cereals-id'], rules);
+      expect(result.isValid).toBe(true);
+      expect(result.score).toBe(10);
+    });
+
+    it('matches positive rule in reverse order (B-A)', () => {
+      const rules: PairingRule[] = [
+        createPairingRule('milk-id', 'cereals-id', 'positive'),
+      ];
+
+      // Rule is milk-id -> cereals-id, but we query cereals-id -> milk-id
+      const result = applyPairingRules(['cereals-id', 'milk-id'], rules);
+      expect(result.isValid).toBe(true);
+      expect(result.score).toBe(10);
+    });
+
+    it('accumulates bonus for multiple positive pairs', () => {
+      const rules: PairingRule[] = [
+        createPairingRule('milk-id', 'cereals-id', 'positive'),
+        createPairingRule('milk-id', 'honey-id', 'positive'),
+        createPairingRule('cereals-id', 'honey-id', 'positive'),
+      ];
+
+      // All 3 pairs match: milk-cereals, milk-honey, cereals-honey
+      const result = applyPairingRules(['milk-id', 'cereals-id', 'honey-id'], rules);
+      expect(result.isValid).toBe(true);
+      expect(result.score).toBe(30); // 3 × 10 = 30
+    });
+  });
+
+  describe('negative rules', () => {
+    it('returns invalid for matching negative rule', () => {
+      const rules: PairingRule[] = [
+        createPairingRule('butter-id', 'yogurt-id', 'negative'),
+      ];
+
+      const result = applyPairingRules(['butter-id', 'yogurt-id'], rules);
+      expect(result.isValid).toBe(false);
+      expect(result.score).toBe(-100);
+    });
+
+    it('matches negative rule in reverse order (B-A)', () => {
+      const rules: PairingRule[] = [
+        createPairingRule('butter-id', 'yogurt-id', 'negative'),
+      ];
+
+      // Rule is butter-id -> yogurt-id, but we query yogurt-id -> butter-id
+      const result = applyPairingRules(['yogurt-id', 'butter-id'], rules);
+      expect(result.isValid).toBe(false);
+      expect(result.score).toBe(-100);
+    });
+
+    it('returns invalid immediately when first negative rule found', () => {
+      const rules: PairingRule[] = [
+        createPairingRule('milk-id', 'cereals-id', 'positive'),
+        createPairingRule('butter-id', 'yogurt-id', 'negative'),
+      ];
+
+      // Has positive pair (milk-cereals) but also negative pair (butter-yogurt)
+      const result = applyPairingRules(
+        ['milk-id', 'cereals-id', 'butter-id', 'yogurt-id'],
+        rules
+      );
+      expect(result.isValid).toBe(false);
+      expect(result.score).toBe(-100);
+    });
+  });
+
+  describe('mixed rules', () => {
+    it('returns valid with bonus when only positive rules match', () => {
+      const rules: PairingRule[] = [
+        createPairingRule('milk-id', 'cereals-id', 'positive'),
+        createPairingRule('butter-id', 'yogurt-id', 'negative'),
+      ];
+
+      // Only milk and cereals - positive match, no negative match
+      const result = applyPairingRules(['milk-id', 'cereals-id'], rules);
+      expect(result.isValid).toBe(true);
+      expect(result.score).toBe(10);
+    });
+
+    it('returns valid with 0 score when no rules match', () => {
+      const rules: PairingRule[] = [
+        createPairingRule('milk-id', 'cereals-id', 'positive'),
+        createPairingRule('butter-id', 'yogurt-id', 'negative'),
+      ];
+
+      // bread and cheese - no rules for this pair
+      const result = applyPairingRules(['bread-id', 'cheese-id'], rules);
+      expect(result.isValid).toBe(true);
+      expect(result.score).toBe(0);
+    });
+  });
+
+  describe('edge cases', () => {
+    it('handles many ingredients with multiple matching pairs', () => {
+      const rules: PairingRule[] = [
+        createPairingRule('a-id', 'b-id', 'positive'),
+        createPairingRule('b-id', 'c-id', 'positive'),
+        createPairingRule('c-id', 'd-id', 'positive'),
+        createPairingRule('d-id', 'e-id', 'positive'),
+      ];
+
+      // With 5 ingredients (a,b,c,d,e), pairs are: ab, ac, ad, ae, bc, bd, be, cd, ce, de
+      // Matching rules: ab, bc, cd, de = 4 matches
+      const result = applyPairingRules(['a-id', 'b-id', 'c-id', 'd-id', 'e-id'], rules);
+      expect(result.isValid).toBe(true);
+      expect(result.score).toBe(40); // 4 × 10 = 40
+    });
+
+    it('handles duplicate ingredients in candidate (unusual but possible)', () => {
+      const rules: PairingRule[] = [
+        createPairingRule('milk-id', 'cereals-id', 'positive'),
+      ];
+
+      // Duplicate milk-id - should still only count once for the pair
+      const result = applyPairingRules(['milk-id', 'milk-id', 'cereals-id'], rules);
+      expect(result.isValid).toBe(true);
+      // Pairs: (milk,milk), (milk,cereals), (milk,cereals) - rule matches twice
+      expect(result.score).toBe(20);
+    });
+
+    it('handles no matching ingredients even with many rules', () => {
+      const rules: PairingRule[] = [
+        createPairingRule('milk-id', 'cereals-id', 'positive'),
+        createPairingRule('bread-id', 'butter-id', 'positive'),
+        createPairingRule('cheese-id', 'wine-id', 'negative'),
+      ];
+
+      // apple and banana - no rules for these
+      const result = applyPairingRules(['apple-id', 'banana-id'], rules);
+      expect(result.isValid).toBe(true);
+      expect(result.score).toBe(0);
+    });
+
+    it('correctly identifies pair regardless of ingredient position in array', () => {
+      const rules: PairingRule[] = [
+        createPairingRule('b-id', 'd-id', 'positive'),
+      ];
+
+      // b and d are not adjacent in the array
+      const result = applyPairingRules(['a-id', 'b-id', 'c-id', 'd-id'], rules);
+      expect(result.isValid).toBe(true);
+      expect(result.score).toBe(10);
     });
   });
 });

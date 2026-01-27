@@ -320,3 +320,29 @@ Always read the linked documentation before claiming something cannot be done. T
 **No issues encountered.**
 
 ---
+
+### Task 13: CREATE unit tests for applyPairingRules()
+
+**Status:** COMPLETE
+
+**What was done:**
+- Added 16 unit tests for `applyPairingRules()` to `lib/utils/__tests__/variety.test.ts`
+- Added `createPairingRule()` helper function for test data
+- Updated imports to include `applyPairingRules`, `PAIRING_RULE_SCORE`, and `PairingRule`
+
+**Test Categories (16 tests in 5 categories):**
+1. **Score constants** (1 test): Verifies PAIRING_RULE_SCORE values
+2. **Empty inputs** (3 tests): empty candidates, empty rules, single ingredient
+3. **Positive rules** (3 tests): bonus added, reverse order matching, cumulative bonus
+4. **Negative rules** (3 tests): returns invalid, reverse order matching, immediate return
+5. **Mixed rules** (2 tests): only positive matches, no rules match
+6. **Edge cases** (4 tests): many ingredients, duplicates, no matching ingredients, non-adjacent pairs
+
+**Test Results:**
+- All 91 variety tests pass (75 existing + 16 new)
+- TypeScript check: ✅ No errors
+- Linter: ✅ 0 errors (7 pre-existing warnings)
+
+**No issues encountered.**
+
+---
