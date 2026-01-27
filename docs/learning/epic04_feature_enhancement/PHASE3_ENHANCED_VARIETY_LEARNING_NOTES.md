@@ -49,3 +49,28 @@ This document captures unexpected errors, workarounds, and fixes encountered dur
 Always read the linked documentation before claiming something cannot be done. The Maestro testing guide was linked in the plan document and contained all the information needed to run the tests.
 
 ---
+
+### Task 3: RUN quality baseline
+
+**Status:** COMPLETE
+
+**Quality Baseline Results:**
+| Check | Command | Result |
+|-------|---------|--------|
+| Architecture tests | `npm run arch:test` | ✅ No violations (138 modules, 339 dependencies) |
+| Dead code | `npm run lint:dead-code` | ✅ 1 hint (expo-router/entry - expected Expo behavior) |
+| Duplicates | `npm run lint:duplicates` | ⚠️ 24 clones found (4.6% duplication rate) |
+| Security scan | `npm run security:scan` | ✅ 0 findings (217 rules, 90 files) |
+
+**Notes:**
+- All commands ran successfully from `demo-react-native-app/demo-react-native-app/` directory
+- The duplication findings are pre-existing and not introduced by Phase 3
+- Security scan uses Semgrep with auto config and found no vulnerabilities
+- This baseline will be compared after Phase 3 implementation to verify no regressions
+
+**Issue Encountered:**
+- Quality scripts referenced in the plan are in the nested `demo-react-native-app/` subfolder, not the root directory
+- Initial attempts to run from wrong directory failed with "Missing script" errors
+- **Fix:** Identified correct directory from package.json location and ran commands from there
+
+---
