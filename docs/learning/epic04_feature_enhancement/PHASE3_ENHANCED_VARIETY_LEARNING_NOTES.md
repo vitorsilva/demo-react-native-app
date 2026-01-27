@@ -144,3 +144,29 @@ Always read the linked documentation before claiming something cannot be done. T
 **No issues encountered.**
 
 ---
+
+### Task 7: CREATE unit tests for frequency penalties
+
+**Status:** COMPLETE
+
+**What was done:**
+- Added 18 unit tests for `calculateVarietyScore()` to `lib/utils/__tests__/variety.test.ts`
+- Tests cover: penalty constants, basic scoring, single/multiple ingredient penalties, score clamping, and cooldown period behavior
+
+**Test Categories:**
+1. **Penalty constants** (1 test): Verifies FREQUENCY_PENALTY values (HIGH=30, MEDIUM=15, LOW=5)
+2. **Basic scoring** (3 tests): empty candidates, never-used ingredients, empty history
+3. **Single ingredient penalties** (4 tests): LOW, MEDIUM, HIGH thresholds and 3+ times behavior
+4. **Multiple ingredients penalties** (3 tests): cumulative penalties, mixed levels, used/unused mix
+5. **Score clamping** (2 tests): clamps to 0, boundary condition
+6. **Cooldown period** (2 tests): respects days parameter, boundary exclusion
+7. **Edge cases** (3 tests): single ingredient, many ingredients, 0-day cooldown
+
+**Test Results:**
+- All 75 variety tests pass (57 existing + 18 new)
+- TypeScript check: ✅ No errors
+- Linter: ✅ 0 errors (7 pre-existing warnings)
+
+**No issues encountered.**
+
+---

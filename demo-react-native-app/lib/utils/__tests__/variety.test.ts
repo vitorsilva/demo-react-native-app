@@ -5,6 +5,8 @@ import {
   FRESH_THRESHOLD_DAYS,
   calculateVarietyStats,
   getIngredientFrequency,
+  calculateVarietyScore,
+  FREQUENCY_PENALTY,
 } from '../variety';
 import type { MealLog, Ingredient } from '../../../types/database';
 
@@ -791,6 +793,227 @@ describe('getIngredientFrequency', () => {
       // Days 2-6: 7 meals each = 35 meals
       // Total = 8 + 8 + 35 = 51 meals
       expect(count).toBe(51);
+    });
+  });
+});
+
+describe('calculateVarietyScore', () => {
+  describe('penalty constants', () => {
+    it('exports FREQUENCY_PENALTY with correct values', () => {
+      expect(FREQUENCY_PENALTY.HIGH).toBe(30);
+      expect(FREQUENCY_PENALTY.MEDIUM).toBe(15);
+      expect(FREQUENCY_PENALTY.LOW).toBe(5);
+    });
+  });
+
+  describe('basic scoring', () => {
+    it('returns 100 for empty candidate ingredients', () => {
+      const history: MealLog[] = [createMealLog(['milk-id'], 1)];
+
+      expect(calculateVarietyScore([], history, 7)).toBe(100);
+    });
+
+    it('returns 100 for ingredients never used (no penalty)', () => {
+      const history: MealLog[] = [createMealLog(['bread-id', 'cheese-id'], 1)];
+
+      // milk-id has never been used, so no penalty
+      expect(calculateVarietyScore(['milk-id'], history, 7)).toBe(100);
+    });
+
+    it('returns 100 with empty history (all ingredients are new)', () => {
+      const history: MealLog[] = [];
+
+      expect(calculateVarietyScore(['milk-id', 'bread-id'], history, 7)).toBe(
+        100
+      );
+    });
+  });
+
+  describe('single ingredient penalties', () => {
+    it('applies LOW penalty (-5) for ingredient used once', () => {
+      const history: MealLog[] = [createMealLog(['milk-id', 'cheese-id'], 1)];
+
+      // milk-id used 1 time = -5 penalty
+      expect(calculateVarietyScore(['milk-id'], history, 7)).toBe(95);
+    });
+
+    it('applies MEDIUM penalty (-15) for ingredient used twice', () => {
+      const history: MealLog[] = [
+        createMealLog(['milk-id', 'bread-id'], 1, '1'),
+        createMealLog(['milk-id', 'cheese-id'], 2, '2'),
+      ];
+
+      // milk-id used 2 times = -15 penalty
+      expect(calculateVarietyScore(['milk-id'], history, 7)).toBe(85);
+    });
+
+    it('applies HIGH penalty (-30) for ingredient used 3 times', () => {
+      const history: MealLog[] = [
+        createMealLog(['milk-id', 'bread-id'], 1, '1'),
+        createMealLog(['milk-id', 'cheese-id'], 2, '2'),
+        createMealLog(['milk-id', 'apple-id'], 3, '3'),
+      ];
+
+      // milk-id used 3 times = -30 penalty
+      expect(calculateVarietyScore(['milk-id'], history, 7)).toBe(70);
+    });
+
+    it('applies HIGH penalty (-30) for ingredient used more than 3 times', () => {
+      const history: MealLog[] = [
+        createMealLog(['milk-id', 'bread-id'], 1, '1'),
+        createMealLog(['milk-id', 'cheese-id'], 2, '2'),
+        createMealLog(['milk-id', 'apple-id'], 3, '3'),
+        createMealLog(['milk-id', 'banana-id'], 4, '4'),
+        createMealLog(['milk-id', 'orange-id'], 5, '5'),
+      ];
+
+      // milk-id used 5 times = -30 penalty (same as 3+)
+      expect(calculateVarietyScore(['milk-id'], history, 7)).toBe(70);
+    });
+  });
+
+  describe('multiple ingredients penalties', () => {
+    it('accumulates penalties from multiple ingredients', () => {
+      const history: MealLog[] = [
+        createMealLog(['milk-id'], 1, '1'), // milk used once
+        createMealLog(['bread-id'], 2, '2'), // bread used once
+      ];
+
+      // milk-id: -5 (used once)
+      // bread-id: -5 (used once)
+      // Total: 100 - 5 - 5 = 90
+      expect(calculateVarietyScore(['milk-id', 'bread-id'], history, 7)).toBe(
+        90
+      );
+    });
+
+    it('handles mix of different penalty levels', () => {
+      const history: MealLog[] = [
+        createMealLog(['milk-id', 'bread-id'], 1, '1'),
+        createMealLog(['milk-id', 'cheese-id'], 2, '2'),
+        createMealLog(['milk-id', 'apple-id'], 3, '3'), // milk: 3 times (HIGH)
+        createMealLog(['bread-id', 'banana-id'], 4, '4'), // bread: 2 times (MEDIUM)
+        createMealLog(['cheese-id'], 5, '5'), // cheese: 2 times (MEDIUM)
+      ];
+
+      // milk-id: -30 (used 3 times, HIGH)
+      // bread-id: -15 (used 2 times, MEDIUM)
+      // cheese-id: -15 (used 2 times, MEDIUM)
+      // Total: 100 - 30 - 15 - 15 = 40
+      expect(
+        calculateVarietyScore(['milk-id', 'bread-id', 'cheese-id'], history, 7)
+      ).toBe(40);
+    });
+
+    it('handles mix of used and unused ingredients', () => {
+      const history: MealLog[] = [
+        createMealLog(['milk-id'], 1, '1'),
+        createMealLog(['milk-id'], 2, '2'),
+      ];
+
+      // milk-id: -15 (used 2 times, MEDIUM)
+      // bread-id: 0 (never used, no penalty)
+      // Total: 100 - 15 = 85
+      expect(calculateVarietyScore(['milk-id', 'bread-id'], history, 7)).toBe(
+        85
+      );
+    });
+  });
+
+  describe('score clamping', () => {
+    it('clamps score to minimum 0 (does not go negative)', () => {
+      // Create history where each ingredient is used 3+ times
+      const history: MealLog[] = [
+        createMealLog(['a-id', 'b-id', 'c-id', 'd-id'], 1, '1'),
+        createMealLog(['a-id', 'b-id', 'c-id', 'd-id'], 2, '2'),
+        createMealLog(['a-id', 'b-id', 'c-id', 'd-id'], 3, '3'),
+      ];
+
+      // 4 ingredients × 30 (HIGH penalty each) = 120 penalty
+      // 100 - 120 = -20, but should clamp to 0
+      expect(
+        calculateVarietyScore(['a-id', 'b-id', 'c-id', 'd-id'], history, 7)
+      ).toBe(0);
+    });
+
+    it('returns exactly 0 at the boundary', () => {
+      // 100 / 30 = 3.33, so 4 ingredients with HIGH penalty = 120
+      // Let's use exactly enough to hit 0
+      const history: MealLog[] = [
+        createMealLog(['a-id', 'b-id', 'c-id'], 1, '1'),
+        createMealLog(['a-id', 'b-id', 'c-id'], 2, '2'),
+        createMealLog(['a-id', 'b-id', 'c-id'], 3, '3'),
+        createMealLog(['d-id'], 4, '4'), // d-id: 1 time (LOW)
+      ];
+
+      // a, b, c: -30 each (used 3 times) = -90
+      // d: -5 (used once) = -5
+      // Total: 100 - 90 - 5 = 5
+      expect(
+        calculateVarietyScore(['a-id', 'b-id', 'c-id', 'd-id'], history, 7)
+      ).toBe(5);
+    });
+  });
+
+  describe('cooldown period', () => {
+    it('respects cooldown days parameter', () => {
+      const history: MealLog[] = [
+        createMealLog(['milk-id'], 1, '1'), // Within 3 days
+        createMealLog(['milk-id'], 2, '2'), // Within 3 days
+        createMealLog(['milk-id'], 5, '3'), // Outside 3 days
+      ];
+
+      // With 3-day cooldown: milk used 2 times = MEDIUM penalty (-15)
+      expect(calculateVarietyScore(['milk-id'], history, 3)).toBe(85);
+
+      // With 7-day cooldown: milk used 3 times = HIGH penalty (-30)
+      expect(calculateVarietyScore(['milk-id'], history, 7)).toBe(70);
+    });
+
+    it('excludes meals at exactly the cooldown boundary', () => {
+      const history: MealLog[] = [
+        createMealLog(['milk-id'], 6, '1'), // Day 6 (included in 7-day)
+        createMealLog(['milk-id'], 7, '2'), // Day 7 (excluded from 7-day)
+      ];
+
+      // 7 days means < 7, so only day 6 is included (1 use = LOW penalty)
+      expect(calculateVarietyScore(['milk-id'], history, 7)).toBe(95);
+    });
+  });
+
+  describe('edge cases', () => {
+    it('handles single ingredient meal in candidate', () => {
+      const history: MealLog[] = [createMealLog(['milk-id'], 1)];
+
+      expect(calculateVarietyScore(['milk-id'], history, 7)).toBe(95);
+    });
+
+    it('handles many ingredients in candidate', () => {
+      const history: MealLog[] = [
+        createMealLog(['a-id'], 1, '1'),
+        createMealLog(['b-id'], 2, '2'),
+      ];
+
+      // a: -5 (used once)
+      // b: -5 (used once)
+      // c, d, e: 0 (never used)
+      // Total: 100 - 5 - 5 = 90
+      expect(
+        calculateVarietyScore(
+          ['a-id', 'b-id', 'c-id', 'd-id', 'e-id'],
+          history,
+          7
+        )
+      ).toBe(90);
+    });
+
+    it('handles 0-day cooldown (no penalties possible)', () => {
+      const history: MealLog[] = [
+        createMealLog(['milk-id'], 0), // Today
+      ];
+
+      // 0 days means < 0, which excludes all meals
+      expect(calculateVarietyScore(['milk-id'], history, 0)).toBe(100);
     });
   });
 });

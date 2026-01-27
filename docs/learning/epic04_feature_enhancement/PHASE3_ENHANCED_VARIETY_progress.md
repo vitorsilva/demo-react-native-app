@@ -224,3 +224,31 @@ export function calculateVarietyScore(
 - Linter: ✅ 0 errors
 
 ---
+
+### Task 7: CREATE unit tests for frequency penalties
+
+**Status:** COMPLETE
+
+**What was done:**
+- Added 18 unit tests for `calculateVarietyScore()` to `lib/utils/__tests__/variety.test.ts`
+- Imported `calculateVarietyScore` and `FREQUENCY_PENALTY` from the variety module
+- Tests follow existing patterns using `describe` blocks and helper functions
+
+**File Modified:**
+- `demo-react-native-app/lib/utils/__tests__/variety.test.ts` - Added test suite
+
+**Tests Added (18 tests in 7 categories):**
+1. **Penalty constants** (1 test): Verifies FREQUENCY_PENALTY values
+2. **Basic scoring** (3 tests): empty candidates, never-used ingredients, empty history
+3. **Single ingredient penalties** (4 tests): LOW/MEDIUM/HIGH thresholds
+4. **Multiple ingredients penalties** (3 tests): cumulative penalties, mixed levels
+5. **Score clamping** (2 tests): clamps to 0, boundary condition
+6. **Cooldown period** (2 tests): respects days parameter, boundary exclusion
+7. **Edge cases** (3 tests): single ingredient, many ingredients, 0-day cooldown
+
+**Verification:**
+- All 75 variety tests pass (57 existing + 18 new)
+- TypeScript check: ✅ No errors
+- Linter: ✅ 0 errors (7 pre-existing warnings)
+
+---

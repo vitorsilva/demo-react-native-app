@@ -569,7 +569,7 @@ function generateSuggestions(
 | 4 | Add ingredient frequency calculation | Implementation | ~2 hours | Utility function | done |
 | 5 | 🧪 CREATE unit tests for `getIngredientFrequency()` | Testing | ~45 min | Test counting logic | done |
 | 6 | Update variety scoring with frequency | Implementation | ~2 hours | Algorithm update | done |
-| 7 | 🧪 CREATE unit tests for frequency penalties | Testing | ~45 min | Test penalty thresholds | not started |
+| 7 | 🧪 CREATE unit tests for frequency penalties | Testing | ~45 min | Test penalty thresholds | done |
 | 8 | Add pairing_rules table | Implementation | ~1 hour | Migration | not started |
 | 9 | 🧪 CREATE unit tests for pairing rules migration | Testing | ~30 min | Test table creation | not started |
 | 10 | Add pairing rules store actions | Implementation | ~2 hours | Store | not started |
