@@ -346,3 +346,49 @@ Always read the linked documentation before claiming something cannot be done. T
 **No issues encountered.**
 
 ---
+
+### Task 14: Create Pairing Rules UI
+
+**Status:** COMPLETE
+
+**What was done:**
+- Created new `app/(tabs)/pairing-rules.tsx` screen with tabbed interface
+- Created `components/AddPairingRuleModal.tsx` for adding new pairing rules
+- Created `components/PairingRuleItem.tsx` for displaying individual rules
+- Added translations for English and Portuguese in `settings.json`
+- Updated `app/(tabs)/_layout.tsx` to hide pairing-rules from tab bar
+- Updated `app/(tabs)/settings.tsx` to add navigation link to Pairing Rules
+
+**Files Created:**
+- `demo-react-native-app/app/(tabs)/pairing-rules.tsx`
+- `demo-react-native-app/components/AddPairingRuleModal.tsx`
+- `demo-react-native-app/components/PairingRuleItem.tsx`
+
+**Files Modified:**
+- `demo-react-native-app/lib/i18n/locales/en/settings.json` - Added pairingRules translations
+- `demo-react-native-app/lib/i18n/locales/pt-PT/settings.json` - Added pairingRules translations
+- `demo-react-native-app/app/(tabs)/_layout.tsx` - Hidden pairing-rules from tab bar
+- `demo-react-native-app/app/(tabs)/settings.tsx` - Added navigation link to pairing rules
+
+**UI Features:**
+- Tab selector for "Good Pairs" (positive) and "Avoid" (negative) rule types
+- List of existing rules with delete functionality
+- Add button to create new rules
+- Modal with ingredient selection for creating rules
+- Back navigation to Settings
+- i18n support for English and Portuguese
+
+**Issue Encountered:**
+- Initial implementation directly accessed the database (`pairingRuleExists`) from the screen component
+- Lint error: `App screens must access data through the store, not directly` (boundaries/element-types)
+- **Fix:** Refactored to use the store's `pairingRules` state array to check for existing rules locally instead of querying the database directly
+
+**Lesson Learned:**
+The codebase has architecture rules that enforce screens must only access data through the Zustand store, not directly from database modules. Always check existing patterns and lint rules before implementing.
+
+**Verification:**
+- TypeScript check: ✅ No errors
+- Linter: ✅ 0 errors (8 pre-existing warnings)
+- All 477 unit tests pass
+
+---

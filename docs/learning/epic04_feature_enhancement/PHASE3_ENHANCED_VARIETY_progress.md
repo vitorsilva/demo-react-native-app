@@ -485,3 +485,44 @@ export function applyPairingRules(
 - Linter: ✅ 0 errors (7 pre-existing warnings)
 
 ---
+
+### Task 14: Create Pairing Rules UI
+
+**Status:** COMPLETE
+
+**What was done:**
+- Created new screen `app/(tabs)/pairing-rules.tsx` with tabbed interface for managing pairing rules
+- Created `components/AddPairingRuleModal.tsx` component for adding new rules with ingredient selection
+- Created `components/PairingRuleItem.tsx` component for displaying individual rules with delete functionality
+- Added i18n translations for English (`lib/i18n/locales/en/settings.json`)
+- Added i18n translations for Portuguese (`lib/i18n/locales/pt-PT/settings.json`)
+- Updated `app/(tabs)/_layout.tsx` to hide pairing-rules from tab bar (href: null)
+- Updated `app/(tabs)/settings.tsx` to add navigation link to Pairing Rules screen
+
+**Files Created:**
+- `demo-react-native-app/app/(tabs)/pairing-rules.tsx`
+- `demo-react-native-app/components/AddPairingRuleModal.tsx`
+- `demo-react-native-app/components/PairingRuleItem.tsx`
+
+**Files Modified:**
+- `demo-react-native-app/lib/i18n/locales/en/settings.json`
+- `demo-react-native-app/lib/i18n/locales/pt-PT/settings.json`
+- `demo-react-native-app/app/(tabs)/_layout.tsx`
+- `demo-react-native-app/app/(tabs)/settings.tsx`
+
+**UI Features Implemented:**
+- Tab selector for "Good Pairs" (positive) and "Avoid" (negative) rule types
+- List view of existing rules filtered by selected tab
+- Delete functionality with confirmation dialog
+- Add button that opens modal for creating new rules
+- Modal with ingredient pickers (first/second ingredient)
+- Validation: prevents duplicate rules, same ingredient selection
+- Back navigation to Settings
+- Full i18n support (English/Portuguese)
+
+**Verification:**
+- TypeScript check: ✅ No errors
+- Linter: ✅ 0 errors (8 pre-existing warnings)
+- All 477 unit tests pass
+
+---

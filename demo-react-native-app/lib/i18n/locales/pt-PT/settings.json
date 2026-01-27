@@ -1,5 +1,30 @@
 {
   "title": "Definições",
+  "pairingRules": {
+    "title": "Regras de Combinação",
+    "description": "Defina quais ingredientes combinam bem ou devem ser evitados",
+    "goodPairs": "Boas Combinações",
+    "avoid": "Evitar",
+    "goodPairsDescription": "Estes ingredientes serão favorecidos juntos nas sugestões",
+    "avoidDescription": "Estes ingredientes nunca aparecerão juntos nas sugestões",
+    "emptyGood": "Nenhuma boa combinação definida",
+    "emptyAvoid": "Nenhuma regra de evitar definida",
+    "addGoodPair": "Adicionar Boa Combinação",
+    "addAvoidPair": "Adicionar Par a Evitar",
+    "addRule": "Adicionar Regra de Combinação",
+    "firstIngredient": "Primeiro ingrediente",
+    "secondIngredient": "Segundo ingrediente",
+    "selectIngredient": "Selecionar ingrediente...",
+    "pairsWellWith": "combina bem com",
+    "shouldAvoid": "deve evitar",
+    "delete": "Eliminar",
+    "deleteConfirm": "Tem a certeza que deseja eliminar esta regra de combinação?",
+    "validation": {
+      "selectBoth": "Por favor selecione ambos os ingredientes",
+      "sameIngredient": "Por favor selecione dois ingredientes diferentes",
+      "ruleExists": "Já existe uma regra de combinação para estes ingredientes"
+    }
+  },
   "language": {
     "title": "Idioma",
     "description": "Escolha o seu idioma preferido"

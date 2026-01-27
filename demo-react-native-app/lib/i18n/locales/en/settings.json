@@ -1,5 +1,30 @@
 {
   "title": "Settings",
+  "pairingRules": {
+    "title": "Pairing Rules",
+    "description": "Define which ingredients pair well together or should be avoided",
+    "goodPairs": "Good Pairs",
+    "avoid": "Avoid",
+    "goodPairsDescription": "These ingredients will be favored together in suggestions",
+    "avoidDescription": "These ingredients will never appear together in suggestions",
+    "emptyGood": "No good pairs defined yet",
+    "emptyAvoid": "No avoid rules defined yet",
+    "addGoodPair": "Add Good Pair",
+    "addAvoidPair": "Add Pair to Avoid",
+    "addRule": "Add Pairing Rule",
+    "firstIngredient": "First ingredient",
+    "secondIngredient": "Second ingredient",
+    "selectIngredient": "Select ingredient...",
+    "pairsWellWith": "pairs well with",
+    "shouldAvoid": "should avoid",
+    "delete": "Delete",
+    "deleteConfirm": "Are you sure you want to delete this pairing rule?",
+    "validation": {
+      "selectBoth": "Please select both ingredients",
+      "sameIngredient": "Please select two different ingredients",
+      "ruleExists": "A pairing rule for these ingredients already exists"
+    }
+  },
   "language": {
     "title": "Language",
     "description": "Choose your preferred language"
