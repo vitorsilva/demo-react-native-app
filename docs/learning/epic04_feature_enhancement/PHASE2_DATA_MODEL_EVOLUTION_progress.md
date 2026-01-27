@@ -792,3 +792,36 @@ The 24 code clones detected are primarily in Phase 2 implementation files:
 - File serves as reference for future implementations
 
 ---
+
+### Task 25: Capture BEFORE screenshots ✅
+
+**Status:** COMPLETE
+
+**What was done:**
+- Created `docs/learning/epic04_feature_enhancement/screenshots/` directory
+- Created `screenshots/README.md` documenting the screenshot approach
+- Used **Option B** from the capture instructions: ASCII wireframes serve as BEFORE reference
+  - Feature was already implemented before screenshots were captured
+  - ASCII wireframes in PHASE2_DATA_MODEL_EVOLUTION.md document the pre-implementation UI
+- Documented BEFORE reference wireframes for:
+  - Meal Logging Flow (simple ingredient list)
+  - History Item Display (ingredients only, no names/prep methods)
+
+**Files Created:**
+- `docs/learning/epic04_feature_enhancement/screenshots/README.md`
+
+**Approach Rationale:**
+Since the Phase 2 feature was implemented and merged to main before screenshots were captured, taking actual BEFORE screenshots would require:
+- Checking out a pre-feature commit
+- Running the app
+- Taking screenshots
+- Checking back to main
+
+The ASCII wireframes already in the specification document accurately represent the pre-implementation UI, making them a valid "before" reference per the documented Option B approach.
+
+**Verification:**
+- Screenshots directory created
+- README documents the approach and references ASCII wireframes
+- AFTER screenshots are documented as pending for Task 26
+
+---

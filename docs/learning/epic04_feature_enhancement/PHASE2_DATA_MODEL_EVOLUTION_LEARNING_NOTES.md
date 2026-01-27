@@ -1084,3 +1084,35 @@ The 24 code clones fall into several categories:
 - No regressions detected
 
 ---
+
+## Task 25: Capture BEFORE screenshots
+
+**Date:** 2026-01-27
+
+### Implementation Summary
+- Created screenshots directory: `docs/learning/epic04_feature_enhancement/screenshots/`
+- Created README.md documenting the screenshot approach
+- Used Option B: ASCII wireframes as BEFORE reference (feature already implemented)
+
+### Approach Decision
+Since Phase 2 was already implemented and merged to main, capturing actual BEFORE screenshots would require:
+1. Checking out a pre-feature commit
+2. Building and running the app
+3. Taking screenshots
+4. Returning to main
+
+Instead, used **Option B** from the capture instructions: the ASCII wireframes in PHASE2_DATA_MODEL_EVOLUTION.md accurately document the pre-implementation UI and serve as the BEFORE reference.
+
+### Lesson Learned
+**Capture screenshots during implementation, not after.** For future phases, screenshots should be captured:
+- BEFORE: At the start of the phase, before any code changes
+- AFTER: Immediately after implementation is complete
+
+This avoids the need to use workarounds like ASCII wireframe references.
+
+### No Issues Encountered
+- Directory creation successful
+- README documentation complete
+- ASCII wireframes provide adequate BEFORE reference
+
+---
