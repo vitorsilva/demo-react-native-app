@@ -12,6 +12,7 @@ import * as pairingRulesDb from '@/lib/database/pairingRules';
 import { setPreferences, UserPreferences } from '@/lib/database/preferences';
 import { logger } from '@/lib/telemetry/logger';
 import { getRecentlyUsedIngredients } from '../business-logic/varietyEngine';
+import { applyPairingRules, calculateVarietyScore, isNewCombination, getVarietyColor } from '../utils/variety';
 import type { Ingredient, MealLog, Category, MealType, PreparationMethod, MealComponent, PairingRule } from '@/types/database';
 
 // Create store logger instance
@@ -294,6 +295,7 @@ export const useStore = create<StoreState>((set, get) => ({
 
   // Action: Generate variety-enforced meal suggestions
   // Can optionally take a meal type name to use its specific configuration
+  // Enhanced with Phase 3: ingredient frequency scoring and pairing rules
   generateMealSuggestions: async (mealTypeName?: string) => {
     const startTime = Date.now();
 
@@ -326,22 +328,88 @@ export const useStore = create<StoreState>((set, get) => ({
         }
       }
 
-      // Step 3: Get current ingredients from store
-      const { ingredients } = get();
+      // Step 3: Get current ingredients and pairing rules from store
+      const { ingredients, pairingRules, mealLogs: storedMealLogs } = get();
 
-      // Step 4: Get recent meal logs from database
+      // Step 4: Get recent meal logs from database (for variety tracking)
       const recentMealLogs = await mealLogsDb.getRecentMealLogs(db, cooldownDays);
 
-      // Step 5: Extract blocked ingredient IDs
+      // Step 5: Extract blocked ingredient IDs (combination-level blocking)
       const blockedIds = getRecentlyUsedIngredients(recentMealLogs);
 
-      // Step 6: Generate combinations with variety enforcement and meal type config
+      // Step 6: Generate MORE candidates than needed (10x) for better filtering
+      const candidateCount = count * 10;
       const options: GenerateCombinationsOptions = {
         minIngredients,
         maxIngredients,
         filterInactive: true, // Always filter out inactive ingredients
       };
-      const combinations = generateCombinations(ingredients, count, blockedIds, options);
+      const rawCombinations = generateCombinations(ingredients, candidateCount, blockedIds, options);
+
+      // Step 7: Get favorite meals to check for favorites bonus
+      const favoriteMeals = storedMealLogs.filter((m) => m.isFavorite);
+
+      // Step 8: Score and filter each candidate
+      interface ScoredCandidate {
+        ingredients: Ingredient[];
+        ingredientIds: string[];
+        score: number;
+        isFavorite: boolean;
+        isNew: boolean;
+        varietyColor: 'green' | 'yellow' | 'red';
+      }
+
+      const scoredCandidates: ScoredCandidate[] = [];
+
+      for (const combo of rawCombinations) {
+        const ingredientIds = combo.map((ing) => ing.id);
+
+        // Step 8a: Apply pairing rules (filter out negative pairings)
+        const pairingResult = applyPairingRules(ingredientIds, pairingRules);
+        if (!pairingResult.isValid) {
+          continue; // Skip combinations with negative pairing rules
+        }
+
+        // Step 8b: Calculate variety score (ingredient frequency penalties)
+        let score = calculateVarietyScore(ingredientIds, recentMealLogs, cooldownDays);
+
+        // Step 8c: Add pairing bonus (from positive rules)
+        score += pairingResult.score;
+
+        // Step 8d: Check if this is a favorite combination
+        const isFavorite = favoriteMeals.some((f) => {
+          const favoriteKey = [...f.ingredients].sort().join(',');
+          const comboKey = [...ingredientIds].sort().join(',');
+          return favoriteKey === comboKey;
+        });
+        if (isFavorite) {
+          score += 20; // Favorite bonus
+        }
+
+        // Step 8e: Check if this is a new combination
+        const isNew = isNewCombination(ingredientIds, recentMealLogs);
+        if (isNew) {
+          score += 10; // New combination bonus
+        }
+
+        // Step 8f: Get variety color
+        const varietyColor = getVarietyColor(ingredientIds, recentMealLogs);
+
+        scoredCandidates.push({
+          ingredients: combo,
+          ingredientIds,
+          score,
+          isFavorite,
+          isNew,
+          varietyColor,
+        });
+      }
+
+      // Step 9: Sort by score (highest first)
+      scoredCandidates.sort((a, b) => b.score - a.score);
+
+      // Step 10: Return top N combinations
+      const topCombinations = scoredCandidates.slice(0, count).map((c) => c.ingredients);
 
       const duration = Date.now() - startTime;
 
@@ -349,12 +417,19 @@ export const useStore = create<StoreState>((set, get) => ({
       storeLogger.perf('meal_generation', {
         value: duration,
         status: 'success',
-        suggestionsGenerated: combinations.length,
+        suggestionsGenerated: topCombinations.length,
+        candidatesGenerated: rawCombinations.length,
+        candidatesFiltered: rawCombinations.length - scoredCandidates.length,
         mealTypeName,
       });
 
-      set({ suggestedCombinations: combinations, isLoading: false });
-      log('Generation complete:', { duration, suggestionsCount: combinations.length });
+      set({ suggestedCombinations: topCombinations, isLoading: false });
+      log('Generation complete:', {
+        duration,
+        suggestionsCount: topCombinations.length,
+        candidatesGenerated: rawCombinations.length,
+        filteredOut: rawCombinations.length - scoredCandidates.length,
+      });
     } catch (error) {
       const duration = Date.now() - startTime;
 

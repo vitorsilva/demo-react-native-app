@@ -579,7 +579,7 @@ function generateSuggestions(
 | 14 | Create Pairing Rules UI | Implementation | ~4 hours | New screen | done |
 | 15 | 🧪 CREATE (and make sure they pass) Playwright E2E tests for pairing rules | Testing | ~1.5 hours | Test add/delete rules via UI | done |
 | 16 | 🧪 CREATE (and make sure they pass) Maestro tests for pairing rules | Testing | ~1.5 hours | Mirror Playwright tests for mobile | done |
-| 17 | Update suggestion generation | Implementation | ~2 hours | Integration | not started |
+| 17 | Update suggestion generation | Implementation | ~2 hours | Integration | done |
 | 18 | 🧪 CREATE (and make sure they pass) Playwright E2E test for suggestions | Testing | ~1.5 hours | Test negative pairs excluded | not started |
 | 19 | 🧪 CREATE (and make sure they pass) Maestro test for suggestions | Testing | ~1.5 hours | Mirror Playwright test for mobile | not started |
 | 20 | ▶️ RUN full test suites | Testing | ~20 min | Unit + Playwright + Maestro, verify no regressions | not started |

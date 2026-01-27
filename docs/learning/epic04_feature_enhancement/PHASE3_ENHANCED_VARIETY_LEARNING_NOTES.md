@@ -474,3 +474,37 @@ When writing E2E tests for React Native Web apps, prefer testID selectors over t
 **Note:** Tests will be executed in Task 20 when the new APK build is available.
 
 ---
+
+### Task 17: Update suggestion generation
+
+**Status:** COMPLETE
+
+**What was done:**
+- Updated `generateMealSuggestions()` function in `lib/store/index.ts` to integrate Phase 3 features
+- Added imports for `applyPairingRules`, `calculateVarietyScore`, `isNewCombination`, `getVarietyColor` from variety.ts
+- Enhanced algorithm to generate 10x candidates for better filtering and scoring
+
+**Algorithm Changes:**
+1. Generate 10x the requested number of candidates (e.g., 40 candidates for 4 suggestions)
+2. For each candidate, apply pairing rules filter (skip combinations with negative rules)
+3. Calculate variety score with ingredient frequency penalties
+4. Add pairing bonus for positive rules (+10 per matched positive pair)
+5. Add favorite bonus (+20 for combinations that match favorited meals)
+6. Add new combination bonus (+10 for combinations not logged recently)
+7. Sort all valid candidates by score (highest first)
+8. Return top N combinations
+
+**Key Implementation Details:**
+- Negative pairing rules completely filter out combinations (they won't appear in suggestions)
+- Positive pairing rules add bonus score, making those combinations more likely to be suggested
+- Variety score penalizes frequently-used ingredients (30 for 3+, 15 for 2x, 5 for 1x usage)
+- Favorites and "new" combinations get score bonuses to prioritize them
+
+**Verification:**
+- TypeScript check: ✅ No errors
+- Linter: ✅ 0 errors (8 pre-existing warnings)
+- All 477 unit tests pass (including 35 store tests)
+
+**No issues encountered.**
+
+---

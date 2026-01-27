@@ -592,3 +592,32 @@ export function applyPairingRules(
 - Test files follow existing Maestro patterns
 
 ---
+
+### Task 17: Update suggestion generation
+
+**Status:** COMPLETE
+
+**What was done:**
+- Updated `generateMealSuggestions()` function in `lib/store/index.ts`
+- Integrated Phase 3 variety scoring and pairing rules into the suggestion algorithm
+- Added imports for `applyPairingRules`, `calculateVarietyScore`, `isNewCombination`, `getVarietyColor` from variety.ts
+
+**File Modified:**
+- `demo-react-native-app/lib/store/index.ts`
+
+**Algorithm Enhancement:**
+1. Generate 10x candidates (e.g., 40 for 4 suggestions)
+2. Filter: Skip combinations with negative pairing rules
+3. Score: Calculate variety score (ingredient frequency penalties)
+4. Bonus: Add positive pairing rule bonus (+10 per pair)
+5. Bonus: Add favorite combination bonus (+20)
+6. Bonus: Add new combination bonus (+10)
+7. Sort by total score (highest first)
+8. Return top N combinations
+
+**Verification:**
+- TypeScript check: ✅ No errors
+- Linter: ✅ 0 errors (8 pre-existing warnings)
+- All 477 unit tests pass
+
+---
