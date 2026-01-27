@@ -312,6 +312,25 @@ import * as Crypto from 'expo-crypto';
       }
     },
   },
+  {
+    version: 9,
+    up: async (db: DatabaseAdapter) => {
+      // Phase 3: Enhanced Variety - Add pairing_rules table
+      // This table stores ingredient pairing rules (positive = pairs well, negative = avoid together)
+      await db.runAsync(`
+        CREATE TABLE IF NOT EXISTS pairing_rules (
+          id TEXT PRIMARY KEY,
+          ingredient_a_id TEXT NOT NULL,
+          ingredient_b_id TEXT NOT NULL,
+          rule_type TEXT NOT NULL,
+          created_at TEXT NOT NULL,
+          FOREIGN KEY (ingredient_a_id) REFERENCES ingredients(id) ON DELETE CASCADE,
+          FOREIGN KEY (ingredient_b_id) REFERENCES ingredients(id) ON DELETE CASCADE,
+          UNIQUE(ingredient_a_id, ingredient_b_id)
+        )
+      `);
+    },
+  },
   ];
 
   // Main function to run pending migrations

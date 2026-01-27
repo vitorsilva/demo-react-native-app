@@ -252,3 +252,35 @@ export function calculateVarietyScore(
 - Linter: ✅ 0 errors (7 pre-existing warnings)
 
 ---
+
+### Task 8: Add pairing_rules table
+
+**Status:** COMPLETE
+
+**What was done:**
+- Added migration version 9 to `lib/database/migrations.ts`
+- Creates `pairing_rules` table for storing ingredient pairing rules
+
+**File Modified:**
+- `demo-react-native-app/lib/database/migrations.ts` - Added version 9 migration
+
+**Table Schema:**
+```sql
+CREATE TABLE pairing_rules (
+  id TEXT PRIMARY KEY,
+  ingredient_a_id TEXT NOT NULL,
+  ingredient_b_id TEXT NOT NULL,
+  rule_type TEXT NOT NULL,  -- 'positive' | 'negative'
+  created_at TEXT NOT NULL,
+  FOREIGN KEY (ingredient_a_id) REFERENCES ingredients(id) ON DELETE CASCADE,
+  FOREIGN KEY (ingredient_b_id) REFERENCES ingredients(id) ON DELETE CASCADE,
+  UNIQUE(ingredient_a_id, ingredient_b_id)
+)
+```
+
+**Verification:**
+- TypeScript check: ✅ No errors
+- Linter: ✅ 0 errors (7 pre-existing warnings)
+- All 37 migration tests pass
+
+---

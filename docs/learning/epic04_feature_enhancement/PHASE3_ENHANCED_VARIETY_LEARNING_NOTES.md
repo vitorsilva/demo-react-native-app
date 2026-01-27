@@ -170,3 +170,32 @@ Always read the linked documentation before claiming something cannot be done. T
 **No issues encountered.**
 
 ---
+
+### Task 8: Add pairing_rules table
+
+**Status:** COMPLETE
+
+**What was done:**
+- Added migration version 9 to `lib/database/migrations.ts`
+- Creates `pairing_rules` table with the following schema:
+  - `id` TEXT PRIMARY KEY
+  - `ingredient_a_id` TEXT NOT NULL (FK to ingredients)
+  - `ingredient_b_id` TEXT NOT NULL (FK to ingredients)
+  - `rule_type` TEXT NOT NULL ('positive' or 'negative')
+  - `created_at` TEXT NOT NULL
+  - UNIQUE constraint on (ingredient_a_id, ingredient_b_id)
+  - ON DELETE CASCADE for both foreign keys
+
+**Design Decisions:**
+- Used `IF NOT EXISTS` for idempotency (safe to run multiple times)
+- Foreign keys with CASCADE delete ensure rules are removed when ingredients are deleted
+- UNIQUE constraint prevents duplicate rules for the same ingredient pair
+
+**Verification:**
+- TypeScript check: ✅ No errors
+- Linter: ✅ 0 errors (7 pre-existing warnings)
+- All 37 migration tests pass
+
+**No issues encountered.**
+
+---
