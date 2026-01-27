@@ -392,3 +392,45 @@ The codebase has architecture rules that enforce screens must only access data t
 - All 477 unit tests pass
 
 ---
+
+### Task 15: CREATE Playwright E2E tests for pairing rules
+
+**Status:** COMPLETE
+
+**What was done:**
+- Created `e2e/pairing-rules.spec.ts` with 12 E2E tests covering pairing rules functionality
+- Tests cover the following scenarios:
+  1. Display Pairing Rules link in Settings
+  2. Navigate to Pairing Rules screen
+  3. Show empty state for Good Pairs initially
+  4. Show empty state for Avoid tab
+  5. Open add pairing rule modal
+  6. Cancel adding a pairing rule
+  7. Show validation error when not selecting both ingredients
+  8. Add a positive (good pair) pairing rule
+  9. Add a negative (avoid) pairing rule
+  10. Delete a pairing rule
+  11. Navigate back to Settings
+  12. Full workflow: add good pair, add avoid pair, verify tabs, delete rules
+
+**Issue Encountered:**
+- Initial tests used `getByText('Pairing Rules')` and similar text selectors that resolved to multiple elements
+- Strict mode violations occurred because the text appeared in multiple places (Settings section, navigation link, screen title)
+- Also `getByText('Add Good Pair')` matched both the button text ("+ Add Good Pair") and the modal title ("Add Good Pair")
+- **Fix:** Changed assertions to use testID selectors instead of text selectors:
+  - Used `getByTestId('pairing-rules-link')` instead of `getByText('Pairing Rules')`
+  - Used `getByTestId('tab-good-pairs')` to verify navigation
+  - Used `getByTestId('select-ingredient-a')` to verify modal is open/closed instead of text matching
+
+**Lesson Learned:**
+When writing E2E tests for React Native Web apps, prefer testID selectors over text selectors because:
+1. Text often appears in multiple places (buttons, titles, labels)
+2. Text may include prefixes like "+" in buttons
+3. testID selectors are more stable and explicit
+
+**Test Results:**
+- All 12 Playwright E2E tests pass
+- TypeScript check: ✅ No errors
+- Linter: ✅ 0 errors (8 pre-existing warnings)
+
+---

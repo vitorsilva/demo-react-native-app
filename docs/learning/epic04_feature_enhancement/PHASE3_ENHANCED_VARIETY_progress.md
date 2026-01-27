@@ -526,3 +526,35 @@ export function applyPairingRules(
 - All 477 unit tests pass
 
 ---
+
+### Task 15: CREATE Playwright E2E tests for pairing rules
+
+**Status:** COMPLETE
+
+**What was done:**
+- Created `e2e/pairing-rules.spec.ts` with 12 E2E tests for pairing rules functionality
+- Tests follow existing patterns from `prep-methods-settings.spec.ts`
+
+**File Created:**
+- `demo-react-native-app/e2e/pairing-rules.spec.ts`
+
+**Tests Added (12 tests):**
+1. should display Pairing Rules link in Settings
+2. should navigate to Pairing Rules screen
+3. should show empty state for Good Pairs initially
+4. should show empty state for Avoid tab
+5. should open add pairing rule modal
+6. should cancel adding a pairing rule
+7. should show validation error when not selecting both ingredients
+8. should add a positive (good pair) pairing rule
+9. should add a negative (avoid) pairing rule
+10. should delete a pairing rule
+11. should navigate back to Settings
+12. full workflow: add good pair, add avoid pair, verify tabs, delete rules
+
+**Verification:**
+- All 12 Playwright E2E tests pass
+- TypeScript check: ✅ No errors
+- Linter: ✅ 0 errors (8 pre-existing warnings)
+
+---
