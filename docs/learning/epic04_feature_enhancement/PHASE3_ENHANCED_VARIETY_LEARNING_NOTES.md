@@ -199,3 +199,26 @@ Always read the linked documentation before claiming something cannot be done. T
 **No issues encountered.**
 
 ---
+
+### Task 9: CREATE unit tests for pairing rules migration
+
+**Status:** COMPLETE
+
+**What was done:**
+- Created `lib/database/__tests__/migrations.phase3.test.ts`
+- Added 12 unit tests for migration version 9 (pairing_rules table)
+
+**Test Categories:**
+1. **Table structure** (5 tests): table exists, correct schema, foreign keys
+2. **Rule types** (2 tests): positive and negative rule storage
+3. **Constraints** (3 tests): UNIQUE constraint, reverse order allowed, deletion
+4. **Idempotency** (2 tests): migration recorded, no duplication on re-run
+
+**Test Results:**
+- All 12 Phase 3 migration tests pass
+- TypeScript check: ✅ No errors
+- Linter: ✅ 0 errors (7 pre-existing warnings)
+
+**No issues encountered.**
+
+---

@@ -284,3 +284,27 @@ CREATE TABLE pairing_rules (
 - All 37 migration tests pass
 
 ---
+
+### Task 9: CREATE unit tests for pairing rules migration
+
+**Status:** COMPLETE
+
+**What was done:**
+- Created `lib/database/__tests__/migrations.phase3.test.ts`
+- Added 12 unit tests for migration version 9 (pairing_rules table)
+
+**File Created:**
+- `demo-react-native-app/lib/database/__tests__/migrations.phase3.test.ts`
+
+**Tests Added (12 tests in 4 categories):**
+1. **Table structure** (5 tests): table exists, schema verification, foreign keys
+2. **Rule types** (2 tests): positive and negative rule type storage
+3. **Constraints** (3 tests): UNIQUE constraint, reverse order allowed, deletion
+4. **Idempotency** (2 tests): migration recorded, no duplication on re-run
+
+**Verification:**
+- All 12 Phase 3 migration tests pass
+- TypeScript check: ✅ No errors
+- Linter: ✅ 0 errors (7 pre-existing warnings)
+
+---
