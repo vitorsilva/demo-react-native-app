@@ -53,6 +53,12 @@ export default function TabLayout() {
           tabBarIcon: ({ color }) => <IconSymbol size={28} name="gearshape.fill" color={color} />,
         }}
       />
+      <Tabs.Screen
+        name="pairing-rules"
+        options={{
+          href: null, // Hide from tab bar, accessed via Settings
+        }}
+      />
     </Tabs>
   );
 }

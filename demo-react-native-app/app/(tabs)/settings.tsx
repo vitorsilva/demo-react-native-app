@@ -1,5 +1,6 @@
 import Slider from '@react-native-community/slider';
 import { useFocusEffect } from '@react-navigation/native';
+import { useRouter } from 'expo-router';
 import { useState, useEffect, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
@@ -26,6 +27,7 @@ import type { MealType, PreparationMethod } from '../../types/database';
 
 export default function SettingsScreen() {
   const { t } = useTranslation('settings');
+  const router = useRouter();
 
   // Zustand store selectors
   const isDatabaseReady = useStore((state) => state.isDatabaseReady);
@@ -571,6 +573,19 @@ export default function SettingsScreen() {
           </View>
         )}
 
+        {/* === PAIRING RULES SECTION === */}
+        <Text style={styles.sectionTitle}>{t('pairingRules.title')}</Text>
+        <Text style={styles.sectionDescription}>{t('pairingRules.description')}</Text>
+
+        <TouchableOpacity
+          style={styles.navigationCard}
+          onPress={() => router.push('/pairing-rules')}
+          testID="pairing-rules-link"
+        >
+          <Text style={styles.navigationCardText}>{t('pairingRules.title')}</Text>
+          <Text style={styles.navigationCardArrow}>→</Text>
+        </TouchableOpacity>
+
         {/* Info Section */}
         <View style={styles.infoCard}>
           <Text style={styles.infoTitle}>{t('about.title')}</Text>
@@ -1013,5 +1028,25 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: '#FFFFFF',
     fontWeight: '600',
+  },
+  // Navigation card
+  navigationCard: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    backgroundColor: '#1f2329',
+    borderRadius: 12,
+    padding: 16,
+    marginBottom: 24,
+  },
+  navigationCardText: {
+    color: '#FFFFFF',
+    fontSize: 16,
+    fontWeight: '500',
+  },
+  navigationCardArrow: {
+    color: '#3e96ef',
+    fontSize: 18,
+    fontWeight: 'bold',
   },
 });

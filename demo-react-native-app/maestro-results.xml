@@ -1,0 +1,30 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<testsuites>
+  <testsuite name="Test Suite" device="Medium_Phone_API_36.1" tests="25" failures="0" time="859.0">
+    <testcase id="favorites-empty-state" name="favorites-empty-state" classname="favorites-empty-state" time="28.0" status="SUCCESS"/>
+    <testcase id="favorites-flow" name="favorites-flow" classname="favorites-flow" time="34.0" status="SUCCESS"/>
+    <testcase id="history-phase2-multiple-meals" name="history-phase2-multiple-meals" classname="history-phase2-multiple-meals" time="31.0" status="SUCCESS"/>
+    <testcase id="history-phase2-named-meal" name="history-phase2-named-meal" classname="history-phase2-named-meal" time="20.0" status="SUCCESS"/>
+    <testcase id="history-phase2-prep-method" name="history-phase2-prep-method" classname="history-phase2-prep-method" time="19.0" status="SUCCESS"/>
+    <testcase id="meal-logging-phase2-anonymous" name="meal-logging-phase2-anonymous" classname="meal-logging-phase2-anonymous" time="17.0" status="SUCCESS"/>
+    <testcase id="meal-logging-phase2-custom-prep" name="meal-logging-phase2-custom-prep" classname="meal-logging-phase2-custom-prep" time="18.0" status="SUCCESS"/>
+    <testcase id="meal-logging-phase2" name="meal-logging-phase2" classname="meal-logging-phase2" time="19.0" status="SUCCESS"/>
+    <testcase id="new-badge" name="new-badge" classname="new-badge" time="24.0" status="SUCCESS"/>
+    <testcase id="pairing-rules-add-avoid" name="pairing-rules-add-avoid" classname="pairing-rules-add-avoid" time="40.0" status="SUCCESS"/>
+    <testcase id="pairing-rules-add-good" name="pairing-rules-add-good" classname="pairing-rules-add-good" time="38.0" status="SUCCESS"/>
+    <testcase id="pairing-rules-delete" name="pairing-rules-delete" classname="pairing-rules-delete" time="42.0" status="SUCCESS"/>
+    <testcase id="pairing-rules-full-workflow" name="pairing-rules-full-workflow" classname="pairing-rules-full-workflow" time="76.0" status="SUCCESS"/>
+    <testcase id="pairing-rules-settings" name="pairing-rules-settings" classname="pairing-rules-settings" time="24.0" status="SUCCESS"/>
+    <testcase id="prep-methods-add-custom" name="prep-methods-add-custom" classname="prep-methods-add-custom" time="27.0" status="SUCCESS"/>
+    <testcase id="prep-methods-delete-custom" name="prep-methods-delete-custom" classname="prep-methods-delete-custom" time="31.0" status="SUCCESS"/>
+    <testcase id="prep-methods-full-workflow" name="prep-methods-full-workflow" classname="prep-methods-full-workflow" time="43.0" status="SUCCESS"/>
+    <testcase id="prep-methods-settings" name="prep-methods-settings" classname="prep-methods-settings" time="17.0" status="SUCCESS"/>
+    <testcase id="suggestions-pairing-negative" name="suggestions-pairing-negative" classname="suggestions-pairing-negative" time="55.0" status="SUCCESS"/>
+    <testcase id="suggestions-pairing-positive" name="suggestions-pairing-positive" classname="suggestions-pairing-positive" time="46.0" status="SUCCESS"/>
+    <testcase id="suggestions-pairing-regenerate" name="suggestions-pairing-regenerate" classname="suggestions-pairing-regenerate" time="67.0" status="SUCCESS"/>
+    <testcase id="suggestions-pairing-workflow" name="suggestions-pairing-workflow" classname="suggestions-pairing-workflow" time="73.0" status="SUCCESS"/>
+    <testcase id="telemetry-flow" name="telemetry-flow" classname="telemetry-flow" time="23.0" status="SUCCESS"/>
+    <testcase id="variety-indicator" name="variety-indicator" classname="variety-indicator" time="24.0" status="SUCCESS"/>
+    <testcase id="variety-stats" name="variety-stats" classname="variety-stats" time="23.0" status="SUCCESS"/>
+  </testsuite>
+</testsuites>

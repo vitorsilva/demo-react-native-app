@@ -61,3 +61,12 @@ export interface MealType {
   created_at: string;
   updated_at: string;
 }
+
+// Phase 3: Enhanced Variety - Pairing Rules
+export interface PairingRule {
+  id: string;
+  ingredientAId: string;
+  ingredientBId: string;
+  ruleType: 'positive' | 'negative';
+  createdAt: string;
+}

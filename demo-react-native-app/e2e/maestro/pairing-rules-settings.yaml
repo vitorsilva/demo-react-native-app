@@ -1,0 +1,102 @@
+# Maestro E2E test for Pairing Rules Settings Navigation
+# Verifies the Pairing Rules link displays in Settings and navigation works
+#
+# Prerequisites:
+#   - Android emulator running: adb devices
+#   - App installed (see MAESTRO_TESTING.md for options)
+#
+# Run with: maestro test e2e/maestro/pairing-rules-settings.yaml
+#
+# Note: To test with Expo Go during development, change appId to host.exp.exponent
+# and uncomment the openLink command below
+
+appId: com.vitorsilvavmrs.saborspin
+---
+# Clear app state for consistent testing
+- clearState
+# Launch app
+- launchApp
+
+# Verify home screen loads
+- extendedWaitUntil:
+    visible: "SaborSpin"
+    timeout: 30000
+
+# Navigate to Settings tab
+- tapOn: "Settings"
+
+# Wait for settings screen to load
+- extendedWaitUntil:
+    visible: "Settings"
+    timeout: 10000
+
+# Take screenshot of settings screen
+- takeScreenshot: pairing-rules-01-settings
+
+# Wait for content to load
+- waitForAnimationToEnd
+
+# Scroll down to find Pairing Rules section (it's after Meal Types section)
+- scrollUntilVisible:
+    element: "Pairing Rules"
+    direction: DOWN
+    timeout: 15000
+    speed: 60
+
+# Verify Pairing Rules link is visible
+- assertVisible: "Pairing Rules"
+- assertVisible: "Define which ingredients pair well together or should be avoided"
+
+# Take screenshot of pairing rules link
+- takeScreenshot: pairing-rules-02-link-visible
+
+# Tap on Pairing Rules link to navigate (using testID to avoid clicking section title)
+- tapOn:
+    id: "pairing-rules-link"
+
+# Wait for Pairing Rules screen to load
+- extendedWaitUntil:
+    visible: "No good pairs defined yet"
+    timeout: 10000
+
+# Verify we're on the Pairing Rules screen (tab headers have checkmark/X prefixes)
+- assertVisible:
+    text: ".*Good Pairs.*"
+- assertVisible:
+    text: ".*Avoid.*"
+
+# Take screenshot of pairing rules screen
+- takeScreenshot: pairing-rules-03-screen
+
+# Verify empty state for Good Pairs
+- assertVisible: "No good pairs defined yet"
+
+# Switch to Avoid tab
+- tapOn:
+    text: ".*Avoid.*"
+
+# Wait for UI to update
+- waitForAnimationToEnd
+
+# Verify empty state for Avoid tab
+- assertVisible: "No avoid rules defined yet"
+
+# Take screenshot of avoid tab
+- takeScreenshot: pairing-rules-04-avoid-tab
+
+# Navigate back to Settings (using testID because button text has arrow prefix)
+- tapOn:
+    id: "back-button"
+
+# Wait for Settings screen
+- extendedWaitUntil:
+    visible: "Settings"
+    timeout: 10000
+
+# Verify we're back on Settings
+- assertVisible: "Settings"
+
+# Take final screenshot
+- takeScreenshot: pairing-rules-05-back-to-settings
+
+# Test passed - Pairing Rules settings navigation works correctly

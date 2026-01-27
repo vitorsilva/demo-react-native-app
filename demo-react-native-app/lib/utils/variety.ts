@@ -5,10 +5,151 @@
  */
 
 import { getDaysAgo, isThisMonth, isThisWeek } from './dateUtils';
-import type { Ingredient, MealLog } from '../../types/database';
+import type { Ingredient, MealLog, PairingRule } from '../../types/database';
 
 /** Number of days after which a combination is considered "new" again */
 export const NEW_COMBINATION_THRESHOLD_DAYS = 7;
+
+/**
+ * Counts how many times a specific ingredient has been used in recent meals.
+ * Used for ingredient-level variety tracking to penalize frequently-used ingredients.
+ *
+ * @param ingredientId - The ingredient ID to count
+ * @param history - Array of meal logs to search
+ * @param days - Number of days to look back (e.g., 7 for weekly frequency)
+ * @returns Number of times the ingredient was used in the specified period
+ */
+export function getIngredientFrequency(
+  ingredientId: string,
+  history: MealLog[],
+  days: number
+): number {
+  // Filter meals from the last N days
+  const recentMeals = history.filter((log) => getDaysAgo(log.date) < days);
+
+  // Count how many meals contain this ingredient
+  let count = 0;
+  for (const meal of recentMeals) {
+    if (meal.ingredients.includes(ingredientId)) {
+      count++;
+    }
+  }
+
+  return count;
+}
+
+/** Penalty thresholds for ingredient frequency scoring */
+export const FREQUENCY_PENALTY = {
+  /** Penalty when ingredient used 3+ times in the cooldown period */
+  HIGH: 30,
+  /** Penalty when ingredient used exactly 2 times */
+  MEDIUM: 15,
+  /** Penalty when ingredient used exactly 1 time */
+  LOW: 5,
+} as const;
+
+/** Score adjustments for pairing rules */
+export const PAIRING_RULE_SCORE = {
+  /** Bonus score for a positive pairing (pairs well together) */
+  POSITIVE_BONUS: 10,
+  /** Score returned for invalid combinations (negative pairing) */
+  NEGATIVE_PENALTY: -100,
+} as const;
+
+/** Result of applying pairing rules to a candidate combination */
+export interface PairingRuleResult {
+  /** Whether the combination is valid (no negative rules triggered) */
+  isValid: boolean;
+  /** Score adjustment from pairing rules (+10 per positive pair, -100 if invalid) */
+  score: number;
+}
+
+/**
+ * Applies pairing rules to a candidate ingredient combination.
+ * Checks all ingredient pairs against the pairing rules:
+ * - Negative rules: Combination is invalid (isValid=false, score=-100)
+ * - Positive rules: Adds bonus to score (+10 per positive pair)
+ *
+ * @param candidateIngredients - Array of ingredient IDs in the candidate combination
+ * @param pairingRules - Array of pairing rules to check against
+ * @returns Object with isValid (boolean) and score (number)
+ */
+export function applyPairingRules(
+  candidateIngredients: string[],
+  pairingRules: PairingRule[]
+): PairingRuleResult {
+  let score = 0;
+
+  // Check all pairs in the candidate
+  for (let i = 0; i < candidateIngredients.length; i++) {
+    for (let j = i + 1; j < candidateIngredients.length; j++) {
+      const a = candidateIngredients[i];
+      const b = candidateIngredients[j];
+
+      // Find if there's a rule for this pair (check both directions)
+      const rule = pairingRules.find(
+        (r) =>
+          (r.ingredientAId === a && r.ingredientBId === b) ||
+          (r.ingredientAId === b && r.ingredientBId === a)
+      );
+
+      if (rule) {
+        if (rule.ruleType === 'negative') {
+          // Negative pairing found - combination is invalid
+          return { isValid: false, score: PAIRING_RULE_SCORE.NEGATIVE_PENALTY };
+        }
+        if (rule.ruleType === 'positive') {
+          // Positive pairing found - add bonus
+          score += PAIRING_RULE_SCORE.POSITIVE_BONUS;
+        }
+      }
+    }
+  }
+
+  return { isValid: true, score };
+}
+
+/**
+ * Calculates a variety score for a candidate combination based on ingredient frequency.
+ * Higher scores indicate better variety (less frequently used ingredients).
+ *
+ * Score starts at 100 and is reduced based on how often each ingredient
+ * has been used in recent meals:
+ * - Used 3+ times: -30 points per ingredient
+ * - Used 2 times: -15 points per ingredient
+ * - Used 1 time: -5 points per ingredient
+ * - Never used: no penalty (encourages rotation)
+ *
+ * @param candidateIngredients - Array of ingredient IDs in the candidate combination
+ * @param recentMeals - Array of recent meal logs to check frequency against
+ * @param cooldownDays - Number of days to look back for frequency calculation
+ * @returns Score from 0 to 100 (higher = better variety)
+ */
+export function calculateVarietyScore(
+  candidateIngredients: string[],
+  recentMeals: MealLog[],
+  cooldownDays: number
+): number {
+  let score = 100;
+
+  for (const ingredientId of candidateIngredients) {
+    // Get how many times this ingredient was used in the cooldown period
+    const frequency = getIngredientFrequency(ingredientId, recentMeals, cooldownDays);
+
+    // Apply penalties based on frequency
+    if (frequency >= 3) {
+      score -= FREQUENCY_PENALTY.HIGH; // Used 3+ times
+    } else if (frequency === 2) {
+      score -= FREQUENCY_PENALTY.MEDIUM; // Used twice
+    } else if (frequency === 1) {
+      score -= FREQUENCY_PENALTY.LOW; // Used once
+    }
+    // frequency === 0 → no penalty (ingredient rotation!)
+  }
+
+  // Ensure score doesn't go below 0
+  return Math.max(0, score);
+}
 
 /**
  * Checks if a combination of ingredients is considered "new" to the user.

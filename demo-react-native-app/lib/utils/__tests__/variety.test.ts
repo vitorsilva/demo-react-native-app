@@ -4,8 +4,13 @@ import {
   getVarietyColor,
   FRESH_THRESHOLD_DAYS,
   calculateVarietyStats,
+  getIngredientFrequency,
+  calculateVarietyScore,
+  FREQUENCY_PENALTY,
+  applyPairingRules,
+  PAIRING_RULE_SCORE,
 } from '../variety';
-import type { MealLog, Ingredient } from '../../../types/database';
+import type { MealLog, Ingredient, PairingRule } from '../../../types/database';
 
 /**
  * Helper to create a date string N days ago from today
@@ -644,6 +649,581 @@ describe('calculateVarietyStats', () => {
 
       expect(stats.uniqueCombosThisMonth).toBe(2);
       expect(stats.ingredientsUsedThisWeek).toBe(2);
+    });
+  });
+});
+
+describe('getIngredientFrequency', () => {
+  describe('basic counting', () => {
+    it('returns 0 for empty history', () => {
+      const history: MealLog[] = [];
+
+      expect(getIngredientFrequency('milk-id', history, 7)).toBe(0);
+    });
+
+    it('returns 0 when ingredient is not in any meals', () => {
+      const history: MealLog[] = [
+        createMealLog(['bread-id', 'cheese-id'], 1),
+        createMealLog(['apple-id', 'banana-id'], 2),
+      ];
+
+      expect(getIngredientFrequency('milk-id', history, 7)).toBe(0);
+    });
+
+    it('counts ingredient used once', () => {
+      const history: MealLog[] = [
+        createMealLog(['milk-id', 'bread-id'], 1),
+        createMealLog(['cheese-id', 'apple-id'], 2),
+      ];
+
+      expect(getIngredientFrequency('milk-id', history, 7)).toBe(1);
+    });
+
+    it('counts ingredient used multiple times', () => {
+      const history: MealLog[] = [
+        createMealLog(['milk-id', 'bread-id'], 1, '1'),
+        createMealLog(['milk-id', 'cheese-id'], 2, '2'),
+        createMealLog(['milk-id', 'apple-id'], 3, '3'),
+      ];
+
+      expect(getIngredientFrequency('milk-id', history, 7)).toBe(3);
+    });
+
+    it('counts each meal separately even on same day', () => {
+      const history: MealLog[] = [
+        createMealLog(['milk-id', 'bread-id'], 0, '1'),
+        createMealLog(['milk-id', 'cheese-id'], 0, '2'),
+      ];
+
+      expect(getIngredientFrequency('milk-id', history, 7)).toBe(2);
+    });
+  });
+
+  describe('day range filtering', () => {
+    it('only counts meals within the specified day range', () => {
+      const history: MealLog[] = [
+        createMealLog(['milk-id', 'bread-id'], 1, '1'), // Within 7 days
+        createMealLog(['milk-id', 'cheese-id'], 5, '2'), // Within 7 days
+        createMealLog(['milk-id', 'apple-id'], 10, '3'), // Outside 7 days
+      ];
+
+      expect(getIngredientFrequency('milk-id', history, 7)).toBe(2);
+    });
+
+    it('includes meals from today (day 0)', () => {
+      const history: MealLog[] = [
+        createMealLog(['milk-id', 'bread-id'], 0), // Today
+      ];
+
+      expect(getIngredientFrequency('milk-id', history, 7)).toBe(1);
+    });
+
+    it('excludes meals at exactly the day boundary', () => {
+      const history: MealLog[] = [
+        createMealLog(['milk-id', 'bread-id'], 7, '1'), // Exactly 7 days ago (excluded)
+        createMealLog(['milk-id', 'cheese-id'], 6, '2'), // 6 days ago (included)
+      ];
+
+      // 7 days means < 7, so day 7 is excluded
+      expect(getIngredientFrequency('milk-id', history, 7)).toBe(1);
+    });
+
+    it('respects custom day ranges', () => {
+      const history: MealLog[] = [
+        createMealLog(['milk-id', 'bread-id'], 1, '1'),
+        createMealLog(['milk-id', 'cheese-id'], 2, '2'),
+        createMealLog(['milk-id', 'apple-id'], 4, '3'),
+      ];
+
+      // With 3 days range, only 2 meals should count (days 1 and 2)
+      expect(getIngredientFrequency('milk-id', history, 3)).toBe(2);
+    });
+
+    it('returns 0 for 0-day range', () => {
+      const history: MealLog[] = [
+        createMealLog(['milk-id', 'bread-id'], 0), // Today
+      ];
+
+      // 0 days means < 0, which is impossible
+      expect(getIngredientFrequency('milk-id', history, 0)).toBe(0);
+    });
+  });
+
+  describe('edge cases', () => {
+    it('handles meals with single ingredient', () => {
+      const history: MealLog[] = [createMealLog(['milk-id'], 1)];
+
+      expect(getIngredientFrequency('milk-id', history, 7)).toBe(1);
+    });
+
+    it('handles meals with many ingredients', () => {
+      const history: MealLog[] = [
+        createMealLog(
+          ['milk-id', 'bread-id', 'cheese-id', 'apple-id', 'banana-id'],
+          1
+        ),
+      ];
+
+      expect(getIngredientFrequency('milk-id', history, 7)).toBe(1);
+      expect(getIngredientFrequency('banana-id', history, 7)).toBe(1);
+    });
+
+    it('does not count same meal multiple times', () => {
+      // Even if ingredient appears "multiple times" conceptually in one meal,
+      // it should only count the meal once
+      const history: MealLog[] = [
+        createMealLog(['milk-id', 'bread-id'], 1),
+      ];
+
+      expect(getIngredientFrequency('milk-id', history, 7)).toBe(1);
+    });
+
+    it('handles large history efficiently', () => {
+      // Create history with 100 meals
+      const history: MealLog[] = [];
+      for (let i = 0; i < 100; i++) {
+        history.push(
+          createMealLog(['milk-id', 'bread-id'], i % 14, `log-${i}`)
+        );
+      }
+
+      // Within 7 days, count meals on days 0-6
+      const count = getIngredientFrequency('milk-id', history, 7);
+      // 100 meals with days = i % 14
+      // Day 0: i=0,14,28,42,56,70,84,98 = 8 meals
+      // Day 1: i=1,15,29,43,57,71,85,99 = 8 meals
+      // Days 2-6: 7 meals each = 35 meals
+      // Total = 8 + 8 + 35 = 51 meals
+      expect(count).toBe(51);
+    });
+  });
+});
+
+describe('calculateVarietyScore', () => {
+  describe('penalty constants', () => {
+    it('exports FREQUENCY_PENALTY with correct values', () => {
+      expect(FREQUENCY_PENALTY.HIGH).toBe(30);
+      expect(FREQUENCY_PENALTY.MEDIUM).toBe(15);
+      expect(FREQUENCY_PENALTY.LOW).toBe(5);
+    });
+  });
+
+  describe('basic scoring', () => {
+    it('returns 100 for empty candidate ingredients', () => {
+      const history: MealLog[] = [createMealLog(['milk-id'], 1)];
+
+      expect(calculateVarietyScore([], history, 7)).toBe(100);
+    });
+
+    it('returns 100 for ingredients never used (no penalty)', () => {
+      const history: MealLog[] = [createMealLog(['bread-id', 'cheese-id'], 1)];
+
+      // milk-id has never been used, so no penalty
+      expect(calculateVarietyScore(['milk-id'], history, 7)).toBe(100);
+    });
+
+    it('returns 100 with empty history (all ingredients are new)', () => {
+      const history: MealLog[] = [];
+
+      expect(calculateVarietyScore(['milk-id', 'bread-id'], history, 7)).toBe(
+        100
+      );
+    });
+  });
+
+  describe('single ingredient penalties', () => {
+    it('applies LOW penalty (-5) for ingredient used once', () => {
+      const history: MealLog[] = [createMealLog(['milk-id', 'cheese-id'], 1)];
+
+      // milk-id used 1 time = -5 penalty
+      expect(calculateVarietyScore(['milk-id'], history, 7)).toBe(95);
+    });
+
+    it('applies MEDIUM penalty (-15) for ingredient used twice', () => {
+      const history: MealLog[] = [
+        createMealLog(['milk-id', 'bread-id'], 1, '1'),
+        createMealLog(['milk-id', 'cheese-id'], 2, '2'),
+      ];
+
+      // milk-id used 2 times = -15 penalty
+      expect(calculateVarietyScore(['milk-id'], history, 7)).toBe(85);
+    });
+
+    it('applies HIGH penalty (-30) for ingredient used 3 times', () => {
+      const history: MealLog[] = [
+        createMealLog(['milk-id', 'bread-id'], 1, '1'),
+        createMealLog(['milk-id', 'cheese-id'], 2, '2'),
+        createMealLog(['milk-id', 'apple-id'], 3, '3'),
+      ];
+
+      // milk-id used 3 times = -30 penalty
+      expect(calculateVarietyScore(['milk-id'], history, 7)).toBe(70);
+    });
+
+    it('applies HIGH penalty (-30) for ingredient used more than 3 times', () => {
+      const history: MealLog[] = [
+        createMealLog(['milk-id', 'bread-id'], 1, '1'),
+        createMealLog(['milk-id', 'cheese-id'], 2, '2'),
+        createMealLog(['milk-id', 'apple-id'], 3, '3'),
+        createMealLog(['milk-id', 'banana-id'], 4, '4'),
+        createMealLog(['milk-id', 'orange-id'], 5, '5'),
+      ];
+
+      // milk-id used 5 times = -30 penalty (same as 3+)
+      expect(calculateVarietyScore(['milk-id'], history, 7)).toBe(70);
+    });
+  });
+
+  describe('multiple ingredients penalties', () => {
+    it('accumulates penalties from multiple ingredients', () => {
+      const history: MealLog[] = [
+        createMealLog(['milk-id'], 1, '1'), // milk used once
+        createMealLog(['bread-id'], 2, '2'), // bread used once
+      ];
+
+      // milk-id: -5 (used once)
+      // bread-id: -5 (used once)
+      // Total: 100 - 5 - 5 = 90
+      expect(calculateVarietyScore(['milk-id', 'bread-id'], history, 7)).toBe(
+        90
+      );
+    });
+
+    it('handles mix of different penalty levels', () => {
+      const history: MealLog[] = [
+        createMealLog(['milk-id', 'bread-id'], 1, '1'),
+        createMealLog(['milk-id', 'cheese-id'], 2, '2'),
+        createMealLog(['milk-id', 'apple-id'], 3, '3'), // milk: 3 times (HIGH)
+        createMealLog(['bread-id', 'banana-id'], 4, '4'), // bread: 2 times (MEDIUM)
+        createMealLog(['cheese-id'], 5, '5'), // cheese: 2 times (MEDIUM)
+      ];
+
+      // milk-id: -30 (used 3 times, HIGH)
+      // bread-id: -15 (used 2 times, MEDIUM)
+      // cheese-id: -15 (used 2 times, MEDIUM)
+      // Total: 100 - 30 - 15 - 15 = 40
+      expect(
+        calculateVarietyScore(['milk-id', 'bread-id', 'cheese-id'], history, 7)
+      ).toBe(40);
+    });
+
+    it('handles mix of used and unused ingredients', () => {
+      const history: MealLog[] = [
+        createMealLog(['milk-id'], 1, '1'),
+        createMealLog(['milk-id'], 2, '2'),
+      ];
+
+      // milk-id: -15 (used 2 times, MEDIUM)
+      // bread-id: 0 (never used, no penalty)
+      // Total: 100 - 15 = 85
+      expect(calculateVarietyScore(['milk-id', 'bread-id'], history, 7)).toBe(
+        85
+      );
+    });
+  });
+
+  describe('score clamping', () => {
+    it('clamps score to minimum 0 (does not go negative)', () => {
+      // Create history where each ingredient is used 3+ times
+      const history: MealLog[] = [
+        createMealLog(['a-id', 'b-id', 'c-id', 'd-id'], 1, '1'),
+        createMealLog(['a-id', 'b-id', 'c-id', 'd-id'], 2, '2'),
+        createMealLog(['a-id', 'b-id', 'c-id', 'd-id'], 3, '3'),
+      ];
+
+      // 4 ingredients × 30 (HIGH penalty each) = 120 penalty
+      // 100 - 120 = -20, but should clamp to 0
+      expect(
+        calculateVarietyScore(['a-id', 'b-id', 'c-id', 'd-id'], history, 7)
+      ).toBe(0);
+    });
+
+    it('returns exactly 0 at the boundary', () => {
+      // 100 / 30 = 3.33, so 4 ingredients with HIGH penalty = 120
+      // Let's use exactly enough to hit 0
+      const history: MealLog[] = [
+        createMealLog(['a-id', 'b-id', 'c-id'], 1, '1'),
+        createMealLog(['a-id', 'b-id', 'c-id'], 2, '2'),
+        createMealLog(['a-id', 'b-id', 'c-id'], 3, '3'),
+        createMealLog(['d-id'], 4, '4'), // d-id: 1 time (LOW)
+      ];
+
+      // a, b, c: -30 each (used 3 times) = -90
+      // d: -5 (used once) = -5
+      // Total: 100 - 90 - 5 = 5
+      expect(
+        calculateVarietyScore(['a-id', 'b-id', 'c-id', 'd-id'], history, 7)
+      ).toBe(5);
+    });
+  });
+
+  describe('cooldown period', () => {
+    it('respects cooldown days parameter', () => {
+      const history: MealLog[] = [
+        createMealLog(['milk-id'], 1, '1'), // Within 3 days
+        createMealLog(['milk-id'], 2, '2'), // Within 3 days
+        createMealLog(['milk-id'], 5, '3'), // Outside 3 days
+      ];
+
+      // With 3-day cooldown: milk used 2 times = MEDIUM penalty (-15)
+      expect(calculateVarietyScore(['milk-id'], history, 3)).toBe(85);
+
+      // With 7-day cooldown: milk used 3 times = HIGH penalty (-30)
+      expect(calculateVarietyScore(['milk-id'], history, 7)).toBe(70);
+    });
+
+    it('excludes meals at exactly the cooldown boundary', () => {
+      const history: MealLog[] = [
+        createMealLog(['milk-id'], 6, '1'), // Day 6 (included in 7-day)
+        createMealLog(['milk-id'], 7, '2'), // Day 7 (excluded from 7-day)
+      ];
+
+      // 7 days means < 7, so only day 6 is included (1 use = LOW penalty)
+      expect(calculateVarietyScore(['milk-id'], history, 7)).toBe(95);
+    });
+  });
+
+  describe('edge cases', () => {
+    it('handles single ingredient meal in candidate', () => {
+      const history: MealLog[] = [createMealLog(['milk-id'], 1)];
+
+      expect(calculateVarietyScore(['milk-id'], history, 7)).toBe(95);
+    });
+
+    it('handles many ingredients in candidate', () => {
+      const history: MealLog[] = [
+        createMealLog(['a-id'], 1, '1'),
+        createMealLog(['b-id'], 2, '2'),
+      ];
+
+      // a: -5 (used once)
+      // b: -5 (used once)
+      // c, d, e: 0 (never used)
+      // Total: 100 - 5 - 5 = 90
+      expect(
+        calculateVarietyScore(
+          ['a-id', 'b-id', 'c-id', 'd-id', 'e-id'],
+          history,
+          7
+        )
+      ).toBe(90);
+    });
+
+    it('handles 0-day cooldown (no penalties possible)', () => {
+      const history: MealLog[] = [
+        createMealLog(['milk-id'], 0), // Today
+      ];
+
+      // 0 days means < 0, which excludes all meals
+      expect(calculateVarietyScore(['milk-id'], history, 0)).toBe(100);
+    });
+  });
+});
+
+/**
+ * Helper to create a PairingRule for testing
+ */
+function createPairingRule(
+  ingredientAId: string,
+  ingredientBId: string,
+  ruleType: 'positive' | 'negative',
+  id: string = `rule-${ingredientAId}-${ingredientBId}`
+): PairingRule {
+  return {
+    id,
+    ingredientAId,
+    ingredientBId,
+    ruleType,
+    createdAt: new Date().toISOString(),
+  };
+}
+
+describe('applyPairingRules', () => {
+  describe('score constants', () => {
+    it('exports PAIRING_RULE_SCORE with correct values', () => {
+      expect(PAIRING_RULE_SCORE.POSITIVE_BONUS).toBe(10);
+      expect(PAIRING_RULE_SCORE.NEGATIVE_PENALTY).toBe(-100);
+    });
+  });
+
+  describe('empty inputs', () => {
+    it('returns valid with score 0 for empty candidate ingredients', () => {
+      const rules: PairingRule[] = [
+        createPairingRule('milk-id', 'cereals-id', 'positive'),
+      ];
+
+      const result = applyPairingRules([], rules);
+      expect(result.isValid).toBe(true);
+      expect(result.score).toBe(0);
+    });
+
+    it('returns valid with score 0 for empty rules', () => {
+      const result = applyPairingRules(['milk-id', 'cereals-id'], []);
+      expect(result.isValid).toBe(true);
+      expect(result.score).toBe(0);
+    });
+
+    it('returns valid with score 0 for single ingredient (no pairs to check)', () => {
+      const rules: PairingRule[] = [
+        createPairingRule('milk-id', 'cereals-id', 'positive'),
+      ];
+
+      const result = applyPairingRules(['milk-id'], rules);
+      expect(result.isValid).toBe(true);
+      expect(result.score).toBe(0);
+    });
+  });
+
+  describe('positive rules', () => {
+    it('adds bonus (+10) for matching positive rule', () => {
+      const rules: PairingRule[] = [
+        createPairingRule('milk-id', 'cereals-id', 'positive'),
+      ];
+
+      const result = applyPairingRules(['milk-id', 'cereals-id'], rules);
+      expect(result.isValid).toBe(true);
+      expect(result.score).toBe(10);
+    });
+
+    it('matches positive rule in reverse order (B-A)', () => {
+      const rules: PairingRule[] = [
+        createPairingRule('milk-id', 'cereals-id', 'positive'),
+      ];
+
+      // Rule is milk-id -> cereals-id, but we query cereals-id -> milk-id
+      const result = applyPairingRules(['cereals-id', 'milk-id'], rules);
+      expect(result.isValid).toBe(true);
+      expect(result.score).toBe(10);
+    });
+
+    it('accumulates bonus for multiple positive pairs', () => {
+      const rules: PairingRule[] = [
+        createPairingRule('milk-id', 'cereals-id', 'positive'),
+        createPairingRule('milk-id', 'honey-id', 'positive'),
+        createPairingRule('cereals-id', 'honey-id', 'positive'),
+      ];
+
+      // All 3 pairs match: milk-cereals, milk-honey, cereals-honey
+      const result = applyPairingRules(['milk-id', 'cereals-id', 'honey-id'], rules);
+      expect(result.isValid).toBe(true);
+      expect(result.score).toBe(30); // 3 × 10 = 30
+    });
+  });
+
+  describe('negative rules', () => {
+    it('returns invalid for matching negative rule', () => {
+      const rules: PairingRule[] = [
+        createPairingRule('butter-id', 'yogurt-id', 'negative'),
+      ];
+
+      const result = applyPairingRules(['butter-id', 'yogurt-id'], rules);
+      expect(result.isValid).toBe(false);
+      expect(result.score).toBe(-100);
+    });
+
+    it('matches negative rule in reverse order (B-A)', () => {
+      const rules: PairingRule[] = [
+        createPairingRule('butter-id', 'yogurt-id', 'negative'),
+      ];
+
+      // Rule is butter-id -> yogurt-id, but we query yogurt-id -> butter-id
+      const result = applyPairingRules(['yogurt-id', 'butter-id'], rules);
+      expect(result.isValid).toBe(false);
+      expect(result.score).toBe(-100);
+    });
+
+    it('returns invalid immediately when first negative rule found', () => {
+      const rules: PairingRule[] = [
+        createPairingRule('milk-id', 'cereals-id', 'positive'),
+        createPairingRule('butter-id', 'yogurt-id', 'negative'),
+      ];
+
+      // Has positive pair (milk-cereals) but also negative pair (butter-yogurt)
+      const result = applyPairingRules(
+        ['milk-id', 'cereals-id', 'butter-id', 'yogurt-id'],
+        rules
+      );
+      expect(result.isValid).toBe(false);
+      expect(result.score).toBe(-100);
+    });
+  });
+
+  describe('mixed rules', () => {
+    it('returns valid with bonus when only positive rules match', () => {
+      const rules: PairingRule[] = [
+        createPairingRule('milk-id', 'cereals-id', 'positive'),
+        createPairingRule('butter-id', 'yogurt-id', 'negative'),
+      ];
+
+      // Only milk and cereals - positive match, no negative match
+      const result = applyPairingRules(['milk-id', 'cereals-id'], rules);
+      expect(result.isValid).toBe(true);
+      expect(result.score).toBe(10);
+    });
+
+    it('returns valid with 0 score when no rules match', () => {
+      const rules: PairingRule[] = [
+        createPairingRule('milk-id', 'cereals-id', 'positive'),
+        createPairingRule('butter-id', 'yogurt-id', 'negative'),
+      ];
+
+      // bread and cheese - no rules for this pair
+      const result = applyPairingRules(['bread-id', 'cheese-id'], rules);
+      expect(result.isValid).toBe(true);
+      expect(result.score).toBe(0);
+    });
+  });
+
+  describe('edge cases', () => {
+    it('handles many ingredients with multiple matching pairs', () => {
+      const rules: PairingRule[] = [
+        createPairingRule('a-id', 'b-id', 'positive'),
+        createPairingRule('b-id', 'c-id', 'positive'),
+        createPairingRule('c-id', 'd-id', 'positive'),
+        createPairingRule('d-id', 'e-id', 'positive'),
+      ];
+
+      // With 5 ingredients (a,b,c,d,e), pairs are: ab, ac, ad, ae, bc, bd, be, cd, ce, de
+      // Matching rules: ab, bc, cd, de = 4 matches
+      const result = applyPairingRules(['a-id', 'b-id', 'c-id', 'd-id', 'e-id'], rules);
+      expect(result.isValid).toBe(true);
+      expect(result.score).toBe(40); // 4 × 10 = 40
+    });
+
+    it('handles duplicate ingredients in candidate (unusual but possible)', () => {
+      const rules: PairingRule[] = [
+        createPairingRule('milk-id', 'cereals-id', 'positive'),
+      ];
+
+      // Duplicate milk-id - should still only count once for the pair
+      const result = applyPairingRules(['milk-id', 'milk-id', 'cereals-id'], rules);
+      expect(result.isValid).toBe(true);
+      // Pairs: (milk,milk), (milk,cereals), (milk,cereals) - rule matches twice
+      expect(result.score).toBe(20);
+    });
+
+    it('handles no matching ingredients even with many rules', () => {
+      const rules: PairingRule[] = [
+        createPairingRule('milk-id', 'cereals-id', 'positive'),
+        createPairingRule('bread-id', 'butter-id', 'positive'),
+        createPairingRule('cheese-id', 'wine-id', 'negative'),
+      ];
+
+      // apple and banana - no rules for these
+      const result = applyPairingRules(['apple-id', 'banana-id'], rules);
+      expect(result.isValid).toBe(true);
+      expect(result.score).toBe(0);
+    });
+
+    it('correctly identifies pair regardless of ingredient position in array', () => {
+      const rules: PairingRule[] = [
+        createPairingRule('b-id', 'd-id', 'positive'),
+      ];
+
+      // b and d are not adjacent in the array
+      const result = applyPairingRules(['a-id', 'b-id', 'c-id', 'd-id'], rules);
+      expect(result.isValid).toBe(true);
+      expect(result.score).toBe(10);
     });
   });
 });
