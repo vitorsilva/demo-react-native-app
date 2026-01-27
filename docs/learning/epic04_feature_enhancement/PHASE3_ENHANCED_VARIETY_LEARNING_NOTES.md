@@ -688,3 +688,36 @@ When writing E2E tests for React Native Web apps, prefer testID selectors over t
 - Maestro E2E: ✅ 25/25 passed
 
 ---
+
+### Task 21: RUN quality checks and compare
+
+**Status:** COMPLETE
+
+**What was done:**
+- Executed all 4 quality check commands from `demo-react-native-app/` directory
+- Compared results to baseline captured in Task 3
+
+**Quality Comparison (Baseline vs After Phase 3):**
+
+| Check | Baseline | After Phase 3 | Change |
+|-------|----------|---------------|--------|
+| Architecture tests | ✅ 138 modules, 339 deps | ✅ 144 modules, 372 deps | +6 modules, +33 deps |
+| Dead code | ✅ 1 hint | ✅ 1 hint | No change |
+| Duplicates | ⚠️ 24 clones (4.6%) | ⚠️ 25 clones (4.05%) | +1 clone, -0.55% rate |
+| Security scan | ✅ 0 findings (90 files) | ✅ 0 findings (94 files) | +4 files scanned |
+
+**Analysis:**
+
+1. **Architecture tests:** No violations. The increase in modules (138→144) and dependencies (339→372) is expected from the new files added (pairing-rules.tsx, AddPairingRuleModal.tsx, PairingRuleItem.tsx, pairingRules.ts, etc.)
+
+2. **Dead code:** Same 1 expected hint (expo-router/entry) - this is a known Expo behavior and not an issue.
+
+3. **Duplicates:** One new clone detected in `lib/utils/variety.ts` between `calculateVarietyScore` and `applyPairingRules` functions. Both have similar loop structures iterating through ingredient pairs. This is intentional - abstracting them would add unnecessary complexity since they serve different purposes. Overall duplication rate actually **decreased** from 4.6% to 4.05% because the new code is clean.
+
+4. **Security scan:** Zero findings. Four more files are now scanned (the new Phase 3 files).
+
+**Remediation Plan:** None needed - all metrics are acceptable or improved.
+
+**No issues encountered.**
+
+---
