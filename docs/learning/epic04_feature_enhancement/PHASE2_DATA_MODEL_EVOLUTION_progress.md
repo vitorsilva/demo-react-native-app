@@ -831,28 +831,34 @@ The ASCII wireframes already in the specification document accurately represent 
 **Status:** COMPLETE
 
 **What was done:**
-- Updated `screenshots/README.md` with comprehensive AFTER screenshot documentation
-- Added detailed ASCII wireframes showing what each screenshot should capture:
-  1. Meal Logging - confirmation modal with name input and prep selectors
-  2. Prep Method Picker - modal showing preparation method options
-  3. History - Named Meal - history item with named meal displayed
-  4. History - Prep Methods - history item with prep methods inline
-  5. Settings - Prep Methods - preparation methods management section
-- Added step-by-step capture instructions for each screenshot
-- Documented key elements to capture for each screenshot
-- Added prerequisites and saving instructions
+- Captured all 5 AFTER screenshots using Playwright MCP with the web app
+- Started app with `npm run web` and used browser automation to interact with UI
+- Created test data (named meal "Mom's Special Breakfast", meals with prep methods)
+- Captured screenshots at each key feature screen:
+
+**Screenshots Captured:**
+| # | Filename | Description |
+|---|----------|-------------|
+| 1 | `meal_logging_after.png` | Confirmation modal with meal name input and prep selectors |
+| 2 | `prep_method_picker.png` | Modal showing all 12+ preparation method options |
+| 3 | `history_named_meal.png` | History item showing "Mom's Special Breakfast" |
+| 4 | `history_prep_methods.png` | History item showing "raw Apple + Jam" with prep inline |
+| 5 | `prep_methods_settings.png` | Settings page with System Methods chips and Custom Methods section |
+
+**Files Created:**
+- `docs/learning/epic04_feature_enhancement/screenshots/meal_logging_after.png`
+- `docs/learning/epic04_feature_enhancement/screenshots/prep_method_picker.png`
+- `docs/learning/epic04_feature_enhancement/screenshots/history_named_meal.png`
+- `docs/learning/epic04_feature_enhancement/screenshots/history_prep_methods.png`
+- `docs/learning/epic04_feature_enhancement/screenshots/prep_methods_settings.png`
 
 **Files Updated:**
-- `docs/learning/epic04_feature_enhancement/screenshots/README.md` - comprehensive update
-
-**Note:**
-Actual PNG screenshots require running the app on device/emulator. The ASCII wireframes serve as documentation of what the AFTER state should look like, with detailed capture instructions provided for when actual screenshots are taken.
+- `docs/learning/epic04_feature_enhancement/screenshots/README.md` - Updated status to "✅ Captured"
 
 **Verification:**
-- README contains complete AFTER screenshot specifications
-- Each screenshot has ASCII wireframe reference
-- Step-by-step capture guide included
-- Filenames documented for consistency
+- All 5 PNG screenshots exist in screenshots folder
+- README checklist updated with "✅ Captured" status
+- Screenshots visually verify implemented Phase 2 features
 
 ---
 

@@ -43,11 +43,11 @@ Since the feature was implemented before screenshots were captured, the **ASCII 
 
 | # | Screenshot | Description | Filename | Status |
 |---|------------|-------------|----------|--------|
-| 1 | Meal Logging | Confirmation modal with name input and prep selectors | `meal_logging_after.png` | Documented |
-| 2 | Prep Method Picker | Modal showing preparation method options | `prep_method_picker.png` | Documented |
-| 3 | History - Named Meal | History item showing a named meal | `history_named_meal.png` | Documented |
-| 4 | History - Prep Methods | History item showing prep methods inline | `history_prep_methods.png` | Documented |
-| 5 | Settings - Prep Methods | Preparation methods management section | `prep_methods_settings.png` | Documented |
+| 1 | Meal Logging | Confirmation modal with name input and prep selectors | `meal_logging_after.png` | ✅ Captured |
+| 2 | Prep Method Picker | Modal showing preparation method options | `prep_method_picker.png` | ✅ Captured |
+| 3 | History - Named Meal | History item showing a named meal | `history_named_meal.png` | ✅ Captured |
+| 4 | History - Prep Methods | History item showing prep methods inline | `history_prep_methods.png` | ✅ Captured |
+| 5 | Settings - Prep Methods | Preparation methods management section | `prep_methods_settings.png` | ✅ Captured |
 
 ### Reference: What Each Screenshot Should Show
 
@@ -240,5 +240,6 @@ npm start
 - Phase 2 implementation completed: 2026-01-25 to 2026-01-27
 - Feature branch: `FEATURE_2.0_DATA_MODEL_EVOLUTION`
 - Merged to main: 2026-01-27
-- ASCII wireframes serve as documentation until actual screenshots are captured
-- Actual screenshot capture requires running the app on device/emulator
+- **Screenshots captured: 2026-01-27** using Playwright MCP with web app
+- All 5 AFTER screenshots captured showing the implemented features
+- ASCII wireframes remain as BEFORE reference (feature was implemented before documentation)
