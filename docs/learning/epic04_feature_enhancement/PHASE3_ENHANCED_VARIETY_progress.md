@@ -680,3 +680,62 @@ export function applyPairingRules(
 - Linter: ✅ 0 errors (8 pre-existing warnings)
 
 ---
+
+### Task 20: RUN full test suites
+
+**Status:** COMPLETE
+
+**What was done:**
+- Ran all unit tests (477 tests)
+- Ran all Playwright E2E tests (84 tests)
+- Ran all Maestro E2E tests (25 tests)
+- Fixed multiple Maestro test issues discovered during execution
+
+**Test Results:**
+
+| Test Type | Baseline | After Phase 3 | Status |
+|-----------|----------|---------------|--------|
+| Unit tests (Jest) | 389 passed | 477 passed | ✅ +88 new tests |
+| Playwright E2E | 68 passed, 1 skipped | 84 passed, 1 skipped | ✅ +16 new tests |
+| Maestro | 16 passed | 25 passed | ✅ +9 new tests |
+
+**Maestro Test Issues Fixed:**
+
+1. **Element selector ambiguity** - Multiple "Pairing Rules" elements on Settings screen
+   - Fix: Use `testID="pairing-rules-link"` instead of text matching
+
+2. **Back button text prefix** - Button shows "← Back" with arrow
+   - Fix: Use `testID="back-button"` instead of text matching
+
+3. **Scroll visibility** - Elements not visible after scrolling to section header
+   - Fix: Scroll to description text below header to ensure link is visible
+
+4. **Ingredient picker scrolling** - Ingredients not visible without scrolling in picker
+   - Fix: Add `scrollUntilVisible` before each ingredient `tapOn`
+
+5. **Ingredient name case sensitivity** - Tests used lowercase but seed data has proper case
+   - Fix: Update all ingredient names to match seed data exactly (e.g., "Milk", "Cereals", "Greek Yogurt")
+
+6. **Screen tab persistence** - Screen remembers last active tab when navigating back
+   - Fix: Wait for tab bar visibility instead of specific tab content
+
+7. **Button visibility** - "Generate New Ideas" button needs scrolling
+   - Fix: Add `scrollUntilVisible` before tapping regenerate button
+
+**Files Modified:**
+- e2e/maestro/pairing-rules-settings.yaml
+- e2e/maestro/pairing-rules-add-good.yaml
+- e2e/maestro/pairing-rules-add-avoid.yaml
+- e2e/maestro/pairing-rules-delete.yaml
+- e2e/maestro/pairing-rules-full-workflow.yaml
+- e2e/maestro/suggestions-pairing-negative.yaml
+- e2e/maestro/suggestions-pairing-regenerate.yaml
+- e2e/maestro/suggestions-pairing-positive.yaml
+- e2e/maestro/suggestions-pairing-workflow.yaml
+
+**Verification:**
+- Unit tests: ✅ 477 passed
+- Playwright E2E: ✅ 84 passed, 1 skipped
+- Maestro E2E: ✅ 25/25 passed
+
+---

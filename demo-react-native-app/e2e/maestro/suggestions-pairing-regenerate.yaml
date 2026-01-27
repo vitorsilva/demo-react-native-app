@@ -27,18 +27,23 @@ appId: com.vitorsilvavmrs.saborspin
     visible: "Settings"
     timeout: 10000
 
-# Scroll to find Pairing Rules
+# Scroll to find Pairing Rules description (ensures link is also visible)
 - scrollUntilVisible:
-    element: "Pairing Rules"
+    element: "Define which ingredients pair well together or should be avoided"
     direction: DOWN
-    timeout: 10000
+    timeout: 15000
+    speed: 60
 
-# Navigate to Pairing Rules screen
-- tapOn: "Pairing Rules"
+# Wait for animation to settle
+- waitForAnimationToEnd
+
+# Navigate to Pairing Rules screen (using testID to avoid clicking section title)
+- tapOn:
+    id: "pairing-rules-link"
 
 # Wait for Pairing Rules screen to load
 - extendedWaitUntil:
-    visible: "Good Pairs"
+    visible: "No good pairs defined yet"
     timeout: 10000
 
 # Switch to Avoid tab
@@ -49,7 +54,7 @@ appId: com.vitorsilvavmrs.saborspin
 - waitForAnimationToEnd
 
 # Add avoid pair: milk + cereals
-- tapOn: "Add Pair to Avoid"
+- tapOn: ".*Add Pair to Avoid.*"
 
 # Wait for modal
 - extendedWaitUntil:
@@ -61,7 +66,11 @@ appId: com.vitorsilvavmrs.saborspin
 - extendedWaitUntil:
     visible: "First ingredient"
     timeout: 5000
-- tapOn: "milk"
+- scrollUntilVisible:
+    element: "Milk"
+    direction: DOWN
+    timeout: 10000
+- tapOn: "Milk"
 
 # Select second ingredient - cereals
 - extendedWaitUntil:
@@ -73,7 +82,11 @@ appId: com.vitorsilvavmrs.saborspin
 - extendedWaitUntil:
     visible: "Second ingredient"
     timeout: 5000
-- tapOn: "cereals"
+- scrollUntilVisible:
+    element: "Cereals"
+    direction: DOWN
+    timeout: 10000
+- tapOn: "Cereals"
 
 # Save the rule
 - extendedWaitUntil:
@@ -88,11 +101,12 @@ appId: com.vitorsilvavmrs.saborspin
 - waitForAnimationToEnd
 
 # Verify avoid pair was added
-- assertVisible: "milk"
-- assertVisible: "cereals"
+- assertVisible: "Milk"
+- assertVisible: "Cereals"
 
-# Navigate back to home
-- tapOn: "Back"
+# Navigate back to home (using testID because button text has arrow prefix)
+- tapOn:
+    id: "back-button"
 
 # Wait for settings screen
 - extendedWaitUntil:
@@ -119,7 +133,11 @@ appId: com.vitorsilvavmrs.saborspin
 - takeScreenshot: suggestions-regenerate-01-initial
 
 # Step 3: Regenerate suggestions multiple times
-# First regeneration
+# First regeneration - scroll to find button if needed
+- scrollUntilVisible:
+    element: "Generate New Ideas"
+    direction: DOWN
+    timeout: 10000
 - tapOn: "Generate New Ideas"
 
 # Wait for suggestions to reload
@@ -133,7 +151,11 @@ appId: com.vitorsilvavmrs.saborspin
 # Take screenshot after first regeneration
 - takeScreenshot: suggestions-regenerate-02-first
 
-# Second regeneration
+# Second regeneration - scroll to find button if needed
+- scrollUntilVisible:
+    element: "Generate New Ideas"
+    direction: DOWN
+    timeout: 10000
 - tapOn: "Generate New Ideas"
 
 # Wait for suggestions to reload
@@ -147,7 +169,11 @@ appId: com.vitorsilvavmrs.saborspin
 # Take screenshot after second regeneration
 - takeScreenshot: suggestions-regenerate-03-second
 
-# Third regeneration
+# Third regeneration - scroll to find button if needed
+- scrollUntilVisible:
+    element: "Generate New Ideas"
+    direction: DOWN
+    timeout: 10000
 - tapOn: "Generate New Ideas"
 
 # Wait for suggestions to reload

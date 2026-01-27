@@ -50,17 +50,20 @@ appId: com.vitorsilvavmrs.saborspin
 # Take screenshot of pairing rules link
 - takeScreenshot: pairing-rules-02-link-visible
 
-# Tap on Pairing Rules link to navigate
-- tapOn: "Pairing Rules"
+# Tap on Pairing Rules link to navigate (using testID to avoid clicking section title)
+- tapOn:
+    id: "pairing-rules-link"
 
 # Wait for Pairing Rules screen to load
 - extendedWaitUntil:
-    visible: "Good Pairs"
+    visible: "No good pairs defined yet"
     timeout: 10000
 
-# Verify we're on the Pairing Rules screen
-- assertVisible: "Good Pairs"
-- assertVisible: "Avoid"
+# Verify we're on the Pairing Rules screen (tab headers have checkmark/X prefixes)
+- assertVisible:
+    text: ".*Good Pairs.*"
+- assertVisible:
+    text: ".*Avoid.*"
 
 # Take screenshot of pairing rules screen
 - takeScreenshot: pairing-rules-03-screen
@@ -81,8 +84,9 @@ appId: com.vitorsilvavmrs.saborspin
 # Take screenshot of avoid tab
 - takeScreenshot: pairing-rules-04-avoid-tab
 
-# Navigate back to Settings
-- tapOn: "Back"
+# Navigate back to Settings (using testID because button text has arrow prefix)
+- tapOn:
+    id: "back-button"
 
 # Wait for Settings screen
 - extendedWaitUntil:

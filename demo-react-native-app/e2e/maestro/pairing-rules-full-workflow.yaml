@@ -27,18 +27,23 @@ appId: com.vitorsilvavmrs.saborspin
     visible: "Settings"
     timeout: 10000
 
-# Scroll to find Pairing Rules
+# Scroll to find Pairing Rules description (ensures link is also visible)
 - scrollUntilVisible:
-    element: "Pairing Rules"
+    element: "Define which ingredients pair well together or should be avoided"
     direction: DOWN
-    timeout: 10000
+    timeout: 15000
+    speed: 60
 
-# Navigate to Pairing Rules screen
-- tapOn: "Pairing Rules"
+# Wait for animation to settle
+- waitForAnimationToEnd
+
+# Navigate to Pairing Rules screen (using testID to avoid clicking section title)
+- tapOn:
+    id: "pairing-rules-link"
 
 # Wait for Pairing Rules screen to load
 - extendedWaitUntil:
-    visible: "Good Pairs"
+    visible: "No good pairs defined yet"
     timeout: 10000
 
 # Take screenshot of initial state
@@ -46,7 +51,7 @@ appId: com.vitorsilvavmrs.saborspin
 
 # Step 1: Add a good pair (milk + cereals)
 - assertVisible: "No good pairs defined yet"
-- tapOn: "Add Good Pair"
+- tapOn: ".*Add Good Pair.*"
 
 # Wait for modal
 - extendedWaitUntil:
@@ -58,7 +63,11 @@ appId: com.vitorsilvavmrs.saborspin
 - extendedWaitUntil:
     visible: "First ingredient"
     timeout: 5000
-- tapOn: "milk"
+- scrollUntilVisible:
+    element: "Milk"
+    direction: DOWN
+    timeout: 10000
+- tapOn: "Milk"
 
 # Select second ingredient
 - extendedWaitUntil:
@@ -70,7 +79,11 @@ appId: com.vitorsilvavmrs.saborspin
 - extendedWaitUntil:
     visible: "Second ingredient"
     timeout: 5000
-- tapOn: "cereals"
+- scrollUntilVisible:
+    element: "Cereals"
+    direction: DOWN
+    timeout: 10000
+- tapOn: "Cereals"
 
 # Save the rule
 - extendedWaitUntil:
@@ -85,8 +98,8 @@ appId: com.vitorsilvavmrs.saborspin
 - waitForAnimationToEnd
 
 # Verify good pair was added
-- assertVisible: "milk"
-- assertVisible: "cereals"
+- assertVisible: "Milk"
+- assertVisible: "Cereals"
 - assertNotVisible: "No good pairs defined yet"
 
 # Take screenshot of good pair added
@@ -106,7 +119,7 @@ appId: com.vitorsilvavmrs.saborspin
 - takeScreenshot: pairing-workflow-03-avoid-empty
 
 # Add avoid pair
-- tapOn: "Add Pair to Avoid"
+- tapOn: ".*Add Pair to Avoid.*"
 
 # Wait for modal
 - extendedWaitUntil:
@@ -118,7 +131,11 @@ appId: com.vitorsilvavmrs.saborspin
 - extendedWaitUntil:
     visible: "First ingredient"
     timeout: 5000
-- tapOn: "butter"
+- scrollUntilVisible:
+    element: "Butter"
+    direction: DOWN
+    timeout: 10000
+- tapOn: "Butter"
 
 # Select second ingredient
 - extendedWaitUntil:
@@ -130,7 +147,11 @@ appId: com.vitorsilvavmrs.saborspin
 - extendedWaitUntil:
     visible: "Second ingredient"
     timeout: 5000
-- tapOn: "yogurt"
+- scrollUntilVisible:
+    element: "Greek Yogurt"
+    direction: DOWN
+    timeout: 10000
+- tapOn: "Greek Yogurt"
 
 # Save the rule
 - extendedWaitUntil:
@@ -145,8 +166,8 @@ appId: com.vitorsilvavmrs.saborspin
 - waitForAnimationToEnd
 
 # Verify avoid pair was added
-- assertVisible: "butter"
-- assertVisible: "yogurt"
+- assertVisible: "Butter"
+- assertVisible: "Greek Yogurt"
 - assertNotVisible: "No avoid rules defined yet"
 
 # Take screenshot of avoid pair added
@@ -161,8 +182,8 @@ appId: com.vitorsilvavmrs.saborspin
 - waitForAnimationToEnd
 
 # Verify good pair is still visible
-- assertVisible: "milk"
-- assertVisible: "cereals"
+- assertVisible: "Milk"
+- assertVisible: "Cereals"
 
 # Take screenshot of good pairs tab
 - takeScreenshot: pairing-workflow-05-good-pairs-tab
@@ -175,8 +196,8 @@ appId: com.vitorsilvavmrs.saborspin
 - waitForAnimationToEnd
 
 # Verify avoid pair is visible
-- assertVisible: "butter"
-- assertVisible: "yogurt"
+- assertVisible: "Butter"
+- assertVisible: "Greek Yogurt"
 
 # Take screenshot of avoid tab with rule
 - takeScreenshot: pairing-workflow-06-avoid-tab-with-rule
@@ -213,8 +234,8 @@ appId: com.vitorsilvavmrs.saborspin
 - tapOn:
     text: ".*Good Pairs.*"
 - waitForAnimationToEnd
-- assertVisible: "milk"
-- assertVisible: "cereals"
+- assertVisible: "Milk"
+- assertVisible: "Cereals"
 
 # Take final screenshot
 - takeScreenshot: pairing-workflow-09-complete

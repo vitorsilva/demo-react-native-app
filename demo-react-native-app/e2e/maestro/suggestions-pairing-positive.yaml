@@ -27,25 +27,30 @@ appId: com.vitorsilvavmrs.saborspin
     visible: "Settings"
     timeout: 10000
 
-# Scroll to find Pairing Rules
+# Scroll to find Pairing Rules description (ensures link is also visible)
 - scrollUntilVisible:
-    element: "Pairing Rules"
+    element: "Define which ingredients pair well together or should be avoided"
     direction: DOWN
-    timeout: 10000
+    timeout: 15000
+    speed: 60
 
-# Navigate to Pairing Rules screen
-- tapOn: "Pairing Rules"
+# Wait for animation to settle
+- waitForAnimationToEnd
+
+# Navigate to Pairing Rules screen (using testID to avoid clicking section title)
+- tapOn:
+    id: "pairing-rules-link"
 
 # Wait for Pairing Rules screen to load
 - extendedWaitUntil:
-    visible: "Good Pairs"
+    visible: "No good pairs defined yet"
     timeout: 10000
 
 # Verify Good Pairs tab is active by default
 - assertVisible: "No good pairs defined yet"
 
 # Step 2: Add a positive pairing rule (butter + jam)
-- tapOn: "Add Good Pair"
+- tapOn: ".*Add Good Pair.*"
 
 # Wait for modal
 - extendedWaitUntil:
@@ -57,7 +62,11 @@ appId: com.vitorsilvavmrs.saborspin
 - extendedWaitUntil:
     visible: "First ingredient"
     timeout: 5000
-- tapOn: "butter"
+- scrollUntilVisible:
+    element: "Butter"
+    direction: DOWN
+    timeout: 10000
+- tapOn: "Butter"
 
 # Select second ingredient - jam
 - extendedWaitUntil:
@@ -69,7 +78,11 @@ appId: com.vitorsilvavmrs.saborspin
 - extendedWaitUntil:
     visible: "Second ingredient"
     timeout: 5000
-- tapOn: "jam"
+- scrollUntilVisible:
+    element: "Jam"
+    direction: DOWN
+    timeout: 10000
+- tapOn: "Jam"
 
 # Save the rule
 - extendedWaitUntil:
@@ -84,15 +97,16 @@ appId: com.vitorsilvavmrs.saborspin
 - waitForAnimationToEnd
 
 # Verify good pair was added
-- assertVisible: "butter"
-- assertVisible: "jam"
+- assertVisible: "Butter"
+- assertVisible: "Jam"
 - assertNotVisible: "No good pairs defined yet"
 
 # Take screenshot of positive rule added
 - takeScreenshot: suggestions-positive-01-good-rule-added
 
-# Step 3: Navigate to suggestions
-- tapOn: "Back"
+# Step 3: Navigate to suggestions (using testID because button text has arrow prefix)
+- tapOn:
+    id: "back-button"
 
 # Wait for settings screen
 - extendedWaitUntil:

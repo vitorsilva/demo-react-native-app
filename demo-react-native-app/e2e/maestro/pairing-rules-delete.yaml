@@ -27,22 +27,27 @@ appId: com.vitorsilvavmrs.saborspin
     visible: "Settings"
     timeout: 10000
 
-# Scroll to find Pairing Rules
+# Scroll to find Pairing Rules description (ensures link is also visible)
 - scrollUntilVisible:
-    element: "Pairing Rules"
+    element: "Define which ingredients pair well together or should be avoided"
     direction: DOWN
-    timeout: 10000
+    timeout: 15000
+    speed: 60
 
-# Navigate to Pairing Rules screen
-- tapOn: "Pairing Rules"
+# Wait for animation to settle
+- waitForAnimationToEnd
+
+# Navigate to Pairing Rules screen (using testID to avoid clicking section title)
+- tapOn:
+    id: "pairing-rules-link"
 
 # Wait for Pairing Rules screen to load
 - extendedWaitUntil:
-    visible: "Good Pairs"
+    visible: "No good pairs defined yet"
     timeout: 10000
 
 # Step 1: First add a rule to delete
-- tapOn: "Add Good Pair"
+- tapOn: ".*Add Good Pair.*"
 
 # Wait for modal to appear
 - extendedWaitUntil:
@@ -57,8 +62,12 @@ appId: com.vitorsilvavmrs.saborspin
     visible: "First ingredient"
     timeout: 5000
 
-# Select bread
-- tapOn: "bread"
+# Scroll to find Cereals and select it
+- scrollUntilVisible:
+    element: "Cereals"
+    direction: DOWN
+    timeout: 10000
+- tapOn: "Cereals"
 
 # Wait for selection to register
 - extendedWaitUntil:
@@ -75,8 +84,12 @@ appId: com.vitorsilvavmrs.saborspin
     visible: "Second ingredient"
     timeout: 5000
 
-# Select cheese
-- tapOn: "cheese"
+# Scroll to find Cheese and select it
+- scrollUntilVisible:
+    element: "Cheese"
+    direction: DOWN
+    timeout: 10000
+- tapOn: "Cheese"
 
 # Wait for selection to register
 - extendedWaitUntil:
@@ -95,8 +108,8 @@ appId: com.vitorsilvavmrs.saborspin
 - waitForAnimationToEnd
 
 # Verify rule was added
-- assertVisible: "bread"
-- assertVisible: "cheese"
+- assertVisible: "Cereals"
+- assertVisible: "Cheese"
 - assertNotVisible: "No good pairs defined yet"
 
 # Take screenshot before delete

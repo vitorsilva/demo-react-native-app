@@ -27,18 +27,23 @@ appId: com.vitorsilvavmrs.saborspin
     visible: "Settings"
     timeout: 10000
 
-# Scroll to find Pairing Rules
+# Scroll to find Pairing Rules description (ensures link is also visible)
 - scrollUntilVisible:
-    element: "Pairing Rules"
+    element: "Define which ingredients pair well together or should be avoided"
     direction: DOWN
-    timeout: 10000
+    timeout: 15000
+    speed: 60
 
-# Navigate to Pairing Rules screen
-- tapOn: "Pairing Rules"
+# Wait for animation to settle
+- waitForAnimationToEnd
+
+# Navigate to Pairing Rules screen (using testID to avoid clicking section title)
+- tapOn:
+    id: "pairing-rules-link"
 
 # Wait for Pairing Rules screen to load
 - extendedWaitUntil:
-    visible: "Good Pairs"
+    visible: "No good pairs defined yet"
     timeout: 10000
 
 # Switch to Avoid tab
@@ -49,7 +54,7 @@ appId: com.vitorsilvavmrs.saborspin
 - waitForAnimationToEnd
 
 # Add avoid pair: butter + cheese
-- tapOn: "Add Pair to Avoid"
+- tapOn: ".*Add Pair to Avoid.*"
 
 # Wait for modal
 - extendedWaitUntil:
@@ -61,7 +66,11 @@ appId: com.vitorsilvavmrs.saborspin
 - extendedWaitUntil:
     visible: "First ingredient"
     timeout: 5000
-- tapOn: "butter"
+- scrollUntilVisible:
+    element: "Butter"
+    direction: DOWN
+    timeout: 10000
+- tapOn: "Butter"
 
 # Select second ingredient - cheese
 - extendedWaitUntil:
@@ -73,7 +82,11 @@ appId: com.vitorsilvavmrs.saborspin
 - extendedWaitUntil:
     visible: "Second ingredient"
     timeout: 5000
-- tapOn: "cheese"
+- scrollUntilVisible:
+    element: "Cheese"
+    direction: DOWN
+    timeout: 10000
+- tapOn: "Cheese"
 
 # Save the rule
 - extendedWaitUntil:
@@ -88,15 +101,16 @@ appId: com.vitorsilvavmrs.saborspin
 - waitForAnimationToEnd
 
 # Verify avoid pair was added
-- assertVisible: "butter"
-- assertVisible: "cheese"
+- assertVisible: "Butter"
+- assertVisible: "Cheese"
 - assertNotVisible: "No avoid rules defined yet"
 
 # Take screenshot of negative rule added
 - takeScreenshot: suggestions-workflow-01-negative-added
 
 # Step 2: Navigate to suggestions and verify
-- tapOn: "Back"
+- tapOn:
+    id: "back-button"
 
 # Wait for settings screen
 - extendedWaitUntil:
@@ -126,7 +140,8 @@ appId: com.vitorsilvavmrs.saborspin
 - assertVisible: "Select"
 
 # Step 3: Navigate back and delete the negative rule
-- tapOn: "Back"
+- tapOn:
+    id: "back-button"
 
 # Wait for home screen
 - extendedWaitUntil:
@@ -141,21 +156,28 @@ appId: com.vitorsilvavmrs.saborspin
     visible: "Settings"
     timeout: 10000
 
-# Scroll to find Pairing Rules
+# Scroll to find Pairing Rules description (ensures link is also visible)
 - scrollUntilVisible:
-    element: "Pairing Rules"
+    element: "Define which ingredients pair well together or should be avoided"
     direction: DOWN
-    timeout: 10000
+    timeout: 15000
+    speed: 60
 
-# Navigate to Pairing Rules screen
-- tapOn: "Pairing Rules"
+# Wait for animation to settle
+- waitForAnimationToEnd
 
-# Wait for Pairing Rules screen to load
+# Navigate to Pairing Rules screen (using testID to avoid clicking section title)
+- tapOn:
+    id: "pairing-rules-link"
+
+# Wait for Pairing Rules screen to load (screen may show last active tab)
+# Wait for the tab bar to be visible
 - extendedWaitUntil:
-    visible: "Good Pairs"
+    visible:
+      text: ".*Avoid.*"
     timeout: 10000
 
-# Switch to Avoid tab
+# Switch to Avoid tab (in case Good Pairs tab is shown)
 - tapOn:
     text: ".*Avoid.*"
 
@@ -163,8 +185,8 @@ appId: com.vitorsilvavmrs.saborspin
 - waitForAnimationToEnd
 
 # Verify the rule is still there
-- assertVisible: "butter"
-- assertVisible: "cheese"
+- assertVisible: "Butter"
+- assertVisible: "Cheese"
 
 # Delete the rule
 - tapOn: "Delete"
@@ -195,7 +217,8 @@ appId: com.vitorsilvavmrs.saborspin
 - takeScreenshot: suggestions-workflow-04-rule-deleted
 
 # Step 4: Navigate back to suggestions and verify
-- tapOn: "Back"
+- tapOn:
+    id: "back-button"
 
 # Wait for settings screen
 - extendedWaitUntil:

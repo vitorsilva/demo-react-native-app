@@ -27,18 +27,23 @@ appId: com.vitorsilvavmrs.saborspin
     visible: "Settings"
     timeout: 10000
 
-# Scroll to find Pairing Rules
+# Scroll to find Pairing Rules description (ensures link is also visible)
 - scrollUntilVisible:
-    element: "Pairing Rules"
+    element: "Define which ingredients pair well together or should be avoided"
     direction: DOWN
-    timeout: 10000
+    timeout: 15000
+    speed: 60
 
-# Navigate to Pairing Rules screen
-- tapOn: "Pairing Rules"
+# Wait for animation to settle
+- waitForAnimationToEnd
+
+# Navigate to Pairing Rules screen (using testID to avoid clicking section title)
+- tapOn:
+    id: "pairing-rules-link"
 
 # Wait for Pairing Rules screen to load
 - extendedWaitUntil:
-    visible: "Good Pairs"
+    visible: "No good pairs defined yet"
     timeout: 10000
 
 # Switch to Avoid tab
@@ -55,7 +60,7 @@ appId: com.vitorsilvavmrs.saborspin
 - takeScreenshot: pairing-add-avoid-01-before
 
 # Tap add button to open modal
-- tapOn: "Add Pair to Avoid"
+- tapOn: ".*Add Pair to Avoid.*"
 
 # Wait for modal to appear
 - extendedWaitUntil:
@@ -78,8 +83,12 @@ appId: com.vitorsilvavmrs.saborspin
     visible: "First ingredient"
     timeout: 5000
 
-# Select first ingredient (butter)
-- tapOn: "butter"
+# Scroll to find Butter and select it
+- scrollUntilVisible:
+    element: "Butter"
+    direction: DOWN
+    timeout: 10000
+- tapOn: "Butter"
 
 # Wait for selection to register and return to main modal
 - extendedWaitUntil:
@@ -99,8 +108,12 @@ appId: com.vitorsilvavmrs.saborspin
     visible: "Second ingredient"
     timeout: 5000
 
-# Select second ingredient (yogurt)
-- tapOn: "yogurt"
+# Scroll to find Greek Yogurt and select it
+- scrollUntilVisible:
+    element: "Greek Yogurt"
+    direction: DOWN
+    timeout: 10000
+- tapOn: "Greek Yogurt"
 
 # Wait for selection to register
 - extendedWaitUntil:
@@ -125,8 +138,8 @@ appId: com.vitorsilvavmrs.saborspin
 - assertNotVisible: "No avoid rules defined yet"
 
 # Verify the rule appears (should show ingredient names)
-- assertVisible: "butter"
-- assertVisible: "yogurt"
+- assertVisible: "Butter"
+- assertVisible: "Greek Yogurt"
 
 # Take screenshot showing avoid pair added
 - takeScreenshot: pairing-add-avoid-05-rule-added

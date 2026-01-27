@@ -581,3 +581,110 @@ When writing E2E tests for React Native Web apps, prefer testID selectors over t
 - Linter: ✅ 0 errors (8 pre-existing warnings)
 
 ---
+
+### Task 20: RUN full test suites
+
+**Status:** COMPLETE
+
+**What was done:**
+- Executed all unit tests, Playwright E2E tests, and Maestro E2E tests
+- Fixed multiple Maestro test issues discovered during execution
+- Achieved 100% test pass rate for all test types
+
+**Test Results:**
+
+| Test Type | Baseline | After Phase 3 | Change |
+|-----------|----------|---------------|--------|
+| Unit tests (Jest) | 389 passed | 477 passed | +88 tests |
+| Playwright E2E | 68 passed, 1 skipped | 84 passed, 1 skipped | +16 tests |
+| Maestro | 16 passed | 25 passed | +9 tests |
+
+**Issues Encountered and Fixes:**
+
+1. **Element selector ambiguity - Multiple "Pairing Rules" text elements**
+   - Problem: Settings screen has both a section header "Pairing Rules" and a clickable link with same text
+   - Error: Test clicked section header instead of navigation link, screen didn't change
+   - **Fix:** Use `tapOn: id: "pairing-rules-link"` with testID instead of text matching
+
+2. **Back button text has arrow prefix**
+   - Problem: Back button text shows "← Back" with arrow prefix, not just "Back"
+   - Error: "Element not found: Text matching regex: Back"
+   - **Fix:** Use `tapOn: id: "back-button"` with testID instead of text matching
+
+3. **Scroll visibility leaves element below viewport**
+   - Problem: `scrollUntilVisible: element: "Pairing Rules"` stops at section header, but link is below visible area
+   - Error: Element not found after scroll
+   - **Fix:** Scroll to description text "Define which ingredients pair well together..." which appears between header and clickable link
+
+4. **Ingredient picker requires scrolling**
+   - Problem: Ingredient list in picker modal needs scrolling to find specific ingredients
+   - Error: "No visible element found: yogurt/bread/etc"
+   - **Fix:** Add `scrollUntilVisible` before each ingredient `tapOn` command:
+     ```yaml
+     - scrollUntilVisible:
+         element: "Milk"
+         direction: DOWN
+         timeout: 10000
+     - tapOn: "Milk"
+     ```
+
+5. **Ingredient names are case-sensitive**
+   - Problem: Tests used lowercase ("milk", "cereals") but seed data has proper case ("Milk", "Cereals")
+   - Error: Elements not found despite existing in database
+   - **Fix:** Update all ingredient names in tests to match seed data exactly:
+     - "milk" → "Milk"
+     - "cereals" → "Cereals"
+     - "butter" → "Butter"
+     - "cheese" → "Cheese"
+     - "jam" → "Jam"
+     - "yogurt" → "Greek Yogurt" (yogurt alone doesn't exist, only "Greek Yogurt" and "Normal Yogurt")
+     - "bread" → "Cereals" (bread doesn't exist in seed data)
+
+6. **Screen tab persistence**
+   - Problem: Pairing Rules screen remembers last active tab when navigating back
+   - Error: "Assertion is false: 'No good pairs defined yet' is visible" (because Avoid tab was showing)
+   - **Fix:** Wait for tab bar visibility (using `visible: text: ".*Avoid.*"`) instead of specific tab content, then explicitly switch tabs
+
+7. **Generate button visibility**
+   - Problem: "Generate New Ideas" button on suggestions screen may be below visible area
+   - Error: "Element not found: Text matching regex: Generate New Ideas"
+   - **Fix:** Add `scrollUntilVisible` before tapping the regenerate button:
+     ```yaml
+     - scrollUntilVisible:
+         element: "Generate New Ideas"
+         direction: DOWN
+         timeout: 10000
+     - tapOn: "Generate New Ideas"
+     ```
+
+**Lessons Learned:**
+
+1. **Always use testID selectors in Maestro tests** when text appears in multiple places or has prefixes/suffixes. The `id:` parameter is more reliable than text matching.
+
+2. **Scroll visibility is tricky** - just because a text is visible doesn't mean nearby elements are. Scroll to the element you actually want to interact with, not just something near it.
+
+3. **Ingredient names must match exactly** - case sensitivity matters. Always verify seed data to use correct casing.
+
+4. **Tab/screen state can persist** - don't assume screens start fresh after navigation. Check for both possible states or explicitly set the desired state.
+
+5. **Buttons may be below the fold** - especially on screens with dynamic content like suggestions. Always scroll to ensure visibility before tapping.
+
+6. **Run tests incrementally** - after finding failures, focus on fixing specific failing tests rather than running the entire suite repeatedly. This saves significant time.
+
+**Files Modified (9 Maestro test files):**
+- e2e/maestro/pairing-rules-settings.yaml
+- e2e/maestro/pairing-rules-add-good.yaml
+- e2e/maestro/pairing-rules-add-avoid.yaml
+- e2e/maestro/pairing-rules-delete.yaml
+- e2e/maestro/pairing-rules-full-workflow.yaml
+- e2e/maestro/suggestions-pairing-negative.yaml
+- e2e/maestro/suggestions-pairing-regenerate.yaml
+- e2e/maestro/suggestions-pairing-positive.yaml
+- e2e/maestro/suggestions-pairing-workflow.yaml
+
+**Verification:**
+- Unit tests: ✅ 477 passed
+- Playwright E2E: ✅ 84 passed, 1 skipped
+- Maestro E2E: ✅ 25/25 passed
+
+---
