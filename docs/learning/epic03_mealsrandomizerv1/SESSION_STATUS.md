@@ -253,7 +253,7 @@ All technical phases of Epic 03 are done.
 
 **Overview:** Expanding SaborSpin from Individual Tool to Family Kitchen Platform
 
-**Phases (12 total, ~397 hours estimated):**
+**Phases (15 total, ~431.5 hours estimated):**
 
 | Phase | Description | Status |
 |-------|-------------|--------|
@@ -263,7 +263,9 @@ All technical phases of Epic 03 are done.
 | Phase 1 | Quick Wins (Polish) | ✅ Complete |
 | Phase 2 | Data Model Evolution | ✅ Complete |
 | Phase 3 | Enhanced Variety | ✅ Complete |
-| **Phase 3.5** | Server Infrastructure | 📋 **START HERE** |
+| **Phase 3.1** | Custom Meal Creation | 📋 **START HERE** |
+| Phase 3.2 | Seed Data & App Reset | 📋 Planned |
+| Phase 3.5 | Server Infrastructure | 📋 Planned |
 | Phase 4 | User Identity & Families | 📋 Planned |
 | Phase 5 | Shared Meal Logs | 📋 Planned |
 | Phase 6 | HTTP Sync | 📋 Planned |
@@ -274,10 +276,9 @@ All technical phases of Epic 03 are done.
 | Phase 11 | Marketing & Landing Page | 📋 Planned |
 | Phase 12 | Staging & Production | 📋 Planned |
 
-**Start with:** [Phase 3.5: Server Infrastructure](../epic04_feature_enhancement/PHASE3.5_SERVER_INFRASTRUCTURE.md)
-- Local Docker development environment (PHP + MySQL)
-- PHP API structure (extending Saberloop's php-api/)
-- VPS deployment pipeline
+**Start with:** [Phase 3.1: Custom Meal Creation](../epic04_feature_enhancement/PHASE3.1_CUSTOM_MEAL_CREATION.md)
+- Manual ingredient selection for custom meals
+- Reuses Phase 2 components (prep methods, meal naming)
 
 **Reference:** [Epic 04 Overview](../epic04_feature_enhancement/OVERVIEW.md)
 

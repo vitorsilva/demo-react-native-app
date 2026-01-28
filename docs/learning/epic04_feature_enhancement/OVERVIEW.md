@@ -141,6 +141,37 @@ Epic 3 established the production-ready foundation. Epic 4 enhances the app with
 
 ---
 
+### Phase 3.1: Custom Meal Creation
+**Goal:** Allow users to create and log meals by manually selecting ingredients
+
+**Features:**
+- "Create Custom Meal" button on home screen
+- Manual ingredient selection with category filter
+- Reuses Phase 2 components (meal name, prep methods)
+- Custom meals feed into variety algorithm
+
+**Dependencies:** Phase 2 (Data Model Evolution)
+
+**[Phase 3.1 Details →](./PHASE3.1_CUSTOM_MEAL_CREATION.md)** | **[Progress →](./PHASE3.1_CUSTOM_MEAL_CREATION_progress.md)** | **[Learning Notes →](./PHASE3.1_CUSTOM_MEAL_CREATION_LEARNING_NOTES.md)**
+
+---
+
+### Phase 3.2: Seed Data & App Reset
+**Goal:** Prepopulate categories and pairing rules, add settings option to reset app data
+
+**Features:**
+- Seed categories on new install (Fruits, Dairy, Grains, etc.)
+- Associate existing ingredients with categories
+- Seed default pairing rules (positive and negative)
+- "Reset to Default Data" option in Settings
+- Confirmation modal with warning about data loss
+
+**Dependencies:** Phase 3 (Enhanced Variety) - pairing rules table
+
+**[Phase 3.2 Details →](./PHASE3.2_SEED_DATA_AND_RESET.md)** | **[Progress →](./PHASE3.2_SEED_DATA_AND_RESET_progress.md)** | **[Learning Notes →](./PHASE3.2_SEED_DATA_AND_RESET_LEARNING_NOTES.md)**
+
+---
+
 ### Phase 3.5: Server Infrastructure
 **Goal:** Set up server-side infrastructure needed for family sharing features
 
@@ -347,6 +378,8 @@ Phase 7 (Proposals)   Phase 8 (P2P) [Optional]            │    │
 | 1 | Quick Wins (Polish) | ~24.5 hours |
 | 2 | Data Model Evolution | ~29.5 hours |
 | 3 | Enhanced Variety | ~27.5 hours |
+| 3.1 | Custom Meal Creation | ~16 hours |
+| 3.2 | Seed Data & App Reset | ~18 hours |
 | 3.5 | Server Infrastructure | ~16.5 hours |
 | 4 | User Identity & Families | ~49.5 hours |
 | 5 | Shared Meal Logs | ~32.5 hours |
@@ -357,7 +390,7 @@ Phase 7 (Proposals)   Phase 8 (P2P) [Optional]            │    │
 | 10 | Quality Validation | ~2.5 hours |
 | 11 | Marketing & Landing Page | ~10 hours |
 | 12 | Staging & Production Deployment | ~4 hours |
-| | **Total** | **~397.5 hours** |
+| | **Total** | **~431.5 hours** |
 
 **Note:** Each phase includes:
 - Running existing test suites at the start (unit + Playwright E2E + Maestro for baseline validation)
@@ -382,6 +415,8 @@ Phase 7 (Proposals)   Phase 8 (P2P) [Optional]            │    │
 - [x] Phase 1: All quick wins implemented
 - [x] Phase 2: Data model supports prep methods and naming
 - [x] Phase 3: Ingredient-level variety tracking works
+- [ ] Phase 3.1: Users can create custom meals by selecting ingredients
+- [ ] Phase 3.2: App has prepopulated categories/rules and reset option
 - [ ] Phase 3.5: Server infrastructure deployed and accessible
 - [ ] Phase 4: Users can create/join families
 - [ ] Phase 5: Meals can be shared within families
@@ -414,8 +449,10 @@ Phase 7 (Proposals)   Phase 8 (P2P) [Optional]            │    │
 
 **Phases 0-3 are complete.** Next up:
 
-1. **[Phase 3.5: Server Infrastructure](./PHASE3.5_SERVER_INFRASTRUCTURE.md)** - Set up PHP + MySQL backend
-2. **[Phase 4: User Identity & Families](./PHASE4_USER_IDENTITY_FAMILIES.md)** - Local identity and family management
+1. **[Phase 3.1: Custom Meal Creation](./PHASE3.1_CUSTOM_MEAL_CREATION.md)** - Manual ingredient selection
+2. **[Phase 3.2: Seed Data & App Reset](./PHASE3.2_SEED_DATA_AND_RESET.md)** - Prepopulate categories/rules, reset option
+3. **[Phase 3.5: Server Infrastructure](./PHASE3.5_SERVER_INFRASTRUCTURE.md)** - Set up PHP + MySQL backend
+4. **[Phase 4: User Identity & Families](./PHASE4_USER_IDENTITY_FAMILIES.md)** - Local identity and family management
 
 ---
 

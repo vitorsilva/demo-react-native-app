@@ -10,9 +10,11 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - ✅ **Epic 1: Infrastructure & Foundation** - COMPLETE (2025-10-28)
 - ✅ **Epic 2: Meals Randomizer** - COMPLETE (2025-11-21)
 - ✅ **Epic 3: Production Readiness** - COMPLETE (2026-01-20)
-  - ✅ Phase 1: User Customization - COMPLETE
-  - ✅ Phase 2: Branding & Identity - COMPLETE
-  - ✅ Phase 3: Project Structure & Documentation - COMPLETE
+- 🚀 **Epic 4: Feature Enhancement** - IN PROGRESS
+  - ✅ Phase 0-3: Foundation & Polish - COMPLETE
+  - 📋 Phase 3.1: Custom Meal Creation - PLANNED
+  - 📋 Phase 3.2: Seed Data & App Reset - PLANNED
+  - 📋 Phase 3.5+: Server & Family Features - PLANNED
 
 **Key Characteristics:**
 - Production-ready app (SaborSpin)
@@ -22,7 +24,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - OpenTelemetry observability (custom backend export)
 - Zustand for global state management
 - SQLite for local data persistence (with cross-platform adapters)
-- 220 unit tests, 23 E2E tests
+- 477 unit tests, 84 Playwright E2E tests, 25 Maestro tests
 
 ## Finding Current Session Information
 
@@ -33,11 +35,12 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - `docs/user-guide/` - End-user documentation
 - `docs/learning/` - Archived learning materials from epics
 
-**For learning materials (archived):**
+**For learning materials:**
 - `docs/learning/epic01_infrastructure/` - Epic 1 notes
 - `docs/learning/epic02_mealsrandomizer/` - Epic 2 notes
 - `docs/learning/epic03_mealsrandomizerv1/` - Epic 3 notes
-- `docs/learning/epic03_mealsrandomizerv1/SESSION_STATUS.md` - Progress tracking
+- `docs/learning/epic04_feature_enhancement/` - Epic 4 notes (current)
+- `docs/learning/epic04_feature_enhancement/OVERVIEW.md` - Epic 4 progress tracking
 
 ## Claude's Role
 
@@ -98,8 +101,9 @@ npm start              # Start Expo dev server
 npm run web            # Web version (sql.js)
 
 # Testing
-npm test               # Unit tests (220)
-npm run test:e2e       # E2E tests (23)
+npm test               # Unit tests (477)
+npm run test:e2e       # E2E tests (84 Playwright)
+maestro test e2e/maestro/  # Mobile E2E tests (25 Maestro)
 
 # Code Quality
 npm run lint           # ESLint
@@ -138,9 +142,10 @@ Store in `lib/store/index.ts` with:
 
 ## Testing
 
-- **Unit tests:** 220 tests (Jest)
-- **E2E tests:** 23 tests (Playwright)
-- Coverage: Database, business logic, store, UI flows
+- **Unit tests:** 477 tests (Jest)
+- **Playwright E2E tests:** 84 tests
+- **Maestro E2E tests:** 25 tests (mobile)
+- Coverage: Database, business logic, store, UI flows, variety algorithm
 
 ## Session End Protocol
 

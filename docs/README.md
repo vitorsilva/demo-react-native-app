@@ -16,10 +16,11 @@ docs/
 │   ├── meals-randomizer-exploration.md
 │   ├── icon/
 │   └── mockups/
-├── learning/                    # Learning journey (archived)
+├── learning/                    # Learning journey
 │   ├── epic01_infrastructure/
 │   ├── epic02_mealsrandomizer/
-│   └── epic03_mealsrandomizerv1/
+│   ├── epic03_mealsrandomizerv1/
+│   └── epic04_feature_enhancement/  # Current
 ├── architecture/                # System architecture
 │   ├── SYSTEM_OVERVIEW.md
 │   ├── DATABASE_SCHEMA.md
@@ -59,6 +60,7 @@ docs/
 - [Epic 1: Infrastructure](./learning/epic01_infrastructure/LEARNING_PLAN.md)
 - [Epic 2: Meals Randomizer](./learning/epic02_mealsrandomizer/OVERVIEW.md)
 - [Epic 3: Production Readiness](./learning/epic03_mealsrandomizerv1/OVERVIEW.md)
+- [Epic 4: Feature Enhancement](./learning/epic04_feature_enhancement/OVERVIEW.md)
 
 ---
 
@@ -69,6 +71,7 @@ docs/
 | Epic 1 | Infrastructure & Foundation | Complete | 100% |
 | Epic 2 | Meals Randomizer Features | Complete | 100% |
 | Epic 3 | Production Readiness | Complete | 100% |
+| Epic 4 | Feature Enhancement & Family Sharing | In Progress | ~40% |
 
 ### Epic Progression
 
@@ -84,6 +87,10 @@ Epic 2: Build the features
 Epic 3: Ship the product
 ├─ User customization, branding
 └─ Production-ready app
+
+Epic 4: Enhance & expand (current)
+├─ Custom meals, seed data, server infrastructure
+└─ Family sharing, lunch/dinner expansion
 ```
 
 ---
@@ -122,4 +129,4 @@ Epic 3: Ship the product
 
 ---
 
-**Last Updated:** 2026-01-21
+**Last Updated:** 2026-01-28
