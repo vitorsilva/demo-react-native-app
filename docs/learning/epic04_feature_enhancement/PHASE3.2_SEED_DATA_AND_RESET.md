@@ -495,10 +495,10 @@ resetAppData: async () => {
 | 3 | RUN existing test suites | Testing | ~15 min | Baseline: unit, Playwright, Maestro | done |
 | 4 | RUN quality baseline | Quality | ~30 min | arch:test, lint:dead-code, lint:duplicates, security:scan | done |
 | 5 | Create seedData.ts with categories, ingredients, rules | Implementation | ~2 hours | Centralized seed data | done |
-| 6 | CREATE unit tests for seed data structure (and make sure they pass) | Testing | ~30 min | Validate data integrity | not started |
-| 7 | Create migration to seed categories | Implementation | ~1 hour | Migration version N | not started |
-| 8 | Create migration to update ingredient category_id | Implementation | ~1 hour | Link ingredients to categories | not started |
-| 9 | Create migration to seed pairing rules | Implementation | ~1 hour | Default positive/negative rules | not started |
+| 6 | CREATE unit tests for seed data structure (and make sure they pass) | Testing | ~30 min | Validate data integrity | done |
+| 7 | Create migration to seed categories | Implementation | ~1 hour | Migration version N | done |
+| 8 | Create migration to update ingredient category_id | Implementation | ~1 hour | Link ingredients to categories | done |
+| 9 | Create migration to seed pairing rules | Implementation | ~1 hour | Default positive/negative rules | done |
 | 10 | CREATE unit tests for migrations (and make sure they pass) | Testing | ~1 hour | Test idempotency, data integrity | not started |
 | 11 | Create resetData.ts function | Implementation | ~1.5 hours | Clear and repopulate | not started |
 | 12 | CREATE unit tests for reset function (and make sure they pass) | Testing | ~1 hour | Test complete reset flow | not started |
