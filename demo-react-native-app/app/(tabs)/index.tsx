@@ -142,6 +142,21 @@ export default function HomeScreen() {
         )}
       </View>
 
+      {/* Create Custom Meal Button */}
+      <View style={styles.customMealContainer}>
+        <TouchableOpacity
+          style={styles.customMealButton}
+          onPress={() => router.push('/(tabs)/custom-meal')}
+          testID="create-custom-meal-button"
+          accessible={true}
+          accessibilityLabel={t('customMeal.button')}
+          accessibilityHint={t('customMeal.hint')}
+          accessibilityRole="button"
+        >
+          <Text style={styles.customMealButtonText}>+ {t('customMeal.button')}</Text>
+        </TouchableOpacity>
+      </View>
+
       {/* Recent Meals Section */}
       <Text style={styles.sectionTitle}>{t('recentMeals')}</Text>
 
@@ -238,6 +253,26 @@ const styles = StyleSheet.create({
     color: colors.textSecondary,
     fontSize: 14,
     marginTop: 4,
+  },
+  // Custom Meal Button
+  customMealContainer: {
+    paddingHorizontal: 16,
+    paddingBottom: 8,
+  },
+  customMealButton: {
+    backgroundColor: colors.backgroundInactive,
+    borderRadius: 8,
+    height: 48,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: colors.primary,
+    borderStyle: 'dashed',
+  },
+  customMealButtonText: {
+    color: colors.primary,
+    fontSize: 16,
+    fontWeight: '600',
   },
   // Section title
   sectionTitle: {

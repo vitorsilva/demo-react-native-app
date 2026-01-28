@@ -346,24 +346,24 @@ interface CustomMealState {
 
 | Order | Task | Type | Effort | Notes | Status |
 |-------|------|------|--------|-------|--------|
-| 1 | Create feature branch | Setup | ~5 min | Branch from main | not started |
-| 2 | Capture BEFORE screenshots | Documentation | ~10 min | Home screen | not started |
-| 3 | RUN existing test suites | Testing | ~15 min | Baseline: unit, Playwright, Maestro | not started |
-| 4 | RUN quality baseline | Quality | ~30 min | arch:test, lint:dead-code, lint:duplicates, security:scan | not started |
-| 5 | Create CustomMealScreen component | Implementation | ~3 hours | New screen with ingredient selection | not started |
-| 6 | Add category filter functionality | Implementation | ~1 hour | Filter chips | not started |
-| 7 | Add selection validation | Implementation | ~1 hour | Min/max checks | not started |
-| 8 | CREATE unit tests for selection logic (and make sure they pass) | Testing | ~1 hour | Test validation, filtering | not started |
-| 9 | Add "Create Custom Meal" button to home | Implementation | ~30 min | Button + navigation | not started |
-| 10 | Connect to ConfirmationModal | Implementation | ~1 hour | Reuse Phase 2 components | not started |
-| 11 | Add meal type selector to flow | Implementation | ~1 hour | Required for variety tracking | not started |
-| 12 | Add i18n translations | Implementation | ~30 min | EN + PT-PT | not started |
-| 13 | CREATE Playwright E2E tests (and make sure they pass) | Testing | ~2 hours | Full flow testing | not started |
-| 14 | CREATE Maestro E2E tests (delay execution to step 14) | Testing | ~2 hours | Mirror Playwright tests | not started |
-| 15 | RUN full test suites | Testing | ~20 min | Verify no regressions | not started |
-| 16 | RUN quality checks and compare | Quality | ~30 min | Compare to baseline | not started |
-| 17 | Document learning notes | Documentation | ~30 min | Capture issues/fixes | not started |
-| 18 | Capture AFTER screenshots | Documentation | ~15 min | All new UI elements | not started |
+| 1 | Create feature branch | Setup | ~5 min | Branch from main | done |
+| 2 | Capture BEFORE screenshots | Documentation | ~10 min | Home screen | done |
+| 3 | RUN existing test suites | Testing | ~15 min | Baseline: unit, Playwright, Maestro | done |
+| 4 | RUN quality baseline | Quality | ~30 min | arch:test, lint:dead-code, lint:duplicates, security:scan | done |
+| 5 | Create CustomMealScreen component | Implementation | ~3 hours | New screen with ingredient selection | done |
+| 6 | Add category filter functionality | Implementation | ~1 hour | Filter chips | done (in Task 5) |
+| 7 | Add selection validation | Implementation | ~1 hour | Min/max checks | done (in Task 5) |
+| 8 | CREATE unit tests for selection logic (and make sure they pass) | Testing | ~1 hour | Test validation, filtering | done |
+| 9 | Add "Create Custom Meal" button to home | Implementation | ~30 min | Button + navigation | done |
+| 10 | Connect to ConfirmationModal | Implementation | ~1 hour | Reuse Phase 2 components | done (in Task 5) |
+| 11 | Add meal type selector to flow | Implementation | ~1 hour | Required for variety tracking | done (in Task 5) |
+| 12 | Add i18n translations | Implementation | ~30 min | EN + PT-PT | done |
+| 13 | CREATE Playwright E2E tests (and make sure they pass) | Testing | ~2 hours | Full flow testing | done |
+| 14 | CREATE Maestro E2E tests (delay execution to step 14) | Testing | ~2 hours | Mirror Playwright tests | done |
+| 15 | RUN full test suites | Testing | ~20 min | Verify no regressions | done |
+| 16 | RUN quality checks and compare | Quality | ~30 min | Compare to baseline | done |
+| 17 | Document learning notes | Documentation | ~30 min | Capture issues/fixes | done |
+| 18 | Capture AFTER screenshots | Documentation | ~15 min | All new UI elements | done |
 
 **Total Estimated Effort:** ~16 hours
 

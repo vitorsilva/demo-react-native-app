@@ -21,5 +21,10 @@
   "validation": {
     "required": "Este campo é obrigatório",
     "nameTaken": "Este nome já está em uso"
-  }
+  },
+  "cancel": "Cancelar",
+  "back": "Voltar",
+  "all": "Todos",
+  "uncategorized": "Sem categoria",
+  "unknown": "Desconhecido"
 }

@@ -5,6 +5,22 @@
     "recent": "Had recently",
     "veryRecent": "Had today"
   },
+  "customMeal": {
+    "title": "Create Custom Meal",
+    "selectMealType": "Select Meal Type",
+    "mealTypeHint": "Choose a meal type to continue",
+    "selectIngredients": "Select Ingredients",
+    "selectedCount": "{{count}} selected",
+    "minRequired": "Select at least {{min}} ingredient",
+    "maxAllowed": "Maximum {{max}} ingredients",
+    "maxReached": "Max {{max}} reached",
+    "noIngredients": "No ingredients available",
+    "addIngredientsHint": "Add ingredients in the Manage Ingredients tab",
+    "filterByCategory": "Filter by category",
+    "allCategories": "All",
+    "clearSelection": "Clear",
+    "createMeal": "Create Meal"
+  },
   "title": "{{mealType}} Suggestions",
   "pickOne": "Pick one:",
   "loading": "Finding delicious combinations...",

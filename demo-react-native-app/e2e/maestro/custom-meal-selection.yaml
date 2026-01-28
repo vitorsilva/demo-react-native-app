@@ -1,0 +1,63 @@
+# Maestro E2E test for Custom Meal ingredient selection
+# Tests selecting and deselecting ingredients
+#
+# Prerequisites:
+#   - Android emulator running: adb devices
+#   - App installed (see MAESTRO_TESTING.md for options)
+#
+# Run with: maestro test e2e/maestro/custom-meal-selection.yaml
+
+appId: com.vitorsilvavmrs.saborspin
+---
+# Clear app state for consistent testing
+- clearState
+# Launch app
+- launchApp
+
+# Verify home screen loads
+- extendedWaitUntil:
+    visible: "SaborSpin"
+    timeout: 30000
+
+# Navigate to custom meal screen
+- tapOn:
+    text: "Create Custom Meal"
+
+# Wait for screen to load
+- extendedWaitUntil:
+    visible: "Create Custom Meal"
+    timeout: 10000
+
+# Verify initial state shows 0 selected
+- assertVisible: "0 selected"
+
+# Take screenshot of initial state
+- takeScreenshot: custom-meal-selection-01-initial
+
+# Select first ingredient (milk from seeded data)
+- tapOn:
+    text: "Milk"
+    optional: true
+
+# Wait for selection to update
+- extendedWaitUntil:
+    visible: "1 selected"
+    timeout: 5000
+
+# Take screenshot after first selection
+- takeScreenshot: custom-meal-selection-02-one-selected
+
+# Select second ingredient
+- tapOn:
+    text: "Bread"
+    optional: true
+
+# Wait for selection to update
+- extendedWaitUntil:
+    visible: "2 selected"
+    timeout: 5000
+
+# Take screenshot after second selection
+- takeScreenshot: custom-meal-selection-03-two-selected
+
+# Test passed - Ingredient selection works on mobile

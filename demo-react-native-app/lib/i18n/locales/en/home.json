@@ -7,6 +7,10 @@
   "getStartedConfigureMealTypes": "Configure meal types in Settings to get started!",
   "noMealTypes": "No meal types configured",
   "configureMealTypes": "Go to Settings to add meal types",
+  "customMeal": {
+    "button": "Create Custom Meal",
+    "hint": "Opens a screen to create a meal by selecting ingredients"
+  },
   "date": {
     "today": "Today",
     "yesterday": "Yesterday",

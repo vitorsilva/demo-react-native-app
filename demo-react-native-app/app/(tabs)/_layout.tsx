@@ -59,6 +59,12 @@ export default function TabLayout() {
           href: null, // Hide from tab bar, accessed via Settings
         }}
       />
+      <Tabs.Screen
+        name="custom-meal"
+        options={{
+          href: null, // Hide from tab bar, accessed via Home screen
+        }}
+      />
     </Tabs>
   );
 }

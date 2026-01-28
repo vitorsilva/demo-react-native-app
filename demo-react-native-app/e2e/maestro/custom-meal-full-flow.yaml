@@ -1,0 +1,105 @@
+# Maestro E2E test for Custom Meal full flow
+# Tests complete custom meal creation: select ingredients, choose meal type, confirm
+#
+# Prerequisites:
+#   - Android emulator running: adb devices
+#   - App installed (see MAESTRO_TESTING.md for options)
+#
+# Run with: maestro test e2e/maestro/custom-meal-full-flow.yaml
+
+appId: com.vitorsilvavmrs.saborspin
+---
+# Clear app state for consistent testing
+- clearState
+# Launch app
+- launchApp
+
+# Verify home screen loads
+- extendedWaitUntil:
+    visible: "SaborSpin"
+    timeout: 30000
+
+# Verify empty state initially
+- assertVisible: "No meals logged yet"
+
+# Take screenshot of initial home
+- takeScreenshot: custom-meal-flow-01-home-initial
+
+# Navigate to custom meal screen
+- tapOn:
+    text: "Create Custom Meal"
+
+# Wait for screen to load
+- extendedWaitUntil:
+    visible: "Create Custom Meal"
+    timeout: 10000
+
+# Take screenshot of custom meal screen
+- takeScreenshot: custom-meal-flow-02-screen
+
+# Select first ingredient (Milk)
+- tapOn:
+    text: "Milk"
+    optional: true
+
+# Wait for selection to update
+- extendedWaitUntil:
+    visible: "1 selected"
+    timeout: 5000
+
+# Select second ingredient (Bread)
+- tapOn:
+    text: "Bread"
+    optional: true
+
+# Wait for selection to update
+- extendedWaitUntil:
+    visible: "2 selected"
+    timeout: 5000
+
+# Take screenshot with selections
+- takeScreenshot: custom-meal-flow-03-selected
+
+# Tap Create Meal button
+- tapOn:
+    text: "Create Meal"
+
+# Wait for meal type selector
+- extendedWaitUntil:
+    visible: "Select Meal Type"
+    timeout: 5000
+
+# Take screenshot of meal type selector
+- takeScreenshot: custom-meal-flow-04-meal-type
+
+# Select Breakfast as meal type
+- tapOn:
+    text: "Breakfast"
+
+# Wait for confirmation modal
+- extendedWaitUntil:
+    visible: "Breakfast Logged"
+    timeout: 10000
+
+# Take screenshot of confirmation
+- takeScreenshot: custom-meal-flow-05-confirmation
+
+# Verify confirmation modal elements
+- assertVisible: "Enjoy your meal!"
+- assertVisible: "Done"
+
+# Complete the flow
+- tapOn: "Done"
+
+# Wait to return to home screen
+- extendedWaitUntil:
+    visible: "Recent Meals"
+    timeout: 10000
+
+# Take screenshot of home with logged meal
+- takeScreenshot: custom-meal-flow-06-home-complete
+
+# Verify meal was logged
+- assertVisible: "Recent Meals"
+
+# Test passed - Full custom meal flow works on mobile
