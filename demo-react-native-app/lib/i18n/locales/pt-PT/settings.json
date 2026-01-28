@@ -95,5 +95,16 @@
     "title": "Sobre Estas Definições",
     "globalDescription": "Preferências Globais: Aplicam-se a todos os tipos de refeição por predefinição.",
     "mealTypesDescription": "Tipos de Refeição: Cada tipo pode ter a sua própria contagem de ingredientes e definições de período."
+  },
+  "dataManagement": {
+    "title": "Gestão de Dados",
+    "resetToDefaults": "Repor Dados Predefinidos",
+    "resetDescription": "Substituir todos os dados por ingredientes, categorias e regras predefinidas",
+    "resetWarning": "Isto irá apagar todos os seus dados personalizados, incluindo histórico de refeições, favoritos e ingredientes personalizados.",
+    "resetConfirmTitle": "Repor Dados da App?",
+    "resetConfirmMessage": "Todos os seus dados serão substituídos pelos predefinidos. Esta ação não pode ser revertida.",
+    "resetConfirmButton": "Repor Dados",
+    "resetCancelButton": "Cancelar",
+    "resetSuccess": "Os dados da app foram repostos para os predefinidos"
   }
 }

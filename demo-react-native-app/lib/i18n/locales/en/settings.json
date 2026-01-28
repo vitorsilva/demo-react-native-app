@@ -95,5 +95,16 @@
     "title": "About These Settings",
     "globalDescription": "Global Preferences: Apply to all meal types by default.",
     "mealTypesDescription": "Meal Types: Each type can have its own ingredient count and cooldown settings."
+  },
+  "dataManagement": {
+    "title": "Data Management",
+    "resetToDefaults": "Reset to Default Data",
+    "resetDescription": "Replace all data with predefined ingredients, categories, and pairing rules",
+    "resetWarning": "This will delete all your custom data including meal history, favorites, and custom ingredients.",
+    "resetConfirmTitle": "Reset App Data?",
+    "resetConfirmMessage": "All your data will be replaced with defaults. This cannot be undone.",
+    "resetConfirmButton": "Reset Data",
+    "resetCancelButton": "Cancel",
+    "resetSuccess": "App data has been reset to defaults"
   }
 }
