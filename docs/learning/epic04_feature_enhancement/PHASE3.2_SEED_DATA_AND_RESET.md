@@ -505,8 +505,8 @@ resetAppData: async () => {
 | 13 | Add resetAppData store action | Implementation | ~30 min | Connect to store | done |
 | 14 | Add Data Management section to Settings UI | Implementation | ~1.5 hours | Button + modal | done |
 | 15 | Add i18n translations | Implementation | ~30 min | EN + PT-PT | done |
-| 16 | CREATE Playwright E2E tests (and make sure they pass) | Testing | ~2 hours | Reset flow, verify data | not started |
-| 17 | CREATE Maestro E2E tests (delay execution to step 18) | Testing | ~2 hours | Mirror Playwright tests | not started |
+| 16 | CREATE Playwright E2E tests (and make sure they pass) | Testing | ~2 hours | Reset flow, verify data | done |
+| 17 | CREATE Maestro E2E tests (delay execution to step 18) | Testing | ~2 hours | Mirror Playwright tests | done |
 | 18 | RUN full test suites | Testing | ~20 min | Verify no regressions | not started |
 | 19 | RUN quality checks and compare | Quality | ~30 min | Compare to baseline | not started |
 | 20 | Document learning notes | Documentation | ~30 min | Capture issues/fixes | not started |

@@ -1,0 +1,66 @@
+# Maestro E2E test for Reset Confirmation Modal
+# Verifies the confirmation modal displays and cancel works
+#
+# Prerequisites:
+#   - Android emulator running: adb devices
+#   - App installed (see MAESTRO_TESTING.md for options)
+#
+# Run with: maestro test e2e/maestro/seed-data-reset-modal.yaml
+
+appId: com.vitorsilvavmrs.saborspin
+---
+# Clear app state for consistent testing
+- clearState
+# Launch app
+- launchApp
+
+# Verify home screen loads
+- extendedWaitUntil:
+    visible: "SaborSpin"
+    timeout: 30000
+
+# Navigate to Settings tab
+- tapOn: "Settings"
+
+# Wait for settings screen to load
+- extendedWaitUntil:
+    visible: "Settings"
+    timeout: 10000
+
+# Scroll down to find Data Management section
+- scrollUntilVisible:
+    element: "Reset to Default Data"
+    direction: DOWN
+    timeout: 15000
+    speed: 60
+
+# Tap on Reset to Default Data button
+- tapOn:
+    id: "reset-app-data-button"
+
+# Wait for confirmation modal
+- extendedWaitUntil:
+    visible: "Reset App Data?"
+    timeout: 5000
+
+# Verify confirmation modal content
+- assertVisible: "Reset App Data?"
+- assertVisible: "All your data will be replaced"
+
+# Take screenshot of confirmation modal
+- takeScreenshot: seed-data-03-reset-confirm-modal
+
+# Tap Cancel button
+- tapOn:
+    id: "cancel-reset-button"
+
+# Wait for modal to close
+- waitForAnimationToEnd
+
+# Verify modal closed (Reset button should be visible again)
+- assertVisible: "Reset to Default Data"
+
+# Take screenshot after cancel
+- takeScreenshot: seed-data-04-modal-cancelled
+
+# Test passed - Reset confirmation modal works correctly

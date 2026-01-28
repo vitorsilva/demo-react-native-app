@@ -1,0 +1,50 @@
+# Maestro E2E test for Data Management Settings Section
+# Verifies the Data Management section displays in Settings
+#
+# Prerequisites:
+#   - Android emulator running: adb devices
+#   - App installed (see MAESTRO_TESTING.md for options)
+#
+# Run with: maestro test e2e/maestro/seed-data-settings.yaml
+
+appId: com.vitorsilvavmrs.saborspin
+---
+# Clear app state for consistent testing
+- clearState
+# Launch app
+- launchApp
+
+# Verify home screen loads
+- extendedWaitUntil:
+    visible: "SaborSpin"
+    timeout: 30000
+
+# Navigate to Settings tab
+- tapOn: "Settings"
+
+# Wait for settings screen to load
+- extendedWaitUntil:
+    visible: "Settings"
+    timeout: 10000
+
+# Take screenshot of settings screen
+- takeScreenshot: seed-data-01-settings
+
+# Wait for content to load
+- waitForAnimationToEnd
+
+# Scroll down to find Data Management section
+- scrollUntilVisible:
+    element: "Data Management"
+    direction: DOWN
+    timeout: 15000
+    speed: 60
+
+# Verify Data Management section is visible
+- assertVisible: "Data Management"
+- assertVisible: "Reset to Default Data"
+
+# Take screenshot of data management section
+- takeScreenshot: seed-data-02-data-management-visible
+
+# Test passed - Data Management section displays correctly
