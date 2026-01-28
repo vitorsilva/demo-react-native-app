@@ -22,12 +22,16 @@ import { screenStyles } from '../../constants/shared-styles';
 import { useStore } from '../../lib/store';
 import { logger } from '../../lib/telemetry/logger';
 import { trackScreenView } from '../../lib/telemetry/screenTracking';
+import {
+  toggleIngredientSelection,
+  isSelectionValid,
+  isAtMaxIngredients,
+  filterIngredientsByCategory,
+  DEFAULT_MIN_INGREDIENTS,
+  DEFAULT_MAX_INGREDIENTS,
+} from '../../lib/utils/customMealSelection';
 import { haptics } from '../../lib/utils/haptics';
 import type { Ingredient, Category, MealType } from '../../types/database';
-
-// Constants for validation
-const MIN_INGREDIENTS = 1;
-const MAX_INGREDIENTS = 6;
 
 interface IngredientItemProps {
   ingredient: Ingredient;
@@ -157,19 +161,11 @@ export default function CustomMealScreen() {
     [mealTypes]
   );
 
-  // Get active ingredients only
-  const activeIngredients = useMemo(
-    () => ingredients.filter((ing) => ing.is_active),
-    [ingredients]
+  // Filter ingredients by category (using utility function)
+  const filteredIngredients = useMemo(
+    () => filterIngredientsByCategory(ingredients, categoryFilter, true),
+    [ingredients, categoryFilter]
   );
-
-  // Filter ingredients by category
-  const filteredIngredients = useMemo(() => {
-    if (!categoryFilter) {
-      return activeIngredients;
-    }
-    return activeIngredients.filter((ing) => ing.category_id === categoryFilter);
-  }, [activeIngredients, categoryFilter]);
 
   // Sort ingredients alphabetically
   const sortedIngredients = useMemo(
@@ -193,18 +189,9 @@ export default function CustomMealScreen() {
     [categories, t]
   );
 
-  // Toggle ingredient selection
+  // Toggle ingredient selection (using utility function)
   const handleToggleIngredient = useCallback((ingredientId: string) => {
-    setSelectedIngredients((prev) => {
-      if (prev.includes(ingredientId)) {
-        return prev.filter((id) => id !== ingredientId);
-      }
-      // Don't add if at max
-      if (prev.length >= MAX_INGREDIENTS) {
-        return prev;
-      }
-      return [...prev, ingredientId];
-    });
+    setSelectedIngredients((prev) => toggleIngredientSelection(prev, ingredientId));
   }, []);
 
   // Clear selection
@@ -215,7 +202,7 @@ export default function CustomMealScreen() {
 
   // Handle create meal - show meal type selector
   const handleCreateMeal = useCallback(() => {
-    if (selectedIngredients.length < MIN_INGREDIENTS) {
+    if (!isSelectionValid(selectedIngredients)) {
       return;
     }
     haptics.light();
@@ -277,9 +264,9 @@ export default function CustomMealScreen() {
     [addPreparationMethod]
   );
 
-  // Validation state
-  const isSelectionValid = selectedIngredients.length >= MIN_INGREDIENTS;
-  const isAtMaxIngredients = selectedIngredients.length >= MAX_INGREDIENTS;
+  // Validation state (using utility functions)
+  const selectionValid = isSelectionValid(selectedIngredients);
+  const atMaxIngredients = isAtMaxIngredients(selectedIngredients);
 
   // Render category filter chip
   const renderCategoryChip = useCallback(
@@ -344,10 +331,10 @@ export default function CustomMealScreen() {
             defaultValue: '{{count}} selected',
           })}
         </Text>
-        {isAtMaxIngredients && (
+        {atMaxIngredients && (
           <Text style={styles.maxReachedText}>
             {t('suggestions:customMeal.maxReached', {
-              max: MAX_INGREDIENTS,
+              max: DEFAULT_MAX_INGREDIENTS,
               defaultValue: 'Maximum {{max}} ingredients',
             })}
           </Text>
@@ -400,12 +387,12 @@ export default function CustomMealScreen() {
           </Text>
         </TouchableOpacity>
         <TouchableOpacity
-          style={[styles.createButton, !isSelectionValid && styles.createButtonDisabled]}
+          style={[styles.createButton, !selectionValid && styles.createButtonDisabled]}
           onPress={handleCreateMeal}
-          disabled={!isSelectionValid}
+          disabled={!selectionValid}
           testID="create-meal-button"
         >
-          <Text style={[styles.createButtonText, !isSelectionValid && styles.createButtonTextDisabled]}>
+          <Text style={[styles.createButtonText, !selectionValid && styles.createButtonTextDisabled]}>
             {t('suggestions:customMeal.createMeal', { defaultValue: 'Create Meal' })}
           </Text>
         </TouchableOpacity>
