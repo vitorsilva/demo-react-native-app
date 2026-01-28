@@ -358,7 +358,7 @@ interface CustomMealState {
 | 10 | Connect to ConfirmationModal | Implementation | ~1 hour | Reuse Phase 2 components | done (in Task 5) |
 | 11 | Add meal type selector to flow | Implementation | ~1 hour | Required for variety tracking | done (in Task 5) |
 | 12 | Add i18n translations | Implementation | ~30 min | EN + PT-PT | done |
-| 13 | CREATE Playwright E2E tests (and make sure they pass) | Testing | ~2 hours | Full flow testing | not started |
+| 13 | CREATE Playwright E2E tests (and make sure they pass) | Testing | ~2 hours | Full flow testing | done |
 | 14 | CREATE Maestro E2E tests (delay execution to step 14) | Testing | ~2 hours | Mirror Playwright tests | not started |
 | 15 | RUN full test suites | Testing | ~20 min | Verify no regressions | not started |
 | 16 | RUN quality checks and compare | Quality | ~30 min | Compare to baseline | not started |
