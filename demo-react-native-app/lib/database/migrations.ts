@@ -1,5 +1,6 @@
   import type { DatabaseAdapter } from './adapters/types';
 import * as Crypto from 'expo-crypto';
+import { SEED_CATEGORIES } from './seedData';
 
   // Silent logging during tests
   const isTestEnv = process.env.NODE_ENV === 'test';
@@ -329,6 +330,35 @@ import * as Crypto from 'expo-crypto';
           UNIQUE(ingredient_a_id, ingredient_b_id)
         )
       `);
+    },
+  },
+  {
+    version: 10,
+    up: async (db: DatabaseAdapter) => {
+      // Phase 3.2: Seed Data - Add predefined categories
+      // This migration seeds the categories table with default categories
+      // Idempotent: uses INSERT OR IGNORE to skip existing categories
+
+      const now = new Date().toISOString();
+
+      for (const category of SEED_CATEGORIES) {
+        // Check if category already exists (by name, not ID, for flexibility)
+        const existing = await db.getFirstAsync<{ id: string }>(
+          'SELECT id FROM categories WHERE name = ?',
+          [category.name]
+        );
+
+        if (!existing) {
+          await db.runAsync(
+            `INSERT INTO categories (id, name, created_at, updated_at)
+             VALUES (?, ?, ?, ?)`,
+            [category.id, category.name, now, now]
+          );
+          log(`  ✅ Added category: ${category.name}`);
+        }
+      }
+
+      log(`✅ Seeded ${SEED_CATEGORIES.length} categories`);
     },
   },
   ];
