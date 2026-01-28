@@ -360,7 +360,7 @@ interface CustomMealState {
 | 12 | Add i18n translations | Implementation | ~30 min | EN + PT-PT | done |
 | 13 | CREATE Playwright E2E tests (and make sure they pass) | Testing | ~2 hours | Full flow testing | done |
 | 14 | CREATE Maestro E2E tests (delay execution to step 14) | Testing | ~2 hours | Mirror Playwright tests | done |
-| 15 | RUN full test suites | Testing | ~20 min | Verify no regressions | not started |
+| 15 | RUN full test suites | Testing | ~20 min | Verify no regressions | done |
 | 16 | RUN quality checks and compare | Quality | ~30 min | Compare to baseline | not started |
 | 17 | Document learning notes | Documentation | ~30 min | Capture issues/fixes | not started |
 | 18 | Capture AFTER screenshots | Documentation | ~15 min | All new UI elements | not started |
