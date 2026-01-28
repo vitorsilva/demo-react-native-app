@@ -1,6 +1,6 @@
 # Phase 3.2: Seed Data & App Reset
 
-**Status:** Planning
+**Status:** Complete
 
 **Goal:** Prepopulate categories and pairing rules on new installs, and add a settings option to reset/initialize app with predefined data.
 
@@ -490,27 +490,27 @@ resetAppData: async () => {
 
 | Order | Task | Type | Effort | Notes | Status |
 |-------|------|------|--------|-------|--------|
-| 1 | Create feature branch | Setup | ~5 min | Branch from main | not started |
-| 2 | Capture BEFORE screenshots | Documentation | ~10 min | Settings, Categories, Ingredients | not started |
-| 3 | RUN existing test suites | Testing | ~15 min | Baseline: unit, Playwright, Maestro | not started |
-| 4 | RUN quality baseline | Quality | ~30 min | arch:test, lint:dead-code, lint:duplicates, security:scan | not started |
-| 5 | Create seedData.ts with categories, ingredients, rules | Implementation | ~2 hours | Centralized seed data | not started |
-| 6 | CREATE unit tests for seed data structure (and make sure they pass) | Testing | ~30 min | Validate data integrity | not started |
-| 7 | Create migration to seed categories | Implementation | ~1 hour | Migration version N | not started |
-| 8 | Create migration to update ingredient category_id | Implementation | ~1 hour | Link ingredients to categories | not started |
-| 9 | Create migration to seed pairing rules | Implementation | ~1 hour | Default positive/negative rules | not started |
-| 10 | CREATE unit tests for migrations (and make sure they pass) | Testing | ~1 hour | Test idempotency, data integrity | not started |
-| 11 | Create resetData.ts function | Implementation | ~1.5 hours | Clear and repopulate | not started |
-| 12 | CREATE unit tests for reset function (and make sure they pass) | Testing | ~1 hour | Test complete reset flow | not started |
-| 13 | Add resetAppData store action | Implementation | ~30 min | Connect to store | not started |
-| 14 | Add Data Management section to Settings UI | Implementation | ~1.5 hours | Button + modal | not started |
-| 15 | Add i18n translations | Implementation | ~30 min | EN + PT-PT | not started |
-| 16 | CREATE Playwright E2E tests (and make sure they pass) | Testing | ~2 hours | Reset flow, verify data | not started |
-| 17 | CREATE Maestro E2E tests (delay execution to step 18) | Testing | ~2 hours | Mirror Playwright tests | not started |
-| 18 | RUN full test suites | Testing | ~20 min | Verify no regressions | not started |
-| 19 | RUN quality checks and compare | Quality | ~30 min | Compare to baseline | not started |
-| 20 | Document learning notes | Documentation | ~30 min | Capture issues/fixes | not started |
-| 21 | Capture AFTER screenshots | Documentation | ~15 min | All new UI + seeded data | not started |
+| 1 | Create feature branch | Setup | ~5 min | Branch from main | done |
+| 2 | Capture BEFORE screenshots | Documentation | ~10 min | Settings, Categories, Ingredients | done |
+| 3 | RUN existing test suites | Testing | ~15 min | Baseline: unit, Playwright, Maestro | done |
+| 4 | RUN quality baseline | Quality | ~30 min | arch:test, lint:dead-code, lint:duplicates, security:scan | done |
+| 5 | Create seedData.ts with categories, ingredients, rules | Implementation | ~2 hours | Centralized seed data | done |
+| 6 | CREATE unit tests for seed data structure (and make sure they pass) | Testing | ~30 min | Validate data integrity | done |
+| 7 | Create migration to seed categories | Implementation | ~1 hour | Migration version N | done |
+| 8 | Create migration to update ingredient category_id | Implementation | ~1 hour | Link ingredients to categories | done |
+| 9 | Create migration to seed pairing rules | Implementation | ~1 hour | Default positive/negative rules | done |
+| 10 | CREATE unit tests for migrations (and make sure they pass) | Testing | ~1 hour | Test idempotency, data integrity | done |
+| 11 | Create resetData.ts function | Implementation | ~1.5 hours | Clear and repopulate | done |
+| 12 | CREATE unit tests for reset function (and make sure they pass) | Testing | ~1 hour | Test complete reset flow | done |
+| 13 | Add resetAppData store action | Implementation | ~30 min | Connect to store | done |
+| 14 | Add Data Management section to Settings UI | Implementation | ~1.5 hours | Button + modal | done |
+| 15 | Add i18n translations | Implementation | ~30 min | EN + PT-PT | done |
+| 16 | CREATE Playwright E2E tests (and make sure they pass) | Testing | ~2 hours | Reset flow, verify data | done |
+| 17 | CREATE Maestro E2E tests (delay execution to step 18) | Testing | ~2 hours | Mirror Playwright tests | done |
+| 18 | RUN full test suites | Testing | ~20 min | Verify no regressions | done |
+| 19 | RUN quality checks and compare | Quality | ~30 min | Compare to baseline | done |
+| 20 | Document learning notes | Documentation | ~30 min | Capture issues/fixes | done |
+| 21 | Capture AFTER screenshots | Documentation | ~15 min | All new UI + seeded data | done |
 
 **Total Estimated Effort:** ~18 hours
 

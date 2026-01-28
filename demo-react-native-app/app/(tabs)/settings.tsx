@@ -47,6 +47,7 @@ export default function SettingsScreen() {
   const loadPreparationMethods = useStore((state) => state.loadPreparationMethods);
   const addPreparationMethod = useStore((state) => state.addPreparationMethod);
   const deletePreparationMethod = useStore((state) => state.deletePreparationMethod);
+  const resetAppData = useStore((state) => state.resetAppData);
 
   // Local state
   const [expandedMealType, setExpandedMealType] = useState<string | null>(null);
@@ -55,6 +56,8 @@ export default function SettingsScreen() {
   const [currentLanguage, setCurrentLanguage] = useState(getCurrentLanguage());
   const [isAddPrepMethodModalVisible, setIsAddPrepMethodModalVisible] = useState(false);
   const [newPrepMethodName, setNewPrepMethodName] = useState('');
+  const [isResetModalVisible, setIsResetModalVisible] = useState(false);
+  const [isResetting, setIsResetting] = useState(false);
 
   // Load data when database is ready
   useEffect(() => {
@@ -225,6 +228,20 @@ export default function SettingsScreen() {
       ...preferences,
       hapticEnabled: value,
     });
+  };
+
+  // Handle reset app data
+  const handleResetAppData = async () => {
+    setIsResetting(true);
+    try {
+      await resetAppData();
+      setIsResetModalVisible(false);
+      Alert.alert(t('common:buttons.success'), t('dataManagement.resetSuccess'));
+    } catch {
+      Alert.alert(t('errors:generic.error'), t('errors:generic.unknownError'));
+    } finally {
+      setIsResetting(false);
+    }
   };
 
   // Toggle expanded meal type
@@ -586,6 +603,25 @@ export default function SettingsScreen() {
           <Text style={styles.navigationCardArrow}>→</Text>
         </TouchableOpacity>
 
+        {/* === DATA MANAGEMENT SECTION === */}
+        <Text style={styles.sectionTitle}>{t('dataManagement.title')}</Text>
+
+        <View style={styles.dataManagementCard} testID="data-management-section">
+          <TouchableOpacity
+            style={styles.resetButton}
+            onPress={() => setIsResetModalVisible(true)}
+            testID="reset-app-data-button"
+          >
+            <Text style={styles.resetButtonText}>{t('dataManagement.resetToDefaults')}</Text>
+          </TouchableOpacity>
+          <Text style={styles.resetDescription}>
+            {t('dataManagement.resetDescription')}
+          </Text>
+          <Text style={styles.resetWarning}>
+            ⚠️ {t('dataManagement.resetWarning')}
+          </Text>
+        </View>
+
         {/* Info Section */}
         <View style={styles.infoCard}>
           <Text style={styles.infoTitle}>{t('about.title')}</Text>
@@ -682,6 +718,47 @@ export default function SettingsScreen() {
                 testID="save-prep-method-button"
               >
                 <Text style={modalStyles.saveButtonText}>{t('common:buttons.add')}</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
+
+      {/* Reset App Data Confirmation Modal */}
+      <Modal
+        visible={isResetModalVisible}
+        animationType="slide"
+        transparent={true}
+        onRequestClose={() => !isResetting && setIsResetModalVisible(false)}
+      >
+        <View style={modalStyles.modalOverlay}>
+          <View style={modalStyles.modalContent}>
+            <Text style={modalStyles.modalTitle}>{t('dataManagement.resetConfirmTitle')}</Text>
+
+            <Text style={styles.resetModalMessage}>
+              {t('dataManagement.resetConfirmMessage')}
+            </Text>
+
+            <View style={modalStyles.modalButtons}>
+              <TouchableOpacity
+                style={[modalStyles.cancelButton, isResetting && styles.buttonDisabled]}
+                onPress={() => setIsResetModalVisible(false)}
+                disabled={isResetting}
+                testID="cancel-reset-button"
+              >
+                <Text style={modalStyles.cancelButtonText}>{t('dataManagement.resetCancelButton')}</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[styles.resetConfirmButton, isResetting && styles.buttonDisabled]}
+                onPress={handleResetAppData}
+                disabled={isResetting}
+                testID="confirm-reset-button"
+              >
+                {isResetting ? (
+                  <ActivityIndicator size="small" color="#FFFFFF" />
+                ) : (
+                  <Text style={styles.resetConfirmButtonText}>{t('dataManagement.resetConfirmButton')}</Text>
+                )}
               </TouchableOpacity>
             </View>
           </View>
@@ -1048,5 +1125,56 @@ const styles = StyleSheet.create({
     color: '#3e96ef',
     fontSize: 18,
     fontWeight: 'bold',
+  },
+  // Data Management
+  dataManagementCard: {
+    backgroundColor: '#1f2329',
+    borderRadius: 12,
+    padding: 20,
+    marginBottom: 24,
+  },
+  resetButton: {
+    backgroundColor: '#ff4444',
+    padding: 14,
+    borderRadius: 8,
+    alignItems: 'center',
+    marginBottom: 12,
+  },
+  resetButtonText: {
+    color: '#FFFFFF',
+    fontSize: 16,
+    fontWeight: '600',
+  },
+  resetDescription: {
+    fontSize: 14,
+    color: '#9BA1A6',
+    marginBottom: 8,
+  },
+  resetWarning: {
+    fontSize: 13,
+    color: '#ff8888',
+  },
+  resetModalMessage: {
+    fontSize: 15,
+    color: '#9BA1A6',
+    textAlign: 'center',
+    marginBottom: 20,
+    lineHeight: 22,
+  },
+  resetConfirmButton: {
+    backgroundColor: '#ff4444',
+    padding: 14,
+    borderRadius: 8,
+    alignItems: 'center',
+    flex: 1,
+    marginLeft: 8,
+  },
+  resetConfirmButtonText: {
+    color: '#FFFFFF',
+    fontSize: 16,
+    fontWeight: '600',
+  },
+  buttonDisabled: {
+    opacity: 0.6,
   },
 });

@@ -1,5 +1,6 @@
   import type { DatabaseAdapter } from './adapters/types';
 import * as Crypto from 'expo-crypto';
+import { SEED_CATEGORIES, SEED_INGREDIENTS, SEED_PAIRING_RULES } from './seedData';
 
   // Silent logging during tests
   const isTestEnv = process.env.NODE_ENV === 'test';
@@ -329,6 +330,122 @@ import * as Crypto from 'expo-crypto';
           UNIQUE(ingredient_a_id, ingredient_b_id)
         )
       `);
+    },
+  },
+  {
+    version: 10,
+    up: async (db: DatabaseAdapter) => {
+      // Phase 3.2: Seed Data - Add predefined categories
+      // This migration seeds the categories table with default categories
+      // Idempotent: uses INSERT OR IGNORE to skip existing categories
+
+      const now = new Date().toISOString();
+
+      for (const category of SEED_CATEGORIES) {
+        // Check if category already exists (by name, not ID, for flexibility)
+        const existing = await db.getFirstAsync<{ id: string }>(
+          'SELECT id FROM categories WHERE name = ?',
+          [category.name]
+        );
+
+        if (!existing) {
+          await db.runAsync(
+            `INSERT INTO categories (id, name, created_at, updated_at)
+             VALUES (?, ?, ?, ?)`,
+            [category.id, category.name, now, now]
+          );
+          log(`  ✅ Added category: ${category.name}`);
+        }
+      }
+
+      log(`✅ Seeded ${SEED_CATEGORIES.length} categories`);
+    },
+  },
+  {
+    version: 11,
+    up: async (db: DatabaseAdapter) => {
+      // Phase 3.2: Seed Data - Update ingredient category_id
+      // This migration updates existing ingredients to link them with their categories
+      // Uses name matching to associate ingredients with the correct category
+
+      let updatedCount = 0;
+
+      for (const seedIngredient of SEED_INGREDIENTS) {
+        // Find the category ID in the database (may differ from seed ID if manually created)
+        const category = await db.getFirstAsync<{ id: string }>(
+          'SELECT id FROM categories WHERE id = ? OR name = ?',
+          [seedIngredient.categoryId, SEED_CATEGORIES.find((c) => c.id === seedIngredient.categoryId)?.name ?? '']
+        );
+
+        if (category) {
+          // Update ingredient by name where category_id is NULL
+          const result = await db.runAsync(
+            `UPDATE ingredients
+             SET category_id = ?
+             WHERE name = ? AND category_id IS NULL`,
+            [category.id, seedIngredient.name]
+          );
+
+          if (result.changes > 0) {
+            updatedCount++;
+            log(`  ✅ Linked ${seedIngredient.name} to category`);
+          }
+        }
+      }
+
+      log(`✅ Updated ${updatedCount} ingredients with category_id`);
+    },
+  },
+  {
+    version: 12,
+    up: async (db: DatabaseAdapter) => {
+      // Phase 3.2: Seed Data - Add default pairing rules
+      // This migration seeds the pairing_rules table with default positive/negative rules
+      // Only runs if pairing_rules table is empty (new install or after reset)
+
+      const existingRules = await db.getFirstAsync<{ count: number }>(
+        'SELECT COUNT(*) as count FROM pairing_rules'
+      );
+
+      // Skip if rules already exist (don't overwrite user customizations)
+      if (existingRules && existingRules.count > 0) {
+        log('⏭️ Pairing rules already exist, skipping seed');
+        return;
+      }
+
+      const now = new Date().toISOString();
+      let addedCount = 0;
+
+      for (const rule of SEED_PAIRING_RULES) {
+        // Find ingredient IDs by matching seed ID or name
+        const ingredientA = await db.getFirstAsync<{ id: string }>(
+          'SELECT id FROM ingredients WHERE id = ? OR name = ?',
+          [rule.ingredientAId, SEED_INGREDIENTS.find((i) => i.id === rule.ingredientAId)?.name ?? '']
+        );
+
+        const ingredientB = await db.getFirstAsync<{ id: string }>(
+          'SELECT id FROM ingredients WHERE id = ? OR name = ?',
+          [rule.ingredientBId, SEED_INGREDIENTS.find((i) => i.id === rule.ingredientBId)?.name ?? '']
+        );
+
+        if (ingredientA && ingredientB) {
+          try {
+            await db.runAsync(
+              `INSERT INTO pairing_rules (id, ingredient_a_id, ingredient_b_id, rule_type, created_at)
+               VALUES (?, ?, ?, ?, ?)`,
+              [Crypto.randomUUID(), ingredientA.id, ingredientB.id, rule.ruleType, now]
+            );
+            addedCount++;
+          } catch (e) {
+            // UNIQUE constraint violation - rule already exists, skip
+            log(`  ⏭️ Rule already exists for ${rule.ingredientAId} + ${rule.ingredientBId}`);
+          }
+        } else {
+          log(`  ⚠️ Skipping rule: ingredient not found (${rule.ingredientAId} or ${rule.ingredientBId})`);
+        }
+      }
+
+      log(`✅ Seeded ${addedCount} pairing rules`);
     },
   },
   ];

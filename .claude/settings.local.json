@@ -139,7 +139,8 @@
       "Bash(powershell -Command:*)",
       "WebFetch(domain:github.com)",
       "Bash(gh repo view:*)",
-      "Bash(gh api:*)"
+      "Bash(gh api:*)",
+      "Bash(where:*)"
     ],
     "deny": [],
     "ask": []
