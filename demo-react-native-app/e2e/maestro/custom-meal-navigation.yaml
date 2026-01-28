@@ -1,0 +1,51 @@
+# Maestro E2E test for Custom Meal screen navigation
+# Tests navigation from home to custom meal screen and back
+#
+# Prerequisites:
+#   - Android emulator running: adb devices
+#   - App installed (see MAESTRO_TESTING.md for options)
+#
+# Run with: maestro test e2e/maestro/custom-meal-navigation.yaml
+
+appId: com.vitorsilvavmrs.saborspin
+---
+# Clear app state for consistent testing
+- clearState
+# Launch app
+- launchApp
+
+# Verify home screen loads
+- extendedWaitUntil:
+    visible: "SaborSpin"
+    timeout: 30000
+
+# Take screenshot of home screen
+- takeScreenshot: custom-meal-nav-01-home
+
+# Tap on Create Custom Meal button
+- tapOn:
+    text: "Create Custom Meal"
+
+# Wait for custom meal screen to load
+- extendedWaitUntil:
+    visible: "Create Custom Meal"
+    timeout: 10000
+
+# Take screenshot of custom meal screen
+- takeScreenshot: custom-meal-nav-02-screen
+
+# Verify custom meal screen elements
+- assertVisible: "selected"
+
+# Navigate back
+- tapOn: "Back"
+
+# Verify we're back on home screen
+- extendedWaitUntil:
+    visible: "SaborSpin"
+    timeout: 5000
+
+# Take screenshot after navigation back
+- takeScreenshot: custom-meal-nav-03-home-return
+
+# Test passed - Custom Meal navigation works on mobile

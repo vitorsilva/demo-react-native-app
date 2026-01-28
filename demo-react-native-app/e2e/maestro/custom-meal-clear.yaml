@@ -1,0 +1,64 @@
+# Maestro E2E test for Custom Meal clear selection
+# Tests clearing selected ingredients
+#
+# Prerequisites:
+#   - Android emulator running: adb devices
+#   - App installed (see MAESTRO_TESTING.md for options)
+#
+# Run with: maestro test e2e/maestro/custom-meal-clear.yaml
+
+appId: com.vitorsilvavmrs.saborspin
+---
+# Clear app state for consistent testing
+- clearState
+# Launch app
+- launchApp
+
+# Verify home screen loads
+- extendedWaitUntil:
+    visible: "SaborSpin"
+    timeout: 30000
+
+# Navigate to custom meal screen
+- tapOn:
+    text: "Create Custom Meal"
+
+# Wait for screen to load
+- extendedWaitUntil:
+    visible: "Create Custom Meal"
+    timeout: 10000
+
+# Select first ingredient
+- tapOn:
+    text: "Milk"
+    optional: true
+
+# Select second ingredient
+- tapOn:
+    text: "Bread"
+    optional: true
+
+# Wait for selection to update
+- extendedWaitUntil:
+    visible: "2 selected"
+    timeout: 5000
+
+# Take screenshot with selections
+- takeScreenshot: custom-meal-clear-01-selected
+
+# Tap Clear button
+- tapOn:
+    text: "Clear"
+
+# Wait for selection to clear
+- extendedWaitUntil:
+    visible: "0 selected"
+    timeout: 5000
+
+# Take screenshot after clear
+- takeScreenshot: custom-meal-clear-02-cleared
+
+# Verify selection was cleared
+- assertVisible: "0 selected"
+
+# Test passed - Clear selection works on mobile

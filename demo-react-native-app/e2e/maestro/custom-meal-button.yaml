@@ -1,0 +1,28 @@
+# Maestro E2E test for Custom Meal button visibility
+# Tests that the Create Custom Meal button is visible on home screen
+#
+# Prerequisites:
+#   - Android emulator running: adb devices
+#   - App installed (see MAESTRO_TESTING.md for options)
+#
+# Run with: maestro test e2e/maestro/custom-meal-button.yaml
+
+appId: com.vitorsilvavmrs.saborspin
+---
+# Clear app state for consistent testing
+- clearState
+# Launch app
+- launchApp
+
+# Verify home screen loads
+- extendedWaitUntil:
+    visible: "SaborSpin"
+    timeout: 30000
+
+# Verify Create Custom Meal button is visible
+- assertVisible: "Create Custom Meal"
+
+# Take screenshot
+- takeScreenshot: custom-meal-01-button-visible
+
+# Test passed - Custom Meal button is visible on home screen
