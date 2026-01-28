@@ -7,6 +7,10 @@
   "getStartedConfigureMealTypes": "Configure os tipos de refeição nas Definições para começar!",
   "noMealTypes": "Nenhum tipo de refeição configurado",
   "configureMealTypes": "Vá às Definições para adicionar tipos de refeição",
+  "customMeal": {
+    "button": "Criar Refeição Personalizada",
+    "hint": "Abre um ecrã para criar uma refeição selecionando ingredientes"
+  },
   "date": {
     "today": "Hoje",
     "yesterday": "Ontem",
