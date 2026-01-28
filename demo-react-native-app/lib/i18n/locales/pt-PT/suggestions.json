@@ -5,6 +5,22 @@
     "recent": "Consumido recentemente",
     "veryRecent": "Consumido hoje"
   },
+  "customMeal": {
+    "title": "Criar Refeição Personalizada",
+    "selectMealType": "Selecionar Tipo de Refeição",
+    "mealTypeHint": "Escolha um tipo de refeição para continuar",
+    "selectIngredients": "Selecionar Ingredientes",
+    "selectedCount": "{{count}} selecionados",
+    "minRequired": "Selecione pelo menos {{min}} ingrediente",
+    "maxAllowed": "Máximo de {{max}} ingredientes",
+    "maxReached": "Máx. {{max}} atingido",
+    "noIngredients": "Sem ingredientes disponíveis",
+    "addIngredientsHint": "Adicione ingredientes na aba Gerir Ingredientes",
+    "filterByCategory": "Filtrar por categoria",
+    "allCategories": "Todos",
+    "clearSelection": "Limpar",
+    "createMeal": "Criar Refeição"
+  },
   "title": "Sugestões de {{mealType}}",
   "pickOne": "Escolha uma:",
   "loading": "A encontrar combinações deliciosas...",
