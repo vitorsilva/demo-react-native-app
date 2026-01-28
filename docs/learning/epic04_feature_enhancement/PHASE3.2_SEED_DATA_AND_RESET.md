@@ -1,6 +1,6 @@
 # Phase 3.2: Seed Data & App Reset
 
-**Status:** Planning
+**Status:** Complete
 
 **Goal:** Prepopulate categories and pairing rules on new installs, and add a settings option to reset/initialize app with predefined data.
 
@@ -510,7 +510,7 @@ resetAppData: async () => {
 | 18 | RUN full test suites | Testing | ~20 min | Verify no regressions | done |
 | 19 | RUN quality checks and compare | Quality | ~30 min | Compare to baseline | done |
 | 20 | Document learning notes | Documentation | ~30 min | Capture issues/fixes | done |
-| 21 | Capture AFTER screenshots | Documentation | ~15 min | All new UI + seeded data | not started |
+| 21 | Capture AFTER screenshots | Documentation | ~15 min | All new UI + seeded data | done |
 
 **Total Estimated Effort:** ~18 hours
 
