@@ -1,6 +1,6 @@
   import type { DatabaseAdapter } from './adapters/types';
 import * as Crypto from 'expo-crypto';
-import { SEED_CATEGORIES, SEED_INGREDIENTS } from './seedData';
+import { SEED_CATEGORIES, SEED_INGREDIENTS, SEED_PAIRING_RULES } from './seedData';
 
   // Silent logging during tests
   const isTestEnv = process.env.NODE_ENV === 'test';
@@ -394,6 +394,58 @@ import { SEED_CATEGORIES, SEED_INGREDIENTS } from './seedData';
       }
 
       log(`✅ Updated ${updatedCount} ingredients with category_id`);
+    },
+  },
+  {
+    version: 12,
+    up: async (db: DatabaseAdapter) => {
+      // Phase 3.2: Seed Data - Add default pairing rules
+      // This migration seeds the pairing_rules table with default positive/negative rules
+      // Only runs if pairing_rules table is empty (new install or after reset)
+
+      const existingRules = await db.getFirstAsync<{ count: number }>(
+        'SELECT COUNT(*) as count FROM pairing_rules'
+      );
+
+      // Skip if rules already exist (don't overwrite user customizations)
+      if (existingRules && existingRules.count > 0) {
+        log('⏭️ Pairing rules already exist, skipping seed');
+        return;
+      }
+
+      const now = new Date().toISOString();
+      let addedCount = 0;
+
+      for (const rule of SEED_PAIRING_RULES) {
+        // Find ingredient IDs by matching seed ID or name
+        const ingredientA = await db.getFirstAsync<{ id: string }>(
+          'SELECT id FROM ingredients WHERE id = ? OR name = ?',
+          [rule.ingredientAId, SEED_INGREDIENTS.find((i) => i.id === rule.ingredientAId)?.name ?? '']
+        );
+
+        const ingredientB = await db.getFirstAsync<{ id: string }>(
+          'SELECT id FROM ingredients WHERE id = ? OR name = ?',
+          [rule.ingredientBId, SEED_INGREDIENTS.find((i) => i.id === rule.ingredientBId)?.name ?? '']
+        );
+
+        if (ingredientA && ingredientB) {
+          try {
+            await db.runAsync(
+              `INSERT INTO pairing_rules (id, ingredient_a_id, ingredient_b_id, rule_type, created_at)
+               VALUES (?, ?, ?, ?, ?)`,
+              [Crypto.randomUUID(), ingredientA.id, ingredientB.id, rule.ruleType, now]
+            );
+            addedCount++;
+          } catch (e) {
+            // UNIQUE constraint violation - rule already exists, skip
+            log(`  ⏭️ Rule already exists for ${rule.ingredientAId} + ${rule.ingredientBId}`);
+          }
+        } else {
+          log(`  ⚠️ Skipping rule: ingredient not found (${rule.ingredientAId} or ${rule.ingredientBId})`);
+        }
+      }
+
+      log(`✅ Seeded ${addedCount} pairing rules`);
     },
   },
   ];
