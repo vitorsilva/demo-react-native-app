@@ -253,27 +253,31 @@ All technical phases of Epic 03 are done.
 
 **Overview:** Expanding SaborSpin from Individual Tool to Family Kitchen Platform
 
-**Phases (12 total, ~387 hours estimated):**
+**Phases (12 total, ~397 hours estimated):**
 
 | Phase | Description | Status |
 |-------|-------------|--------|
-| **Phase 0** | Landing Page Deployment | 📋 Ready - START HERE |
-| Phase 1 | Quick Wins (Polish) | 📋 Planned |
-| Phase 2 | Data Model Evolution | 📋 Planned |
-| Phase 3 | Enhanced Variety | 📋 Planned |
-| Phase 3.5 | Server Infrastructure | 📋 Planned |
+| Phase 0 | Landing Page Deployment | ✅ Complete |
+| Phase 0.1 | Tool & Resource Validation | ✅ Complete |
+| Phase 0.2 | Quality Baseline Report | ✅ Complete |
+| Phase 1 | Quick Wins (Polish) | ✅ Complete |
+| Phase 2 | Data Model Evolution | ✅ Complete |
+| Phase 3 | Enhanced Variety | ✅ Complete |
+| **Phase 3.5** | Server Infrastructure | 📋 **START HERE** |
 | Phase 4 | User Identity & Families | 📋 Planned |
 | Phase 5 | Shared Meal Logs | 📋 Planned |
 | Phase 6 | HTTP Sync | 📋 Planned |
 | Phase 7 | Proposals & Voting | 📋 Planned |
 | Phase 8 | P2P Sync (Optional) | 📋 Planned |
 | Phase 9 | Lunch/Dinner Expansion | 📋 Planned |
-| Phase 10 | Landing Page Update | 📋 Planned |
+| Phase 10 | Quality Validation | 📋 Planned |
+| Phase 11 | Marketing & Landing Page | 📋 Planned |
+| Phase 12 | Staging & Production | 📋 Planned |
 
-**Start with:** [Phase 0: Landing Page Deployment](../epic04_feature_enhancement/PHASE0_LANDING_DEPLOYMENT.md)
-- Deploy saborspin.com landing page to production
-- Same model as Saberloop (cPanel VPS, FTP deployment)
-- Prerequisites: VPS access via cPanel, domain ownership
+**Start with:** [Phase 3.5: Server Infrastructure](../epic04_feature_enhancement/PHASE3.5_SERVER_INFRASTRUCTURE.md)
+- Local Docker development environment (PHP + MySQL)
+- PHP API structure (extending Saberloop's php-api/)
+- VPS deployment pipeline
 
 **Reference:** [Epic 04 Overview](../epic04_feature_enhancement/OVERVIEW.md)
 
@@ -860,5 +864,5 @@ See `docs/learning/parking-lot/quality_enhancements.md` for tracked items.
 
 ---
 
-**Last Updated:** 2026-01-23
-**Next Session:** Epic 04 Phase 0 - Landing Page Deployment
+**Last Updated:** 2026-01-28
+**Next Session:** Epic 04 Phase 3.5 - Server Infrastructure

@@ -1,6 +1,6 @@
 # Epic 4: Feature Enhancement & Family Sharing
 
-**Status:** 🚀 IN PROGRESS (Phase 1 Complete)
+**Status:** 🚀 IN PROGRESS (Phase 3 Complete)
 
 ## What This Epic Is About
 
@@ -108,8 +108,10 @@ Epic 3 established the production-ready foundation. Epic 4 enhances the app with
 
 ---
 
-### Phase 2: Data Model Evolution
+### Phase 2: Data Model Evolution ✅
 **Goal:** Evolve data model to support preparation methods and named meals
+
+**Status:** ✅ COMPLETE (2026-01-25)
 
 **Features:**
 - Add preparation method to ingredients (fried, grilled, roasted, etc.)
@@ -119,12 +121,14 @@ Epic 3 established the production-ready foundation. Epic 4 enhances the app with
 
 **Dependencies:** None
 
-**[Phase 2 Details →](./PHASE2_DATA_MODEL_EVOLUTION.md)**
+**[Phase 2 Details →](./PHASE2_DATA_MODEL_EVOLUTION.md)** | **[Progress →](./PHASE2_DATA_MODEL_EVOLUTION_progress.md)** | **[Learning Notes →](./PHASE2_DATA_MODEL_EVOLUTION_LEARNING_NOTES.md)**
 
 ---
 
-### Phase 3: Enhanced Variety
+### Phase 3: Enhanced Variety ✅
 **Goal:** Smarter variety enforcement at ingredient level
+
+**Status:** ✅ COMPLETE (2026-01-27)
 
 **Features:**
 - Ingredient frequency tracking (not just combination-level)
@@ -133,7 +137,7 @@ Epic 3 established the production-ready foundation. Epic 4 enhances the app with
 
 **Dependencies:** Phase 2 helps but not required
 
-**[Phase 3 Details →](./PHASE3_ENHANCED_VARIETY.md)**
+**[Phase 3 Details →](./PHASE3_ENHANCED_VARIETY.md)** | **[Progress →](./PHASE3_ENHANCED_VARIETY_progress.md)** | **[Learning Notes →](./PHASE3_ENHANCED_VARIETY_LEARNING_NOTES.md)**
 
 ---
 
@@ -376,8 +380,8 @@ Phase 7 (Proposals)   Phase 8 (P2P) [Optional]            │    │
 - [x] Phase 0.1: All tools validated and configured
 - [x] Phase 0.2: Quality baseline report created
 - [x] Phase 1: All quick wins implemented
-- [ ] Phase 2: Data model supports prep methods and naming
-- [ ] Phase 3: Ingredient-level variety tracking works
+- [x] Phase 2: Data model supports prep methods and naming
+- [x] Phase 3: Ingredient-level variety tracking works
 - [ ] Phase 3.5: Server infrastructure deployed and accessible
 - [ ] Phase 4: Users can create/join families
 - [ ] Phase 5: Meals can be shared within families
@@ -408,12 +412,10 @@ Phase 7 (Proposals)   Phase 8 (P2P) [Optional]            │    │
 
 ## Ready to Start?
 
-**Begin with [Phase 0: Landing Page Deployment](./PHASE0_LANDING_DEPLOYMENT.md)** if not done.
+**Phases 0-3 are complete.** Next up:
 
-Then proceed to:
-1. **[Phase 0.1: Tool Validation](./PHASE0.1_TOOL_VALIDATION.md)** - Ensure all tools are ready
-2. **[Phase 0.2: Quality Baseline](./PHASE0.2_QUALITY_BASELINE.md)** - Establish quality metrics
-3. **[Phase 1: Quick Wins](./PHASE1_QUICK_WINS.md)** - Start feature development
+1. **[Phase 3.5: Server Infrastructure](./PHASE3.5_SERVER_INFRASTRUCTURE.md)** - Set up PHP + MySQL backend
+2. **[Phase 4: User Identity & Families](./PHASE4_USER_IDENTITY_FAMILIES.md)** - Local identity and family management
 
 ---
 
