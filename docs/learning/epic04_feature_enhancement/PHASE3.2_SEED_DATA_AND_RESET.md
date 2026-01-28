@@ -499,9 +499,9 @@ resetAppData: async () => {
 | 7 | Create migration to seed categories | Implementation | ~1 hour | Migration version N | done |
 | 8 | Create migration to update ingredient category_id | Implementation | ~1 hour | Link ingredients to categories | done |
 | 9 | Create migration to seed pairing rules | Implementation | ~1 hour | Default positive/negative rules | done |
-| 10 | CREATE unit tests for migrations (and make sure they pass) | Testing | ~1 hour | Test idempotency, data integrity | not started |
-| 11 | Create resetData.ts function | Implementation | ~1.5 hours | Clear and repopulate | not started |
-| 12 | CREATE unit tests for reset function (and make sure they pass) | Testing | ~1 hour | Test complete reset flow | not started |
+| 10 | CREATE unit tests for migrations (and make sure they pass) | Testing | ~1 hour | Test idempotency, data integrity | done |
+| 11 | Create resetData.ts function | Implementation | ~1.5 hours | Clear and repopulate | done |
+| 12 | CREATE unit tests for reset function (and make sure they pass) | Testing | ~1 hour | Test complete reset flow | done |
 | 13 | Add resetAppData store action | Implementation | ~30 min | Connect to store | not started |
 | 14 | Add Data Management section to Settings UI | Implementation | ~1.5 hours | Button + modal | not started |
 | 15 | Add i18n translations | Implementation | ~30 min | EN + PT-PT | not started |
