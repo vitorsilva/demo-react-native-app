@@ -490,11 +490,11 @@ resetAppData: async () => {
 
 | Order | Task | Type | Effort | Notes | Status |
 |-------|------|------|--------|-------|--------|
-| 1 | Create feature branch | Setup | ~5 min | Branch from main | not started |
-| 2 | Capture BEFORE screenshots | Documentation | ~10 min | Settings, Categories, Ingredients | not started |
-| 3 | RUN existing test suites | Testing | ~15 min | Baseline: unit, Playwright, Maestro | not started |
-| 4 | RUN quality baseline | Quality | ~30 min | arch:test, lint:dead-code, lint:duplicates, security:scan | not started |
-| 5 | Create seedData.ts with categories, ingredients, rules | Implementation | ~2 hours | Centralized seed data | not started |
+| 1 | Create feature branch | Setup | ~5 min | Branch from main | done |
+| 2 | Capture BEFORE screenshots | Documentation | ~10 min | Settings, Categories, Ingredients | done |
+| 3 | RUN existing test suites | Testing | ~15 min | Baseline: unit, Playwright, Maestro | done |
+| 4 | RUN quality baseline | Quality | ~30 min | arch:test, lint:dead-code, lint:duplicates, security:scan | done |
+| 5 | Create seedData.ts with categories, ingredients, rules | Implementation | ~2 hours | Centralized seed data | done |
 | 6 | CREATE unit tests for seed data structure (and make sure they pass) | Testing | ~30 min | Validate data integrity | not started |
 | 7 | Create migration to seed categories | Implementation | ~1 hour | Migration version N | not started |
 | 8 | Create migration to update ingredient category_id | Implementation | ~1 hour | Link ingredients to categories | not started |
