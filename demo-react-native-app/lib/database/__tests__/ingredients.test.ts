@@ -297,8 +297,8 @@ describe('Ingredient Operations', () => {
     test('getIngredientsByCategory returns ingredients with matching category_id', async () => {
       const db = getDatabase();
 
-      // Create a category first
-      const category = await addCategory(db, { name: 'Dairy' });
+      // Create a category first (use unique name to avoid conflict with seeded categories)
+      const category = await addCategory(db, { name: 'Test Dairy Category' });
 
       // Add ingredient with category_id
       await addIngredient(db, {

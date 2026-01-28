@@ -20,10 +20,14 @@
       await initDatabase();
     });
 
-    test('getAllCategories returns empty array when no categories', async () => {
+    test('getAllCategories returns seeded categories after migration', async () => {
       const db = getDatabase();
       const categories = await getAllCategories(db);
-      expect(categories).toEqual([]);
+      // After migration v10, 7 categories are seeded: Bakery, Dairy, Fruits, Grains, Nuts, Proteins, Spreads
+      expect(categories.length).toBeGreaterThanOrEqual(7);
+      const categoryNames = categories.map(c => c.name);
+      expect(categoryNames).toContain('Fruits');
+      expect(categoryNames).toContain('Dairy');
     });
 
     test('addCategory creates category with generated ID', async () => {
@@ -41,24 +45,29 @@
 
     test('getAllCategories returns all added categories in alphabetical order', async () => {
       const db = getDatabase();
+      const initialCategories = await getAllCategories(db);
+      const initialCount = initialCategories.length;
+
+      // Add test categories with names that sort predictably
       await addCategory(db, { name: 'Vegetables' });
-      await addCategory(db, { name: 'Protein' });
-      await addCategory(db, { name: 'Grains' });
+      await addCategory(db, { name: 'Zzz Last' });
+      await addCategory(db, { name: 'Aaa First' });
 
       const categories = await getAllCategories(db);
-      expect(categories).toHaveLength(3);
-      expect(categories[0].name).toBe('Grains');
-      expect(categories[1].name).toBe('Protein');
-      expect(categories[2].name).toBe('Vegetables');
+      expect(categories).toHaveLength(initialCount + 3);
+      // Verify alphabetical order
+      expect(categories[0].name).toBe('Aaa First');
+      expect(categories[categories.length - 1].name).toBe('Zzz Last');
     });
 
     test('getCategoryById returns the correct category', async () => {
       const db = getDatabase();
-      const created = await addCategory(db, { name: 'Dairy' });
+      // Use unique name to avoid conflict with seeded categories
+      const created = await addCategory(db, { name: 'Test Unique Category' });
 
       const found = await getCategoryById(db, created.id);
       expect(found).not.toBeNull();
-      expect(found?.name).toBe('Dairy');
+      expect(found?.name).toBe('Test Unique Category');
     });
 
     test('getCategoryById returns null for non-existent ID', async () => {
@@ -84,15 +93,18 @@
 
     test('deleteCategory removes category when no ingredients assigned', async () => {
       const db = getDatabase();
-      const created = await addCategory(db, { name: 'Temporary' });
+      const initialCategories = await getAllCategories(db);
+      const initialCount = initialCategories.length;
+
+      const created = await addCategory(db, { name: 'Temporary Test Category' });
 
       let categories = await getAllCategories(db);
-      expect(categories).toHaveLength(1);
+      expect(categories).toHaveLength(initialCount + 1);
 
       const result = await deleteCategory(db, created.id);
       expect(result.success).toBe(true);
 
       categories = await getAllCategories(db);
-      expect(categories).toHaveLength(0);
+      expect(categories).toHaveLength(initialCount);
     });
   });
