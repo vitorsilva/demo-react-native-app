@@ -1,6 +1,6 @@
   import type { DatabaseAdapter } from './adapters/types';
 import * as Crypto from 'expo-crypto';
-import { SEED_CATEGORIES } from './seedData';
+import { SEED_CATEGORIES, SEED_INGREDIENTS } from './seedData';
 
   // Silent logging during tests
   const isTestEnv = process.env.NODE_ENV === 'test';
@@ -359,6 +359,41 @@ import { SEED_CATEGORIES } from './seedData';
       }
 
       log(`✅ Seeded ${SEED_CATEGORIES.length} categories`);
+    },
+  },
+  {
+    version: 11,
+    up: async (db: DatabaseAdapter) => {
+      // Phase 3.2: Seed Data - Update ingredient category_id
+      // This migration updates existing ingredients to link them with their categories
+      // Uses name matching to associate ingredients with the correct category
+
+      let updatedCount = 0;
+
+      for (const seedIngredient of SEED_INGREDIENTS) {
+        // Find the category ID in the database (may differ from seed ID if manually created)
+        const category = await db.getFirstAsync<{ id: string }>(
+          'SELECT id FROM categories WHERE id = ? OR name = ?',
+          [seedIngredient.categoryId, SEED_CATEGORIES.find((c) => c.id === seedIngredient.categoryId)?.name ?? '']
+        );
+
+        if (category) {
+          // Update ingredient by name where category_id is NULL
+          const result = await db.runAsync(
+            `UPDATE ingredients
+             SET category_id = ?
+             WHERE name = ? AND category_id IS NULL`,
+            [category.id, seedIngredient.name]
+          );
+
+          if (result.changes > 0) {
+            updatedCount++;
+            log(`  ✅ Linked ${seedIngredient.name} to category`);
+          }
+        }
+      }
+
+      log(`✅ Updated ${updatedCount} ingredients with category_id`);
     },
   },
   ];
