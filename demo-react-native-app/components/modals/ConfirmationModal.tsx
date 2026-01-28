@@ -122,7 +122,7 @@ export function ConfirmationModal({
       {/* Semi-transparent overlay */}
       <View style={styles.overlay}>
         {/* Bottom sheet container */}
-        <View style={styles.bottomSheet}>
+        <View style={styles.bottomSheet} testID="confirmation-modal">
           {/* Drag indicator */}
           <View style={styles.dragIndicator} />
 

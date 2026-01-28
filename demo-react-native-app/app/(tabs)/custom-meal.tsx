@@ -45,7 +45,7 @@ function IngredientItem({ ingredient, isSelected, categoryName, onToggle }: Ingr
     <TouchableOpacity
       style={[styles.ingredientItem, isSelected && styles.ingredientItemSelected]}
       onPress={() => onToggle(ingredient.id)}
-      testID={`ingredient-checkbox-${ingredient.id}`}
+      testID={`ingredient-item-${ingredient.id}`}
       accessibilityRole="checkbox"
       accessibilityState={{ checked: isSelected }}
     >
@@ -73,7 +73,7 @@ function MealTypeSelector({ visible, mealTypes, onSelect, onCancel }: MealTypeSe
   return (
     <Modal visible={visible} transparent animationType="fade">
       <View style={styles.modalOverlay}>
-        <View style={styles.modalContent}>
+        <View style={styles.modalContent} testID="meal-type-selector">
           <Text style={styles.modalTitle}>
             {t('suggestions:customMeal.selectMealType', { defaultValue: 'Select Meal Type' })}
           </Text>
@@ -89,7 +89,7 @@ function MealTypeSelector({ visible, mealTypes, onSelect, onCancel }: MealTypeSe
                 key={mt.id}
                 style={styles.mealTypeButton}
                 onPress={() => onSelect(mt)}
-                testID={`meal-type-${mt.id}`}
+                testID={`meal-type-${mt.name.toLowerCase()}`}
               >
                 <Text style={styles.mealTypeButtonText}>
                   {mt.name.charAt(0).toUpperCase() + mt.name.slice(1)}
@@ -277,7 +277,7 @@ export default function CustomMealScreen() {
           key={category?.id || 'all'}
           style={[styles.categoryChip, isSelected && styles.categoryChipSelected]}
           onPress={() => setCategoryFilter(category?.id || null)}
-          testID={`category-filter-${category?.id || 'all'}`}
+          testID={category ? `category-chip-${category.id}` : 'category-chip-all'}
         >
           <Text style={[styles.categoryChipText, isSelected && styles.categoryChipTextSelected]}>
             {category?.name || t('common:all', { defaultValue: 'All' })}
@@ -302,7 +302,7 @@ export default function CustomMealScreen() {
   );
 
   return (
-    <SafeAreaView style={screenStyles.container}>
+    <SafeAreaView style={screenStyles.container} testID="custom-meal-screen">
       {/* Header */}
       <View style={styles.header}>
         <TouchableOpacity onPress={() => router.back()} testID="back-button">
@@ -325,7 +325,7 @@ export default function CustomMealScreen() {
 
       {/* Selection Counter */}
       <View style={styles.selectionInfo}>
-        <Text style={styles.selectionText}>
+        <Text style={styles.selectionText} testID="selection-counter">
           {t('suggestions:customMeal.selectedCount', {
             count: selectedIngredients.length,
             defaultValue: '{{count}} selected',
