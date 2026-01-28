@@ -353,7 +353,7 @@ interface CustomMealState {
 | 5 | Create CustomMealScreen component | Implementation | ~3 hours | New screen with ingredient selection | done |
 | 6 | Add category filter functionality | Implementation | ~1 hour | Filter chips | done (in Task 5) |
 | 7 | Add selection validation | Implementation | ~1 hour | Min/max checks | done (in Task 5) |
-| 8 | CREATE unit tests for selection logic (and make sure they pass) | Testing | ~1 hour | Test validation, filtering | not started |
+| 8 | CREATE unit tests for selection logic (and make sure they pass) | Testing | ~1 hour | Test validation, filtering | done |
 | 9 | Add "Create Custom Meal" button to home | Implementation | ~30 min | Button + navigation | not started |
 | 10 | Connect to ConfirmationModal | Implementation | ~1 hour | Reuse Phase 2 components | done (in Task 5) |
 | 11 | Add meal type selector to flow | Implementation | ~1 hour | Required for variety tracking | done (in Task 5) |
