@@ -136,7 +136,10 @@
       "Bash(\"$LOCALAPPDATA/Android/Sdk/emulator/emulator\" -list-avds)",
       "Bash(tasklist:*)",
       "Bash(start \"\" emulator -avd Medium_Phone_API_35 -no-snapshot-load)",
-      "Bash(powershell -Command:*)"
+      "Bash(powershell -Command:*)",
+      "WebFetch(domain:github.com)",
+      "Bash(gh repo view:*)",
+      "Bash(gh api:*)"
     ],
     "deny": [],
     "ask": []
