@@ -9,6 +9,7 @@ import * as preferencesDb from '@/lib/database/preferences';
 import * as preparationMethodsDb from '@/lib/database/preparationMethods';
 import * as mealComponentsDb from '@/lib/database/mealComponents';
 import * as pairingRulesDb from '@/lib/database/pairingRules';
+import { resetToDefaults } from '@/lib/database/resetData';
 import { setPreferences, UserPreferences } from '@/lib/database/preferences';
 import { logger } from '@/lib/telemetry/logger';
 import { getRecentlyUsedIngredients } from '../business-logic/varietyEngine';
@@ -151,6 +152,12 @@ interface StoreState {
    * @param mealTypeName - Optional meal type to use for min/max ingredients config
    */
   generateMealSuggestions: (mealTypeName?: string) => Promise<void>;
+  /**
+   * Resets all app data to defaults.
+   * Clears meal logs, ingredients, categories, and pairing rules,
+   * then repopulates with seed data.
+   */
+  resetAppData: () => Promise<void>;
 }
 
 export const useStore = create<StoreState>((set, get) => ({
@@ -834,4 +841,42 @@ export const useStore = create<StoreState>((set, get) => ({
 
   // Action: Mark database as ready
   setDatabaseReady: () => set({ isDatabaseReady: true }),
+
+  // Action: Reset all app data to defaults
+  resetAppData: async () => {
+    set({ isLoading: true, error: null });
+    try {
+      const db = getDatabase();
+      log('Resetting app data to defaults...');
+
+      // Reset all data in database
+      await resetToDefaults(db);
+
+      // Reload all state from the freshly seeded database
+      const loadIngredients = get().loadIngredients;
+      const loadCategories = get().loadCategories;
+      const loadMealLogs = get().loadMealLogs;
+      const loadPairingRules = get().loadPairingRules;
+
+      await loadIngredients();
+      await loadCategories();
+      await loadMealLogs(30);
+      await loadPairingRules();
+
+      // Clear suggested combinations since data changed
+      set({
+        suggestedCombinations: [],
+        isLoading: false,
+      });
+
+      log('App data reset complete');
+    } catch (error) {
+      console.error('Failed to reset app data:', error);
+      set({
+        error: error instanceof Error ? error.message : 'Failed to reset app data',
+        isLoading: false,
+      });
+      throw error;
+    }
+  },
 }));
